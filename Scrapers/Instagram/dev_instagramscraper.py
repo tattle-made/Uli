@@ -10,17 +10,18 @@ import boto3
 from pymongo import MongoClient
 from db_config import twitter_db_config,instagram_db_config
 import glob
+import botocore
+import uuid
 
 def scraper_util(userhandles,maxposts):
 
     """
     Args:
-        userhandles : .txt file containing the userhandles to scrape
-        maxposts    : no. of posts to scrape,if set to MAX,scrapes all the posts 
+        userhandles (.txt file) : contains the userhandles to scrape
+        maxposts (int)  : no. of posts to scrape,if set to MAX,scrapes all the posts 
 
     Returns:
         creates a .json file for a given userhandle containing all the required fields
-
     """
 
     if maxposts=="MAX":
@@ -43,10 +44,10 @@ def initialize_mongo(data_config):
     """ 
     Takes the MongoDB config objects of a Tattle service and returns the service's MongoDB collection.
     Args:
-        service (dict): A config dictionary imported from db_config 
+        data_config (dict): A config dictionary imported from db_config 
     Example:
-        from db_config import sharechat_db_config
-        collection = initialize_mongo(sharechat_db_config)
+        from db_config import instagram_db_config
+        collection = initialize_mongo(instagram_db_config)
     """
 
     mongo_url = "mongodb+srv://"+data_config["db_username"]+":"+data_config["db_password"]+"@tattle-data-fkpmg.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"   
@@ -63,7 +64,7 @@ def initialize_s3():
     Args:
         None
     Returns:
-        aws base url,aws bucket and s3 bucket object
+        aws base url,aws bucket,s3 bucket object,s3 resource object
     """
     
     aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
@@ -75,29 +76,64 @@ def initialize_s3():
 
     s3_resource = boto3.resource('s3', aws_access_key_id = aws_access_key_id,
                           aws_secret_access_key= aws_secret_access_key)
-    #print(list(resource.buckets.all()))
+    #print(list(s3_resource.buckets.all()))
     
-    ogbv_bucket = s3_resource.Bucket(aws_bucket) #Find the list of files stored in the given bucket
+    #ogbv_bucket = s3_resource.Bucket(aws_bucket) #Find the list of files stored in the given bucket
     #print(ogbv_bucket.objects.all())
 
     return aws_username, aws_bucket, s3_client,s3_resource
 
-def upload_files_to_s3(s3_client,file_name,bucket,object_name=None,args=None):
+
+
+def upload_to_s3(s3,file,filename,bucket,content_type):
 
     """
     Upload the images/videos to s3-bucket
     Args:
+        s3 (s3 client object) 
+        file (.jpg/.mp4) - file to upload
+        filename - filename to store for an uploaded file on s3,also known as Key
+        bucket - aws s3 bucket name
+        con
+
+
+    Returns:
+
+    """
+
+    with open(file,"rb") as data:
+        s3.upload_fileobj(Fileobj = data,
+                          Bucket = bucket,
+                          Key = filename,
+                          ExtraArgs = {'ContentType':content_type,
+                                       'ACL':'public-read'})
+
+def count_s3_files(s3, bucket):
+    paginator = s3.get_paginator('list_objects_v2')
+    pages = paginator.paginate(Bucket=bucket)
+    file_count = 0
+    for page in pages:
+        print(page)
+        for obj in page['Contents']:
+            file_count += 1
+    return file_count
+
+
+def get_s3_url(aws_bucket,key):
+
+    """
+    Get the s3-url of the uploaded imagee/video
+    Args:
+
 
     Returns:
 
     
     """
 
-    if object_name is None:
-        object_name = file_name
-    
-    response = s3_client.upload_file(Filename=file_name,Bucket=bucket,Key=object_name,ExtraArgs = args)
-    print(response)
+    config = botocore.client.Config(region_name = 'ap-south-1',signature_version = botocore.UNSIGNED)
+    object_url = boto3.client('s3', config=config).generate_presigned_url('get_object', ExpiresIn=0, Params={'Bucket': aws_bucket, 'Key': key})
+    print(object_url)
 
 if __name__ == "__main__":
 
@@ -113,12 +149,14 @@ if __name__ == "__main__":
         "--maxposts"
     )
     
+    #Add hashtags parser
+    
     args = parser.parse_args()
     
     #scraper_util(args.userhandles,args.maxposts)
     #initialize_mongo(twitter_db_config)
     #initialize_mongo(instagram_db_config)
-
+    
     aws_username,aws_bucket,s3_client,s3_resource = initialize_s3()
 
     #buckets_count = s3_client.list_buckets()
@@ -126,9 +164,16 @@ if __name__ == "__main__":
     #print(bucket_names)
     #print((buckets_count['Buckets']))
 
-
     """
     Upload files to s3 bucket
     """
     
-    upload_files_to_s3(s3_client,'1n.jpg',aws_bucket,args={'ACL':'public-read'})
+    #upload_to_s3(s3_client,'1n.jpg',aws_bucket,args={'ACL':'public-read'})
+
+
+    filename = str(uuid.uuid4())
+    print(filename)
+    upload_to_s3(s3_client,'./ig_data/4n.jpg',filename,aws_bucket,'image')
+    print(count_s3_files(s3_client,aws_bucket))
+    
+    get_s3_url(aws_bucket,filename)
