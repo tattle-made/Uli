@@ -344,5 +344,4 @@ if __name__ == "__main__":
                 
             #    break
                 
-            print("Count of posts : ")
-            print(coll.count_documents({}))
+            count_docs(coll)
