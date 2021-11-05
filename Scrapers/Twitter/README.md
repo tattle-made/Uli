@@ -1,6 +1,6 @@
 # Introduction
 
-This repository contains code for scraping publicly available data from targeted user accounts on Instagram https://instagram.com/
+This repository contains code for scraping publicly available data from targeted user handles,hashtags and keywords on Twitter https://twitter.com/
 
 # Why are we scraping this data
 
