@@ -4,7 +4,7 @@ This repository contains code for scraping publicly available data from targeted
 
 # Why are we scraping this data
 
-The goal is create a tool to clean up the sexist toxicity online lies with the social media platforms and create an alternative content moderation system
+For the project on detecting and responding to online gender based violence, we are collecting data from Instagram that can be annotated and used for detection models. See more project details here:https://tattle.co.in/products/ogbv/
 
 # Scraping methodology
 
