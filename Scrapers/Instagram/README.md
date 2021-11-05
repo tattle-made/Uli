@@ -31,3 +31,7 @@ s3 buckets and finally the post meta-data along with s3-url is uploaded to mongo
   AWS_USERNAME = <YOUR_AWS_USER_NAME>
   ```
  5.Run the scraper as : `python dev_instagramscraper.py -u <txt file containing users list> -m <max posts to scrape> `
+ 
+# Want to contribute to this repository?
+
+We have a [guide](docs/contributing.md) for you 
