@@ -35,4 +35,4 @@ s3 buckets and finally the post meta-data along with s3-url is uploaded to mongo
 
 # Want to contribute to this repository?
 
-We have a [guide](../instagram/docs/contributing.md) for you.
+We have a [guide](../Instagram/docs/contributing.md) for you.
