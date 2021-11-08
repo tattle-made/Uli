@@ -36,3 +36,6 @@ s3 buckets and finally the post meta-data along with s3-url is uploaded to mongo
 # Want to contribute to this repository?
 
 We have a [guide](../Instagram/docs/contributing.md) for you.
+
+# Licence
+When you submit code changes, your submissions are understood to be under the same licence that covers the project - GPL-3. Feel free to contact the maintainers if that's a concern.
