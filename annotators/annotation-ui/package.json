@@ -26,6 +26,7 @@
     "gatsby-plugin-react-i18next": "^1.2.2",
     "gatsby-plugin-sharp": "^4.0.1",
     "gatsby-plugin-styled-components": "^5.0.0",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
     "gatsby-remark-highlight-code": "^3.0.1",
     "gatsby-source-filesystem": "^4.0.0",
     "gatsby-transformer-sharp": "^4.0.0",

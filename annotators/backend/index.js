@@ -69,28 +69,23 @@ function createPosts() {
 function allocatePosts() {
   return UserPostAllocation.bulkCreate([
     {
-      userId: "c76bafbb-eda0-4ce7-b88c-9b40e498e056",
-      postId: "0aa21bb9-ba27-471d-aeff-60feb01a04a9",
+      userId: "9404f34a-c36e-4437-82d2-aee3f22fb93c",
+      postId: "98064848-2b42-4bc9-8060-8857351df3ba",
       status: "pending",
     },
     {
-      userId: "c76bafbb-eda0-4ce7-b88c-9b40e498e056",
-      postId: "1b755657-7b51-499a-a4e8-b5068eb0b911",
+      userId: "9404f34a-c36e-4437-82d2-aee3f22fb93c",
+      postId: "a7125df7-2b9f-4ee8-a08c-4dbed23f4c23",
       status: "pending",
     },
     {
-      userId: "c76bafbb-eda0-4ce7-b88c-9b40e498e056",
-      postId: "4bd5a046-8f20-403d-9e2f-22e9d90f56ee",
+      userId: "9404f34a-c36e-4437-82d2-aee3f22fb93c",
+      postId: "aca48dcc-77dc-415e-8335-c767a6a54fc3",
       status: "pending",
     },
     {
-      userId: "c76bafbb-eda0-4ce7-b88c-9b40e498e056",
-      postId: "7d8bed68-ee16-46e7-85df-33b72f880231",
-      status: "pending",
-    },
-    {
-      userId: "c76bafbb-eda0-4ce7-b88c-9b40e498e056",
-      postId: "a3388e67-e379-40d6-9ef5-93a5dfef27e1",
+      userId: "9404f34a-c36e-4437-82d2-aee3f22fb93c",
+      postId: "b12c201b-20dc-4983-b579-b9591e71b046",
       status: "pending",
     },
   ]);
@@ -131,6 +126,36 @@ async function isUserRegistered({ username, password }) {
   return count == 0 ? false : rows[0].get({ plain: true });
 }
 
+async function addAnnotation(user, post, key, value) {
+  return Annotation.findOne({
+    where: {
+      [Op.and]: [{ userId: user.id }, { postId: post.id }, { key }],
+    },
+  }).then((obj) => {
+    // console.log(obj);
+    if (obj) {
+      return obj.update({ key, value });
+    } else {
+      return Annotation.create({
+        userId: user.id,
+        postId: post.id,
+        key,
+        value,
+      });
+    }
+  });
+}
+
+async function addAnnotations(user, post, annotations) {
+  for (const annotation of annotations) {
+    await addAnnotation(user, post, annotation.key, annotation.value);
+  }
+}
+
+async function getPostsWithAnnotation(pageNum) {
+  return await Annotation.findAll({});
+}
+
 (async function test() {
   // await createUsers();
   // await createPosts();
@@ -155,10 +180,30 @@ async function isUserRegistered({ username, password }) {
   // for (const result of results) {
   //   console.log(result.get({ plain: true }));
   // }
-
-  const status = await isUserRegistered({
-    username: "annotator_a",
-    password: "pw_ann_a",
-  });
-  console.log(status);
+  // const status = await isUserRegistered({
+  //   username: "annotator_a",
+  //   password: "pw_ann_a",
+  // });
+  // console.log(status);
+  // const result = await addAnnotation(
+  //   { id: "c76bafbb-eda0-4ce7-b88c-9b40e498e056" },
+  //   { id: "0aa21bb9-ba27-471d-aeff-60feb01a04a9" },
+  //   "ogbv",
+  //   "1"
+  // );
+  // console.log(result);
+  // const result = await addAnnotations(
+  //   { id: "f32fbcfe-2351-4264-bafe-040274f469db" },
+  //   { id: "23378d4f-8535-42a3-8276-632e86286110" },
+  //   [
+  //     { key: "ogbv", value: "0" },
+  //     { key: "explicit", value: "0" },
+  //     { key: "hate", value: "1" },
+  //   ]
+  // );
+  const results = await getPostsWithAnnotation(0);
+  console.log(results);
+  // for (const result of results) {
+  //   console.log(result.get({ plain: true }));
+  // }
 })();
