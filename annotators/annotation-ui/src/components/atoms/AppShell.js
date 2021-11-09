@@ -5,6 +5,7 @@ import SEO from "./SEO";
 import { PlainLink } from "./TattleLinks";
 import TattleLogo from "./TattleLogo";
 import { useLocation } from "@reach/router";
+import { Router } from "@reach/router";
 
 /**
  * @author
