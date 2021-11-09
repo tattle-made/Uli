@@ -12,9 +12,11 @@ import {
   Tabs,
   Tab,
   Main,
+  Anchor,
 } from "grommet";
 import TattleTheme from "../components/atoms/Theme";
 import TattleLogo from "../components/atoms/TattleLogo";
+import { PlainLink } from "../components/atoms/TattleLinks";
 
 const preference = {
   language: "en",
@@ -43,8 +45,15 @@ const AppSideNavBar = () => {
     </Box>
   ) : (
     <Box width={"small"} responsive={true}>
-      <Sidebar pad={{ left: "medium", right: "large", vertical: "medium" }}>
-        <Text size={"large"}>Annotations</Text>
+      <Sidebar>
+        <Anchor href={"/"} color={"accent-2"}>
+          Annotations
+        </Anchor>
+        <PlainLink to={"/home"}>
+          <Text size={"large"} color={"accent-2"} weight={"600"}>
+            Users
+          </Text>
+        </PlainLink>
         <Text size={"large"}>Users</Text>
         <Text size={"large"}>Posts</Text>
         <Text size={"large"}>{size}</Text>
@@ -57,13 +66,13 @@ const AppContentSection = ({ children }) => {
   const size = React.useContext(ResponsiveContext);
 
   return size === "small" ? (
-    <Box direction={"column"}>
+    <Box direction={"column"} pad={"small"} responsive>
       {children.map((child) => (
         <Box>{child}</Box>
       ))}
     </Box>
   ) : (
-    <Box fill direction={"row"}>
+    <Box fill direction={"row"} pad={"small"} responsive>
       {children.map((child, ix) => child)}
     </Box>
   );
@@ -79,17 +88,24 @@ const AppPage = () => {
 
   return (
     <Grommet full theme={TattleTheme}>
-      <Box fill background={"light-1"}>
+      <Box fill background={"light-1"} gap={"small"}>
         <Header background={"light-2"} pad={"small"}>
           <TattleLogo />
         </Header>
 
         <AppContentSection>
           <AppSideNavBar />
-          <Box flex={{ grow: 6 }} height={"small"} border>
+          <Box flex={{ grow: 6 }} height={"small"}>
             Annotation
           </Box>
-          <Box flex={{ grow: 1 }} height={"small"} border>
+          <Box
+            flex={{ grow: 1 }}
+            height={"small"}
+            round={"small"}
+            responsive
+            background={"visuals-1"}
+            pad={"small"}
+          >
             Sidebar
           </Box>
         </AppContentSection>
