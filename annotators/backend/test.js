@@ -5,6 +5,18 @@ const {
   UserPostAllocation,
 } = require("./sequelize/models");
 const { Op } = require("sequelize");
+const { LoremIpsum } = require("lorem-ipsum");
+
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 8,
+    min: 4,
+  },
+  wordsPerSentence: {
+    max: 16,
+    min: 4,
+  },
+});
 
 const users = [
   { role: "admin", username: "user_a", password: "asdfasdf", lang: "en" },
@@ -152,6 +164,15 @@ async function addAnnotations(user, post, annotations) {
   }
 }
 
+async function getPosts(pageNum) {
+  const { rows, count } = await Post.findAndCountAll({
+    limit: 20,
+    offset: pageNum,
+  });
+  const posts = rows.map((post) => post.get({ plain: true }));
+  return { posts, count };
+}
+
 async function getPostsWithAnnotation(pageNum) {
   return await Annotation.findAll({});
 }
@@ -163,6 +184,21 @@ async function getPostWithAnnotation(postId) {
     },
     include: Annotation,
   });
+}
+
+async function createDummyPosts(count) {
+  for (var i = 0; i < count; i++) {
+    var params = {};
+    params.role = Math.floor(Math.random() * 2) ? "text" : "image";
+    if (params.role === "text") {
+      params.text = lorem.generateWords(20);
+    } else if (params.role === "image") {
+      params.url =
+        "https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg";
+    }
+    console.log(params);
+    await Post.create(params);
+  }
 }
 
 (async function test() {
@@ -215,9 +251,11 @@ async function getPostWithAnnotation(postId) {
   // for (const result of results) {
   //   console.log(result.get({ plain: true }));
   // }
+  // createDummyPosts(1000);
 })();
 
 module.exports = {
   getAllocationForUser,
   getPostWithAnnotation,
+  getPosts,
 };

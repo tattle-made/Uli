@@ -6,7 +6,11 @@ app.use(cors());
 app.options("*", cors());
 app.use(express.static("dist"));
 
-const { getAllocationForUser, getPostWithAnnotation } = require("./test");
+const {
+  getAllocationForUser,
+  getPostWithAnnotation,
+  getPosts,
+} = require("./test");
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -38,6 +42,14 @@ app.get("/post/:postId", async (req, res) => {
   // for (const annotation of annotations) {
   //   console.log(annotation.get({ plain: true }));
   // }
+});
+
+app.get("/posts", async (req, res) => {
+  const { page } = req.query;
+  const pageInt = parseInt(page);
+
+  const posts = await getPosts(pageInt);
+  res.send({ ...posts });
 });
 
 app.listen(port, () => {

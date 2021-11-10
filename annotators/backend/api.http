@@ -9,4 +9,8 @@ GET http://localhost:3000/allocation/for-user?userId=f32fbcfe-2351-4264-bafe-040
 
 ###
 
+
+GET http://localhost:3000/posts?page=10
+###
+
 GET http://localhost:3000/post/23378d4f-8535-42a3-8276-632e86286110

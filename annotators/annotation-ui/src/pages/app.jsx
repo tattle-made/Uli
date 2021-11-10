@@ -13,6 +13,7 @@ import UserPreference from "../components/private-pages/UserPreference";
 import Login from "../components/private-pages/Login";
 import PrivateRoute from "../components/atoms/PrivateRoute";
 import PostDetailPage from "../components/private-pages/PostDetailPage";
+import PostListPage from "../components/private-pages/PostListPage";
 
 const preference = {
   language: "en",
@@ -38,8 +39,9 @@ const AppPage = () => {
 
           <Box width={"100%"}>
             <Router basepath="/app">
-              <PrivateRoute path="/posts" component={AllocationPage} />
+              <PrivateRoute path="/posts" component={PostListPage} />
               <PrivateRoute path="/post/:postId" component={PostDetailPage} />
+              <PrivateRoute path="/allocations" component={AllocationPage} />
               <PrivateRoute path="/preferences" component={UserPreference} />
               <Login path="/login" />
             </Router>

@@ -12,6 +12,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "lorem-ipsum": "^2.0.4",
     "mysql2": "^2.3.3-rc.0",
     "sequelize": "^6.9.0",
     "uuid": "^8.3.2",
