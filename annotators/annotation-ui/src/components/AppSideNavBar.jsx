@@ -35,7 +35,7 @@ export const AppSideNavBar = () => {
     <Box width={"small"} responsive={true}>
       <Sidebar>
         <PlainLink to={"/app/posts"}>
-          <Text size={"large"} color={"accent-2"} weight={"600"}>
+          <Text size={"large"} color={"accent-2"} weight={600}>
             Posts
           </Text>
         </PlainLink>

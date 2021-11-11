@@ -103,19 +103,32 @@ function allocatePosts() {
   ]);
 }
 
-function getAllocationForUser({ id }) {
-  return UserPostAllocation.findAll({
+async function getAllocationForUser(userId, pageNum) {
+  const { rows, count } = await UserPostAllocation.findAndCountAll({
     where: {
-      userId: id,
+      userId: userId,
     },
+    limit: 20,
+    offset: pageNum * 20,
     include: [/*User,*/ Post],
   });
+
+  const allocations = rows.map((post) => post.get({ plain: true }));
+  return { allocations, count };
 }
 
 function getAnnotationsForPost({ id }) {
   return Annotation.findAll({
     where: {
       postId: id,
+    },
+  });
+}
+
+function getUserAnnotationsForPost(userId, postId) {
+  return Annotation.findAll({
+    where: {
+      [Op.and]: [{ userId }, { postId }],
     },
   });
 }
@@ -201,12 +214,26 @@ async function createDummyPosts(count) {
   }
 }
 
+async function allocatePostsAutomatically(userId, postCount) {
+  const { rows, count } = await Post.findAndCountAll({
+    limit: postCount,
+    offset: 1,
+  });
+  const posts = rows.map((post) => post.get({ plain: true }));
+  posts.map(async (post) => {
+    await UserPostAllocation.create({
+      userId: userId,
+      postId: post.id,
+    });
+  });
+}
+
 (async function test() {
   // await createUsers();
   // await createPosts();
   // await allocatePosts();
   // const allocations = await getAllocationForUser({
-  //   id: "c76bafbb-eda0-4ce7-b88c-9b40e498e056",
+  //   id: "f32fbcfe-2351-4264-bafe-040274f469db",
   // });
   // for (const allocation of allocations) {
   //   console.log(allocation.get({ plain: true }));
@@ -252,10 +279,12 @@ async function createDummyPosts(count) {
   //   console.log(result.get({ plain: true }));
   // }
   // createDummyPosts(1000);
+  // await allocatePostsAutomatically("f32fbcfe-2351-4264-bafe-040274f469db", 100);
 })();
 
 module.exports = {
   getAllocationForUser,
   getPostWithAnnotation,
   getPosts,
+  getUserAnnotationsForPost,
 };

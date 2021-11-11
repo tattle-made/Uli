@@ -2,10 +2,7 @@ GET http://localhost:3000/
 
 ###
 
-GET http://localhost:3000/allocation/for-user?userId=f32fbcfe-2351-4264-bafe-040274f469db
-
-###
-GET http://localhost:3000/allocation/for-user?userId=f32fbcfe-2351-4264-bafe-040274f469db
+GET http://localhost:3000/allocation/for-user?userId=f32fbcfe-2351-4264-bafe-040274f469db&pageNum=1
 
 ###
 
@@ -14,3 +11,7 @@ GET http://localhost:3000/posts?page=10
 ###
 
 GET http://localhost:3000/post/23378d4f-8535-42a3-8276-632e86286110
+
+###
+
+GET http://localhost:3000/annotation/by-user/?userId=f32fbcfe-2351-4264-bafe-040274f469db&postId=013ce342-605f-4df3-b5e2-96e5dd3ecb6c

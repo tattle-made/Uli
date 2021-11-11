@@ -5,11 +5,25 @@ const cors = require("cors");
 app.use(cors());
 app.options("*", cors());
 app.use(express.static("dist"));
+const { Op, Sequelize } = require("sequelize");
+
+Sequelize.addHook("beforeCount", function (options) {
+  if (this._scope.include && this._scope.include.length > 0) {
+    options.distinct = true;
+    options.col =
+      this._scope.col || options.col || `"${this.options.name.singular}".id`;
+  }
+
+  if (options.include && options.include.length > 0) {
+    options.include = null;
+  }
+});
 
 const {
   getAllocationForUser,
   getPostWithAnnotation,
   getPosts,
+  getUserAnnotationsForPost,
 } = require("./test");
 
 app.get("/", (req, res) => {
@@ -17,16 +31,23 @@ app.get("/", (req, res) => {
 });
 
 app.get("/allocation/for-user/", async (req, res) => {
-  const { userId } = req.query;
+  const { userId, pageNum } = req.query;
+  const pageNumInt = parseInt(pageNum);
 
-  const allocations = await getAllocationForUser({
-    id: userId,
-  });
-  allocationDataArray = allocations.map((allocation) =>
-    allocation.get({ plain: true })
+  const { allocations, count } = await getAllocationForUser(userId, pageNumInt);
+
+  res.send({ allocations, count });
+});
+
+app.get("/annotation/by-user/", async (req, res) => {
+  const { userId, postId } = req.query;
+
+  const annotations = await getUserAnnotationsForPost(userId, postId);
+  annotationsPlain = annotations.map((annotation) =>
+    annotation.get({ plain: true })
   );
 
-  res.send({ allocation: allocationDataArray });
+  res.send({ annotations: annotationsPlain });
 });
 
 app.get("/post/:postId", async (req, res) => {

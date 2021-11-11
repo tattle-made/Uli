@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { graphql } from "gatsby";
-import { Router } from "@reach/router";
+import { Router, useLocation } from "@reach/router";
 import { Trans, useTranslation, useI18next } from "gatsby-plugin-react-i18next";
-import { Grommet, Box, Heading, Header, Main } from "grommet";
+import { Grommet, Box, Heading, Header, Main, Button } from "grommet";
 import TattleTheme from "../components/atoms/Theme";
 import TattleLogo from "../components/atoms/TattleLogo";
 import AnnotationList from "../components/AllotationList";
@@ -14,6 +14,9 @@ import Login from "../components/private-pages/Login";
 import PrivateRoute from "../components/atoms/PrivateRoute";
 import PostDetailPage from "../components/private-pages/PostDetailPage";
 import PostListPage from "../components/private-pages/PostListPage";
+import PostAnnotator from "../components/private-pages/PostAnnotator";
+import { PlainLink } from "../components/atoms/TattleLinks";
+import { config } from "../components/config";
 
 const preference = {
   language: "en",
@@ -22,6 +25,8 @@ const preference = {
 const AppPage = () => {
   const { t } = useTranslation();
   const { languages, changeLanguage } = useI18next();
+  const location = useLocation();
+  console.log();
 
   useEffect(() => {
     changeLanguage(preference.language);
@@ -32,6 +37,11 @@ const AppPage = () => {
       <Box fill background={"light-1"} gap={"small"}>
         <Header background={"light-2"} pad={"small"}>
           <TattleLogo />
+          {location.pathname != config.annotator_url ? (
+            <PlainLink to={"/app/post-annotator"}>
+              <Button primary label={"Start Annotation"} />
+            </PlainLink>
+          ) : null}
         </Header>
 
         <AppContentSection>
@@ -42,6 +52,7 @@ const AppPage = () => {
               <PrivateRoute path="/posts" component={PostListPage} />
               <PrivateRoute path="/post/:postId" component={PostDetailPage} />
               <PrivateRoute path="/allocations" component={AllocationPage} />
+              <PrivateRoute path="/post-annotator" component={PostAnnotator} />
               <PrivateRoute path="/preferences" component={UserPreference} />
               <Login path="/login" />
             </Router>
