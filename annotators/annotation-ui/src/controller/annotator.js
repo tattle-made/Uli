@@ -162,8 +162,6 @@ class Annotator {
       pageCount: this.pageCount,
     };
   }
-
-  saveCurrentPageAnnotations(user, post, annotations) {}
 }
 
 export { Annotator };

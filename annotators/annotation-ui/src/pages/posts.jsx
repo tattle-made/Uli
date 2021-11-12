@@ -8,6 +8,7 @@ import {
   Button,
   RadioButtonGroup,
   TextArea,
+  Keyboard,
 } from "grommet";
 import ReactJson from "react-json-view";
 import TattleLogo from "../components/atoms/TattleLogo";
@@ -53,108 +54,120 @@ export default function PostAnnotator() {
     }
   }
 
+  async function goToNextPage() {
+    await annotator.saveAnnotations(annotations);
+    await annotator.next();
+    await refresh();
+  }
+
+  async function goToPreviousPage() {
+    await annotator.saveAnnotations(annotations);
+    await annotator.previous();
+    await refresh();
+  }
+
   return (
     <Grommet full theme={TattleTheme}>
-      <Box fill background={"light-1"} gap={"small"}>
-        <Header background={"light-2"} pad={"small"}>
-          <TattleLogo />
-        </Header>
+      <Keyboard
+        target="document"
+        onRight={goToNextPage}
+        onLeft={goToPreviousPage}
+      >
+        <Box fill background={"light-1"} gap={"small"}>
+          <Header background={"light-2"} pad={"small"}>
+            <TattleLogo />
+          </Header>
 
-        <Box width={"1020px"} height={{ min: "100vh" }} flex={"grow"}>
-          <Box width={"520px"} direction={"column"} gap={"large"}>
-            <Box flex={"grow"} gap={"medium"} pad={"medium"}>
-              <Box direction={"row"} align={"center"} gap={"medium"}>
-                <Text size={"large"}>Post Annotation</Text>
-                <Box direction={"row"} gap={"xsmall"}>
-                  <Button
-                    default
-                    icon={<LinkPrevious size={"medium"} />}
-                    onClick={async () => {
-                      await annotator.previous();
-                      await refresh();
-                    }}
-                  />
-                  <Button
-                    secondary
-                    icon={<LinkNext size={"medium"} />}
-                    onClick={async () => {
-                      await annotator.saveAnnotations(annotations);
-                      await annotator.next();
-                      await refresh();
-                    }}
-                  />
+          <Box width={"1020px"} height={{ min: "100vh" }} flex={"grow"}>
+            <Box width={"520px"} direction={"column"} gap={"large"}>
+              <Box flex={"grow"} gap={"medium"} pad={"medium"}>
+                <Box direction={"row"} align={"center"} gap={"medium"}>
+                  <Text size={"large"}>Post Annotation</Text>
+                  <Box direction={"row"} gap={"xsmall"}>
+                    <Button
+                      default
+                      icon={<LinkPrevious size={"medium"} />}
+                      onClick={goToPreviousPage}
+                    />
+                    <Button
+                      secondary
+                      icon={<LinkNext size={"medium"} />}
+                      onClick={goToNextPage}
+                    />
+                  </Box>
+                </Box>
+                {post && (
+                  <SimplePost post={post} annotationStatus={"pending"} />
+                )}
+                <Box>
+                  <Box direction={"row"} gap={"large"}>
+                    <Text> Is this post OGBV</Text>
+
+                    <ReactRadioButtonGroup
+                      name="ogbv"
+                      options={[
+                        { label: "yes", value: "1" },
+                        { label: "no", value: "0" },
+                      ]}
+                      value={annotations.ogbv}
+                      onChange={(val) => changeAnnotation("ogbv", val)}
+                    />
+                  </Box>
+                  <Box direction={"row"} gap={"large"}>
+                    <Text> Is this post explicit</Text>
+                    <ReactRadioButtonGroup
+                      name="explicit"
+                      options={[
+                        { label: "yes", value: "1" },
+                        { label: "no", value: "0" },
+                      ]}
+                      value={annotations.explicit}
+                      onChange={(val) => changeAnnotation("explicit", val)}
+                    />
+                  </Box>
+                  <Box direction={"row"} gap={"large"}>
+                    <Text> Is this post Hateful</Text>
+                    <ReactRadioButtonGroup
+                      name="hate"
+                      options={[
+                        { label: "yes", value: "1" },
+                        { label: "no", value: "0" },
+                      ]}
+                      value={annotations.hate}
+                      onChange={(val) => changeAnnotation("hate", val)}
+                    />
+                  </Box>
                 </Box>
               </Box>
-              {post && <SimplePost post={post} annotationStatus={"pending"} />}
-              <Box>
-                <Box direction={"row"} gap={"large"}>
-                  <Text> Is this post OGBV</Text>
 
-                  <ReactRadioButtonGroup
-                    name="ogbv"
-                    options={[
-                      { label: "yes", value: "1" },
-                      { label: "no", value: "0" },
-                    ]}
-                    value={annotations.ogbv}
-                    onChange={(val) => changeAnnotation("ogbv", val)}
-                  />
-                </Box>
-                <Box direction={"row"} gap={"large"}>
-                  <Text> Is this post explicit</Text>
-                  <ReactRadioButtonGroup
-                    name="explicit"
-                    options={[
-                      { label: "yes", value: "1" },
-                      { label: "no", value: "0" },
-                    ]}
-                    value={annotations.explicit}
-                    onChange={(val) => changeAnnotation("explicit", val)}
-                  />
-                </Box>
-                <Box direction={"row"} gap={"large"}>
-                  <Text> Is this post Hateful</Text>
-                  <ReactRadioButtonGroup
-                    name="hate"
-                    options={[
-                      { label: "yes", value: "1" },
-                      { label: "no", value: "0" },
-                    ]}
-                    value={annotations.hate}
-                    onChange={(val) => changeAnnotation("hate", val)}
-                  />
-                </Box>
+              <Box
+                width={"100%"}
+                round={"small"}
+                responsive
+                background={"visuals-1"}
+                pad={"medium"}
+              >
+                <Text>Annotator </Text>
+                <ReactJson collapsed={true} src={debugMessage} />
               </Box>
-            </Box>
-
-            <Box
-              width={"100%"}
-              round={"small"}
-              responsive
-              background={"visuals-1"}
-              pad={"medium"}
-            >
-              <Text>Annotator </Text>
-              <ReactJson collapsed={true} src={debugMessage} />
             </Box>
           </Box>
         </Box>
-      </Box>
+      </Keyboard>
     </Grommet>
   );
 }
-function AnnotationForm({ data }) {
-  const [notes, setNotes] = useState("");
-  const [annotations, setAnnotations] = useState(data);
-  return (
-    <Box gap={"small"}>
-      <Box>
-        <TextArea
-          placeholder="Additional Notes"
-          value={notes}
-          onChange={(event) => setNotes(event.target.value)}
-        />
-      </Box>
-    </Box>
-  );
-}
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
