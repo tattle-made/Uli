@@ -14,6 +14,7 @@ import TattleLogo from "../components/atoms/TattleLogo";
 import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious } from "grommet-icons";
 import ReactRadioButtonGroup from "react-radio-button-group";
+import { SimplePost } from "../components/atoms/SimplePost";
 
 const annotator = new Annotator(
   { id: "f32fbcfe-2351-4264-bafe-040274f469db" },
@@ -24,17 +25,12 @@ export default function PostAnnotator() {
   const [debugMessage, setDebugMessage] = useState({});
   const [annotations, setAnnotations] = useState({});
   const [pageStatus, setPageStatus] = useState("");
+  const [post, setPost] = useState(undefined);
 
   useEffect(() => {
     async function setupAnnotator() {
-      console.log("==here1");
       await annotator.setup();
-      const data = await await annotator.makePageData(annotator.session.postId);
-      const { annotations, pageStatus } = data;
-      setAnnotations(annotations);
-      setPageStatus(pageStatus);
-      setDebugMessage(annotator.state);
-      console.log("==here2");
+      await refresh();
     }
     setupAnnotator();
   }, []);
@@ -46,6 +42,17 @@ export default function PostAnnotator() {
     });
   }
 
+  async function refresh() {
+    const data = await annotator.makePageData(annotator.session.postId);
+    if (data != undefined) {
+      const { annotations, pageStatus, post } = data;
+      setAnnotations(annotations);
+      setPageStatus(pageStatus);
+      setDebugMessage(annotator.state);
+      setPost(post);
+    }
+  }
+
   return (
     <Grommet full theme={TattleTheme}>
       <Box fill background={"light-1"} gap={"small"}>
@@ -53,7 +60,7 @@ export default function PostAnnotator() {
           <TattleLogo />
         </Header>
 
-        <Box width={"760px"} height={{ min: "100vh" }} flex={"grow"}>
+        <Box width={"1020px"} height={{ min: "100vh" }} flex={"grow"}>
           <Box width={"520px"} direction={"column"} gap={"large"}>
             <Box flex={"grow"} gap={"medium"} pad={"medium"}>
               <Box direction={"row"} align={"center"} gap={"medium"}>
@@ -63,32 +70,22 @@ export default function PostAnnotator() {
                     default
                     icon={<LinkPrevious size={"medium"} />}
                     onClick={async () => {
-                      const data = await annotator.previous();
-                      if (data !== undefined) {
-                        const { annotations, pageStatus } = data;
-                        setAnnotations(annotations);
-                        setPageStatus(pageStatus);
-                      }
-                      setDebugMessage(annotator.state);
+                      await annotator.previous();
+                      await refresh();
                     }}
                   />
                   <Button
                     secondary
                     icon={<LinkNext size={"medium"} />}
                     onClick={async () => {
-                      const data = await annotator.next();
-                      if (data !== undefined) {
-                        const { annotations, pageStatus } = data;
-                        console.log("====");
-                        console.log(annotations);
-                        setAnnotations(annotations);
-                        setPageStatus(pageStatus);
-                      }
-                      setDebugMessage(annotator.state);
+                      await annotator.saveAnnotations(annotations);
+                      await annotator.next();
+                      await refresh();
                     }}
                   />
                 </Box>
               </Box>
+              {post && <SimplePost post={post} annotationStatus={"pending"} />}
               <Box>
                 <Box direction={"row"} gap={"large"}>
                   <Text> Is this post OGBV</Text>
@@ -131,7 +128,7 @@ export default function PostAnnotator() {
             </Box>
 
             <Box
-              width={"medium"}
+              width={"100%"}
               round={"small"}
               responsive
               background={"visuals-1"}

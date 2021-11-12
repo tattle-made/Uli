@@ -4,6 +4,9 @@ import {
   getAllocationForUser,
   getUserAnnotationsForPost,
 } from "../repository/allocation";
+import ls from "local-storage";
+import { saveAnnotations } from "../repository/annotation";
+import _ from "lodash";
 
 const DEFAULT_SESSION_VALUE = {
   postId: undefined, // for the post that was being annoted most recently
@@ -28,6 +31,7 @@ class Annotator {
     this.session = session ? session : DEFAULT_SESSION_VALUE;
     this.pageSize = PAGESIZE;
     this.annotation = undefined;
+    this.currentAnnotations = undefined;
   }
 
   async setup() {
@@ -35,7 +39,6 @@ class Annotator {
       this.user.id,
       this.session.pageNum
     );
-
     this.allocations = allocations;
     this.postCount = count;
     this.pageCount = Math.ceil(count / this.pageSize); // total number of pages that this user can annotate
@@ -52,11 +55,15 @@ class Annotator {
       annotations[annotation.key] = annotation.value;
     });
 
+    this.currentAnnotations = annotations;
+
     const pageStatus = `${
       this.pageSize * this.session.pageNum + this.session.postIndex
     }/${this.postCount}`;
 
-    return { annotations, pageStatus };
+    const post = this.allocations[this.session.postIndex].Post;
+
+    return { annotations, pageStatus, post };
   }
 
   /**
@@ -132,6 +139,20 @@ class Annotator {
 
     return await this.makePageData(this.session.postId);
   }
+
+  /**
+   * Check if the annotations have changed. if they have, make an API call to save the annotations.
+   */
+  async saveAnnotations(annotations) {
+    if (!_.isEqual(annotations, this.currentAnnotations)) {
+      return saveAnnotations(this.user.id, this.session.postId, annotations);
+    }
+  }
+
+  /**
+   * Gets post from local storage and syncs them with the backend
+   */
+  async sync() {}
 
   get state() {
     return {

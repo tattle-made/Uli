@@ -287,4 +287,5 @@ module.exports = {
   getPostWithAnnotation,
   getPosts,
   getUserAnnotationsForPost,
+  addAnnotations,
 };

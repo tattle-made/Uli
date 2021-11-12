@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const cors = require("cors");
 app.use(cors());
+app.use(express.json());
 app.options("*", cors());
 app.use(express.static("dist"));
 const { Op, Sequelize } = require("sequelize");
@@ -24,6 +25,7 @@ const {
   getPostWithAnnotation,
   getPosts,
   getUserAnnotationsForPost,
+  addAnnotations,
 } = require("./test");
 
 app.get("/", (req, res) => {
@@ -48,6 +50,14 @@ app.get("/annotation/by-user/", async (req, res) => {
   );
 
   res.send({ annotations: annotationsPlain });
+});
+
+app.post("/annotations/", async (req, res) => {
+  console.log("here");
+  console.log(req.body);
+  const { userId, postId, annotations } = req.body;
+  await addAnnotations({ id: userId }, { id: postId }, annotations);
+  res.send({ message: "annotations added" });
 });
 
 app.get("/post/:postId", async (req, res) => {
