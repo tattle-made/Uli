@@ -1,6 +1,8 @@
 {
   "Welcome": "வரவேற்பு",
-  "Tattle Annotator": "தட்டல் சிறுகுறிப்பு",
+  "app_name": "சிறுகுறிப்பு",
+  "username": "பயனர் பெயர்",
+  "password": "கடவுச்சொல்",
   "post_annotation": "சிறுகுறிப்பு இடுகை",
   "annotation_form_ogbv": "இந்த இடுகை OGBVதானா? ?",
   "annotation_form_explicit": "இந்த இடுகை வெளிப்படையானதா ?",

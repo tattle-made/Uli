@@ -26,10 +26,17 @@ const {
   getPosts,
   getUserAnnotationsForPost,
   addAnnotations,
+  getUser,
 } = require("./test");
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World! !");
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const user = await getUser(username, password);
+  res.send({ ...user });
 });
 
 app.get("/allocation/for-user/", async (req, res) => {
@@ -53,7 +60,6 @@ app.get("/annotation/by-user/", async (req, res) => {
 });
 
 app.post("/annotations/", async (req, res) => {
-  console.log("here");
   console.log(req.body);
   const { userId, postId, annotations } = req.body;
   await addAnnotations({ id: userId }, { id: postId }, annotations);

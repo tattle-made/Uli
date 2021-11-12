@@ -14,7 +14,7 @@ import Login from "../components/private-pages/Login";
 import PrivateRoute from "../components/atoms/PrivateRoute";
 import PostDetailPage from "../components/private-pages/PostDetailPage";
 import PostListPage from "../components/private-pages/PostListPage";
-import PostAnnotator from "../components/private-pages/PostAnnotator";
+import PostAnnotator from "./posts";
 import { PlainLink } from "../components/atoms/TattleLinks";
 import { config } from "../components/config";
 
@@ -54,6 +54,7 @@ const AppPage = () => {
               <PrivateRoute path="/allocations" component={AllocationPage} />
               <PrivateRoute path="/post-annotator" component={PostAnnotator} />
               <PrivateRoute path="/preferences" component={UserPreference} />
+              <PrivateRoute path="/test" component={PostAnnotator} />
               <Login path="/login" />
             </Router>
           </Box>

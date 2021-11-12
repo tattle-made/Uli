@@ -33,7 +33,7 @@ export function SimplePost({ post, annotationStatus }) {
         ) : null}
       </div>
       {post.role === "image" ? (
-        <Box height={"small"} width={"small"}>
+        <Box height={"100%"} width={"medium"}>
           <Image fit={"contain"} alignSelf={"start"} src={post.url} />
         </Box>
       ) : null}

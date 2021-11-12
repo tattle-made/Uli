@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { graphql } from "gatsby";
+import { graphql, navigate } from "gatsby";
 import { Annotator } from "../controller/annotator";
 import {
   Grommet,
   Header,
+  Footer,
   Box,
   Text,
   Button,
@@ -18,11 +19,9 @@ import { LinkNext, LinkPrevious } from "grommet-icons";
 import ReactRadioButtonGroup from "react-radio-button-group";
 import { SimplePost } from "../components/atoms/SimplePost";
 import { useTranslation } from "gatsby-plugin-react-i18next";
+import { getUserFromLS, isLoggedIn, logoutUser } from "../repository/user";
 
-const annotator = new Annotator(
-  { id: "f32fbcfe-2351-4264-bafe-040274f469db" },
-  undefined
-);
+var annotator;
 
 export default function PostAnnotator() {
   const { t } = useTranslation();
@@ -33,9 +32,17 @@ export default function PostAnnotator() {
 
   useEffect(() => {
     async function setupAnnotator() {
-      await annotator.setup();
-      await refresh();
+      if (await isLoggedIn()) {
+        const user = await getUserFromLS();
+        annotator = new Annotator({ id: user.id }, undefined);
+        await annotator.setup();
+        await refresh();
+      } else {
+        navigate("/login");
+      }
     }
+    // check if user is logged in
+
     setupAnnotator();
   }, []);
 
@@ -69,6 +76,11 @@ export default function PostAnnotator() {
     await refresh();
   }
 
+  async function logout() {
+    await logoutUser();
+    navigate("/login");
+  }
+
   return (
     <Grommet full theme={TattleTheme}>
       <Keyboard
@@ -76,13 +88,20 @@ export default function PostAnnotator() {
         onRight={goToNextPage}
         onLeft={goToPreviousPage}
       >
-        <Box fill background={"light-1"} gap={"small"}>
-          <Header background={"light-2"} pad={"small"}>
+        <Box fill gap={"small"}>
+          <Header pad={"small"}>
             <TattleLogo />
+            <Button plain label={"Logout"} onClick={logout} />
           </Header>
 
-          <Box width={"1020px"} height={{ min: "100vh" }} flex={"grow"}>
-            <Box width={"520px"} direction={"column"} gap={"large"}>
+          <Box flex={"grow"} gap={"medium"}>
+            <Box
+              width={"large"}
+              border
+              direction={"column"}
+              gap={"large"}
+              alignSelf={"center"}
+            >
               <Box flex={"grow"} gap={"medium"} pad={"medium"}>
                 <Box direction={"row"} align={"center"} gap={"medium"}>
                   <Text size={"large"}>{t("post_annotation")}</Text>
@@ -140,21 +159,37 @@ export default function PostAnnotator() {
                       onChange={(val) => changeAnnotation("hate", val)}
                     />
                   </Box>
+                  <TextArea
+                    placeholder="Additional notes"
+                    value={annotations.notes}
+                    onChange={(event) =>
+                      setAnnotations({
+                        ...annotations,
+                        notes: event.target.value,
+                      })
+                    }
+                  />
                 </Box>
               </Box>
-
-              <Box
-                width={"100%"}
-                round={"small"}
-                responsive
-                background={"visuals-1"}
-                pad={"medium"}
-              >
-                <Text>{pageStatus}</Text>
-                <ReactJson collapsed={true} src={debugMessage} />
-              </Box>
+            </Box>
+            <Box
+              width={"large"}
+              round={"small"}
+              responsive
+              background={"visuals-1"}
+              pad={"medium"}
+              alignSelf={"center"}
+            >
+              <Text>{pageStatus}</Text>
+              <ReactJson collapsed={true} src={debugMessage} />
             </Box>
           </Box>
+
+          <Footer pad="medium">
+            <Text size={"xsmall"}>
+              Built by CIS and Tattle with support from ONI
+            </Text>
+          </Footer>
         </Box>
       </Keyboard>
     </Grommet>

@@ -1,6 +1,8 @@
 {
   "Welcome": "स्वागत",
-  "Tattle Annotator": "टैटल एनोटेटर",
+  "app_name": "एनोटेटर",
+  "username": "उपयोगकर्ता नाम",
+  "password": "पासवर्ड",
   "post_annotation": "पोस्ट एनोटेशन",
   "annotation_form_ogbv": "क्या यह पोस्ट ओजीबीवी है ?",
   "annotation_form_explicit": "क्या यह पोस्ट स्पष्ट है ?",

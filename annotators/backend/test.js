@@ -151,6 +151,20 @@ async function isUserRegistered({ username, password }) {
   return count == 0 ? false : rows[0].get({ plain: true });
 }
 
+async function getUser(username, password) {
+  const { count, rows } = await User.findAndCountAll({
+    where: {
+      [Op.and]: [{ username, password }],
+    },
+    attributes: {
+      exclude: ["password", "createdAt", "updatedAt"],
+    },
+  });
+  return count == 0
+    ? { user: undefined, preference: undefined, session: undefined }
+    : { user: rows[0].get({ plain: true }), session: {}, preference: {} };
+}
+
 async function addAnnotation(user, post, key, value) {
   return Annotation.findOne({
     where: {
@@ -288,4 +302,5 @@ module.exports = {
   getPosts,
   getUserAnnotationsForPost,
   addAnnotations,
+  getUser,
 };

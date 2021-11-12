@@ -29,3 +29,13 @@ content-type : application/json
          { "key": "hate", "value": "0" }
     ]
 }
+
+###
+
+POST http://localhost:3000/login
+content-type : application/json
+
+{
+    "username":"annotator_a",
+    "password" : "pw_ann_a"
+} 

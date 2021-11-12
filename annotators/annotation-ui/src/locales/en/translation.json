@@ -1,6 +1,8 @@
 {
   "Welcome": "Welcome",
-  "Tattle Annotator": "Tattle Annotator",
+  "app_name": "Annotator",
+  "username": "Username",
+  "password": "Password",
   "post_annotation": "Post Annotation",
   "annotation_form_ogbv": "Is this post OGBV ?",
   "annotation_form_explicit": "Is this post explicit",
