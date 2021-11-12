@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { graphql } from "gatsby";
 import { Annotator } from "../controller/annotator";
 import {
   Grommet,
@@ -16,6 +17,7 @@ import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious } from "grommet-icons";
 import ReactRadioButtonGroup from "react-radio-button-group";
 import { SimplePost } from "../components/atoms/SimplePost";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 
 const annotator = new Annotator(
   { id: "f32fbcfe-2351-4264-bafe-040274f469db" },
@@ -23,6 +25,7 @@ const annotator = new Annotator(
 );
 
 export default function PostAnnotator() {
+  const { t } = useTranslation();
   const [debugMessage, setDebugMessage] = useState({});
   const [annotations, setAnnotations] = useState({});
   const [pageStatus, setPageStatus] = useState("");
@@ -82,7 +85,7 @@ export default function PostAnnotator() {
             <Box width={"520px"} direction={"column"} gap={"large"}>
               <Box flex={"grow"} gap={"medium"} pad={"medium"}>
                 <Box direction={"row"} align={"center"} gap={"medium"}>
-                  <Text size={"large"}>Post Annotation</Text>
+                  <Text size={"large"}>{t("post_annotation")}</Text>
                   <Box direction={"row"} gap={"xsmall"}>
                     <Button
                       default
@@ -101,37 +104,37 @@ export default function PostAnnotator() {
                 )}
                 <Box>
                   <Box direction={"row"} gap={"large"}>
-                    <Text> Is this post OGBV</Text>
+                    <Text> {t("annotation_form_ogbv")}</Text>
 
                     <ReactRadioButtonGroup
                       name="ogbv"
                       options={[
-                        { label: "yes", value: "1" },
-                        { label: "no", value: "0" },
+                        { label: t("yes"), value: "1" },
+                        { label: t("no"), value: "0" },
                       ]}
                       value={annotations.ogbv}
                       onChange={(val) => changeAnnotation("ogbv", val)}
                     />
                   </Box>
                   <Box direction={"row"} gap={"large"}>
-                    <Text> Is this post explicit</Text>
+                    <Text> {t("annotation_form_explicit")}</Text>
                     <ReactRadioButtonGroup
                       name="explicit"
                       options={[
-                        { label: "yes", value: "1" },
-                        { label: "no", value: "0" },
+                        { label: t("yes"), value: "1" },
+                        { label: t("no"), value: "0" },
                       ]}
                       value={annotations.explicit}
                       onChange={(val) => changeAnnotation("explicit", val)}
                     />
                   </Box>
                   <Box direction={"row"} gap={"large"}>
-                    <Text> Is this post Hateful</Text>
+                    <Text> {t("annotation_form_hateful")}</Text>
                     <ReactRadioButtonGroup
                       name="hate"
                       options={[
-                        { label: "yes", value: "1" },
-                        { label: "no", value: "0" },
+                        { label: t("yes"), value: "1" },
+                        { label: t("no"), value: "0" },
                       ]}
                       value={annotations.hate}
                       onChange={(val) => changeAnnotation("hate", val)}
@@ -147,7 +150,7 @@ export default function PostAnnotator() {
                 background={"visuals-1"}
                 pad={"medium"}
               >
-                <Text>Annotator </Text>
+                <Text>{pageStatus}</Text>
                 <ReactJson collapsed={true} src={debugMessage} />
               </Box>
             </Box>

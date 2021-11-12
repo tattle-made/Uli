@@ -1,4 +1,10 @@
 {
   "Welcome": "स्वागत",
-  "Tattle Annotator": "टैटल एनोटेटर"
+  "Tattle Annotator": "टैटल एनोटेटर",
+  "post_annotation": "पोस्ट एनोटेशन",
+  "annotation_form_ogbv": "क्या यह पोस्ट ओजीबीवी है ?",
+  "annotation_form_explicit": "क्या यह पोस्ट स्पष्ट है ?",
+  "annotation_form_hateful": "क्या यह पोस्ट घृणित है ?",
+  "yes": "हां",
+  "no": "नहीं"
 }

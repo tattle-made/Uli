@@ -1,4 +1,10 @@
 {
   "Welcome": "வரவேற்பு",
-  "Tattle Annotator": "தட்டல் சிறுகுறிப்பு"
+  "Tattle Annotator": "தட்டல் சிறுகுறிப்பு",
+  "post_annotation": "சிறுகுறிப்பு இடுகை",
+  "annotation_form_ogbv": "இந்த இடுகை OGBVதானா? ?",
+  "annotation_form_explicit": "இந்த இடுகை வெளிப்படையானதா ?",
+  "annotation_form_hateful": "இந்த இடுகை வெறுக்கத்தக்கதா ?",
+  "yes": "ஆம்",
+  "no": "இல்லை"
 }

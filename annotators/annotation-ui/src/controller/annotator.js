@@ -57,8 +57,8 @@ class Annotator {
 
     this.currentAnnotations = annotations;
 
-    const pageStatus = `${
-      this.pageSize * this.session.pageNum + this.session.postIndex
+    const pageStatus = `Position : ${
+      this.pageSize * this.session.pageNum + this.session.postIndex + 1
     }/${this.postCount}`;
 
     const post = this.allocations[this.session.postIndex].Post;

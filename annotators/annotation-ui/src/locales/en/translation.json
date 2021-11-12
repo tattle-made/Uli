@@ -1,4 +1,10 @@
 {
   "Welcome": "Welcome",
-  "Tattle Annotator": "Tattle Annotator"
+  "Tattle Annotator": "Tattle Annotator",
+  "post_annotation": "Post Annotation",
+  "annotation_form_ogbv": "Is this post OGBV ?",
+  "annotation_form_explicit": "Is this post explicit",
+  "annotation_form_hateful": "Is this post Hateful",
+  "yes": "yes",
+  "no": "no"
 }
