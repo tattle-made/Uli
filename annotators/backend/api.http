@@ -39,3 +39,11 @@ content-type : application/json
     "username":"annotator_a",
     "password" : "pw_ann_a"
 } 
+
+###
+
+GET http://localhost:3000/dashboard
+
+###
+
+GET http://localhost:3000/annotations/type/csv

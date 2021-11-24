@@ -34,13 +34,13 @@
     "grommet": "^2.18.0",
     "grommet-icons": "^4.6.2",
     "i18next": "^21.4.0",
+    "js-file-download": "^0.4.12",
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.13.0",
-    "react-json-view": "^1.21.3",
     "react-radio-button-group": "^1.2.8",
     "styled-components": "^5.3.3"
   }

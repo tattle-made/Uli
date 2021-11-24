@@ -3,38 +3,38 @@ import { config } from "../components/config";
 import ls from "local-storage";
 
 async function getUser(username, password) {
-  return axios.post(`${config.api_endpoint}/login`, {
-    username,
-    password,
-  });
+	return axios.post(`${config.api_endpoint}/login`, {
+		username,
+		password,
+	});
 }
 
 async function saveUserinLS(user) {
-  ls("user", user);
+	ls("user", user);
 }
 
 async function savePreferenceinLS(pref) {
-  ls("preference", pref);
+	ls("preference", pref);
 }
 
 async function isLoggedIn() {
-  console.log(ls("user"));
-  return ls("user") == null || ls("user") == undefined ? false : true;
+	// console.log(ls("user"));
+	return ls("user") == null || ls("user") == undefined ? false : true;
 }
 
 async function getUserFromLS() {
-  return ls("user");
+	return ls("user");
 }
 
 async function logoutUser() {
-  return ls.set("user", null);
+	return ls.set("user", null);
 }
 
 export {
-  getUser,
-  saveUserinLS,
-  savePreferenceinLS,
-  isLoggedIn,
-  getUserFromLS,
-  logoutUser,
+	getUser,
+	saveUserinLS,
+	savePreferenceinLS,
+	isLoggedIn,
+	getUserFromLS,
+	logoutUser,
 };

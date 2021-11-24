@@ -65,6 +65,9 @@ export default function PostAnnotator() {
 		const data = await annotator.makePageData(annotator.session.postId);
 		if (data != undefined) {
 			const { annotations, pageStatus, post } = data;
+			console.log("----");
+			console.log(annotations);
+			console.log("----");
 			setAnnotations(annotations);
 			setPageStatus(pageStatus);
 			setDebugMessage(annotator.state);
@@ -277,7 +280,11 @@ export default function PostAnnotator() {
 									</Box>
 									<TextArea
 										placeholder="Additional notes"
-										value={annotations.notes}
+										value={
+											annotations.notes
+												? annotations.notes
+												: ""
+										}
 										onChange={(event) =>
 											setAnnotations({
 												...annotations,
