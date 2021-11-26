@@ -1,12 +1,17 @@
 {
-  "Welcome": "வரவேற்பு",
-  "app_name": "சிறுகுறிப்பு",
-  "username": "பயனர் பெயர்",
-  "password": "கடவுச்சொல்",
-  "post_annotation": "சிறுகுறிப்பு இடுகை",
-  "annotation_form_ogbv": "இந்த இடுகை OGBVதானா? ?",
-  "annotation_form_explicit": "இந்த இடுகை வெளிப்படையானதா ?",
-  "annotation_form_hateful": "இந்த இடுகை வெறுக்கத்தக்கதா ?",
-  "yes": "ஆம்",
-  "no": "இல்லை"
+	"Welcome": "வரவேற்பு",
+	"app_name": "சிறுகுறிப்பு",
+	"username": "பயனர் பெயர்",
+	"password": "கடவுச்சொல்",
+	"post_annotation": "சிறுகுறிப்பு இடுகை",
+	"annotation_form_ogbv": "இந்த இடுகை OGBVதானா? ?",
+	"annotation_form_explicit": "இந்த இடுகை வெளிப்படையானதா ?",
+	"annotation_form_hateful": "இந்த இடுகை வெறுக்கத்தக்கதா ?",
+	"annotation_form_dimensions": "இந்த இடுகையின் அனைத்து தொடர்புடைய பரிமாணங்களையும் தேர்ந்தெடுக்கவும் :",
+	"af_dim_1": "பாலியல்",
+	"af_dim_2": "மதம்",
+	"af_dim_3": "சாதி",
+	"af_dim_4": "மேலே எதுவும் இல்லை",
+	"yes": "ஆம்",
+	"no": "இல்லை"
 }

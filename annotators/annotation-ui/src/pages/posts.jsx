@@ -21,7 +21,7 @@ import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious } from "grommet-icons";
 import ReactRadioButtonGroup from "react-radio-button-group";
 import { SimplePost } from "../components/atoms/SimplePost";
-import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import { getUserFromLS, isLoggedIn, logoutUser } from "../repository/user";
 
 var annotator;
@@ -32,6 +32,7 @@ var annotator;
 
 export default function PostAnnotator() {
 	const { t } = useTranslation();
+	const { languages, changeLanguage } = useI18next();
 	const [debugMessage, setDebugMessage] = useState({});
 	const [notification, setNotification] = useState(undefined);
 	const [annotations, setAnnotations] = useState({});
@@ -42,6 +43,9 @@ export default function PostAnnotator() {
 		async function setupAnnotator() {
 			if (await isLoggedIn()) {
 				const user = await getUserFromLS();
+				const lang = user.lang;
+				console.log({ lang });
+				changeLanguage(lang);
 				annotator = new Annotator({ id: user.id }, undefined);
 				await annotator.setup();
 				await refresh();

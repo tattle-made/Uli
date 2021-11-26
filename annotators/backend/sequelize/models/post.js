@@ -22,8 +22,12 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.UUID,
 				defaultValue: DataTypes.UUIDV4,
 			},
-			role: DataTypes.ENUM("text", "image"),
+			role: DataTypes.ENUM("text", "image", "gif", "video"),
 			text: DataTypes.STRING,
+			lang: {
+				type: DataTypes.STRING,
+				defaultValue: "en",
+			},
 			urls: DataTypes.STRING,
 			photos: DataTypes.STRING,
 		},

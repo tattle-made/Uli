@@ -1,12 +1,17 @@
 {
-  "Welcome": "स्वागत",
-  "app_name": "एनोटेटर",
-  "username": "उपयोगकर्ता नाम",
-  "password": "पासवर्ड",
-  "post_annotation": "पोस्ट एनोटेशन",
-  "annotation_form_ogbv": "क्या यह पोस्ट ओजीबीवी है ?",
-  "annotation_form_explicit": "क्या यह पोस्ट स्पष्ट है ?",
-  "annotation_form_hateful": "क्या यह पोस्ट घृणित है ?",
-  "yes": "हां",
-  "no": "नहीं"
+	"Welcome": "हाई ! अभिवादन",
+	"app_name": "एनोटेटर",
+	"username": "यूज़र का नाम",
+	"password": "पासवर्ड",
+	"post_annotation": "पोस्ट व्याख्या",
+	"annotation_form_ogbv": "क्या इस पोस्ट में लैंगिक/ यौनिक शोषण है?",
+	"annotation_form_explicit": "क्या इस पोस्ट में स्पष्ट आपत्तिजनक भाषा है?",
+	"annotation_form_hateful": "क्या इस पोस्ट से किसी को खतरा है?",
+	"annotation_form_dimensions": "कृपया इस पोस्ट के सभी उचित पहलुओं का चयन करें:",
+	"af_dim_1": "लैंगिकता",
+	"af_dim_2": "धर्म",
+	"af_dim_3": "जाति",
+	"af_dim_4": "इनमे से कोई भी नहीं",
+	"yes": "हां",
+	"no": "नहीं"
 }
