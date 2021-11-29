@@ -20,6 +20,7 @@ from uuid import uuid4
 from PIL import Image
 from io import BytesIO
 from db_config import twitter_db_config
+import datetime
 
 FOLDER = Path('./data/twitter/')
 
@@ -49,8 +50,19 @@ def initialize_s3():
                           aws_secret_access_key= aws_secret_access_key)
 
     #print(list(s3_resource.buckets.all()))
-    #ogbv_bucket = s3_resource.Bucket(aws_bucket) #Find the list of files stored in the given bucket
+    
     #print(ogbv_bucket.objects.all())
+    
+
+    #ogbv_bucket = s3_resource.Bucket(aws_bucket) #Find the list of files stored in the given bucket
+    # Delete all files
+    #ogbv_bucket.objects.delete()
+    
+
+    # List of files
+    # allfiles = ogbv_bucket.objects.all()
+    # for file in allfiles:
+    #     print(file.key)
 
     return aws_username, aws_bucket, s3_client, s3_resource
 
@@ -71,14 +83,19 @@ def upload_to_s3(s3,file,filename,bucket,content_type):
     """
 
     # Implement Error Handling
-    with open(file,"rb") as data:
-        s3.upload_fileobj(Fileobj = data,
-                          Bucket = bucket,
-                          Key = filename,
-                          ExtraArgs = {'ContentType':content_type,
-                                       'ACL':'public-read'})
+    try:
 
-        print(f"{file} successfully uploaded to s3")
+        with open(file,"rb") as data:
+            s3.upload_fileobj(Fileobj = data,
+                            Bucket = bucket,
+                            Key = filename,
+                            ExtraArgs = {'ContentType':content_type,
+                                        'ACL':'public-read'})
+
+            print(f"{file} successfully uploaded to s3")
+
+    except Exception as exc:
+        print(f'{exc}')
 
 def get_s3_url(s3_client,aws_bucket,image_url):
 
@@ -112,14 +129,22 @@ def get_s3_url(s3_client,aws_bucket,image_url):
 
             # download the image from the url and store locally
             r = requests.get(image_url[0],headers=headers)
-            image = Image.open(BytesIO(r.content))
+            try:
+
+                image = Image.open(BytesIO(r.content))
+            except Exception as esc:
+                print(f'Error : {esc}')
 
             images_path = FOLDER/'images'
 
             if not images_path.exists():
                 os.makedirs(images_path)
 
-            image.save(images_path/filename)
+            try:
+                image.save(images_path/filename)
+            except Exception as esc:
+                print(f'Error : {esc}')
+
             print("Image saved on local disk....")
 
             upload_to_s3(s3_client,images_path/filename,key,aws_bucket,'image')
@@ -159,7 +184,17 @@ def initialize_mongo(data_config):
 
     # count the no of post in the collection
     count_docs(coll)
+    
+    #coll.update_many({},{"$unset": {"retweet": ""}})
+    #coll.delete_many({})
 
+    #cursor = coll.find({})
+    # print("cursor")
+    # print(cursor)
+    # for document in cursor:
+    #     print("krey") 
+    #     print(document.keys())  # print all fields of this document. 
+    
     return coll
 
 def upload_to_mongo(data,coll):
@@ -178,6 +213,22 @@ def upload_to_mongo(data,coll):
 
     if coll.find_one(query):
         print("Tweet already exists on Mongodb")
+
+        # coll.update_one(
+        #     query,
+        #     {
+        #         query,
+        #         ({"_id": b["_id"]}, {"$set": {"geolocCountry": myGeolocCountry}})
+
+        #     }
+        # )
+
+        # coll.update_one(query,
+        # {"$set": {"report",data['repost']}}
+        # )
+
+        # print("Added repost field")
+
     else:
         coll.insert_one(data)
 
@@ -185,10 +236,16 @@ from datetime import date, timedelta
 
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
-        yield end_date - timedelta(n)
+        yield start_date + timedelta(n)
 
+# start_date = date(2020, 10, 2)
+# end_date = date(2020, 10, 5)
+# for single_date in daterange(start_date, end_date):
+#     until = single_date.strftime("%Y-%m-%d")
+#     print(type(until))
+#     print(single_date.strftime("%Y-%m-%d"))
 
-def scraper_util(hashtag,handle,keyword,limit,until):
+def scraper_util(hashtag,handle,keyword,limit):
 
     """
     Scraper utility func;contains all the configurations reqd for scraping
@@ -203,15 +260,27 @@ def scraper_util(hashtag,handle,keyword,limit,until):
 
 
     timestr = time.strftime("%Y%m%d%H%M%S")
+
     c = twint.Config()
     c.Limit = limit
     if not limit:
         c.Limit = 100
     
+    #c.Format = "ID {id}"
     c.Store_json = True
     c.Hide_output = True
-
-    c.Until = until
+    #c.Since = "2021-01-01"
+    #c.Until = "2021-10-20"
+    #c.Until = "2020-12-30"
+    #c.Until = "2020-12-24"
+    #c.Until = "2020-12-21"
+    #c.Until = "2020-12-17"
+    #c.Until = "2020-12-11"
+    #c.Until  = "2020-12-06"
+    #c.Until = "2020-12-02"
+    #c.Since = "2020-11-25"
+    #c.Until = "2020-10-07"
+    c.Until = "2020-09-23"
     print("c.until")
     print(c.Until)
 
@@ -238,7 +307,7 @@ def scraper_util(hashtag,handle,keyword,limit,until):
     
     twint_util = twint.run.Search(c)
 
-def run_scraper(hashtags,handles,keywords,limit,until):
+def run_scraper(hashtags,handles,keywords,limit):
 
     """
     Scraper function to scrape tweets based on hastags,handles,keywords
@@ -255,17 +324,36 @@ def run_scraper(hashtags,handles,keywords,limit,until):
             scraper_util(hashtag,handles,keywords,limit)
 
     elif handles:
-        #if os.getcwd() != FOLDER/'handles':
-        #    change_folder(FOLDER/'handles')
-
+        #change_folder(FOLDER/'handles')
         handles = handles.split(',')
         for handle in handles:
-            scraper_util(hashtags,handle,keywords,limit,until)
+            scraper_util(hashtags,handle,keywords,limit)
         
     elif keywords:
-        change_folder(FOLDER/'keywords')
+        #change_folder(FOLDER/'keywords')
         for keyword in keywords:
             scraper_util(hashtags,handles,keyword,limit)
+
+def find_content_type(thumbnail_link):
+
+    if thumbnail_link:
+        content = thumbnail_link.split('/')[3]
+
+        if content == "media":
+            content_type = "image"
+
+        elif content == "tweet_video_thumb":
+            content_type = "gif"
+        
+        elif content == "ext_tw_video_thumb" or "amplify_video_thumb":
+            content_type = "video"
+        
+        print(content)
+
+    else:
+        content_type = "text"
+
+    return content_type
 
 def change_folder(FOLDER):
 
@@ -312,39 +400,33 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    month_dict = {"January":(1,30),"February":(1,28),"March":(1,31),"April":(1,30)}
-    month1_dict = {"May":(1,31),"June":(1,30),"July":(1,31),"August":(1,31),"September":(1,30),"October":(1,31),"November":(1,30),"December":(1,31)}
+    start_date = date(2020, 9, 1)
+    end_date = date(2020, 9, 30)
 
-    
-    # 2019 tweets
-    for idx,month in enumerate(month1_dict.values()):
-        #print(month[0])
-        start_date = date(2019,idx+5,month[0])
-        end_date = date(2019,idx+5,month[1])
-    
-    #start_date = date(2020, 1, 1)
-    #end_date = date(2020, 1, 30)
-
-        for single_date in daterange(start_date, end_date):
-            until = single_date.strftime("%Y-%m-%d")
-            print(until)
-            time.sleep(1)
-            run_scraper(args.hashtags,args.handles,args.keywords,args.max,until)
-
+    # for single_date in daterange(start_date, end_date):
+    #     until = single_date.strftime("%Y-%m-%d")
+    #     print(until)
+    #     time.sleep(1)
+    #run_scraper(args.hashtags,args.handles,args.keywords,args.max)
+    #run_scraper(args.hashtags,args.handles,args.keywords)
 
     aws_username,aws_bucket,s3_client,s3_resource = initialize_s3()
 
     coll = initialize_mongo(twitter_db_config)
 
     count_docs(coll)
+
+    # #json_file = 'data/twitter/hashtags/20211021194333RheaChakraborty.json'
+
     PATH = os.getcwd()
     print(PATH)
 
-    json_files = glob.glob(PATH + "/data/twitter/handles/sansbarrier/v2/*.json",recursive=False)
+    json_files = glob.glob(PATH + "/sansbarrier2020" + "/*.json",recursive=False)
     
     for json_file in json_files:
+        print(json_file)
+        #break
         
-
         print(f'Uploading the posts from {json_file} file')
 
         with open(json_file,'r') as f:
@@ -361,8 +443,8 @@ if __name__ == "__main__":
                 mongo_dict = {}
                 post_dict  = json.loads(post)
                 
-            #if post_dict['photos']:
-
+                #if post_dict['photos']:
+                
                 mongo_dict['tweet_id'] = post_dict['id']
                 mongo_dict['tweet'] = post_dict['tweet']
                 mongo_dict['image_url'] = post_dict['photos']
@@ -370,12 +452,17 @@ if __name__ == "__main__":
                 mongo_dict['tweet_url'] = post_dict['link']
                 mongo_dict['user_id'] = post_dict['user_id']
                 mongo_dict['timestamp_of_creation'] = post_dict['created_at']
+                mongo_dict['language'] = post_dict['language']
+                mongo_dict['reply'] = 1 if post_dict['reply_to'] else 0
+                mongo_dict['repost'] = 1 if post_dict['retweet'] else 0  
+                mongo_dict['timestamp_of_scraping'] = time.strftime("%Y%m%d%H%M%S")
                 mongo_dict['type'] = 'handle'
                 mongo_dict['search'] = 'sansbarrier'
+                mongo_dict['content_type'] = find_content_type(post_dict['thumbnail'])
                 print(mongo_dict)
                 
                 upload_to_mongo(mongo_dict,coll)
                 
-            #    break
-                
             count_docs(coll)
+        
+        
