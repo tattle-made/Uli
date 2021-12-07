@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.UUID,
 				defaultValue: DataTypes.UUIDV4,
 			},
+			e_twitter_id: DataTypes.STRING,
 			role: DataTypes.ENUM("text", "image", "gif", "video"),
 			text: DataTypes.STRING,
 			lang: {

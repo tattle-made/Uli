@@ -35,6 +35,7 @@
     "grommet-icons": "^4.6.2",
     "i18next": "^21.4.0",
     "js-file-download": "^0.4.12",
+    "local-storage": "^2.0.0",
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.4",
     "react": "^17.0.1",

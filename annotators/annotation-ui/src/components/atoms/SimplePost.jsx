@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Text, Image, Anchor } from "grommet";
+import { Box, Text, Image, Anchor, Video } from "grommet";
 import { Clock, Alert, Checkmark } from "grommet-icons";
 
 export function SimplePost({ post, annotationStatus }) {
@@ -9,6 +9,7 @@ export function SimplePost({ post, annotationStatus }) {
 			.split(",")
 			.map((photo) => photo.slice(1, photo.length - 1)),
 		urls: post.urls.split(",").map((url) => url.slice(1, url.length - 1)),
+		role: post.role,
 	};
 
 	return (
@@ -22,6 +23,7 @@ export function SimplePost({ post, annotationStatus }) {
 			pad="medium"
 			gap={"xsmall"}
 			height={"medium"}
+			overflow="scroll"
 		>
 			<Box direction={"row"} gap={"small"} align={"center"}>
 				<Text color={"dark-4"}>{post.id}</Text>
@@ -55,8 +57,8 @@ export function SimplePost({ post, annotationStatus }) {
 			</div>
 			{transformedPost.photos ? (
 				<Box
-					height={"fit-content"}
-					width={"fit-content"}
+					height={"small"}
+					width={"small"}
 					direction={"row-responsive"}
 				>
 					{transformedPost.photos.map((photo, ix) => (
@@ -68,12 +70,37 @@ export function SimplePost({ post, annotationStatus }) {
 							>
 								<Image
 									key={ix}
-									fit={"contain"}
+									fit={"cover"}
 									alignSelf={"start"}
 									src={photo}
 								/>
 							</Box>
 						</Anchor>
+					))}
+				</Box>
+			) : null}
+			{transformedPost.role === "gif" && transformedPost.photos ? (
+				<Box
+					height={"small"}
+					width={"small"}
+					direction={"row-responsive"}
+				>
+					{transformedPost.photos.map((photo, ix) => (
+						<Box height={"large"} width={"large"}>
+							<Video
+								controls="over"
+								fit="contain"
+								controls={true}
+								loop={true}
+								autoPlay={true}
+							>
+								<source
+									key="video"
+									src={photo}
+									type="video/mp4"
+								/>
+							</Video>
+						</Box>
 					))}
 				</Box>
 			) : null}

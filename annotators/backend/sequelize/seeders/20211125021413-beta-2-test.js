@@ -6,7 +6,7 @@ const data_en = require("./posts_beta_2_english_100.json");
 const data_ta = require("./posts_beta_2_tamil_30.json");
 
 const time_of_run = new Date();
-// const time_of_run = new Date("2021-11-26T03:07:14.977Z");
+// const time_of_run = new Date("2021-11-26T04:10:43.073Z");
 console.log(time_of_run);
 
 module.exports = {
@@ -35,6 +35,7 @@ module.exports = {
 		console.log({ brinda_ta });
 
 		for (var i = 0; i < data_en.posts.length; i++) {
+			const post = data_en.posts[i];
 			await queryInterface.bulkInsert("Posts", [
 				{
 					id: uuidv4(),
@@ -42,7 +43,7 @@ module.exports = {
 					role: data_en.posts[i].content_type,
 					text: data_en.posts[i].tweet,
 					urls: "",
-					photos: data_en.posts[i].image_url,
+					photos: post.image_url.slice(1, post.image_url.length - 1),
 					createdAt: time_of_run,
 					updatedAt: time_of_run,
 				},
@@ -50,6 +51,7 @@ module.exports = {
 		}
 
 		for (var i = 0; i < data_ta.posts.length; i++) {
+			const post = data_ta.posts[i];
 			await queryInterface.bulkInsert("Posts", [
 				{
 					id: uuidv4(),
@@ -57,7 +59,7 @@ module.exports = {
 					role: data_ta.posts[i].content_type,
 					text: data_ta.posts[i].tweet,
 					urls: "",
-					photos: data_ta.posts[i].image_url,
+					photos: post.image_url.slice(1, post.image_url.length - 1),
 					createdAt: time_of_run,
 					updatedAt: time_of_run,
 				},
@@ -100,7 +102,7 @@ module.exports = {
 				{
 					id: uuidv4(),
 					userId: brinda_ta.id,
-					postId: postIDs[i].id,
+					postId: tamilPostIDs[i].id,
 					status: "pending",
 					createdAt: time_of_run,
 					updatedAt: time_of_run,

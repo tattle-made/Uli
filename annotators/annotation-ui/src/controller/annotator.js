@@ -162,6 +162,7 @@ class Annotator {
 	async sync() {}
 
 	getFormStatus(annotations) {
+		return true;
 		const { explicit, hate, dimension, ogbv } = annotations;
 		if ((explicit && hate && dimension && ogbv) != undefined) {
 			if (
