@@ -33,6 +33,7 @@ const {
 	getUser,
 	getDashboard,
 	getAnnotations,
+	getDashboardforUser,
 } = require("./test");
 
 // app.get("/", (req, res) => {
@@ -100,6 +101,12 @@ app.get("/api/posts", async (req, res) => {
 
 app.get("/api/dashboard", async (req, res) => {
 	const status = await getDashboard();
+	res.send({ status });
+});
+
+app.get("/api/dashboard/for-user", async (req, res) => {
+	const { userId } = req.query;
+	const status = await getDashboardforUser(userId);
 	res.send({ status });
 });
 

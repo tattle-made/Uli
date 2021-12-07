@@ -30,6 +30,14 @@ async function logoutUser() {
 	return ls.set("user", null);
 }
 
+async function getUserStatus(userId) {
+	const { data } = await axios.get(
+		`${config.api_endpoint}/dashboard/for-user?userId=${userId}`
+	);
+	const { status } = data;
+	return { status };
+}
+
 export {
 	getUser,
 	saveUserinLS,
@@ -37,4 +45,5 @@ export {
 	isLoggedIn,
 	getUserFromLS,
 	logoutUser,
+	getUserStatus,
 };

@@ -278,6 +278,18 @@ async function getDashboard() {
 	return status;
 }
 
+async function getDashboardforUser(userId) {
+	const [results, metadaa] = await sequelize.query(
+		`SELECT COUNT(*) as count, status, userId from UserPostAllocations WHERE userId="${userId}" GROUP BY status, userId`
+	);
+
+	const pendingResult = results.filter(
+		(result) => result.status === "pending"
+	)[0];
+
+	return { pending: pendingResult.count };
+}
+
 async function getAnnotations() {
 	const result = await Annotation.findAll({});
 	const plainAnnotations = result.map((row) => row.get({ plain: true }));
@@ -347,5 +359,6 @@ module.exports = {
 	addAnnotations,
 	getUser,
 	getDashboard,
+	getDashboardforUser,
 	getAnnotations,
 };

@@ -37,6 +37,7 @@ export default function PostAnnotator() {
 	const [notification, setNotification] = useState(undefined);
 	const [annotations, setAnnotations] = useState({});
 	const [pageStatus, setPageStatus] = useState("");
+	const [userStatus, setUserStatus] = useState("");
 	const [post, setPost] = useState(undefined);
 
 	useEffect(() => {
@@ -68,14 +69,15 @@ export default function PostAnnotator() {
 	async function refresh() {
 		const data = await annotator.makePageData(annotator.session.postId);
 		if (data != undefined) {
-			const { annotations, pageStatus, post } = data;
-			console.log("----");
-			console.log(annotations);
-			console.log("----");
+			const { annotations, pageStatus, post, userStatus } = data;
+			// console.log("----");
+			// console.log(annotations);
+			// console.log("----");
 			setAnnotations(annotations);
 			setPageStatus(pageStatus);
 			setDebugMessage(annotator.state);
 			setPost(post);
+			setUserStatus(userStatus);
 		}
 	}
 
@@ -127,9 +129,21 @@ export default function PostAnnotator() {
 				onRight={goToNextPage}
 				onLeft={goToPreviousPage}
 			>
-				<Box fill gap={"small"}>
+				<Box fill gap={"small"} dir="column">
 					<Header pad={"small"}>
 						<TattleLogo brandName={t("app_name")} />
+						<Box flex>
+							<Box
+								width={"fit-content"}
+								round={"small"}
+								responsive
+								background={"visuals-3"}
+								pad={"small"}
+								align={"center"}
+							>
+								<Text>{`pending : ${userStatus.pending}`}</Text>
+							</Box>
+						</Box>
 						<Button plain label={"Logout"} onClick={logout} />
 					</Header>
 

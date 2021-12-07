@@ -7,6 +7,7 @@ import {
 import ls from "local-storage";
 import { saveAnnotations } from "../repository/annotation";
 import _ from "lodash";
+import { getUserStatus } from "../repository/user";
 
 const DEFAULT_SESSION_VALUE = {
 	postId: undefined, // for the post that was being annoted most recently
@@ -63,7 +64,10 @@ class Annotator {
 
 		const post = this.allocations[this.session.postIndex].Post;
 
-		return { annotations, pageStatus, post };
+		const { status: userStatus } = await getUserStatus(this.user.id);
+		console.log({ userStatus });
+
+		return { annotations, pageStatus, post, userStatus };
 	}
 
 	/**
