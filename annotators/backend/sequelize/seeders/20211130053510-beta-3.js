@@ -1,6 +1,5 @@
 "use strict";
 const { v4: uuidv4 } = require("uuid");
-const { Op } = require("Sequelize");
 const generatePassword = require("password-generator");
 const data = require("./posts_beta_3_en_tamil_130.json");
 
