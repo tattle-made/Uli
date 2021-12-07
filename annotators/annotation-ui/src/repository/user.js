@@ -17,6 +17,10 @@ async function savePreferenceinLS(pref) {
 	ls("preference", pref);
 }
 
+async function saveUserSessionInLS(session) {
+	ls("session", session);
+}
+
 async function isLoggedIn() {
 	// console.log(ls("user"));
 	return ls("user") == null || ls("user") == undefined ? false : true;
@@ -24,6 +28,10 @@ async function isLoggedIn() {
 
 async function getUserFromLS() {
 	return ls("user");
+}
+
+async function getUserSessionFromLS() {
+	return ls("session");
 }
 
 async function logoutUser() {
@@ -42,8 +50,10 @@ export {
 	getUser,
 	saveUserinLS,
 	savePreferenceinLS,
+	saveUserSessionInLS,
 	isLoggedIn,
 	getUserFromLS,
 	logoutUser,
 	getUserStatus,
+	getUserSessionFromLS,
 };

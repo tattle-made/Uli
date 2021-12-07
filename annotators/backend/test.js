@@ -3,6 +3,7 @@ const {
 	Post,
 	Annotation,
 	UserPostAllocation,
+	Session,
 	sequelize,
 } = require("./sequelize/models");
 const { Op } = require("sequelize");
@@ -166,10 +167,27 @@ async function getUser(username, password) {
 		attributes: {
 			exclude: ["password", "createdAt", "updatedAt"],
 		},
+		include: Session,
 	});
-	return count == 0
-		? { user: undefined, preference: undefined, session: undefined }
-		: { user: rows[0].get({ plain: true }), session: {}, preference: {} };
+	if (count == 0) {
+		return { user: undefined, preference: undefined, session: undefined };
+	} else {
+		const user = rows[0].get({ plain: true });
+		let session = user.Session;
+		delete user.Session;
+		if (session) {
+			delete session.id;
+			delete session.userId;
+			delete session.createdAt;
+			delete session.updatedAt;
+			delete session.UserId;
+		}
+		return {
+			user,
+			session,
+			preference: {},
+		};
+	}
 }
 
 async function addAnnotation(user, post, key, value) {
@@ -235,6 +253,28 @@ async function getPostWithAnnotation(postId) {
 			id: postId,
 		},
 		include: Annotation,
+	});
+}
+
+async function saveSession(userId, session) {
+	return Session.findOne({
+		where: {
+			userId,
+		},
+	}).then((obj) => {
+		// console.log(obj);
+		if (obj) {
+			return obj.update(session);
+		} else {
+			console.log({
+				userId,
+				...session,
+			});
+			return Session.create({
+				userId,
+				...session,
+			});
+		}
 	});
 }
 
@@ -368,4 +408,5 @@ module.exports = {
 	getDashboard,
 	getDashboardforUser,
 	getAnnotations,
+	saveSession,
 };

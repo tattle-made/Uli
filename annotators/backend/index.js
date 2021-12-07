@@ -34,6 +34,7 @@ const {
 	getDashboard,
 	getAnnotations,
 	getDashboardforUser,
+	saveSession,
 } = require("./test");
 
 // app.get("/", (req, res) => {
@@ -74,6 +75,15 @@ app.post("/api/annotations/", async (req, res) => {
 	const { userId, postId, annotations } = req.body;
 	await addAnnotations({ id: userId }, { id: postId }, annotations);
 	res.send({ message: "annotations added" });
+});
+
+app.post("/api/session", async (req, res) => {
+	const { userId } = req.query;
+	const session = req.body;
+	console.log("store session");
+	// console.log({ userId, ...session });
+	await saveSession(userId, session);
+	res.send({ msg: "done" });
 });
 
 app.get("/api/post/:postId", async (req, res) => {

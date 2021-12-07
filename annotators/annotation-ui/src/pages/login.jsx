@@ -18,6 +18,7 @@ import {
 	login,
 	saveUserInLocalStorage,
 	saveUserPreferenceInLocalStorage,
+	saveUserSessionInLocalStorage,
 } from "../controller/login";
 import { navigate } from "gatsby";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
@@ -44,6 +45,7 @@ const IndexPage = () => {
 				console.log({ user, session, preference });
 				await saveUserInLocalStorage(user);
 				await saveUserPreferenceInLocalStorage(preference);
+				await saveUserSessionInLocalStorage(session);
 				navigate(`/posts`);
 			}
 		} catch (err) {

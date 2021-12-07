@@ -8,6 +8,7 @@ import ls from "local-storage";
 import { saveAnnotations } from "../repository/annotation";
 import _ from "lodash";
 import { getUserStatus } from "../repository/user";
+import { saveSession } from "../repository/session";
 
 const DEFAULT_SESSION_VALUE = {
 	postId: undefined, // for the post that was being annoted most recently
@@ -158,6 +159,10 @@ class Annotator {
 				annotations
 			);
 		}
+	}
+
+	async saveSession() {
+		return saveSession(this.user.id, this.session);
 	}
 
 	/**

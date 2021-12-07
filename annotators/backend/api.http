@@ -32,12 +32,12 @@ content-type : application/json
 
 ###
 
-POST http://localhost:3000/login
+POST http://localhost:3000/api/login
 content-type : application/json
 
 {
-    "username":"annotator_a",
-    "password" : "pw_ann_a"
+    "username":"denny",
+    "password" : "dolusiqipu"
 } 
 
 ###
@@ -47,3 +47,16 @@ GET http://localhost:3000/dashboard
 ###
 
 GET http://localhost:3000/annotations/type/csv
+
+###
+
+// STORE SESSION
+
+POST http://localhost:3000/api/session?userId=7487ca50-9237-42cf-8bbf-8227b64047f1
+content-type : application/json
+
+{
+    "postId": "fccac0d0-4875-4baf-b296-65d00588d61e",
+    "postIndex": 5,
+    "pageNum": 0
+}

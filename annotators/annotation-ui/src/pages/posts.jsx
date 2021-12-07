@@ -22,7 +22,12 @@ import { LinkNext, LinkPrevious } from "grommet-icons";
 import ReactRadioButtonGroup from "react-radio-button-group";
 import { SimplePost } from "../components/atoms/SimplePost";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
-import { getUserFromLS, isLoggedIn, logoutUser } from "../repository/user";
+import {
+	getUserFromLS,
+	getUserSessionFromLS,
+	isLoggedIn,
+	logoutUser,
+} from "../repository/user";
 
 var annotator;
 
@@ -44,10 +49,13 @@ export default function PostAnnotator() {
 		async function setupAnnotator() {
 			if (await isLoggedIn()) {
 				const user = await getUserFromLS();
+				let session = await getUserSessionFromLS();
+				session = session ? session : undefined;
+				console.log({ SESSION: session });
 				const lang = user.lang;
 				console.log({ lang });
 				changeLanguage(lang);
-				annotator = new Annotator({ id: user.id }, undefined);
+				annotator = new Annotator({ id: user.id }, session);
 				await annotator.setup();
 				await refresh();
 			} else {
@@ -97,6 +105,7 @@ export default function PostAnnotator() {
 			showNotification("info", "Form Saved");
 			await annotator.next();
 			await refresh();
+			await annotator.saveSession();
 		} else {
 			showNotification("error", "Form is incomplete");
 		}
@@ -108,6 +117,7 @@ export default function PostAnnotator() {
 			showNotification("info", "Form Saved");
 			await annotator.previous();
 			await refresh();
+			await annotator.saveSession();
 		} else {
 			showNotification("error", "Form is incomplete");
 		}
@@ -144,6 +154,10 @@ export default function PostAnnotator() {
 								<Text>{`pending : ${userStatus.pending}`}</Text>
 							</Box>
 						</Box>
+						{/* <Button
+							label={"state"}
+							onClick={() => console.log(annotator.state)}
+						/> */}
 						<Button plain label={"Logout"} onClick={logout} />
 					</Header>
 
@@ -168,7 +182,6 @@ export default function PostAnnotator() {
 										width={"fit-content"}
 										round={"small"}
 										responsive
-										background={"visuals-1"}
 										pad={"small"}
 										alignSelf={"start"}
 									>
