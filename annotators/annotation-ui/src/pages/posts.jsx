@@ -279,6 +279,7 @@ export default function PostAnnotator() {
 												t("af_dim_1"),
 												t("af_dim_2"),
 												t("af_dim_3"),
+												t("af_dim_4"),
 											]}
 											value={
 												annotations &&
