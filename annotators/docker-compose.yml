@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  db:
+    image: "mysql"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pw
+      MYSQL_USER: tattle
+      MYSQL_DATABASE: ogbv_annotator_local
+      MYSQL_PASSWORD: tattle_pw
+    ports:
+      - 3306:3306
+    volumes:
+      - "~/data/ogbv_annotators/db:/var/lib/mysql"
+  db_gui:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
