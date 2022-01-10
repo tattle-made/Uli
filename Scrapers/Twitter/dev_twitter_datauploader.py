@@ -304,10 +304,6 @@ if __name__ == "__main__":
     #json_files = glob.glob(PATH + "/data/twitter/keyw0rds/2021_kumarikumari333" + "/*.json",recursive=False)
     #json_files = glob.glob(PATH + "/data/twitter/handles/2021_aartichabria" + "/*.json",recursive=False)
     #json_files = glob.glob(PATH + "/data/twitter/replies/**/" + "/*.json",recursive=False)
-    
-    """
-    update the json_files acc to the folder to be uploaded
-    """
     json_files = glob.glob(PATH + "/data/twitter/replies_influencers" + "/*.json",recursive=False)
 
     for json_file in tqdm((json_files)):
@@ -389,12 +385,10 @@ if __name__ == "__main__":
                     mongo_dict['trans_src'] = post_dict['trans_src']
                     mongo_dict['trans_dest'] = post_dict['trans_dest']
                     
-                   
-                    #mongo_dict['type'] = 'hashtag'
-                    #mongo_dict['type'] = 'keyword'
-                    """
-                    update mongo_dict['type] based on the type of the data uploaded
-                    """
+                    # #update
+                    # #mongo_dict['type'] = 'hashtag'
+                    # #mongo_dict['type'] = 'keyword'
+
                     mongo_dict['type'] = 'reply'
                     mongo_dict['search'] = json_file.split('/')[-1][10:-5]
                     
