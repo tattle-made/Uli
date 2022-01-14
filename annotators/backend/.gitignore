@@ -1,5 +1,3 @@
-# dependencies
-# putting ** in front means it will look for all subdirectories & ignore them
-**node_modules
+node_modules
 .env
 public

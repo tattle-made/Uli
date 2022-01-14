@@ -4,7 +4,6 @@ module.exports = {
 		password: "tattle_pw",
 		database: "ogbv_annotator_local",
 		host: "127.0.0.1",
-		port: 3306, /* default port for mysql is 3306, update it if you are using another port */
 		dialect: "mysql",
 	},
 	test: {
