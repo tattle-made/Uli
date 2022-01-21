@@ -6,12 +6,12 @@ const results = [];
 
 // console.log(data.posts[0]);
 (async function process() {
-	fs.createReadStream("posts_beta_5_en.csv")
+	fs.createReadStream("posts_beta_7.csv")
 		.pipe(csv())
 		.on("data", (data) => results.push(data))
 		.on("end", async () => {
 			await writeFile(
-				"posts_beta_5_en.json",
+				"posts_beta_7.json",
 				JSON.stringify({ posts: results })
 			);
 		});
