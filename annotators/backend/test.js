@@ -117,6 +117,7 @@ async function getAllocationForUser(userId, pageNum) {
 			userId: userId,
 		},
 		limit: 20,
+		order: [["order", "ASC"]],
 		offset: pageNum * 20,
 		include: [/*User,*/ Post],
 	});
