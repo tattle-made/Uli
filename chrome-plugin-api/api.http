@@ -1,0 +1,54 @@
+GET http://localhost:3000/auth/login?username=denny&password=denny_pw
+
+###
+
+GET http://localhost:3000/user/e3be8f99-7ec7-11ec-a714-0242ac140002
+
+###
+
+# IF id is sent, it updates the post else creates a new one
+POST http://localhost:3000/preference
+content-type : application/json
+Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
+
+{
+    "id" : "8066828c-4928-4bc2-8b98-c79f0b5e2bb3",
+    "language":"ta",
+    "friends": "denny@tattle.co.in,tarunima@tattle.co.in,rahul@tattle.co.in,swastika@tattle.co.in",
+    "slurList": "apple,dog,cat"
+}
+
+###
+
+# IF id is sent, it updates the post else creates a new one
+POST http://localhost:3000/preference
+content-type : application/json
+Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
+
+{
+    "language":"ta",
+    "friends": "denny@tattle.co.in,tarunima@tattle.co.in,rahul@tattle.co.in,swastika@tattle.co.in",
+    "slurList": "apple,dog,cat"
+}
+
+### 
+GET http://localhost:3000/preference
+Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
+
+###
+GET http://localhost:3000/auth/register
+
+
+###
+GET http://localhost:3000/archive
+Authorization: token 3d4871d7-0870-4628-84d1-0affa334193a
+
+###
+POST http://localhost:3000/invoke-network
+content-type : application/json
+Authorization: token 9b402c49-c975-467e-a091-3d36ed96ff84
+
+{
+    "message":"Please help me report this",
+    "url" : "http://twitter.url.com"
+}
