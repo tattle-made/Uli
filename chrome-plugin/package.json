@@ -1,0 +1,32 @@
+{
+  "name": "ogbv-chrome-plugin",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:options": "parcel html/options.html",
+    "start:popup": "parcel html/popup.html",
+    "start:contentScript": "parcel html/content.html",
+    "build": "parcel build html/*.html react/*.jsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "dom-to-image": "^2.6.0",
+    "file-saver": "^2.0.5",
+    "grommet": "^2.20.0",
+    "grommet-icons": "^4.7.0",
+    "i18next": "^21.6.9",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-feather": "^2.0.9",
+    "react-i18next": "^11.15.3",
+    "react-router-dom": "^6.2.1",
+    "styled-components": "^5.3.3"
+  }
+}
