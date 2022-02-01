@@ -11,8 +11,15 @@ import "./i18n";
 import { UserContext, NotificationContext } from "./AppContext";
 import Api from "./Api";
 import repository from "./repository";
+import { langNameMap } from "./language";
 const { registerNewUser } = Api;
-const { initialize, getUserData, setUserData, setPreferenceData } = repository;
+const {
+  initialize,
+  getUserData,
+  getPreferenceData,
+  setUserData,
+  setPreferenceData,
+} = repository;
 
 export function App() {
   const [user, setUser] = useState(undefined);
@@ -32,8 +39,13 @@ export function App() {
    */
   useEffect(async () => {
     const userData = await getUserData();
+    const preferenceData = await getPreferenceData();
     if (userData != undefined && Object.keys(userData).length != 0) {
       setUser(userData);
+    }
+    if (preferenceData != undefined) {
+      const { language } = preferenceData;
+      i18n.changeLanguage(langNameMap[language]);
     }
   }, []);
 

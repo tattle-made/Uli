@@ -15,18 +15,14 @@ import config from "./config";
 import Api from "./Api";
 import repository from "./repository";
 import { useTranslation } from "react-i18next";
+import chrome from "./chrome";
+import { langNameMap } from "./language";
 
 const { getPreferenceForUser, savePreference } = Api;
 import { UserContext, NotificationContext } from "./AppContext";
 const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};
-
-const langCode = {
-  English: "en",
-  Hindi: "hi",
-  Tamil: "ta",
-};
 
 export function Preferences() {
   const [localPreferences, setLocalPreferences] = useState(defaultValue);
@@ -42,12 +38,15 @@ export function Preferences() {
     try {
       const preference = await getPreferenceData();
       setLocalPreferences(preference);
-      const { enable, storeLocally } = preference;
+      const { enable, storeLocally, language } = preference;
       if (enable != undefined) {
         setEnable(enable);
       }
       if (storeLocally != undefined) {
         setStoreLocally(storeLocally);
+      }
+      if (language != undefined) {
+        setLanguage(language);
       }
     } catch (err) {
       showNotification({
@@ -62,8 +61,14 @@ export function Preferences() {
     console.log({ user, preference });
     try {
       await savePreference(user.accessToken, preference);
-      await setPreferenceData({ ...preference, enable, storeLocally });
+      await setPreferenceData({
+        ...preference,
+        enable,
+        storeLocally,
+        language,
+      });
       showNotification({ type: "message", message: t("message_ok_saved") });
+      chrome.sendMessage("updateData", undefined);
     } catch (err) {
       alert(err);
       showNotification({
@@ -78,7 +83,7 @@ export function Preferences() {
 
   async function changeLanguage(option) {
     setLanguage(option);
-    i18n.changeLanguage(langCode[option]);
+    i18n.changeLanguage(langNameMap[option]);
   }
 
   async function changeLocalStorageOption(checked) {

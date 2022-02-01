@@ -75,14 +75,6 @@ function initialize() {
 //   );
 // }, 5000);
 
-// chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-//   switch (message.type) {
-//     case "getText":
-//       sendResponse("hello");
-//       break;
-//   }
-// });
-
 // let main = document.getElementsByTagName("main")[0];
 // var inlineButtonDiv = document.createElement("div");
 // inlineButtonDiv.id = "ogbv-inline-button";

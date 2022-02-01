@@ -10,6 +10,7 @@ import Theme from "./Theme";
 import repository from "./repository";
 const { getUserData, getPreferenceData } = repository;
 import { useTranslation } from "react-i18next";
+import { langNameMap } from "./language";
 
 const { uploadArchivedMedia, invokeNetwork } = Api;
 
@@ -67,6 +68,31 @@ export function InlineButtons({ node }) {
   useEffect(async () => {
     updateData();
   }, []);
+
+  useEffect(() => {
+    console.log("preference changed", preferenceLS);
+    if (preferenceLS != undefined) {
+      const { language } = preferenceLS;
+      if (language != undefined) {
+        i18n.changeLanguage(langNameMap[language]);
+      }
+    }
+  }, [preferenceLS]);
+
+  useEffect(async () => {
+    chrome.runtime.onMessage.addListener(async function (
+      message,
+      sender,
+      sendResponse
+    ) {
+      switch (message.type) {
+        case "updateData":
+          await updateData();
+          sendResponse("date updated");
+          break;
+      }
+    });
+  });
 
   async function clickArchive() {
     console.log("clicked archive");
@@ -140,9 +166,9 @@ export function InlineButtons({ node }) {
     <Grommet theme={Theme}>
       <Box>
         <Box
-          direction={"row"}
+          direction={"column"}
           gap={"small"}
-          align="center"
+          align="start"
           margin={{ bottom: "small" }}
           pad={"xsmall"}
         >
@@ -158,11 +184,11 @@ export function InlineButtons({ node }) {
             onClick={clickInvokeNetwork}
           />
 
-          <CTAButton
+          {/* <CTAButton
             icon={<Activity size={24} color="#ff006e" />}
             label={"Test"}
             onClick={clickTest}
-          />
+          /> */}
 
           {showPopup ? (
             <Layer
