@@ -1,4 +1,4 @@
-VERSION=0.0.13
+VERSION=0.0.14
 echo Deploying $VERSION
 
 docker build -t tattletech/ogbv-plugin:$VERSION .

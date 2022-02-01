@@ -11,6 +11,13 @@ var expression = new RegExp(`(?:${slurList})`, "gi");
 
 export function replaceSlur(sentence) {
   // console.log("slur replace called");
-  // console.log(userSlurList);
+  // console.log(userSlurList)
   return sentence.replace(expression, generateMask);
+}
+
+export function updateSlurList(newSlurs) {
+  const list = newSlurs.split(",").join("|");
+  slurList = slurList + "|" + list;
+  console.log({ newSlurs: slurList });
+  expression = new RegExp(`(?:${slurList})`, "gi");
 }

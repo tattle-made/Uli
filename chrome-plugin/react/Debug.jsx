@@ -3,6 +3,7 @@ import { Box, Text, Button, CheckBox } from "grommet";
 import { UserContext } from "./AppContext";
 import repository from "./repository";
 import config from "./config";
+import { useTranslation } from "react-i18next";
 const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
   repository;
 
@@ -10,6 +11,7 @@ export function Debug() {
   const { user, setUser } = useContext(UserContext);
   const [isResetChecked, setIsResetChecked] = useState(false);
   const [localStorageData, setLocalStorageData] = useState(undefined);
+  const { t, i18n } = useTranslation();
 
   useEffect(async () => {
     const userData = await getUserData();
@@ -35,7 +37,7 @@ export function Debug() {
           <Text>{JSON.stringify(config, null, 2)}</Text>
         </Box>
       ) : (
-        <Text color={"status-critical"}>Unable to fetch data from Config</Text>
+        <Text color={"status-critical"}>{t("message_error_config_data")}</Text>
       )}
       {user ? (
         <Box gap={"medium"}>
@@ -55,7 +57,7 @@ export function Debug() {
             </Box>
           ) : (
             <Text color={"status-critical"}>
-              Unable to fetch data from Local Storage
+              {t("message_error_local_storage")}
             </Text>
           )}
 
@@ -66,16 +68,16 @@ export function Debug() {
             fill={"horizontal"}
             align="start"
           >
-            <Text color={"status-critical"}>Delete Account</Text>
+            <Text color={"status-critical"}>{t("reset_account")}</Text>
             <Box height={"0.8em"}></Box>
             <Box gap={"small"}>
               <CheckBox
                 checked={isResetChecked}
-                label="I am sure I want to Delete this account"
+                label={t("reset_confirmation")}
                 onChange={(e) => setIsResetChecked(e.target.checked)}
               />
               <Button
-                label={"Delete"}
+                label={t("reset_button")}
                 disabled={!isResetChecked}
                 secondary
                 onClick={clickReset}
@@ -84,7 +86,7 @@ export function Debug() {
           </Box>
         </Box>
       ) : (
-        <Text>Can not find a logged in User</Text>
+        <Text>{t("message_no_user")}</Text>
       )}
     </Box>
   );

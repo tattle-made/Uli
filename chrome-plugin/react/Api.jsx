@@ -63,7 +63,6 @@ async function invokeNetwork(accessToken, message, url) {
     {
       headers: {
         Authorization: `token ${accessToken}`,
-        "Content-Type": "multipart/form-data",
       },
     }
   );

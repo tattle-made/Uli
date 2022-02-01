@@ -14,6 +14,9 @@ import {
 import config from "./config";
 import Api from "./Api";
 import repository from "./repository";
+import { useTranslation } from "react-i18next";
+import chrome from "./chrome";
+import { langNameMap } from "./language";
 
 const { getPreferenceForUser, savePreference } = Api;
 import { UserContext, NotificationContext } from "./AppContext";
@@ -27,55 +30,96 @@ export function Preferences() {
   const { notification, showNotification } = useContext(NotificationContext);
   const [enable, setEnable] = useState(true);
   const [storeLocally, setStoreLocally] = useState(false);
+  const [language, setLanguage] = useState("English");
+  const { t, i18n } = useTranslation();
 
   // GET PREFERENCE FOR THIS USER FROM LS
   useEffect(async () => {
     try {
       const preference = await getPreferenceData();
       setLocalPreferences(preference);
-      const { enable, storeLocally } = preference;
-      if (enable != undefined) {
-        setEnable(enable);
-      }
-      if (storeLocally != undefined) {
-        setStoreLocally(storeLocally);
+      if (preference != undefined && Object.keys(preference).length != 0) {
+        const { enable, storeLocally, language } = preference;
+        if (enable != undefined) {
+          setEnable(enable);
+        }
+        if (storeLocally != undefined) {
+          setStoreLocally(storeLocally);
+        }
+        if (language != undefined) {
+          setLanguage(language);
+        }
       }
     } catch (err) {
       showNotification({
         type: "error",
-        message: "Could not load Preference",
+        message: t("message_error_preference_data_load"),
       });
-      alert(err);
+      // alert(err);
     }
   }, [user]);
 
   async function clickSave(preference) {
     console.log({ user, preference });
     try {
-      await savePreference(user.accessToken, preference);
-      await setPreferenceData({ ...preference, enable, storeLocally });
-      showNotification({ type: "message", message: "Saved" });
+      const preferenceRemote = await savePreference(
+        user.accessToken,
+        preference
+      );
+      // alert(JSON.stringify(preferenceRemote.data));
+      await setPreferenceData({
+        ...preferenceRemote.data,
+        enable,
+        storeLocally,
+        language,
+      });
+      showNotification({ type: "message", message: t("message_ok_saved") });
+      chrome.sendMessage("updateData", undefined);
     } catch (err) {
-      alert(err);
-      showNotification({ type: "error", message: "Could not save preference" });
+      // alert(err);
+      showNotification({
+        type: "error",
+        message: t("message_error_preference_data_save"),
+      });
     }
   }
   async function clickTest() {
     console.log(user);
   }
+
+  async function changeLanguage(option) {
+    setLanguage(option);
+    i18n.changeLanguage(langNameMap[option]);
+  }
+
+  async function changeLocalStorageOption(checked) {
+    setStoreLocally(checked);
+  }
+
   return (
     <Box width="medium" gap={"small"}>
-      <CheckBox
+      {/* <CheckBox
         checked={enable}
-        label={"Enable Plugin"}
+        label={t("enable_plugin")}
         onChange={(e) => setEnable(e.target.checked)}
-      />
+      /> */}
       <CheckBox
         checked={storeLocally}
-        label={"Store Tweets Locally"}
-        onChange={(e) => setStoreLocally(e.target.checked)}
+        label={t("store_locally")}
+        onChange={(e) => changeLocalStorageOption(e.target.checked)}
       />
 
+      <Box width={"small"} direction="row" gap={"medium"} align="center">
+        <Text>{t("language")}</Text>
+        <Select
+          options={["English", "Tamil", "Hindi"]}
+          value={language}
+          onChange={({ option }) => {
+            changeLanguage(option);
+          }}
+          size={"small"}
+        />
+      </Box>
       <Box
         height={"2px"}
         background={"dark-4"}
@@ -91,18 +135,19 @@ export function Preferences() {
         }}
         onReset={() => setLocalPreferences(defaultValue)}
       >
-        <FormField
+        {/* <FormField
           name="language"
           htmlFor="languageId"
-          label={"Language"}
+          label={t("language")}
           component={Select}
           options={["English", "Tamil", "Hindi"]}
           disabled={!enable}
-        />
+          onChange={()=>{}}
+        /> */}
         <FormField
           name="email"
           htmlFor="emailId"
-          label={"Your Email"}
+          label={t("your_email_address")}
           type="email"
           disabled={!enable}
           component={TextInput}
@@ -110,14 +155,14 @@ export function Preferences() {
         <FormField
           name="friends"
           htmlFor="friendsId"
-          label={"Friends"}
+          label={t("friends")}
           disabled={!enable}
           component={TextArea}
         />
         <FormField
           name="slurList"
           htmlFor="slurListId"
-          label={"Your Slur List"}
+          label={t("your_slur_list")}
           disabled={!enable}
           component={TextArea}
         />
@@ -127,7 +172,7 @@ export function Preferences() {
           gap={"small"}
           justify="start"
         >
-          <Button fill={false} label="Save" type="submit" primary />
+          <Button fill={false} label={t("save")} type="submit" primary />
 
           {/* <Button onClick={() => console.log("clicked")} /> */}
         </Box>

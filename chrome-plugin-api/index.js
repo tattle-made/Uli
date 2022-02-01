@@ -9,6 +9,11 @@ const { user, preference, post } = require("./db/models");
 const { Op } = require("sequelize");
 const { registerAnonymousUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
+const {
+  sendArchiveEmail,
+  sendAskFriendsForHelpEmail,
+} = require("./controller-email");
+
 
 app.use(cors());
 app.use(express.json());
@@ -85,7 +90,7 @@ app.post("/preference/", async (req, res) => {
   const { id, language, friends, slurList, email } = req.body;
   const user = req.user;
   console.log({ user, id, language, email, friends, slurList });
-  await preference.upsert({
+  const result = await preference.upsert({
     id,
     userId: user.id,
     email,
@@ -93,7 +98,7 @@ app.post("/preference/", async (req, res) => {
     friends,
     slurList,
   });
-  res.send({ msg: "Preference Created" });
+  res.send({ ...result[0].get({ plain: true }) });
 });
 
 app.get("/preference/", async (req, res) => {
@@ -147,14 +152,7 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
       (result != null && resultPlain.email != undefined) ||
       resultPlain.email != null
     ) {
-      await sendEmail({
-        subject: "You archived a tweet using OGBV Plugin",
-        body: JSON.stringify({
-          sourceUrl: url,
-          screenshotURL: req.file.location,
-        }),
-        receiver: resultPlain.email,
-      });
+      await sendArchiveEmail(resultPlain.email, url, req.file.location);
     }
 
     res.send({ msg: "Tweet Archived" });
@@ -191,14 +189,8 @@ app.post("/invoke-network", async (req, res) => {
     const { friends } = plainResult;
     let temp = friends.replace(/ /g, "");
     const friendArray = temp.split(",");
-    friendArray.map((friend) => {
-      sendEmail({
-        subject: "[TEST FROM OGBV PLUING] Your Friend needs your help",
-        body: JSON.stringify({
-          sourceUrl: url,
-        }),
-        receiver: friend,
-      });
+    friendArray.map(async (friend) => {
+      await sendAskFriendsForHelpEmail(friend, url, message);
     });
   }
 

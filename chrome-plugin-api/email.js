@@ -20,7 +20,7 @@ const constructParamsObject = ({ subject, body, receiver }) => {
     },
     Message: {
       Body: {
-        Text: {
+        Html: {
           Charset: "UTF-8",
           Data: body,
         },
@@ -46,6 +46,7 @@ const sendEmail = async ({ subject, body, receiver }) => {
     console.log("Success : Email");
   } catch (error) {
     console.log("Error : Could not send email");
+    console.log(error);
     throw error;
   }
 };
