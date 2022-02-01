@@ -24,7 +24,6 @@ setTimeout(async () => {
 }, 3000);
 
 const processTweets = async function () {
-  // console.log("processing tweets");
   const userData = await repository.getUserData();
   const preferenceData = await repository.getPreferenceData();
   // console.log({ userData, preferenceData });
@@ -33,11 +32,14 @@ const processTweets = async function () {
   );
   spans = Array.from(spans);
 
-  currentTweetCount = spans.length;
-  spans.map((span) => {
-    text = span.innerText;
-    span.innerText = replaceSlur(text);
-  });
+  if (spans.length != currentTweetCount) {
+    console.log("replacing slur");
+    currentTweetCount = spans.length;
+    spans.map((span) => {
+      text = span.innerText;
+      span.innerText = replaceSlur(text);
+    });
+  }
 };
 
 async function initialize() {
