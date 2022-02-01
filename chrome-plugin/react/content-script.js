@@ -1,12 +1,25 @@
 import ReactDOM from "react-dom";
 import { InlineButtons } from "./InlineButtons";
 import { replaceSlur } from "./slur-replace";
-const bodyNode = document.getElementsByTagName("body")[0];
-const config = { attributes: true, childList: true, subtree: true };
 let currentTweetCount = 0;
 import repository from "./repository";
 
-console.log("Content Script Loaded Again");
+// console.log("Content Script Loaded Again");
+// if (document.readyState === "loading") {
+//   // document.addEventListener("DOMContentLoaded", initialize);
+//   document.addEventListener("DOMContentLoaded", () => {
+//     console.log(" ---- 1");
+//   });
+// } else {
+//   console.log(" ---- 2");
+//   // initialize();
+//   let main = document.getElementsByTagName("article")[0];
+//   console.log(main);
+// }
+
+setTimeout(() => {
+  initialize();
+}, 3000);
 
 const processTweets = async function () {
   // console.log("processing tweets");
@@ -27,9 +40,6 @@ const processTweets = async function () {
 };
 
 function initialize() {
-  const observer = new MutationObserver(processTweets);
-  observer.observe(bodyNode, config);
-
   let main = document.getElementsByTagName("main")[0];
   var inlineButtonDiv = document.createElement("div");
   inlineButtonDiv.id = "ogbv-inline-button";
@@ -39,13 +49,16 @@ function initialize() {
     <InlineButtons style={{ position: "sticky", top: 0 }} node={main} />,
     app
   );
+
+  const observer = new MutationObserver(processTweets);
+  const bodyNode = document.getElementsByTagName("body")[0];
+  const config = { attributes: true, childList: true, subtree: true };
+  observer.observe(bodyNode, config);
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initialize);
-} else {
-  initialize();
-}
+// setTimeout(() => {
+//   initialize();
+// }, 5000);
 
 // setTimeout(() => {
 //   const observer = new MutationObserver(processTweets);

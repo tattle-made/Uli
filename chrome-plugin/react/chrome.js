@@ -34,7 +34,8 @@ const storageMock = {
   },
 };
 
-const storage = ENVIRONMENT === "production" ? chrome.storage : storageMock;
+const storage = ENVIRONMENT === "production" ? chrome.storage : chrome.storage;
+// const storage = ENVIRONMENT === "production" ? chrome.storage : storageMock;
 
 /**
  * This promisifies the callback mechanism of the native chrome object.

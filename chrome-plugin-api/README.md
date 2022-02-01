@@ -9,12 +9,14 @@ Database : ogbv_plugin
 
 2. Ensure all the environtment variables specified in development.env file are set.
 
+3. run `npm install`
+
 3. run `npx sequelize-cli db:migrate`
 This should create your tables in the db.
 
+
 4. run `nodemon index.js`
 This should start an express http server at port 3000
-
 
 # Deploying to Tattle's Kubernetes 
 Prerequisite : 
@@ -23,3 +25,5 @@ Prerequisite :
 Ensure your has execution rights on `deploy.sh`
 Open deploy.sh and modify the version number.
 run `./deploy.sh` 
+
+
