@@ -14,6 +14,7 @@ const {
   sendAskFriendsForHelpEmail,
 } = require("./controller-email");
 
+
 app.use(cors());
 app.use(express.json());
 app.options("*", cors());
@@ -152,14 +153,6 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
       resultPlain.email != null
     ) {
       await sendArchiveEmail(resultPlain.email, url, req.file.location);
-      // await sendEmail({
-      //   subject: "You archived a tweet using OGBV Plugin",
-      //   body: JSON.stringify({
-      //     sourceUrl: url,
-      //     screenshotURL: req.file.location,
-      //   }),
-      //   receiver: resultPlain.email,
-      // });
     }
 
     res.send({ msg: "Tweet Archived" });
@@ -185,8 +178,6 @@ app.get("/archive", async (req, res) => {
 app.post("/invoke-network", async (req, res) => {
   const user = req.user;
   const { message, url } = req.body;
-
-  console.log({ message, url });
 
   const result = await preference.findOne({
     where: {

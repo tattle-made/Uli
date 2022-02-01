@@ -61,7 +61,6 @@ export function Preferences() {
 
   async function clickSave(preference) {
     console.log({ user, preference });
-
     try {
       const preferenceRemote = await savePreference(
         user.accessToken,
@@ -121,7 +120,6 @@ export function Preferences() {
           size={"small"}
         />
       </Box>
-
       <Box
         height={"2px"}
         background={"dark-4"}

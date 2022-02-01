@@ -31,7 +31,6 @@ const processTweets = async function () {
     "css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0"
   );
   spans = Array.from(spans);
-
   if (spans.length != currentTweetCount) {
     console.log("replacing slur");
     currentTweetCount = spans.length;

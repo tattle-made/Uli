@@ -24,7 +24,11 @@ const {
 export function App() {
   const [user, setUser] = useState(undefined);
   const { t, i18n } = useTranslation();
+const { registerNewUser } = Api;
+const { initialize, getUserData, setUserData, setPreferenceData } = repository;
 
+export function App() {
+  const [user, setUser] = useState(undefined);
   const [notification, setNotification] = useState(undefined);
 
   function showNotification(notification) {
@@ -46,6 +50,9 @@ export function App() {
     if (preferenceData != undefined) {
       const { language } = preferenceData;
       i18n.changeLanguage(langNameMap[language]);
+    }
+    if (userData != undefined && Object.keys(userData).length != 0) {
+      setUser(userData);
     }
   }, []);
 

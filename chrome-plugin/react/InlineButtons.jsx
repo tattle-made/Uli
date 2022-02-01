@@ -11,7 +11,6 @@ import repository from "./repository";
 const { getUserData, getPreferenceData } = repository;
 import { useTranslation } from "react-i18next";
 import { langNameMap } from "./language";
-
 const { uploadArchivedMedia, invokeNetwork } = Api;
 
 const CTAButton = ({ icon, label, onClick }) => {
@@ -48,9 +47,7 @@ export function InlineButtons({ node }) {
 
   const [userLS, setUserLS] = useState(undefined);
   const [preferenceLS, setPreferenceLS] = useState(undefined);
-
   const { t, i18n } = useTranslation();
-
   function showNotification(notification) {
     setNotification(notification);
     setTimeout(() => {
@@ -153,7 +150,6 @@ export function InlineButtons({ node }) {
   }
   function clickInvokeNetwork() {
     console.log("clicked invoke network");
-
     setShowPopup(true);
   }
 
