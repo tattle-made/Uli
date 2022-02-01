@@ -75,17 +75,27 @@ export function Preferences() {
   async function clickTest() {
     console.log(user);
   }
+
+  async function changeLanguage(option) {
+    setLanguage(option);
+    i18n.changeLanguage(langCode[option]);
+  }
+
+  async function changeLocalStorageOption(checked) {
+    setStoreLocally(checked);
+  }
+
   return (
     <Box width="medium" gap={"small"}>
-      <CheckBox
+      {/* <CheckBox
         checked={enable}
         label={t("enable_plugin")}
         onChange={(e) => setEnable(e.target.checked)}
-      />
+      /> */}
       <CheckBox
         checked={storeLocally}
         label={t("store_locally")}
-        onChange={(e) => setStoreLocally(e.target.checked)}
+        onChange={(e) => changeLocalStorageOption(e.target.checked)}
       />
 
       <Box width={"small"} direction="row" gap={"medium"} align="center">
@@ -94,8 +104,7 @@ export function Preferences() {
           options={["English", "Tamil", "Hindi"]}
           value={language}
           onChange={({ option }) => {
-            setLanguage(option);
-            i18n.changeLanguage(langCode[option]);
+            changeLanguage(option);
           }}
           size={"small"}
         />

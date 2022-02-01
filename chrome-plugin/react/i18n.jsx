@@ -34,6 +34,8 @@ const resources = {
       message_ok_saved: "Saved",
       message_error_preference_data_save: "Could not save preference",
       message_archive_empty: "Looks like you haven't started archiving yet.",
+      archive: "Archive",
+      ask_friends_for_help: "Ask Friends for Help",
     },
   },
   hi: {
@@ -67,6 +69,8 @@ const resources = {
       message_error_preference_data_save: "प्राथमिकताऐं सहेजी नहीं जा सकी",
       message_archive_empty:
         "ऐसा लगता है कि आपने अभी तक संग्रह करना शुरू नहीं किया है।",
+      archive: "संगृहीत करे",
+      ask_friends_for_help: "दोस्तों से मदद मांगे",
     },
   },
   ta: {
@@ -102,6 +106,8 @@ const resources = {
       message_error_preference_data_save: "விருப்பத்தை சேமிக்க முடியவில்லை",
       message_archive_empty:
         "நீங்கள் இன்னும் காப்பகத்தை தொடங்கவில்லை போல் தெரிகிறது.",
+      archive: "காப்பகப்படுத்தப்பட்டது",
+      ask_friends_for_help: "நண்பர்களிடம் உதவி கேளுங்கள்",
     },
   },
 };
@@ -110,7 +116,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
+    lng: "hi", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
     // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
     // if you're using a language detector, do not define the lng option
 

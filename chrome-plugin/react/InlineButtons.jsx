@@ -1,3 +1,4 @@
+import "./i18n";
 import { useEffect, useState } from "react";
 import { Grommet, Box, Text, Button, TextArea, Layer, Spinner } from "grommet";
 import { Archive, Users, Activity } from "react-feather";
@@ -8,10 +9,9 @@ import { saveAs } from "file-saver";
 import Theme from "./Theme";
 import repository from "./repository";
 const { getUserData, getPreferenceData } = repository;
+import { useTranslation } from "react-i18next";
 
 const { uploadArchivedMedia, invokeNetwork } = Api;
-
-const accessToken = "e3be8fa9-7ec7-11ec-a714-0242ac140002";
 
 const CTAButton = ({ icon, label, onClick }) => {
   return (
@@ -48,6 +48,8 @@ export function InlineButtons({ node }) {
   const [userLS, setUserLS] = useState(undefined);
   const [preferenceLS, setPreferenceLS] = useState(undefined);
 
+  const { t, i18n } = useTranslation();
+
   function showNotification(notification) {
     setNotification(notification);
     setTimeout(() => {
@@ -55,17 +57,20 @@ export function InlineButtons({ node }) {
     }, 2000);
   }
 
-  useEffect(async () => {
-    console.log("setting data for content script");
+  async function updateData() {
     const userData = await getUserData();
     const preferenceData = await getPreferenceData();
-    console.log({ userData, preferenceData });
     setUserLS(userData);
     setPreferenceLS(preferenceData);
+  }
+
+  useEffect(async () => {
+    updateData();
   }, []);
 
-  function clickArchive() {
+  async function clickArchive() {
     console.log("clicked archive");
+    await updateData();
     try {
       showProgress(true);
       let mainNode = document.getElementsByTagName("main")[0];
@@ -101,10 +106,12 @@ export function InlineButtons({ node }) {
   }
   function clickInvokeNetwork() {
     console.log("clicked invoke network");
+
     setShowPopup(true);
   }
 
   async function clickSend() {
+    await updateData();
     try {
       await invokeNetwork(userLS.accessToken, message, location.href);
     } catch {
@@ -114,69 +121,80 @@ export function InlineButtons({ node }) {
     }
   }
 
-  function clickTest() {
+  async function clickTest() {
     console.log("test clicked");
-    console.log(chrome);
+    await updateData();
+    console.log({ userLS, preferenceLS });
+    // console.log(chrome);
     // chrome.storage.local.set({ "ogbv-data": "Your data" }, function (result) {
     //   console.log(" Data saved ");
     // });
-    console.log("getting value in Content Script");
-    chrome.storage.local.get(["ogbv-data"], function (result) {
-      console.log("Value currently is " + result.key);
-      console.log(result);
-    });
+    // console.log("getting value in Content Script");
+    // chrome.storage.local.get(["ogbv-data"], function (result) {
+    //   console.log("Value currently is " + result.key);
+    //   console.log(result);
+    // });
   }
 
   return (
     <Grommet theme={Theme}>
-      <Box
-        direction={"row"}
-        gap={"small"}
-        align="center"
-        margin={{ bottom: "small" }}
-        pad={"xsmall"}
-      >
-        <CTAButton
-          icon={<Archive size={24} color="#ff006e" />}
-          label={"Archive"}
-          onClick={clickArchive}
-        />
+      <Box>
+        <Box
+          direction={"row"}
+          gap={"small"}
+          align="center"
+          margin={{ bottom: "small" }}
+          pad={"xsmall"}
+        >
+          <CTAButton
+            icon={<Archive size={24} color="#ff006e" />}
+            label={t("archive")}
+            onClick={clickArchive}
+          />
 
-        <CTAButton
-          icon={<Users size={24} color="#ff006e" />}
-          label={"Invoke Network"}
-          onClick={clickInvokeNetwork}
-        />
+          <CTAButton
+            icon={<Users size={24} color="#ff006e" />}
+            label={t("ask_friends_for_help")}
+            onClick={clickInvokeNetwork}
+          />
 
-        {progress ? <Spinner /> : null}
-        {notification ? (
-          <Text color={"brand"}>{notification.message}</Text>
-        ) : null}
+          <CTAButton
+            icon={<Activity size={24} color="#ff006e" />}
+            label={"Test"}
+            onClick={clickTest}
+          />
 
-        {showPopup ? (
-          <Layer
-            onEsc={() => setShowPopup(false)}
-            onClickOutside={() => setShowPopup(false)}
-          >
-            <Box width={"medium"} gap={"medium"} margin={"large"}>
-              <TextArea
-                placeholder={"hey can you help me report this post?"}
-                value={message}
-                onChange={(event) => setMessage(event.target.value)}
-              ></TextArea>
-              <Box direction={"row"} gap={"small"}>
-                <Button label="Cancel" onClick={() => setShowPopup(false)} />
-                <Button
-                  label="Send"
-                  onClick={() => {
-                    clickSend();
-                  }}
-                  primary
-                />
+          {showPopup ? (
+            <Layer
+              onEsc={() => setShowPopup(false)}
+              onClickOutside={() => setShowPopup(false)}
+            >
+              <Box width={"medium"} gap={"medium"} margin={"large"}>
+                <TextArea
+                  placeholder={"hey can you help me report this post?"}
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                ></TextArea>
+                <Box direction={"row"} gap={"small"}>
+                  <Button label="Cancel" onClick={() => setShowPopup(false)} />
+                  <Button
+                    label="Send"
+                    onClick={() => {
+                      clickSend();
+                    }}
+                    primary
+                  />
+                </Box>
               </Box>
-            </Box>
-          </Layer>
-        ) : null}
+            </Layer>
+          ) : null}
+        </Box>
+        <Box direction="row">
+          {progress ? <Spinner /> : null}
+          {notification ? (
+            <Text color={"brand"}>{notification.message}</Text>
+          ) : null}
+        </Box>
       </Box>
     </Grommet>
   );
