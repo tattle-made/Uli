@@ -1,8 +1,10 @@
 import ReactDOM from "react-dom";
 import { InlineButtons } from "./InlineButtons";
-import { replaceSlur } from "./slur-replace";
+import { replaceSlur, updateSlurList } from "./slur-replace";
 let currentTweetCount = 0;
 import repository from "./repository";
+const { getPreferenceData } = repository;
+import chrome from "./chrome";
 
 // console.log("Content Script Loaded Again");
 // if (document.readyState === "loading") {
@@ -17,8 +19,8 @@ import repository from "./repository";
 //   console.log(main);
 // }
 
-setTimeout(() => {
-  initialize();
+setTimeout(async () => {
+  await initialize();
 }, 3000);
 
 const processTweets = async function () {
@@ -30,16 +32,15 @@ const processTweets = async function () {
     "css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0"
   );
   spans = Array.from(spans);
-  if (spans.length != currentTweetCount) {
-    currentTweetCount = spans.length;
-    spans.map((span) => {
-      text = span.innerText;
-      span.innerText = replaceSlur(text);
-    });
-  }
+
+  currentTweetCount = spans.length;
+  spans.map((span) => {
+    text = span.innerText;
+    span.innerText = replaceSlur(text);
+  });
 };
 
-function initialize() {
+async function initialize() {
   let main = document.getElementsByTagName("main")[0];
   var inlineButtonDiv = document.createElement("div");
   inlineButtonDiv.id = "ogbv-inline-button";
@@ -50,11 +51,31 @@ function initialize() {
     app
   );
 
+  const preference = await getPreferenceData();
+
+  if (preference != undefined && preference.slurList != undefined) {
+    updateSlurList(preference.slurList);
+  }
+
   const observer = new MutationObserver(processTweets);
   const bodyNode = document.getElementsByTagName("body")[0];
   const config = { attributes: true, childList: true, subtree: true };
   observer.observe(bodyNode, config);
 }
+
+chrome.addListener(
+  "updateData",
+  async () => {
+    console.log("data changed. time to update slurs");
+    const preference = await getPreferenceData();
+    console.log(preference);
+    if (preference.slurList != undefined) {
+      updateSlurList(preference.slurList);
+      processTweets();
+    }
+  },
+  "done"
+);
 
 // setTimeout(() => {
 //   initialize();

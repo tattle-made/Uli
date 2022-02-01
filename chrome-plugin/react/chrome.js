@@ -78,8 +78,22 @@ function sendMessage(type, payload) {
   }
 }
 
+function addListener(type, func, response) {
+  chrome.runtime.onMessage.addListener(async function (
+    message,
+    sender,
+    sendResponse
+  ) {
+    if (message.type === type) {
+      func();
+      sendResponse(response);
+    }
+  });
+}
+
 export default {
   get,
   set,
   sendMessage,
+  addListener,
 };
