@@ -38,31 +38,38 @@ export function Preferences() {
     try {
       const preference = await getPreferenceData();
       setLocalPreferences(preference);
-      const { enable, storeLocally, language } = preference;
-      if (enable != undefined) {
-        setEnable(enable);
-      }
-      if (storeLocally != undefined) {
-        setStoreLocally(storeLocally);
-      }
-      if (language != undefined) {
-        setLanguage(language);
+      if (preference != undefined && Object.keys(preference).length != 0) {
+        const { enable, storeLocally, language } = preference;
+        if (enable != undefined) {
+          setEnable(enable);
+        }
+        if (storeLocally != undefined) {
+          setStoreLocally(storeLocally);
+        }
+        if (language != undefined) {
+          setLanguage(language);
+        }
       }
     } catch (err) {
       showNotification({
         type: "error",
         message: t("message_error_preference_data_load"),
       });
-      alert(err);
+      // alert(err);
     }
   }, [user]);
 
   async function clickSave(preference) {
     console.log({ user, preference });
+
     try {
-      await savePreference(user.accessToken, preference);
+      const preferenceRemote = await savePreference(
+        user.accessToken,
+        preference
+      );
+      // alert(JSON.stringify(preferenceRemote.data));
       await setPreferenceData({
-        ...preference,
+        ...preferenceRemote.data,
         enable,
         storeLocally,
         language,
@@ -70,7 +77,7 @@ export function Preferences() {
       showNotification({ type: "message", message: t("message_ok_saved") });
       chrome.sendMessage("updateData", undefined);
     } catch (err) {
-      alert(err);
+      // alert(err);
       showNotification({
         type: "error",
         message: t("message_error_preference_data_save"),

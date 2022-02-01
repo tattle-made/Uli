@@ -96,6 +96,7 @@ export function InlineButtons({ node }) {
 
   async function clickArchive() {
     console.log("clicked archive");
+    console.log(location.href);
     await updateData();
     try {
       showProgress(true);
@@ -105,14 +106,28 @@ export function InlineButtons({ node }) {
       domtoimage
         .toBlob(mainNode)
         .then(async function (blob) {
+          let fileName;
+          const url = location.href;
+
+          try {
+            console.log("----- 1");
+            if (
+              url.startsWith("https://twitter.com") &&
+              url.search("/status/") != -1
+            ) {
+              console.log("----- 2");
+              fileName = url.slice(url.search("/status/") + 8);
+            } else {
+              console.log("----- 3");
+              fileName = new Date().toTimeString().split(" ").join("_");
+            }
+          } catch (err) {
+            console.log("----- 4");
+            console.log(err);
+            fileName = new Date().toTimeString().split(" ").join("_");
+          }
           if (preferenceLS.storeLocally) {
-            saveAs(
-              blob,
-              `ogbv_plugin_tweet_${new Date()
-                .toTimeString()
-                .split(" ")
-                .join("_")}.png`
-            );
+            saveAs(blob, `ogbv_plugin_tweet_${fileName}.png`);
           }
           var formData = new FormData();
           formData.append("screenshot", blob);
@@ -122,10 +137,16 @@ export function InlineButtons({ node }) {
           showProgress(false);
         })
         .catch((err) => {
+          console.log("======");
+          console.log(err);
+          console.log("======");
           showProgress(false);
           showNotification({ message: "Error in archiving post." });
         });
     } catch (err) {
+      console.log("======");
+      console.log(err);
+      console.log("======");
       showProgress(false);
       showNotification({ message: "Error in archiving post." });
     }
@@ -139,6 +160,9 @@ export function InlineButtons({ node }) {
   async function clickSend() {
     await updateData();
     try {
+      console.log("-----");
+      console.log({ message, url: location.href });
+      console.log("-----");
       await invokeNetwork(userLS.accessToken, message, location.href);
     } catch {
       console.log("Error invoking network");
