@@ -14,6 +14,7 @@ import {
 import config from "./config";
 import Api from "./Api";
 import repository from "./repository";
+import { useTranslation } from "react-i18next";
 
 const { getPreferenceForUser, savePreference } = Api;
 import { UserContext, NotificationContext } from "./AppContext";
@@ -21,12 +22,20 @@ const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};
 
+const langCode = {
+  English: "en",
+  Hindi: "hi",
+  Tamil: "ta",
+};
+
 export function Preferences() {
   const [localPreferences, setLocalPreferences] = useState(defaultValue);
   const { user, setUser } = useContext(UserContext);
   const { notification, showNotification } = useContext(NotificationContext);
   const [enable, setEnable] = useState(true);
   const [storeLocally, setStoreLocally] = useState(false);
+  const [language, setLanguage] = useState("English");
+  const { t, i18n } = useTranslation();
 
   // GET PREFERENCE FOR THIS USER FROM LS
   useEffect(async () => {
@@ -43,7 +52,7 @@ export function Preferences() {
     } catch (err) {
       showNotification({
         type: "error",
-        message: "Could not load Preference",
+        message: t("message_error_preference_data_load"),
       });
       alert(err);
     }
@@ -54,10 +63,13 @@ export function Preferences() {
     try {
       await savePreference(user.accessToken, preference);
       await setPreferenceData({ ...preference, enable, storeLocally });
-      showNotification({ type: "message", message: "Saved" });
+      showNotification({ type: "message", message: t("message_ok_saved") });
     } catch (err) {
       alert(err);
-      showNotification({ type: "error", message: "Could not save preference" });
+      showNotification({
+        type: "error",
+        message: t("message_error_preference_data_save"),
+      });
     }
   }
   async function clickTest() {
@@ -67,14 +79,27 @@ export function Preferences() {
     <Box width="medium" gap={"small"}>
       <CheckBox
         checked={enable}
-        label={"Enable Plugin"}
+        label={t("enable_plugin")}
         onChange={(e) => setEnable(e.target.checked)}
       />
       <CheckBox
         checked={storeLocally}
-        label={"Store Tweets Locally"}
+        label={t("store_locally")}
         onChange={(e) => setStoreLocally(e.target.checked)}
       />
+
+      <Box width={"small"} direction="row" gap={"medium"} align="center">
+        <Text>{t("language")}</Text>
+        <Select
+          options={["English", "Tamil", "Hindi"]}
+          value={language}
+          onChange={({ option }) => {
+            setLanguage(option);
+            i18n.changeLanguage(langCode[option]);
+          }}
+          size={"small"}
+        />
+      </Box>
 
       <Box
         height={"2px"}
@@ -91,18 +116,19 @@ export function Preferences() {
         }}
         onReset={() => setLocalPreferences(defaultValue)}
       >
-        <FormField
+        {/* <FormField
           name="language"
           htmlFor="languageId"
-          label={"Language"}
+          label={t("language")}
           component={Select}
           options={["English", "Tamil", "Hindi"]}
           disabled={!enable}
-        />
+          onChange={()=>{}}
+        /> */}
         <FormField
           name="email"
           htmlFor="emailId"
-          label={"Your Email"}
+          label={t("your_email_address")}
           type="email"
           disabled={!enable}
           component={TextInput}
@@ -110,14 +136,14 @@ export function Preferences() {
         <FormField
           name="friends"
           htmlFor="friendsId"
-          label={"Friends"}
+          label={t("friends")}
           disabled={!enable}
           component={TextArea}
         />
         <FormField
           name="slurList"
           htmlFor="slurListId"
-          label={"Your Slur List"}
+          label={t("your_slur_list")}
           disabled={!enable}
           component={TextArea}
         />
@@ -127,7 +153,7 @@ export function Preferences() {
           gap={"small"}
           justify="start"
         >
-          <Button fill={false} label="Save" type="submit" primary />
+          <Button fill={false} label={t("save")} type="submit" primary />
 
           {/* <Button onClick={() => console.log("clicked")} /> */}
         </Box>

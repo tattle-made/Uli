@@ -5,12 +5,11 @@ export function Resources() {
   const { t, i18n } = useTranslation();
   return (
     <Box width={"medium"}>
-      <p>{t("app_name")}</p>
-      <Anchor href="#" label="User Guide" />
-      <Anchor href="#" label="Mental Health Resource" />
-      <Anchor href="#" label="Legal Resources" />
-      <Anchor href="#" label="Report Tweet Guide" />
-      <Button
+      <Anchor href="#" label={t("user_guide")} />
+      <Anchor href="#" label={t("mental_health")} />
+      <Anchor href="#" label={t("legal_resources")} />
+      <Anchor href="#" label={t("report_tweet")} />
+      {/* <Button
         label={"test"}
         onClick={() => {
           console.log("clicked");
@@ -21,7 +20,7 @@ export function Resources() {
             }
           );
         }}
-      />
+      /> */}
     </Box>
   );
 }
