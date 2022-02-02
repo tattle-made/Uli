@@ -94,9 +94,9 @@ export function InlineButtons({ node }) {
   async function clickArchive() {
     console.log("clicked archive");
     console.log(location.href);
+    showProgress(true);
     await updateData();
     try {
-      showProgress(true);
       let mainNode = document.getElementsByTagName("main")[0];
       let tweetCount = document.getElementsByTagName("article").length;
 
@@ -132,6 +132,7 @@ export function InlineButtons({ node }) {
           // await uploadArchivedMedia(accessToken, formData);
           await uploadArchivedMedia(userLS.accessToken, formData);
           showProgress(false);
+          showNotification({ message: "Successfully Archived" });
         })
         .catch((err) => {
           console.log("======");
@@ -154,12 +155,15 @@ export function InlineButtons({ node }) {
   }
 
   async function clickSend() {
+    showProgress(false);
     await updateData();
     try {
       console.log("-----");
       console.log({ message, url: location.href });
       console.log("-----");
       await invokeNetwork(userLS.accessToken, message, location.href);
+      showProgress(false);
+      showNotification({ message: "Successfully Messaged Friends" });
     } catch {
       console.log("Error invoking network");
     } finally {

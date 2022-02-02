@@ -23,13 +23,11 @@ const {
 
 export function App() {
   const [user, setUser] = useState(undefined);
-  const { t, i18n } = useTranslation();
-const { registerNewUser } = Api;
-const { initialize, getUserData, setUserData, setPreferenceData } = repository;
-
-export function App() {
-  const [user, setUser] = useState(undefined);
   const [notification, setNotification] = useState(undefined);
+  const { t, i18n } = useTranslation();
+  const { registerNewUser } = Api;
+  const { initialize, getUserData, setUserData, setPreferenceData } =
+    repository;
 
   function showNotification(notification) {
     setNotification(notification);
