@@ -12,19 +12,18 @@ Two cases
 - splitting by 'space' for tokenizing the tweet
 
 #### Case 2 : Approximate Matching
-
+```
+pip install fuzzywuzzy
+```
 - using fuzzywuzzy (Levenstein distance)
 
   - using fuzzy score
   - using edit distance
 
-```
-pip install fuzzywuzzy
-```
 
  
-  
-- using DamerauLevenshtein
 ```
 pip install fastDamerauLevenshtein
 ```
+  
+- using DamerauLevenshtein
