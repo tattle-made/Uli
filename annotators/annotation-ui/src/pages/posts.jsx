@@ -376,7 +376,7 @@ export default function PostAnnotator() {
 										fit={"contain"}
 										alignSelf={"start"}
 										src={
-											"https://cis-india.org/++theme++cisindia.theme/images/logo.png"
+											"https://cis-india.org/"
 										}
 									/>
 								</Box>
@@ -386,7 +386,7 @@ export default function PostAnnotator() {
 							Built by{" "}
 							<Anchor
 								href={
-									"https://cis-india.org/++theme++cisindia.theme/images/logo.png"
+									"https://cis-india.org/"
 								}
 								target={"_blank"}
 							>
