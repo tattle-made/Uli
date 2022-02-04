@@ -52,6 +52,7 @@ export function App() {
     if (userData != undefined && Object.keys(userData).length != 0) {
       setUser(userData);
     }
+    // alert(process.env.API_URL);
   }, []);
 
   async function clickActivateAccount() {

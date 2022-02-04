@@ -2,7 +2,7 @@ var fs = require("fs");
 
 var result = "";
 
-fs.readFileSync("slur-list.txt", "utf-8")
+fs.readFileSync("slur_list_withspace.txt", "utf-8")
   .split(/\r?\n/)
   .forEach(function (line) {
     if (line === "---") {
