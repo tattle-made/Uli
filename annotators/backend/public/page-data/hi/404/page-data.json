@@ -1,0 +1,6 @@
+{
+    "componentChunkName": "component---src-pages-404-js",
+    "path": "/hi/404/",
+    "result": {"pageContext":{"language":"hi","i18n":{"language":"hi","languages":["en","hi","ta"],"defaultLanguage":"en","generateDefaultLanguagePage":false,"routed":true,"originalPath":"/404/","path":"hi/404/"}}},
+    "staticQueryHashes": [],
+    "matchPath": "/hi/*"}

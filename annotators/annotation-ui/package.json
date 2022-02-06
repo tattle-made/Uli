@@ -10,7 +10,7 @@
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
-    "build": "gatsby build",
+    "build": "rm -rf public/ && gatsby build && cp -r public/ ../backend/public/ && rm -rf public/",
     "serve": "gatsby serve",
     "clean": "gatsby clean"
   },

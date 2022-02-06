@@ -28,6 +28,9 @@ import {
   isLoggedIn,
   logoutUser,
 } from "../repository/user";
+import styled from "styled-components";
+
+const RadioGroup = styled(ReactRadioButtonGroup)``;
 
 var annotator;
 
@@ -219,63 +222,45 @@ export default function PostAnnotator() {
                 {post && (
                   <SimplePost post={post} annotationStatus={"pending"} />
                 )}
-                <Box>
-                  <Box direction={"row"} gap={"large"}>
-                    <Text> {t("annotation_form_ogbv")}</Text>
+                <Box gap={"medium"}>
+                  <Box direction={"column"}>
+                    <Text> {t("annotation_form_question_1")}</Text>
 
                     <ReactRadioButtonGroup
-                      name="ogbv"
+                      name="question_1"
                       options={[
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.ogbv}
-                      onChange={(val) => changeAnnotation("ogbv", val)}
+                      value={annotations.question_1}
+                      onChange={(val) => changeAnnotation("question_1", val)}
                     />
                   </Box>
-                  <Box direction={"row"} gap={"large"}>
-                    <Text> {t("annotation_form_explicit")}</Text>
+                  <Box direction={"column"}>
+                    <Text> {t("annotation_form_question_2")}</Text>
                     <ReactRadioButtonGroup
-                      name="explicit"
+                      name="question_2"
                       options={[
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.explicit}
-                      onChange={(val) => changeAnnotation("explicit", val)}
+                      value={annotations.question_2}
+                      onChange={(val) => changeAnnotation("question_2", val)}
                     />
                   </Box>
-                  <Box direction={"row"} gap={"large"}>
-                    <Text> {t("annotation_form_hateful")}</Text>
+                  <Box direction={"column"}>
+                    <Text> {t("annotation_form_question_3")}</Text>
                     <ReactRadioButtonGroup
-                      name="hate"
+                      name="question_3"
                       options={[
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.hate}
-                      onChange={(val) => changeAnnotation("hate", val)}
+                      value={annotations.question_3}
+                      onChange={(val) => changeAnnotation("question_3", val)}
                     />
                   </Box>
-                  <Box direction={"row"} gap={"large"}>
-                    <Text> {t("annotation_form_dimensions")}</Text>
-                    <CheckBoxGroup
-                      options={[
-                        t("af_dim_1"),
-                        t("af_dim_2"),
-                        t("af_dim_3"),
-                        t("af_dim_4"),
-                      ]}
-                      value={
-                        annotations && annotations.dimension
-                          ? annotations.dimension.split(",")
-                          : []
-                      }
-                      onChange={(val, opt) => {
-                        changeAnnotation("dimension", val.value.join(","));
-                      }}
-                    />
-                  </Box>
+
                   <TextArea
                     placeholder="Additional notes"
                     value={annotations.notes ? annotations.notes : ""}

@@ -1,17 +1,12 @@
 {
-	"Welcome": "Welcome",
-	"app_name": "OGBV ANNOTATOR",
-	"username": "Username",
-	"password": "Password",
-	"post_annotation": "Post Annotation",
-	"annotation_form_ogbv": "Does this post contain gendered abuse? ",
-	"annotation_form_explicit": "Does this post contain explicit abuse?",
-	"annotation_form_hateful": "Does this post threaten anyone?",
-	"annotation_form_dimensions": "Please select all relevant dimensions of this post :",
-	"af_dim_1": "sexuality",
-	"af_dim_2": "religion",
-	"af_dim_3": "caste",
-	"af_dim_4": "none of the above",
-	"yes": "yes",
-	"no": "no"
+  "Welcome": "Welcome",
+  "app_name": "OGBV ANNOTATOR",
+  "username": "Username",
+  "password": "Password",
+  "post_annotation": "Post Annotation",
+  "annotation_form_question_1": "Is this post gendered abuse when not directed at a person of marginalized gender?",
+  "annotation_form_question_2": "Is the post gendered abuse even when directed at a person of marginalized gender?",
+  "annotation_form_question_3": "Does this post contain explicit / aggresive language?",
+  "yes": "yes",
+  "no": "no"
 }
