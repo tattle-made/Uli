@@ -1,0 +1,13 @@
+name : Deploy To Production
+on:
+  push:
+    branches:
+      - feature/ext-beta
+
+jobs:
+  test:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses : tattle-made/action-publish-fullstack-js-app-docker
+        with:
+          tag-name: "TAG_v0.0.1"
