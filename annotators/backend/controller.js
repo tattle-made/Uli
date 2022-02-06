@@ -244,9 +244,9 @@ async function addAnnotations(user, post, annotations) {
   console.log({ annotations });
   const requiredAnnotations = annotations.filter(
     (annotation) =>
-      annotation.key === "ogbv" ||
-      annotation.key === "explicit" ||
-      annotation.key === "hate"
+      annotation.key === "question_1" ||
+      annotation.key === "question_2" ||
+      annotation.key === "question_3"
   );
   if (requiredAnnotations.length === 3) {
     console.log("THIS IS A COMPLETE ANNOTATION");
