@@ -45,3 +45,15 @@ jobs:
           tags: ${{ steps.vars.outputs.sha_short }}
           workdir: annotators/backend/
 
+      - name: deploy to cluster
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
+          command: set image --record deployment/annotation-ui annotation-ui=tattletech/ogbv_annotator:${{ steps.vars.outputs.sha_short }}
+      - name: verify deployment
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
+          version: v1.21.0 # specify kubectl binary version explicitly
+          command: rollout status deployment/annotation-ui
+
