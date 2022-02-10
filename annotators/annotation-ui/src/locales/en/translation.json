@@ -5,8 +5,8 @@
   "password": "Password",
   "post_annotation": "Post Annotation",
   "annotation_form_question_1": "Is this post gendered abuse when not directed at a person of marginalized gender?",
-  "annotation_form_question_2": "Is the post gendered abuse even when directed at a person of marginalized gender?",
-  "annotation_form_question_3": "Does this post contain explicit / aggresive language?",
+  "annotation_form_question_2": "Is the post gendered abuse when directed at a person of marginalized gender?",
+  "annotation_form_question_3": "Is this post explicit/aggressive?",
   "yes": "yes",
   "no": "no"
 }
