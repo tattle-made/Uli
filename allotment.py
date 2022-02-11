@@ -211,7 +211,6 @@ if __name__ == "__main__":
                   {'id':3,'language':'hi','max_post':9000,'current_posts':0},
                   {'id':4,'language':'hi','max_post':8000,'current_posts':0},
                   {'id':5,'language':'hi','max_post':7000,'current_posts':0},
-                  {'id':6,'language':'hi','max_post':7500,'current_posts':0}]
-    
+                  {'id':6,'language':'hi','max_post':7500,'current_posts':0}]   
     
     allocate(hin_posts,hin_annotators,config)
