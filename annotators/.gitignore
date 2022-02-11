@@ -1,1 +1,2 @@
-backend/public
+node_modules/
+temp/

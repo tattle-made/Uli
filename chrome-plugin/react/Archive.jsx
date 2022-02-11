@@ -3,6 +3,7 @@ import { Refresh } from "grommet-icons";
 import { useEffect, useState, useContext } from "react";
 import { UserContext, NotificationContext } from "./AppContext";
 import Api from "./Api";
+import { t } from "i18next";
 
 const { getArchive } = Api;
 
@@ -67,7 +68,7 @@ export function Archive() {
           ))}
         </Box>
       ) : (
-        <Text>Looks like you haven't started archiving yet.</Text>
+        <Text>{t("message_archive_empty")}</Text>
       )}
     </Box>
   );

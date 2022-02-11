@@ -28,15 +28,11 @@ def pick_annotators(annotators_dict,count,lang,annotators):
     Arg:
     annotators_dict : dict with annotator id as key and availability (bool) as value,can expand with new 
                      incoming annotators
-
                     availability -
                     1 -> available
                     0 -> not available
-
     count : no. of annotator to allocate
-
     lang : language of the post
-
     Return:
     list of annotators ids
     """
@@ -91,14 +87,12 @@ def allocate(posts,annotators,Config):
         {
             id,
             status : pending | completed
-
             # pending -> assigned to the annotator,yet to be completed -> 0
             # completed -> assigned to the annator, annotation completed -> 1
         }
         ]
     }
     ]
-
     annotators: [
     {
         id,
@@ -113,7 +107,6 @@ def allocate(posts,annotators,Config):
     
         net_overlap #k value in the distribution criteria
     }
-
     """
 
     # Iterate through the posts and assign posts following the distribution criteria.

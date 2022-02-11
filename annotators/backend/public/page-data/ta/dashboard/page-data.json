@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-pages-dashboard-jsx",
+    "path": "/ta/dashboard/",
+    "result": {"data":{"locales":{"edges":[{"node":{"ns":"translation","data":"{\"Welcome\":\"நல்வரவு\",\"app_name\":\"குறிப்பாளர்\",\"username\":\"பயனாளர் பெயர்\",\"password\":\"கடவுச்சொல்\",\"post_annotation\":\"குறிப்பிற்க்குப் பின்\",\"annotation_form_question_1\":\"இந்த பதிவு விளிம்புநிலை பாலினத்தவர்களைத் கொண்ட ஒரு நபரை நோக்கி இயக்கப்படாதபோது பாலின துஷ்பிரயோகம் ஆகிறது ?\",\"annotation_form_question_2\":\"இந்த பதிவு  விளிம்புநிலை பாலினம் கொண்ட ஒரு நபரை நோக்கி இயக்கப்பட்டாலும் கூட பாலின துஷ்பிரயோகம் ஆகிறது ?\",\"annotation_form_question_3\":\"இந்த இடுகையில் வக்கிரமானது / ஆக்ரோஷமான மொழி உள்ளதா? ?\",\"yes\":\"ஆம்\",\"no\":\"இல்லை\"}","language":"ta"}}]}},"pageContext":{"language":"ta","i18n":{"language":"ta","languages":["en","hi","ta"],"defaultLanguage":"en","generateDefaultLanguagePage":false,"routed":true,"originalPath":"/dashboard/","path":"ta/dashboard/"}}},
+    "staticQueryHashes": []}

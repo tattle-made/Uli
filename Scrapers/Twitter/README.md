@@ -33,6 +33,11 @@ s3 buckets and finally the post meta-data along with s3-url is uploaded to mongo
   ```
  5.Run the scraper as : `python dev_twitter_scraper.py -u <users list> -m <max posts to scrape> `
 
+# Wiki 
+
+https://github.com/tattle-made/OGBV/wiki/Twitter-Scraper
+
+
 # Want to contribute to this repository?
 
 We have a [guide](../Instagram/docs/contributing.md) for you.
