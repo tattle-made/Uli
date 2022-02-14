@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    siteUrl: "https://docs.search.tattle.co.in",
+    siteUrl: "https://ogbv-annotator.tattle.co.in",
     title: "docs",
     description: "A search engine framework",
     author: "@tattle-made",

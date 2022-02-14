@@ -191,51 +191,13 @@ async function getUser(username, password) {
   }
 }
 
-async function addAnnotation(user, post, key, value) {
-  try {
-    const result = await sequelize.transaction(async (t) => {
-      const annotation = await Annotation.findOne(
-        {
-          where: {
-            [Op.and]: [{ userId: user.id }, { postId: post.id }, { key }],
-          },
-        },
-        { transaction: t }
-      );
-      let answer = {};
-      if (annotation) {
-        answer = await annotation.update({ key, value }, { transaction: t });
-      } else {
-        answer = await Annotation.create(
-          {
-            userId: user.id,
-            postId: post.id,
-            key,
-            value,
-          },
-          { transaction: t }
-        );
-      }
-
-      return answer;
-    });
-  } catch (err) {}
-  return Annotation.findOne({
-    where: {
-      [Op.and]: [{ userId: user.id }, { postId: post.id }, { key }],
-    },
-  }).then((obj) => {
-    // console.log(obj);
-    if (obj) {
-      return obj.update({ key, value });
-    } else {
-      return Annotation.create({
-        userId: user.id,
-        postId: post.id,
-        key,
-        value,
-      });
-    }
+async function addAnnotation(id, user, post, key, value) {
+  return Annotation.upsert({
+    id: id,
+    userId: user.id,
+    postId: post.id,
+    key,
+    value,
   });
 }
 
@@ -259,7 +221,13 @@ async function addAnnotations(user, post, annotations) {
     await allocation.update({ status: "completed" });
   }
   for (const annotation of annotations) {
-    await addAnnotation(user, post, annotation.key, annotation.value);
+    await addAnnotation(
+      annotation.id,
+      user,
+      post,
+      annotation.key,
+      annotation.value
+    );
   }
 }
 
@@ -371,9 +339,23 @@ async function getDashboardforUser(userId) {
 }
 
 async function getAnnotations() {
-  const result = await Annotation.findAll({});
-  const plainAnnotations = result.map((row) => row.get({ plain: true }));
-  return plainAnnotations;
+  const [results, metadata] = await sequelize.query(
+    `
+      SELECT Annotations.userId, Annotations.postId, Posts.e_twitter_id,
+      Posts.text, Users.username, 
+      Posts.role, Annotations.key,
+      Annotations.value,
+      Posts.lang
+      FROM Annotations 
+      LEFT JOIN Posts 
+      ON Annotations.postId = Posts.id
+      LEFT JOIN Users
+      ON Annotations.userId = Users.id 
+    `
+  );
+
+  console.log(results);
+  return results;
   // return {};
 }
 

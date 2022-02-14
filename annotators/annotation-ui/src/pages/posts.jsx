@@ -73,7 +73,7 @@ export default function PostAnnotator() {
   function changeAnnotation(key, value) {
     setAnnotations({
       ...annotations,
-      [key]: value,
+      [key]: { id: annotations[key] ? annotations[key].id : undefined, value },
     });
   }
 
@@ -145,7 +145,7 @@ export default function PostAnnotator() {
         <Box fill gap={"small"} dir="column">
           <Header pad={"small"}>
             <TattleLogo brandName={t("app_name")} />
-            <Box flex>
+            <Box flex direction={"row"} gap={"medium"}>
               <Box
                 width={"fit-content"}
                 round={"small"}
@@ -156,6 +156,18 @@ export default function PostAnnotator() {
               >
                 <Text>{`pending : ${userStatus.pending}`}</Text>
               </Box>
+              {notification ? (
+                <Box
+                  id={"notification_bar"}
+                  background={
+                    notification.type == "info" ? "visuals-9" : "status-error"
+                  }
+                  pad={"small"}
+                  round={"small"}
+                >
+                  <Text>{notification.text}</Text>
+                </Box>
+              ) : null}
             </Box>
             {/* <Button
 							label={"state"}
@@ -203,20 +215,6 @@ export default function PostAnnotator() {
                       focusIndicator={false}
                     />
                   </Box>
-                  {notification ? (
-                    <Box
-                      id={"notification_bar"}
-                      background={
-                        notification.type == "info"
-                          ? "visuals-9"
-                          : "status-error"
-                      }
-                      pad={"small"}
-                      round={"small"}
-                    >
-                      <Text>{notification.text}</Text>
-                    </Box>
-                  ) : null}
                 </Box>
 
                 {post && (
@@ -232,7 +230,11 @@ export default function PostAnnotator() {
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.question_1}
+                      value={
+                        annotations.question_1
+                          ? annotations.question_1.value
+                          : ""
+                      }
                       onChange={(val) => changeAnnotation("question_1", val)}
                     />
                   </Box>
@@ -244,7 +246,11 @@ export default function PostAnnotator() {
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.question_2}
+                      value={
+                        annotations.question_2
+                          ? annotations.question_2.value
+                          : ""
+                      }
                       onChange={(val) => changeAnnotation("question_2", val)}
                     />
                   </Box>
@@ -256,19 +262,20 @@ export default function PostAnnotator() {
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.question_3}
+                      value={
+                        annotations.question_3
+                          ? annotations.question_3.value
+                          : ""
+                      }
                       onChange={(val) => changeAnnotation("question_3", val)}
                     />
                   </Box>
 
                   <TextArea
                     placeholder="Additional notes"
-                    value={annotations.notes ? annotations.notes : ""}
+                    value={annotations.notes ? annotations.notes.value : ""}
                     onChange={(event) =>
-                      setAnnotations({
-                        ...annotations,
-                        notes: event.target.value,
-                      })
+                      changeAnnotation("notes", event.target.value)
                     }
                   />
                 </Box>
