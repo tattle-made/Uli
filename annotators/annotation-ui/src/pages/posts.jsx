@@ -145,7 +145,7 @@ export default function PostAnnotator() {
         <Box fill gap={"small"} dir="column">
           <Header pad={"small"}>
             <TattleLogo brandName={t("app_name")} />
-            <Box flex>
+            <Box flex direction={"row"} gap={"medium"}>
               <Box
                 width={"fit-content"}
                 round={"small"}
@@ -156,6 +156,18 @@ export default function PostAnnotator() {
               >
                 <Text>{`pending : ${userStatus.pending}`}</Text>
               </Box>
+              {notification ? (
+                <Box
+                  id={"notification_bar"}
+                  background={
+                    notification.type == "info" ? "visuals-9" : "status-error"
+                  }
+                  pad={"small"}
+                  round={"small"}
+                >
+                  <Text>{notification.text}</Text>
+                </Box>
+              ) : null}
             </Box>
             {/* <Button
 							label={"state"}
@@ -203,20 +215,6 @@ export default function PostAnnotator() {
                       focusIndicator={false}
                     />
                   </Box>
-                  {notification ? (
-                    <Box
-                      id={"notification_bar"}
-                      background={
-                        notification.type == "info"
-                          ? "visuals-9"
-                          : "status-error"
-                      }
-                      pad={"small"}
-                      round={"small"}
-                    >
-                      <Text>{notification.text}</Text>
-                    </Box>
-                  ) : null}
                 </Box>
 
                 {post && (
