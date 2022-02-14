@@ -73,7 +73,7 @@ export default function PostAnnotator() {
   function changeAnnotation(key, value) {
     setAnnotations({
       ...annotations,
-      [key]: value,
+      [key]: { id: annotations[key] ? annotations[key].id : undefined, value },
     });
   }
 
@@ -232,7 +232,11 @@ export default function PostAnnotator() {
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.question_1}
+                      value={
+                        annotations.question_1
+                          ? annotations.question_1.value
+                          : ""
+                      }
                       onChange={(val) => changeAnnotation("question_1", val)}
                     />
                   </Box>
@@ -244,7 +248,11 @@ export default function PostAnnotator() {
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.question_2}
+                      value={
+                        annotations.question_2
+                          ? annotations.question_2.value
+                          : ""
+                      }
                       onChange={(val) => changeAnnotation("question_2", val)}
                     />
                   </Box>
@@ -256,17 +264,20 @@ export default function PostAnnotator() {
                         { label: t("yes"), value: "1" },
                         { label: t("no"), value: "0" },
                       ]}
-                      value={annotations.question_3}
+                      value={
+                        annotations.question_3
+                          ? annotations.question_3.value
+                          : ""
+                      }
                       onChange={(val) => changeAnnotation("question_3", val)}
                     />
                   </Box>
 
                   <TextArea
                     placeholder="Additional notes"
-                    value={annotations.notes ? annotations.notes : ""}
+                    value={annotations.notes ? annotations.notes.value : ""}
                     onChange={(event) =>
-                      setAnnotations({
-                        ...annotations,
+                      changeAnnotation({
                         notes: event.target.value,
                       })
                     }

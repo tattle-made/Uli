@@ -1,0 +1,59 @@
+name: Deploy Staging
+on:
+  push: 
+    branches:
+      - development
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      annotation-ui: ${{ steps.filter.outputs.annotation-ui }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: development
+      - uses: dorny/paths-filter@v2.2.0
+        id: filter
+        with:
+          filters: |
+            annotation-ui:
+                - 'annotators/backend/**/*'
+
+  annotation-ui:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.annotation-ui == 'true' }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: development
+      - name: Declare some variables
+        id: vars
+        shell: bash
+        run: |
+          echo "setting variables"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+          
+      - name: Publish to Docker
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          username: tattletech
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          name: tattletech/ogbv_annotator
+          tags: ${{ steps.vars.outputs.sha_short }}
+          workdir: annotators/backend/
+
+      # - name: deploy to cluster
+      #   uses: steebchen/kubectl@v2.0.0
+      #   with: # defaults to latest kubectl binary version
+      #     config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
+      #     command: set image --record deployment/annotation-ui-staging annotation-ui=tattletech/ogbv_annotator:${{ steps.vars.outputs.sha_short }}
+      # - name: verify deployment
+      #   uses: steebchen/kubectl@v2.0.0
+      #   with:
+      #     config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
+      #     version: v1.21.0 # specify kubectl binary version explicitly
+      #     command: rollout status deployment/annotation-ui-staging
+

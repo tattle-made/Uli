@@ -14,6 +14,7 @@ async function getUserAnnotationsForPost(userId, postId) {
     `${config.api_endpoint}/annotation/by-user?userId=${userId}&postId=${postId}`
   );
   const { annotations } = data;
+  console.log({ annotations });
   return { annotations };
 }
 
