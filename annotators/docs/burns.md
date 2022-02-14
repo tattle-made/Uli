@@ -18,3 +18,5 @@ This is particularly tricky because in sequelize, you name your model something 
 2. EMOJI SUPPORT IN MYSQL DATABASE
 Ensure that your database has utf8mb4 for its fields. We made this mistake a few times when setting up 
 new databases. This can result in emojis not getting stored correctly in the db. For this project, its crucial for emojis to be preserved for annotations.
+I followed this SO [answer](https://stackoverflow.com/a/38363567/2767642)
+tldr : best practice to store emojis is to have character set as `utf8mb4` and collation as `utf8mb4_unicode_520_ci`

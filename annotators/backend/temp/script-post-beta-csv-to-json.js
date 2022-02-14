@@ -6,12 +6,12 @@ const results = [];
 
 // console.log(data.posts[0]);
 (async function process() {
-  fs.createReadStream("alllang_tweets.csv")
+  fs.createReadStream("allocations_ext_beta_2.csv")
     .pipe(csv())
     .on("data", (data) => results.push(data))
     .on("end", async () => {
       await writeFile(
-        "alllang_tweets.json",
+        "allocations_ext_beta_2.json",
         JSON.stringify({ posts: results })
       );
     });
