@@ -277,9 +277,7 @@ export default function PostAnnotator() {
                     placeholder="Additional notes"
                     value={annotations.notes ? annotations.notes.value : ""}
                     onChange={(event) =>
-                      changeAnnotation({
-                        notes: event.target.value,
-                      })
+                      changeAnnotation("notes", event.target.value)
                     }
                   />
                 </Box>
