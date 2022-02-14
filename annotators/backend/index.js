@@ -116,8 +116,8 @@ app.get("/api/dashboard/for-user", async (req, res) => {
 });
 
 app.get("/api/annotations/type/csv", async (req, res) => {
-  const annotations = await getAnnotations();
-  res.send(annotations);
+  const tweets = await getAnnotations();
+  res.send({ tweets });
 });
 
 app.listen(port, () => {

@@ -354,6 +354,7 @@ async function getAnnotations() {
     `
   );
 
+  console.log(results);
   return results;
   // return {};
 }
