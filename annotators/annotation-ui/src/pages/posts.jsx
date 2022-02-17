@@ -15,7 +15,7 @@ import {
   Image,
   Anchor,
 } from "grommet";
-import ReactJson from "react-json-view";
+// import ReactJson from "react-json-view";
 import TattleLogo from "../components/atoms/TattleLogo";
 import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious } from "grommet-icons";
@@ -242,8 +242,8 @@ export default function PostAnnotator() {
                 {post && (
                   <SimplePost post={post} annotationStatus={"pending"} />
                 )}
-                <ReactJson collapsed={false} src={debugMessage} />
-                <ReactJson collapsed={false} src={annotations} />
+                {/* <ReactJson collapsed={false} src={debugMessage} />
+                <ReactJson collapsed={false} src={annotations} /> */}
                 <Box gap={"medium"}>
                   <Box direction={"column"}>
                     <Text> {t("annotation_form_question_1")}</Text>
