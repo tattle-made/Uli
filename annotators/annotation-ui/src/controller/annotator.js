@@ -153,6 +153,15 @@ class Annotator {
    * Check if the annotations have changed. if they have, make an API call to save the annotations.
    */
   async saveAnnotations(annotations) {
+    return saveAnnotations(this.user.id, this.session.postId, annotations);
+  }
+
+  /**
+   *
+   * Checks whether the annotations have changed on the UI vs the database.
+   * If it has changed, this function returns the diff and if not false
+   */
+  haveAnnotationsChanged(annotations) {
     console.log({ annotations, current: this.currentAnnotations });
     let annotationArray = Object.keys(annotations).map(
       (key) => annotations[key]
@@ -163,14 +172,10 @@ class Annotator {
 
     let diff = _.difference(annotationArray, currentAnnotationsArray);
 
-    console.log({
-      diff: _.difference(annotationArray, currentAnnotationsArray),
-    });
     if (diff.length != 0) {
-      console.log("saving annotations");
-      return saveAnnotations(this.user.id, this.session.postId, diff);
+      return diff;
     } else {
-      console.log("no need to save anything");
+      return false;
     }
   }
 

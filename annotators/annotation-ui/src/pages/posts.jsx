@@ -108,26 +108,45 @@ export default function PostAnnotator() {
 
   async function goToNextPage() {
     try {
-      await annotator.saveAnnotations(annotations);
-      showNotification("info", "Form Saved");
+      let diff = annotator.haveAnnotationsChanged(annotations);
+      console.log({ diff });
+      if (diff) {
+        const response = await annotator.saveAnnotations(diff);
+        if (response.status === 200) {
+          showNotification("info", "Form Saved");
+          return;
+        } else {
+          throw "Error saving Data";
+        }
+      }
+      await annotator.next();
+      await refresh();
+      await annotator.saveSession();
     } catch (err) {
-      showNotification("info", "Error Saving Form");
+      console.log(err);
+      showNotification("info", "Error saving Data 2");
     }
-    await annotator.next();
-    await refresh();
-    await annotator.saveSession();
   }
 
   async function goToPreviousPage() {
     try {
-      await annotator.saveAnnotations(annotations);
-      showNotification("info", "Form Saved");
+      let diff = annotator.haveAnnotationsChanged(annotations);
+      if (diff) {
+        const response = await annotator.saveAnnotations(diff);
+        if (response.status === 200) {
+          showNotification("info", "Form Saved");
+          return;
+        } else {
+          throw "Error saving Data";
+        }
+      }
+      await annotator.previous();
+      await refresh();
+      await annotator.saveSession();
     } catch (err) {
-      showNotification("info", "Error Saving Form");
+      console.log(err);
+      showNotification("info", "Error saving Data");
     }
-    await annotator.previous();
-    await refresh();
-    await annotator.saveSession();
   }
 
   async function logout() {

@@ -70,6 +70,7 @@ app.post("/api/annotations/", async (req, res) => {
   const { userId, postId, annotations } = req.body;
   await addAnnotations({ id: userId }, { id: postId }, annotations);
   res.send({ message: "annotations added" });
+  // res.status(404).end();
 });
 
 app.post("/api/session", async (req, res) => {
