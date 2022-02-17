@@ -191,43 +191,19 @@ async function getUser(username, password) {
   }
 }
 
-async function addAnnotation(id, user, post, key, value) {
+async function addAnnotation(user, post, annotation) {
   return Annotation.upsert({
-    id: id,
+    id: annotation.id,
     userId: user.id,
     postId: post.id,
-    key,
-    value,
+    key: annotation.key,
+    value: annotation.value,
   });
 }
 
 async function addAnnotations(user, post, annotations) {
-  console.log("adding annoations ");
-  console.log({ annotations });
-  const requiredAnnotations = annotations.filter(
-    (annotation) =>
-      annotation.key === "question_1" ||
-      annotation.key === "question_2" ||
-      annotation.key === "question_3"
-  );
-  if (requiredAnnotations.length === 3) {
-    console.log("THIS IS A COMPLETE ANNOTATION");
-    const allocation = await UserPostAllocation.findOne({
-      where: {
-        userId: user.id,
-        postId: post.id,
-      },
-    });
-    await allocation.update({ status: "completed" });
-  }
   for (const annotation of annotations) {
-    await addAnnotation(
-      annotation.id,
-      user,
-      post,
-      annotation.key,
-      annotation.value
-    );
+    await addAnnotation(user, post, annotation);
   }
 }
 

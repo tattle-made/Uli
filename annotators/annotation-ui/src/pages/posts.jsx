@@ -15,7 +15,7 @@ import {
   Image,
   Anchor,
 } from "grommet";
-// import ReactJson from "react-json-view";
+import ReactJson from "react-json-view";
 import TattleLogo from "../components/atoms/TattleLogo";
 import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious } from "grommet-icons";
@@ -73,7 +73,11 @@ export default function PostAnnotator() {
   function changeAnnotation(key, value) {
     setAnnotations({
       ...annotations,
-      [key]: { id: annotations[key] ? annotations[key].id : undefined, value },
+      [key]: {
+        id: annotations[key] ? annotations[key].id : undefined,
+        value,
+        key,
+      },
     });
   }
 
@@ -103,27 +107,27 @@ export default function PostAnnotator() {
   }
 
   async function goToNextPage() {
-    if (annotator.getFormStatus(annotations)) {
+    try {
       await annotator.saveAnnotations(annotations);
       showNotification("info", "Form Saved");
-      await annotator.next();
-      await refresh();
-      await annotator.saveSession();
-    } else {
-      showNotification("error", "Form is incomplete");
+    } catch (err) {
+      showNotification("info", "Error Saving Form");
     }
+    await annotator.next();
+    await refresh();
+    await annotator.saveSession();
   }
 
   async function goToPreviousPage() {
-    if (annotator.getFormStatus(annotations)) {
+    try {
       await annotator.saveAnnotations(annotations);
       showNotification("info", "Form Saved");
-      await annotator.previous();
-      await refresh();
-      await annotator.saveSession();
-    } else {
-      showNotification("error", "Form is incomplete");
+    } catch (err) {
+      showNotification("info", "Error Saving Form");
     }
+    await annotator.previous();
+    await refresh();
+    await annotator.saveSession();
   }
 
   async function logout() {
@@ -199,7 +203,6 @@ export default function PostAnnotator() {
                     alignSelf={"start"}
                   >
                     <Text>{pageStatus}</Text>
-                    {/* <ReactJson collapsed={true} src={debugMessage} /> */}
                   </Box>
                   <Box direction={"row"} gap={"xsmall"}>
                     <Button
@@ -220,6 +223,8 @@ export default function PostAnnotator() {
                 {post && (
                   <SimplePost post={post} annotationStatus={"pending"} />
                 )}
+                <ReactJson collapsed={false} src={debugMessage} />
+                <ReactJson collapsed={false} src={annotations} />
                 <Box gap={"medium"}>
                   <Box direction={"column"}>
                     <Text> {t("annotation_form_question_1")}</Text>

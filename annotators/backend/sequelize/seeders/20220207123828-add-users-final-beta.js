@@ -25,7 +25,7 @@ const users = [
   { username: "kirti_hi", lang: "hi" },
   { username: "seema_hi", lang: "hi" },
   { username: "div_hi", lang: "hi" },
-  { username: "pushpa_en", lang: "en" },
+  { username: "ritash_en", lang: "en" },
   { username: "shehla_en", lang: "en" },
   { username: "rishikesh_en", lang: "en" },
   { username: "pooja_en", lang: "en" },

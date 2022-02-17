@@ -57,6 +57,7 @@ class Annotator {
       annotations[annotation.key] = {
         id: annotation.id,
         value: annotation.value,
+        key: annotation.key,
       };
     });
 
@@ -152,8 +153,24 @@ class Annotator {
    * Check if the annotations have changed. if they have, make an API call to save the annotations.
    */
   async saveAnnotations(annotations) {
-    if (!_.isEqual(annotations, this.currentAnnotations)) {
-      return saveAnnotations(this.user.id, this.session.postId, annotations);
+    console.log({ annotations, current: this.currentAnnotations });
+    let annotationArray = Object.keys(annotations).map(
+      (key) => annotations[key]
+    );
+    let currentAnnotationsArray = Object.keys(this.currentAnnotations).map(
+      (key) => this.currentAnnotations[key]
+    );
+
+    let diff = _.difference(annotationArray, currentAnnotationsArray);
+
+    console.log({
+      diff: _.difference(annotationArray, currentAnnotationsArray),
+    });
+    if (diff.length != 0) {
+      console.log("saving annotations");
+      return saveAnnotations(this.user.id, this.session.postId, diff);
+    } else {
+      console.log("no need to save anything");
     }
   }
 
@@ -166,31 +183,13 @@ class Annotator {
    */
   async sync() {}
 
-  getFormStatus(annotations) {
-    return true;
-    const { explicit, hate, dimension, ogbv } = annotations;
-    if ((explicit && hate && dimension && ogbv) != undefined) {
-      if (
-        explicit.length != 0 &&
-        hate.length != 0 &&
-        dimension.length != 0 &&
-        ogbv.length != 0
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   get state() {
     return {
       user: this.user,
       session: this.session,
       allocations: this.allocations,
       pageCount: this.pageCount,
+      currentAnnotations: this.currentAnnotations,
     };
   }
 }
