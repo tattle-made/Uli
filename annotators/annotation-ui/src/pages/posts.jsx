@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { graphql, navigate } from "gatsby";
-import { Annotator } from "../controller/annotator";
+import { Annotator, ANNOTATOR_STATUS } from "../controller/annotator";
 import {
   Grommet,
   Header,
@@ -8,14 +8,14 @@ import {
   Box,
   Text,
   Button,
-  RadioButtonGroup,
   TextArea,
   Keyboard,
-  CheckBoxGroup,
   Image,
   Anchor,
+  Spinner,
+  Stack,
 } from "grommet";
-// import ReactJson from "react-json-view";
+import ReactJson from "react-json-view";
 import TattleLogo from "../components/atoms/TattleLogo";
 import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious } from "grommet-icons";
@@ -29,8 +29,6 @@ import {
   logoutUser,
 } from "../repository/user";
 import styled from "styled-components";
-
-const RadioGroup = styled(ReactRadioButtonGroup)``;
 
 var annotator;
 
@@ -47,6 +45,7 @@ export default function PostAnnotator() {
   const [pageStatus, setPageStatus] = useState("");
   const [userStatus, setUserStatus] = useState("");
   const [post, setPost] = useState(undefined);
+  const [status, setStatus] = useState(ANNOTATOR_STATUS.LOADING_PAGE);
 
   useEffect(() => {
     async function setupAnnotator() {
@@ -82,17 +81,26 @@ export default function PostAnnotator() {
   }
 
   async function refresh() {
-    const data = await annotator.makePageData(annotator.session.postId);
-    if (data != undefined) {
-      const { annotations, pageStatus, post, userStatus } = data;
-      // console.log("----");
-      // console.log(annotations);
-      // console.log("----");
-      setAnnotations(annotations);
-      setPageStatus(pageStatus);
-      setDebugMessage(annotator.state);
-      setPost(post);
-      setUserStatus(userStatus);
+    setStatus(ANNOTATOR_STATUS.LOADING_PAGE);
+    const { data, error } = await annotator.makePageData(
+      annotator.session.postId
+    );
+    if (error) {
+      showNotification("error", error.message);
+      setStatus(ANNOTATOR_STATUS.ERROR_MAKE_PAGE_DATA);
+    } else {
+      if (data != undefined) {
+        const { annotations, pageStatus, post, userStatus } = data;
+        // console.log("----");
+        // console.log(annotations);
+        // console.log("----");
+        setAnnotations(annotations);
+        setPageStatus(pageStatus);
+        setDebugMessage(annotator.state);
+        setPost(post);
+        setUserStatus(userStatus);
+        setStatus(ANNOTATOR_STATUS.OK);
+      }
     }
   }
 
@@ -101,9 +109,12 @@ export default function PostAnnotator() {
       type,
       text,
     });
-    setTimeout(() => {
-      setNotification(undefined);
-    }, 750);
+    setTimeout(
+      () => {
+        setNotification(undefined);
+      },
+      type === "info" ? 750 : 2500
+    );
   }
 
   async function goToNextPage() {
@@ -111,10 +122,10 @@ export default function PostAnnotator() {
       let diff = annotator.haveAnnotationsChanged(annotations);
       console.log({ diff });
       if (diff) {
+        setStatus(ANNOTATOR_STATUS.LOADING_SAVE_ANNOTATIONS);
         const response = await annotator.saveAnnotations(diff);
         if (response.status === 200) {
           showNotification("info", "Form Saved");
-          return;
         } else {
           throw "Error saving Data";
         }
@@ -135,7 +146,6 @@ export default function PostAnnotator() {
         const response = await annotator.saveAnnotations(diff);
         if (response.status === 200) {
           showNotification("info", "Form Saved");
-          return;
         } else {
           throw "Error saving Data";
         }
@@ -153,10 +163,6 @@ export default function PostAnnotator() {
     await logoutUser();
     navigate("/login");
   }
-
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
 
   return (
     <Grommet full theme={TattleTheme}>
@@ -191,6 +197,18 @@ export default function PostAnnotator() {
                   <Text>{notification.text}</Text>
                 </Box>
               ) : null}
+              {status.type !== "ok" ? (
+                <Box
+                  id={"notification_bar"}
+                  background={
+                    status.type == "loading" ? "visuals-9" : "status-error"
+                  }
+                  pad={"small"}
+                  round={"small"}
+                >
+                  <Text>{status.message}</Text>
+                </Box>
+              ) : null}
             </Box>
             {/* <Button
 							label={"state"}
@@ -198,8 +216,7 @@ export default function PostAnnotator() {
 						/> */}
             <Button plain label={"Logout"} onClick={logout} />
           </Header>
-
-          <Box flex={"grow"} gap={"medium"}>
+          <Box flex={"grow"} gap={"medium"} direction={"row-responsive"}>
             <Box
               width={"large"}
               border
@@ -207,103 +224,128 @@ export default function PostAnnotator() {
               gap={"large"}
               alignSelf={"center"}
             >
-              <Box flex={"grow"} gap={"medium"} pad={"medium"}>
-                <Box
-                  direction={"row-responsive"}
-                  align={"center"}
-                  gap={"medium"}
-                >
-                  <Text size={"large"}>{t("post_annotation")}</Text>
+              <Stack>
+                <Box flex={"grow"} gap={"medium"} pad={"medium"}>
                   <Box
-                    width={"fit-content"}
-                    round={"small"}
-                    responsive
-                    pad={"small"}
-                    alignSelf={"start"}
+                    direction={"row-responsive"}
+                    align={"center"}
+                    gap={"medium"}
                   >
-                    <Text>{pageStatus}</Text>
+                    <Text size={"large"}>{t("post_annotation")}</Text>
+                    <Box
+                      width={"fit-content"}
+                      round={"small"}
+                      responsive
+                      pad={"small"}
+                      alignSelf={"start"}
+                    >
+                      <Text>{pageStatus}</Text>
+                    </Box>
+                    <Box direction={"row"} gap={"xsmall"}>
+                      <Button
+                        default
+                        icon={<LinkPrevious size={"medium"} />}
+                        onClick={goToPreviousPage}
+                        focusIndicator={false}
+                      />
+                      <Button
+                        secondary
+                        icon={<LinkNext size={"medium"} />}
+                        onClick={goToNextPage}
+                        focusIndicator={false}
+                      />
+                    </Box>
                   </Box>
-                  <Box direction={"row"} gap={"xsmall"}>
-                    <Button
-                      default
-                      icon={<LinkPrevious size={"medium"} />}
-                      onClick={goToPreviousPage}
-                      focusIndicator={false}
-                    />
-                    <Button
-                      secondary
-                      icon={<LinkNext size={"medium"} />}
-                      onClick={goToNextPage}
-                      focusIndicator={false}
+
+                  {post && (
+                    <SimplePost post={post} annotationStatus={"pending"} />
+                  )}
+
+                  <Box gap={"medium"}>
+                    <Box direction={"column"}>
+                      <Text> {t("annotation_form_question_1")}</Text>
+
+                      <ReactRadioButtonGroup
+                        name="question_1"
+                        options={[
+                          { label: t("yes"), value: "1" },
+                          { label: t("no"), value: "0" },
+                        ]}
+                        value={
+                          annotations.question_1
+                            ? annotations.question_1.value
+                            : ""
+                        }
+                        onChange={(val) => changeAnnotation("question_1", val)}
+                      />
+                    </Box>
+                    <Box direction={"column"}>
+                      <Text> {t("annotation_form_question_2")}</Text>
+                      <ReactRadioButtonGroup
+                        name="question_2"
+                        options={[
+                          { label: t("yes"), value: "1" },
+                          { label: t("no"), value: "0" },
+                        ]}
+                        value={
+                          annotations.question_2
+                            ? annotations.question_2.value
+                            : ""
+                        }
+                        onChange={(val) => changeAnnotation("question_2", val)}
+                      />
+                    </Box>
+                    <Box direction={"column"}>
+                      <Text> {t("annotation_form_question_3")}</Text>
+                      <ReactRadioButtonGroup
+                        name="question_3"
+                        options={[
+                          { label: t("yes"), value: "1" },
+                          { label: t("no"), value: "0" },
+                        ]}
+                        value={
+                          annotations.question_3
+                            ? annotations.question_3.value
+                            : ""
+                        }
+                        onChange={(val) => changeAnnotation("question_3", val)}
+                      />
+                    </Box>
+
+                    <TextArea
+                      placeholder="Additional notes"
+                      value={annotations.notes ? annotations.notes.value : ""}
+                      onChange={(event) =>
+                        changeAnnotation("notes", event.target.value)
+                      }
                     />
                   </Box>
                 </Box>
 
-                {post && (
-                  <SimplePost post={post} annotationStatus={"pending"} />
-                )}
-                {/* <ReactJson collapsed={false} src={debugMessage} />
-                <ReactJson collapsed={false} src={annotations} /> */}
-                <Box gap={"medium"}>
-                  <Box direction={"column"}>
-                    <Text> {t("annotation_form_question_1")}</Text>
-
-                    <ReactRadioButtonGroup
-                      name="question_1"
-                      options={[
-                        { label: t("yes"), value: "1" },
-                        { label: t("no"), value: "0" },
-                      ]}
-                      value={
-                        annotations.question_1
-                          ? annotations.question_1.value
-                          : ""
-                      }
-                      onChange={(val) => changeAnnotation("question_1", val)}
-                    />
+                {status.type !== "ok" ? (
+                  <Box
+                    flex={"grow"}
+                    pad={"medium"}
+                    background={"light-2"}
+                    fill={"vertical"}
+                  >
+                    {status.type === "loading" ? (
+                      <Box direction={"row"} gap={"small"}>
+                        <Spinner />
+                        <Text>{status.message}</Text>
+                      </Box>
+                    ) : status.type === "error" ? (
+                      <Text size={"large"} color={"status-error"}>
+                        {status.message}
+                      </Text>
+                    ) : null}
                   </Box>
-                  <Box direction={"column"}>
-                    <Text> {t("annotation_form_question_2")}</Text>
-                    <ReactRadioButtonGroup
-                      name="question_2"
-                      options={[
-                        { label: t("yes"), value: "1" },
-                        { label: t("no"), value: "0" },
-                      ]}
-                      value={
-                        annotations.question_2
-                          ? annotations.question_2.value
-                          : ""
-                      }
-                      onChange={(val) => changeAnnotation("question_2", val)}
-                    />
-                  </Box>
-                  <Box direction={"column"}>
-                    <Text> {t("annotation_form_question_3")}</Text>
-                    <ReactRadioButtonGroup
-                      name="question_3"
-                      options={[
-                        { label: t("yes"), value: "1" },
-                        { label: t("no"), value: "0" },
-                      ]}
-                      value={
-                        annotations.question_3
-                          ? annotations.question_3.value
-                          : ""
-                      }
-                      onChange={(val) => changeAnnotation("question_3", val)}
-                    />
-                  </Box>
-
-                  <TextArea
-                    placeholder="Additional notes"
-                    value={annotations.notes ? annotations.notes.value : ""}
-                    onChange={(event) =>
-                      changeAnnotation("notes", event.target.value)
-                    }
-                  />
-                </Box>
-              </Box>
+                ) : null}
+              </Stack>
+            </Box>
+            <Box width={"medium"} height={"95vh"} overflow={"scroll"}>
+              <ReactJson collapsed={false} src={debugMessage} />
+              <ReactJson collapsed={false} src={annotations} />
             </Box>
           </Box>
 
@@ -318,7 +360,7 @@ export default function PostAnnotator() {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g clip-path="url(#clip0)">
+                    <g clipPath="url(#clip0)">
                       <path
                         d="M78.784 12.8H63.16C62.584 12.8 62.08 13.304 62.08 13.88C62.08 14.528 62.584 14.996 63.16 14.996H69.748V36.848C69.748 37.532 70.288 38.144 71.008 38.144C71.692 38.144 72.232 37.532 72.232 36.848V14.996H78.784C79.36 14.996 79.9 14.528 79.9 13.88C79.9 13.304 79.36 12.8 78.784 12.8ZM87.3641 19.064C83.3321 19.064 78.4361 22.232 78.4361 28.64C78.4361 35.12 83.3321 38.252 87.3641 38.252C90.3881 38.252 93.0161 36.524 94.0601 33.932V36.956C94.0601 37.604 94.6361 38.216 95.2841 38.216C95.9681 38.216 96.5441 37.604 96.5441 36.956V20.432C96.5441 19.748 96.0041 19.172 95.2841 19.172C94.6361 19.172 94.0601 19.748 94.0601 20.432V23.06C92.8361 20.432 90.1361 19.064 87.3641 19.064ZM87.6161 36.092C84.5561 36.092 80.8841 33.716 80.8841 28.64C80.8841 23.6 84.5561 21.224 87.6161 21.224C90.6761 21.224 94.2041 23.456 94.2041 28.64C94.2041 33.716 90.6761 36.092 87.6161 36.092ZM107.544 35.804C107.148 35.912 106.68 36.056 106.104 36.056C105.168 36.056 104.664 35.624 104.664 34.472V21.368H107.688C108.3 21.368 108.768 20.972 108.768 20.324C108.768 19.676 108.3 19.28 107.688 19.28H104.664V16.004C104.664 15.32 104.124 14.78 103.439 14.78C102.756 14.78 102.216 15.32 102.216 16.004V19.28H100.452C99.8395 19.28 99.4075 19.676 99.4075 20.324C99.4075 20.972 99.8395 21.368 100.452 21.368H102.216V34.616C102.216 37.532 103.872 38.18 105.6 38.18C106.968 38.18 108.768 37.82 108.768 36.632C108.768 36.02 108.228 35.588 107.544 35.804ZM118.688 35.804C118.292 35.912 117.824 36.056 117.248 36.056C116.312 36.056 115.808 35.624 115.808 34.472V21.368H118.832C119.444 21.368 119.912 20.972 119.912 20.324C119.912 19.676 119.444 19.28 118.832 19.28H115.808V16.004C115.808 15.32 115.268 14.78 114.584 14.78C113.9 14.78 113.36 15.32 113.36 16.004V19.28H111.596C110.984 19.28 110.552 19.676 110.552 20.324C110.552 20.972 110.984 21.368 111.596 21.368H113.36V34.616C113.36 37.532 115.016 38.18 116.744 38.18C118.112 38.18 119.912 37.82 119.912 36.632C119.912 36.02 119.372 35.588 118.688 35.804ZM125.585 36.92V13.52C125.585 12.872 125.045 12.296 124.361 12.296C123.677 12.296 123.137 12.872 123.137 13.52V36.92C123.137 37.568 123.677 38.18 124.361 38.18C125.045 38.18 125.585 37.568 125.585 36.92ZM138.346 19.064C134.242 19.064 129.202 22.232 129.202 28.64C129.202 35.12 134.098 38.18 138.634 38.18C140.902 38.18 143.098 37.496 144.61 36.128C145.15 35.624 145.294 35.3 145.294 34.976C145.294 34.436 144.934 34.004 144.322 34.004C143.998 34.004 143.71 34.184 143.242 34.544C142.018 35.552 140.434 36.092 138.706 36.092C135.43 36.092 132.01 34.04 131.722 29.612H145.762C146.77 29.612 147.346 29.144 147.346 28.208C147.346 22.268 142.45 19.064 138.346 19.064ZM138.346 21.224C141.262 21.224 144.682 23.24 144.97 27.632H131.722C132.046 23.24 135.466 21.224 138.346 21.224Z"
                         fill="#E76D67"

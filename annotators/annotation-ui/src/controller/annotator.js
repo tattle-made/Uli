@@ -1,10 +1,7 @@
-import axios from "axios";
-import { config } from "../components/config";
 import {
   getAllocationForUser,
   getUserAnnotationsForPost,
 } from "../repository/allocation";
-import ls from "local-storage";
 import { saveAnnotations } from "../repository/annotation";
 import _ from "lodash";
 import { getUserStatus } from "../repository/user";
@@ -16,6 +13,35 @@ const DEFAULT_SESSION_VALUE = {
   pageNum: 0, // pageNum on which this post exists
 };
 const PAGESIZE = 20;
+
+const ANNOTATOR_STATUS = {
+  OK: {
+    type: "ok",
+    message: "Everything looks ok.",
+  },
+  LOADING_PAGE: {
+    type: "loading",
+    message: "Loading Next Post and User Annotations",
+  },
+  LOADING_SAVE_ANNOTATIONS: {
+    type: "loading",
+    message: "Saving your Annotations",
+  },
+  ERROR: { type: "error", message: "Error performing operations" },
+  ERROR_SETUP_ANNOTATOR: {
+    type: "error",
+    message: "Could not get your posts. Refresh or Try again later.",
+  },
+  ERROR_MAKE_PAGE_DATA: {
+    type: "error",
+    message:
+      "Could not get your annotations for this post. Refresh or Try again later.",
+  },
+  ERROR_SAVE_ANNOTATIONS: {
+    type: "error",
+    message: "Could not save your annotations. Refresh or Try again later.",
+  },
+};
 
 /*
 Session includes all information you would need to resume an annotation session. 
@@ -48,31 +74,34 @@ class Annotator {
   }
 
   async makePageData(postId) {
-    const { annotations: annotationRes } = await getUserAnnotationsForPost(
-      this.user.id,
-      postId
-    );
-    var annotations = {};
-    annotationRes.map((annotation) => {
-      annotations[annotation.key] = {
-        id: annotation.id,
-        value: annotation.value,
-        key: annotation.key,
-      };
-    });
+    const { annotations: annotationRes, error } =
+      await getUserAnnotationsForPost(this.user.id, postId);
+    if (error) {
+      console.log("----> 2 ", error);
+      return { error };
+    } else {
+      var annotations = {};
+      annotationRes.map((annotation) => {
+        annotations[annotation.key] = {
+          id: annotation.id,
+          value: annotation.value,
+          key: annotation.key,
+        };
+      });
 
-    this.currentAnnotations = annotations;
+      this.currentAnnotations = annotations;
 
-    const pageStatus = `${
-      this.pageSize * this.session.pageNum + this.session.postIndex + 1
-    }/${this.postCount}`;
+      const pageStatus = `${
+        this.pageSize * this.session.pageNum + this.session.postIndex + 1
+      }/${this.postCount}`;
 
-    const post = this.allocations[this.session.postIndex].Post;
+      const post = this.allocations[this.session.postIndex].Post;
 
-    const { status: userStatus } = await getUserStatus(this.user.id);
-    console.log({ userStatus });
+      const { status: userStatus } = await getUserStatus(this.user.id);
+      console.log({ userStatus });
 
-    return { annotations, pageStatus, post, userStatus };
+      return { data: { annotations, pageStatus, post, userStatus } };
+    }
   }
 
   /**
@@ -89,8 +118,8 @@ class Annotator {
    *        return false
    */
   async next() {
-    if (this.session.postIndex == this.pageSize - 1) {
-      if (this.session.pageNum == this.pageCount) {
+    if (this.session.postIndex === this.pageSize - 1) {
+      if (this.session.pageNum === this.pageCount) {
         return undefined;
       } else {
         this.session.pageNum++;
@@ -103,7 +132,7 @@ class Annotator {
         this.session.postId = this.allocations[0].postId;
       }
     } else {
-      if (this.session.postIndex != this.allocations.length - 1) {
+      if (this.session.postIndex !== this.allocations.length - 1) {
         this.session.postIndex++;
         this.session.postId = this.allocations[this.session.postIndex].postId;
       } else {
@@ -128,8 +157,8 @@ class Annotator {
    *        return page data
    */
   async previous() {
-    if (this.session.postIndex == 0) {
-      if (this.session.pageNum == 0) {
+    if (this.session.postIndex === 0) {
+      if (this.session.pageNum === 0) {
         return undefined;
       } else {
         this.session.pageNum--;
@@ -172,7 +201,7 @@ class Annotator {
 
     let diff = _.difference(annotationArray, currentAnnotationsArray);
 
-    if (diff.length != 0) {
+    if (diff.length !== 0) {
       return diff;
     } else {
       return false;
@@ -199,4 +228,4 @@ class Annotator {
   }
 }
 
-export { Annotator };
+export { Annotator, ANNOTATOR_STATUS };

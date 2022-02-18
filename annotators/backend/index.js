@@ -63,6 +63,7 @@ app.get("/api/annotation/by-user/", async (req, res) => {
   );
 
   res.send({ annotations: annotationsPlain });
+  // res.status(404).end();
 });
 
 app.post("/api/annotations/", async (req, res) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Text, Image, Anchor, Video } from "grommet";
 import { Clock, Alert, Checkmark } from "grommet-icons";
 
@@ -45,7 +45,7 @@ export function SimplePost({ post, annotationStatus }) {
       </div>
 
       <div>
-        {transformedPost.urls && transformedPost.urls[0].length != 0 ? (
+        {transformedPost.urls && transformedPost.urls[0].length !== 0 ? (
           <Box direction={"row-responsive"} gap={"small"}>
             {transformedPost.urls.map((url, ix) => (
               <Anchor key={ix} href={url} target={"_blank"}>
@@ -59,7 +59,7 @@ export function SimplePost({ post, annotationStatus }) {
       {transformedPost.photos ? (
         <Box height={"small"} width={"small"} direction={"row-responsive"}>
           {transformedPost.photos.map((photo, ix) => (
-            <Anchor href={photo} target={"_blank"}>
+            <Anchor key={ix} href={photo} target={"_blank"}>
               <Box
                 height={"small"}
                 width={"small"}
@@ -75,13 +75,7 @@ export function SimplePost({ post, annotationStatus }) {
         <Box height={"small"} width={"small"} direction={"row-responsive"}>
           {transformedPost.photos.map((photo, ix) => (
             <Box height={"large"} width={"large"}>
-              <Video
-                controls="over"
-                fit="contain"
-                controls={true}
-                loop={true}
-                autoPlay={true}
-              >
+              <Video controls="over" fit="contain" loop={true} autoPlay={true}>
                 <source key="video" src={photo} type="video/mp4" />
               </Video>
             </Box>
