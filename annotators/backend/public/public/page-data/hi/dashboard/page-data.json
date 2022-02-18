@@ -1,5 +1,0 @@
-{
-    "componentChunkName": "component---src-pages-dashboard-jsx",
-    "path": "/hi/dashboard/",
-    "result": {"data":{"locales":{"edges":[{"node":{"ns":"translation","data":"{\"Welcome\":\"हाई ! अभिवादन\",\"app_name\":\"एनोटेटर\",\"username\":\"यूज़र का नाम\",\"password\":\"पासवर्ड\",\"post_annotation\":\"पोस्ट व्याख्या\",\"annotation_form_question_1\":\"क्या यह पोस्ट ओजीबीवी है अगर हाशिए के लिंग के व्यक्ति पर निर्देशित नहीं किया जाता है? \\n(Is this post oGBV when not directed at gender/sexual minorities )\",\"annotation_form_question_2\":\"अगर हाशिए के लिंग के व्यक्ति पर निर्देशित होता है तो यह पोस्ट ओजीबीवी है? (Is this post oGBV when directed at gender/sexual minorities?)\",\"annotation_form_question_3\":\"पोस्ट अभद्र/आक्रामक है? (Is this post explicit/aggressive?)\",\"yes\":\"हां\",\"no\":\"नहीं\"}","language":"hi"}}]}},"pageContext":{"language":"hi","i18n":{"language":"hi","languages":["en","hi","ta"],"defaultLanguage":"en","generateDefaultLanguagePage":false,"routed":true,"originalPath":"/dashboard/","path":"hi/dashboard/"}}},
-    "staticQueryHashes": []}
