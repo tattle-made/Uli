@@ -21,7 +21,7 @@ const ANNOTATOR_STATUS = {
   },
   LOADING_PAGE: {
     type: "loading",
-    message: "Loading Next Post and User Annotations",
+    message: "Loading Post and User Annotations",
   },
   LOADING_SAVE_ANNOTATIONS: {
     type: "loading",
@@ -140,7 +140,7 @@ class Annotator {
       }
     }
 
-    return await this.makePageData(this.session.postId);
+    // return await this.makePageData(this.session.postId);
   }
 
   /**
@@ -175,7 +175,7 @@ class Annotator {
       this.session.postId = this.allocations[this.session.postIndex].postId;
     }
 
-    return await this.makePageData(this.session.postId);
+    // return await this.makePageData(this.session.postId);
   }
 
   /**
@@ -209,6 +209,8 @@ class Annotator {
   }
 
   async saveSession() {
+    console.log("saving session");
+    console.log({ session: this.session });
     return saveSession(this.user.id, this.session);
   }
 

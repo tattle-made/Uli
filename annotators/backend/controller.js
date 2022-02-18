@@ -192,6 +192,21 @@ async function getUser(username, password) {
 }
 
 async function addAnnotation(user, post, annotation) {
+  const annotationRes = await Annotation.findOne({
+    where: {
+      userId: user.id,
+      postId: post.id,
+      key: annotation.key,
+    },
+  });
+  console.log({ annotationRes });
+
+  if (annotationRes) {
+    if (annotationRes.id !== annotation.id) {
+      console.log("Unexpected State");
+    }
+    annotation.id = annotationRes.id;
+  }
   return Annotation.upsert({
     id: annotation.id,
     userId: user.id,
