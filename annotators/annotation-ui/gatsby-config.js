@@ -9,6 +9,7 @@ module.exports = {
     "gatsby-plugin-styled-components",
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
+    `gatsby-source-local-git-modern`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {

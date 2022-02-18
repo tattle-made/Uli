@@ -8,7 +8,7 @@ const preference = {
   language: "en",
 };
 
-const IndexPage = () => {
+const IndexPage = ({ data }) => {
   const { t } = useTranslation();
   const { languages, changeLanguage } = useI18next();
 
@@ -21,6 +21,7 @@ const IndexPage = () => {
       <Box>
         <h1>{t("Tattle Annotator")}</h1>
         <p>{t("Welcome")}</p>
+        <p>{"commit : " + data.gitCommit.hash}</p>
       </Box>
     </Grommet>
   );
@@ -38,6 +39,10 @@ export const query = graphql`
           language
         }
       }
+    }
+    gitCommit(latest: { eq: true }) {
+      hash
+      date
     }
   }
 `;

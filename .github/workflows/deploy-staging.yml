@@ -34,6 +34,9 @@ jobs:
         run: |
           echo "setting variables"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          cd annotators/annotation-ui
+          npm run build
+          ls annotators/backend | grep public
 
           
       - name: Publish to Docker

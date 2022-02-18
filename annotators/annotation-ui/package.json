@@ -30,6 +30,7 @@
     "gatsby-plugin-web-font-loader": "^1.0.4",
     "gatsby-remark-highlight-code": "^3.0.1",
     "gatsby-source-filesystem": "^4.0.0",
+    "gatsby-source-local-git-modern": "^2.0.1",
     "gatsby-transformer-sharp": "^4.0.0",
     "grommet": "^2.18.0",
     "grommet-icons": "^4.6.2",
