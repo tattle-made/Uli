@@ -37,7 +37,6 @@ jobs:
           cd annotators/annotation-ui
           npm install
           npm run build
-          ls annotators/backend | grep public
 
           
       - name: Publish to Docker
