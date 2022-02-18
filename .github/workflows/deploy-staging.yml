@@ -35,6 +35,7 @@ jobs:
           echo "setting variables"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           cd annotators/annotation-ui
+          npm install
           npm run build
           ls annotators/backend | grep public
 
