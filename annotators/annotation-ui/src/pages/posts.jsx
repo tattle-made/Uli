@@ -212,7 +212,7 @@ export default function PostAnnotator() {
 						/> */}
           <Button plain label={"Logout"} onClick={logout} />
         </Header>
-        <Box flex={"grow"} gap={"medium"} direction={"row-responsive"}>
+        <Box flex={"grow"} gap={"medium"}>
           <Box
             width={"large"}
             border
@@ -322,7 +322,7 @@ export default function PostAnnotator() {
                 <Box
                   flex={"grow"}
                   pad={"medium"}
-                  background={"light-2"}
+                  background={status.type === "error" ? "#e56d67cc" : "none"}
                   fill={"vertical"}
                 ></Box>
               ) : null}
