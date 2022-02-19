@@ -179,7 +179,7 @@ export default function PostAnnotator() {
               pad={"small"}
               align={"center"}
             >
-              <Text>{`pending : ${userStatus.pending}`}</Text>
+              <Text id="annotation_status">{`pending : ${userStatus.pending}`}</Text>
             </Box>
             {notification ? (
               <Box
@@ -235,7 +235,7 @@ export default function PostAnnotator() {
                     pad={"small"}
                     alignSelf={"start"}
                   >
-                    <Text>{pageStatus}</Text>
+                    <Text id={"page_status"}>{pageStatus}</Text>
                   </Box>
                   <Box direction={"row"} gap={"xsmall"}>
                     <Button
@@ -262,6 +262,7 @@ export default function PostAnnotator() {
                     <Text> {t("annotation_form_question_1")}</Text>
 
                     <ReactRadioButtonGroup
+                      id="question_1"
                       name="question_1"
                       options={[
                         { label: t("yes"), value: "1" },

@@ -1,6 +1,7 @@
 "use strict";
 const { v4: uuidv4 } = require("uuid");
 const allocation_data = require("./external-beta-2/allocations_ext_beta_2.json");
+const { Op } = require("sequelize");
 
 const time_of_run = new Date();
 // const time_of_run = new Date("2021-11-26T04:10:43.073Z");

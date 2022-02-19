@@ -1,3 +1,7 @@
 node_modules/
 .cache/
 public
+
+# e2e artefacts
+cypress/videos
+cypress/screenshots

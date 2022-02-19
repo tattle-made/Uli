@@ -1,6 +1,6 @@
 "use strict";
 const { v4: uuidv4 } = require("uuid");
-const { Op } = require("Sequelize");
+const { Op } = require("sequelize");
 const generatePassword = require("password-generator");
 
 const time_of_run = new Date();
