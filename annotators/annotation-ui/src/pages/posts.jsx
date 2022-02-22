@@ -125,9 +125,9 @@ export default function PostAnnotator() {
         setStatus(ANNOTATOR_STATUS.LOADING_SAVE_ANNOTATIONS);
         const response = await annotator.saveAnnotations(diff);
         if (response.status === 200) {
-          showNotification("info", "Form Saved");
+          showNotification("info", "Annotations Saved");
         } else {
-          throw "Error saving Data";
+          throw "Error saving Annotations";
         }
       }
       setStatus(ANNOTATOR_STATUS.LOADING_PAGE);
@@ -136,7 +136,7 @@ export default function PostAnnotator() {
       await annotator.saveSession();
     } catch (err) {
       console.log(err);
-      showNotification("info", "Error saving Data 2");
+      showNotification("info", "Could not go to the next page");
     }
   }
 
@@ -146,9 +146,9 @@ export default function PostAnnotator() {
       if (diff) {
         const response = await annotator.saveAnnotations(diff);
         if (response.status === 200) {
-          showNotification("info", "Form Saved");
+          showNotification("info", "Annotations Saved");
         } else {
-          throw "Error saving Data";
+          throw "Error saving Annotations";
         }
       }
       await annotator.previous();
@@ -156,7 +156,7 @@ export default function PostAnnotator() {
       await annotator.saveSession();
     } catch (err) {
       console.log(err);
-      showNotification("info", "Error saving Data");
+      showNotification("info", "Could not go to the previous page");
     }
   }
 
@@ -179,7 +179,7 @@ export default function PostAnnotator() {
               pad={"small"}
               align={"center"}
             >
-              <Text>{`pending : ${userStatus.pending}`}</Text>
+              <Text id="annotation_status">{`pending : ${userStatus.pending}`}</Text>
             </Box>
             {notification ? (
               <Box
@@ -235,7 +235,7 @@ export default function PostAnnotator() {
                     pad={"small"}
                     alignSelf={"start"}
                   >
-                    <Text>{pageStatus}</Text>
+                    <Text id={"page_status"}>{pageStatus}</Text>
                   </Box>
                   <Box direction={"row"} gap={"xsmall"}>
                     <Button
@@ -262,6 +262,7 @@ export default function PostAnnotator() {
                     <Text> {t("annotation_form_question_1")}</Text>
 
                     <ReactRadioButtonGroup
+                      id="question_1"
                       name="question_1"
                       options={[
                         { label: t("yes"), value: "1" },

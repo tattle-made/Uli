@@ -46,7 +46,7 @@ GET http://localhost:3000/dashboard
 
 ###
 
-GET http://localhost:3000/annotations/type/csv
+GET http://localhost:3000/api/annotations/type/csv
 
 ###
 

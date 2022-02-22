@@ -2,6 +2,7 @@ import {
   getAllocationForUser,
   getUserAnnotationsForPost,
 } from "../repository/allocation";
+import { saveUserSessionInLS } from "../repository/user";
 import { saveAnnotations } from "../repository/annotation";
 import _ from "lodash";
 import { getUserStatus } from "../repository/user";
@@ -211,7 +212,8 @@ class Annotator {
   async saveSession() {
     console.log("saving session");
     console.log({ session: this.session });
-    return saveSession(this.user.id, this.session);
+    await saveSession(this.user.id, this.session);
+    await saveUserSessionInLS(this.session);
   }
 
   /**
