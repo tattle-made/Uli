@@ -19,6 +19,7 @@ jobs:
           filters: |
             annotation-ui:
                 - 'annotators/backend/**/*'
+                - 'annotators/annotation-ui/**/*'
 
   annotation-ui:
     runs-on: ubuntu-latest
