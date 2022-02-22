@@ -125,9 +125,9 @@ export default function PostAnnotator() {
         setStatus(ANNOTATOR_STATUS.LOADING_SAVE_ANNOTATIONS);
         const response = await annotator.saveAnnotations(diff);
         if (response.status === 200) {
-          showNotification("info", "Form Saved");
+          showNotification("info", "Annotations Saved");
         } else {
-          throw "Error saving Data";
+          throw "Error saving Annotations";
         }
       }
       setStatus(ANNOTATOR_STATUS.LOADING_PAGE);
@@ -136,7 +136,7 @@ export default function PostAnnotator() {
       await annotator.saveSession();
     } catch (err) {
       console.log(err);
-      showNotification("info", "Error saving Data 2");
+      showNotification("info", "Could not go to the next page");
     }
   }
 
@@ -146,9 +146,9 @@ export default function PostAnnotator() {
       if (diff) {
         const response = await annotator.saveAnnotations(diff);
         if (response.status === 200) {
-          showNotification("info", "Form Saved");
+          showNotification("info", "Annotations Saved");
         } else {
-          throw "Error saving Data";
+          throw "Error saving Annotations";
         }
       }
       await annotator.previous();
@@ -156,7 +156,7 @@ export default function PostAnnotator() {
       await annotator.saveSession();
     } catch (err) {
       console.log(err);
-      showNotification("info", "Error saving Data");
+      showNotification("info", "Could not go to the previous page");
     }
   }
 
