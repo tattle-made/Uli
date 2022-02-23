@@ -207,19 +207,33 @@ async function addAnnotation(user, post, annotation) {
     }
     annotation.id = annotationRes.id;
   }
-  return Annotation.upsert({
-    id: annotation.id,
-    userId: user.id,
-    postId: post.id,
-    key: annotation.key,
-    value: annotation.value,
-  });
+
+  try {
+    let [result, updateType] = await Annotation.upsert({
+      id: annotation.id,
+      userId: user.id,
+      postId: post.id,
+      key: annotation.key,
+      value: annotation.value,
+    });
+    if (updateType === true) {
+      return { key: annotation.key, result: "insert" };
+    } else {
+      return { key: annotation.key, result: "update" };
+    }
+  } catch (err) {
+    console.log("ERROR : could not upsert annotation");
+    return { key: annotation.key, result: "fail" };
+  }
 }
 
 async function addAnnotations(user, post, annotations) {
+  let summary = [];
   for (const annotation of annotations) {
-    await addAnnotation(user, post, annotation);
+    const result = await addAnnotation(user, post, annotation);
+    summary.push(result);
   }
+  return summary;
 }
 
 async function getPosts(pageNum) {

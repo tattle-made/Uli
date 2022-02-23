@@ -41,6 +41,7 @@
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.4",
     "react": "^17.0.1",
+    "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.13.0",

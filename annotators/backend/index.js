@@ -69,8 +69,12 @@ app.get("/api/annotation/by-user/", async (req, res) => {
 app.post("/api/annotations/", async (req, res) => {
   console.log(req.body);
   const { userId, postId, annotations } = req.body;
-  await addAnnotations({ id: userId }, { id: postId }, annotations);
-  res.send({ message: "annotations added" });
+  let summary = await addAnnotations(
+    { id: userId },
+    { id: postId },
+    annotations
+  );
+  res.send({ postId, input: annotations, summary });
   // res.status(404).end();
 });
 

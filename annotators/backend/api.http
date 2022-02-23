@@ -2,7 +2,7 @@ GET http://localhost:3000/
 
 ###
 
-GET http://localhost:3000/allocation/for-user?userId=f32fbcfe-2351-4264-bafe-040274f469db&pageNum=1
+GET http://localhost:3000/api/allocation/for-user?userId=bcaf991e-8717-4e99-b7d4-fb7fe84d8116&pageNum=1
 
 ###
 
