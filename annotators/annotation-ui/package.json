@@ -41,14 +41,12 @@
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.4",
     "react": "^17.0.1",
+    "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.13.0",
     "react-json-view": "^1.21.3",
     "react-radio-button-group": "^1.2.8",
     "styled-components": "^5.3.3"
-  },
-  "devDependencies": {
-    "cypress": "^9.5.0"
   }
 }

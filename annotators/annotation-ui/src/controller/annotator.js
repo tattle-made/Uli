@@ -20,6 +20,21 @@ const ANNOTATOR_STATUS = {
     type: "ok",
     message: "Everything looks ok.",
   },
+  OK_INCOMPLETE_FORM: {
+    type: "ok",
+    message:
+      "Alert: You did not fill all fields. You will be taken to the next post. You will have to go back and complete annotations if this was intentional",
+  },
+
+  OK_ANNOTATIONS_SAVED: {
+    type: "ok",
+    message: "Annotations Saved. Summary :",
+  },
+  OK_UPSERT_DETECTED: {
+    type: "ok",
+    message:
+      "It seems that you have modified certain fields. If you did not make any modifications, please report this post to us",
+  },
   LOADING_PAGE: {
     type: "loading",
     message: "Loading Post and User Annotations",
@@ -41,6 +56,31 @@ const ANNOTATOR_STATUS = {
   ERROR_SAVE_ANNOTATIONS: {
     type: "error",
     message: "Could not save your annotations. Refresh or Try again later.",
+  },
+
+  makeMessage(status, payload) {
+    return {
+      ...status,
+      payload,
+    };
+  },
+
+  /**
+   *
+   * @param {*} responseData : response.data object from the API response of POST '/annotations'
+   * @returns
+   */
+  getHumanReadableUpdateSummary(responseData) {
+    let updates = responseData.summary.filter(
+      (item) => item.result === "update"
+    );
+    return {
+      updateFlag: updates.length === 0 ? false : true,
+      MESSAGE: {
+        type: "ok",
+        message: `It seems that you have modified ${updates.length} field(s). If you did not make any modifications, please report this post to us`,
+      },
+    };
   },
 };
 
@@ -214,6 +254,38 @@ class Annotator {
     console.log({ session: this.session });
     await saveSession(this.user.id, this.session);
     await saveUserSessionInLS(this.session);
+  }
+
+  isFormFilled(annotations) {
+    if (
+      annotations.question_1 &&
+      annotations.question_2 &&
+      annotations.question_3
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * The function name is not specific. This is supposed to be an experimental fix to check if our hunch
+   * about a bug was true or not. By 'changed' we mean a very specific set of conditions and those might change in the future
+   * so don't think too much about what change are we measuring.
+   */
+  hasFormChanged(annotations, currentAnnotations) {
+    const diff = this.haveAnnotationsChanged(annotations);
+    if (
+      !currentAnnotations.question_1 &&
+      !currentAnnotations.question_2 &&
+      !currentAnnotations.question_3
+    ) {
+      if (diff) {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 
   /**
