@@ -15,7 +15,7 @@ import {
   Spinner,
   Stack,
 } from "grommet";
-import ReactJson from "react-json-view";
+// import ReactJson from "react-json-view";
 import TattleLogo from "../components/atoms/TattleLogo";
 import TattleTheme from "../components/atoms/Theme";
 import { LinkNext, LinkPrevious, Notification } from "grommet-icons";
@@ -395,13 +395,13 @@ export default function PostAnnotator() {
                 ) : null}
               </Stack>
             </Box>
-            <Box width={"medium"} height={"95vh"} overflow={"scroll"}>
+            {/* <Box width={"medium"} height={"95vh"} overflow={"scroll"}>
               <ReactJson collapsed={false} src={debugMessage} />
               <ReactJson
                 collapsed={false}
                 src={{ annotationsUI: annotations }}
               />
-            </Box>
+            </Box> */}
           </Box>
 
           <Footer pad="medium" gap={"small"}>
