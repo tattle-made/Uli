@@ -23,8 +23,9 @@ const ANNOTATOR_STATUS = {
   OK_INCOMPLETE_FORM: {
     type: "ok",
     message:
-      "You did not fill all fields. Please go back if that was unintentional",
+      "Alert: You did not fill all fields. You will be taken to the next post. You will have to go back and complete annotations if this was intentional",
   },
+
   OK_ANNOTATIONS_SAVED: {
     type: "ok",
     message: "Annotations Saved. Summary :",
@@ -32,7 +33,7 @@ const ANNOTATOR_STATUS = {
   OK_UPSERT_DETECTED: {
     type: "ok",
     message:
-      "We noticed that you have modified certain fields. If that was unintentional, please report to us",
+      "It seems that you have modified certain fields. If you did not make any modifications, please report this post to us",
   },
   LOADING_PAGE: {
     type: "loading",
@@ -77,7 +78,7 @@ const ANNOTATOR_STATUS = {
       updateFlag: updates.length === 0 ? false : true,
       MESSAGE: {
         type: "ok",
-        message: `We noticed that you have modified ${updates.length} field(s) for post ${responseData.postId}. If that was unintentional, please report to us`,
+        message: `It seems that you have modified ${updates.length} field(s). If you did not make any modifications, please report this post to us`,
       },
     };
   },
