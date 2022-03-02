@@ -139,6 +139,7 @@ function getUserAnnotationsForPost(userId, postId) {
     where: {
       [Op.and]: [{ userId }, { postId }],
     },
+    order: [["updatedAt", "DESC"]],
   });
 }
 
