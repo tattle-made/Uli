@@ -1,7 +1,11 @@
-# OGBV
+# Annotation UI
+This tool was created to crowdsource annotations.
 
-This repository contains Code for Onlinge Gender Based Violence (OGBV) project with CIS, funded by Omidyar Network India.
-Read more about the project here: https://tattle.co.in/products/ogbv/
+## Features :
+- User Management
+- Supports Localization for English, Hindi and Tamil
+
+![Cover Image](docs/cover.png)
 
 ## Instruction to Run the Project
 
