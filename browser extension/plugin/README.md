@@ -1,3 +1,5 @@
+![Cover Image](../assets/browser-extension-repo-cover.png)
+
 # Developing Locally
 All the code is organized into the `/react` and `/html` folders. The extension uses content-script and popup page, both of which are bundled by parcel and placed in the `/dist` folder.
 
@@ -13,3 +15,6 @@ Sometimes you might have to press the reload button of your extension in the chr
 
 # Building The Extension
 run `npm run build` and it will give you a bundled and minified files in the `/dist` folder. This can then be shared to share the extension with others.
+
+![Preferences Page in English](../assets/ogbv-preferences-en.png)
+![Preferences Page in Hindi](../assets/ogbv-preferences-hi.png)
