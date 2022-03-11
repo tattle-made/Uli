@@ -5,7 +5,7 @@ This tool was created to crowdsource annotations.
 - User Management
 - Supports Localization for English, Hindi and Tamil
 
-![Cover Image](docs/cover.png)
+![Cover Image](docs/annotators-cover.png)
 
 ## Instruction to Run the Project
 
