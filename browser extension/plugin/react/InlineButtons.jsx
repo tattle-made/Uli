@@ -94,6 +94,17 @@ export function InlineButtons({ node }) {
   async function clickArchive() {
     console.log("clicked archive");
     console.log(location.href);
+
+    if (!userLS) {
+      console.log("User account is not activated");
+      return;
+    }
+
+    if (!preferenceLS) {
+      console.log("User has not specified their preferences");
+      return;
+    }
+
     showProgress(true);
     await updateData();
     try {
