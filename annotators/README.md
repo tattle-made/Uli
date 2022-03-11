@@ -1,52 +1,38 @@
 # Annotation UI
 This tool was created to crowdsource annotations.
+![Cover Image](docs/annotators-cover.png)
 
 ## Features :
 - User Management
 - Supports Localization for English, Hindi and Tamil
 
-![Cover Image](docs/annotators-cover.png)
+## Annotators Database Deployment Guide
+- There is a `docker-compose.yml` file in here.
 
-## Instruction to Run the Project
-
-### Backend & Database
-
-- Change director to `annotators`:
-
+#### First We Troubleshoot ports
+- This command will list the ports next to their pid if they are running.
 ```bash
-cd annotators
+sudo lsof -i -P -n | grep <port number>
+```
+- Check for this port 3306 (also 8000 & 3000)
+- If any of these are already running, kill them with
+```bash
+sudo kill < pid >
 ```
 
-- Run Docker script to bring u:
+### Now Bring up the `Adminer` MySQL DB:
 
 ```bash
 docker-compose up
 ```
-
-- Change directory to `annotators/backend`:
-
+- Ctrl+C to stop it
+- Dont forget to 
 ```bash
-npm install
+docker-compose down
 ```
 
-- Change directory to `sequelize`:
+#### Open Adminer ( http://localhost:8080 )  
+- login using username: tattle , password: tattle_pw, DB: ogbv_annotator_local
 
-```bash
-cd sequelize
-```
-
-- Open http://localhost:8080 ( Admnier running upon - DB GUI ) & login using [these credentails](./annotators/backend/sequelize/config/config.js#L3-#L5)
-
-> **Note:** Update [MySQL Port](./annotators/docker-compose.yml#L14) if you are running it on another port, [Update here](./annotators/backend/sequelize/config/config.js#L7)
-
-- Run this to create the tables in db:
-
-```bash
-npx sequelize-cli db:migrate
-```
-
-- Run & insert users named tarunima, arnav etc. You will have to check the db to see their password. which is stored in plain text for now - this will run the script located [here](https://github.com/tattle-made/OGBV/blob/main/annotators/backend/sequelize/seeders/20211115172651-beta-test.js) :
-
-```bash
-npx sequelize-cli db:seed --seed 20211115172651-beta-test
-```
+#### Check out the README.md in `backend` to create tables in the database using `sequilize`  and setup the backend for development.
+#### Next check out the README.md in `annotator-ui` to setup the frontend for development .
