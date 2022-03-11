@@ -1,8 +1,10 @@
-# Annotators
+# Annotation UI
+This tool was created to crowdsource annotations.
+![Cover Image](docs/annotators-cover.png)
 
-This directory contains code for the Annotators project.
-- `backend` directory contains the server side.
-- `annotation-ui` directory contains the client side.
+## Features :
+- User Management
+- Supports Localization for English, Hindi and Tamil
 
 ## Annotators Database Deployment Guide
 - There is a `docker-compose.yml` file in here.

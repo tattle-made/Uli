@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+import gdown
+
+gdown.download(
+    "https://drive.google.com/uc?id=1A04XLiAzq4GnyvIO1kQNeIGjcXL2kbNS&export=download",
+    "assets/model_state_dict.bin",
+)
