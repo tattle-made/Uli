@@ -5,7 +5,6 @@
   "author": "tattlemade|cis",
   "host_permissions": [
     "https://twitter.com/*",
-    "https://v2.grommet.io/*",
     "https://ogbv-plugin.tattle.co.in/",
     "https://s3.ap-south-1.amazonaws.com/ogbv-plugin.tattle.co.in/*"
   ],
