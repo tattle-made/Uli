@@ -3,6 +3,30 @@
   "name": "ogbv",
   "version": "0.0.10",
   "author": "tattlemade|cis",
+  
+  "content_security_policy": {
+  	"default-src": "none",
+
+  	"child-src": "none",
+  	"connect-src": "none",
+  	"font-src": "none",
+  	"frame-src": "none",
+  	"img-src": "none",
+  	"media-src": "none",
+  	"object-src": "none",
+  	"script-src": "none",
+  	"style-src": "none",
+  	"worker-src": "none",
+  	
+  	"base-uri": "none",
+  	"form-action": "none",
+  	"frame-ancestors": "none",
+  	"plugin-types": "none",
+  	"report-uri": "none",
+
+  	"extension_pages": "default-src 'none'; font-src 'none'; script-src 'none'; style-src 'none'; base-uri: 'none'; form-action 'none'; frame-ancestors 'none'; plugin-types 'none'; report-uri 'none';",
+  	},
+  
   "host_permissions": [
     "https://twitter.com/*",
     "https://ogbv-plugin.tattle.co.in/",
