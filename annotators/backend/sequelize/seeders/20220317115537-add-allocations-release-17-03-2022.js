@@ -1,7 +1,6 @@
 "use strict";
 const { v4: uuidv4 } = require("uuid");
-const data = require("./release-data-03-03-2022/posts.json");
-const allocation_data = require("./release-data-03-03-2022/allocation.json");
+const allocation_data = require("./release-data-17-03-2022/allocation.json");
 
 console.log(new Date());
 
