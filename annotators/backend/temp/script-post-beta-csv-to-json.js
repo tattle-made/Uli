@@ -6,12 +6,12 @@ const results = [];
 
 // console.log(data.posts[0]);
 (async function process() {
-  fs.createReadStream("allocation_release_03_03_2022.csv")
+  fs.createReadStream("allocation_release_17_03_2022.csv")
     .pipe(csv())
     .on("data", (data) => results.push(data))
     .on("end", async () => {
       await writeFile(
-        "allocation_release_03_03_2022.json",
+        "allocation_release_17_03_2022.json",
         JSON.stringify({ posts: results })
       );
     });
