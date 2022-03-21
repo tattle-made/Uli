@@ -7,6 +7,11 @@ import repository from "./repository";
 const { getPreferenceData } = repository;
 import chrome from "./chrome";
 
+/**
+ * This script is injected into the website when the extension loads. It is responsible for injecting
+ * the extension's UI elements and setting up listeners for DOM events.
+ */
+
 const TestComponent = () => (
   <Box round border>
     <Text>Hello</Text>
@@ -111,29 +116,3 @@ chrome.addListener(
   },
   "done"
 );
-
-// setTimeout(() => {
-//   initialize();
-// }, 5000);
-
-// setTimeout(() => {
-//   const observer = new MutationObserver(processTweets);
-//   observer.observe(bodyNode, config);
-
-//   let main = document.getElementsByTagName("main")[0];
-//   var inlineButtonDiv = document.createElement("div");
-//   inlineButtonDiv.id = "ogbv-inline-button";
-//   main.prepend(inlineButtonDiv);
-//   const app = document.getElementById("ogbv-inline-button");
-//   ReactDOM.render(
-//     <InlineButtons style={{ position: "sticky", top: 0 }} node={main} />,
-//     app
-//   );
-// }, 5000);
-
-// let main = document.getElementsByTagName("main")[0];
-// var inlineButtonDiv = document.createElement("div");
-// inlineButtonDiv.id = "ogbv-inline-button";
-// main.prepend(inlineButtonDiv);
-// const app = document.getElementById("ogbv-inline-button");
-// ReactDOM.render(<InlineButtons node={main} />, app);
