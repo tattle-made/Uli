@@ -1,0 +1,6 @@
+gdown
+fastapi
+uvicorn
+pydantic
+torch
+transformers
