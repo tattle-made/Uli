@@ -1,29 +1,12 @@
-# 
 FROM python:3.8.2
 
-# 
-WORKDIR /code
+WORKDIR /app
+COPY ./ /app
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-COPY ./config.json /code/config.json
-
-# 
-COPY ./requirements.txt /code/requirements.txt
-
-# 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-COPY ./bin/download_model /code/download_model 
-
-RUN ["chmod", "+x", "/code/download_model"]
-
-RUN /code/download_model
-
-# 
-COPY ./app /code/app
-
+RUN ["chmod", "+x", "/app/bin/download_model"]
+RUN /app/bin/download_model
 EXPOSE 80
 
-# 
-#CMD ["uvicorn", "sentiment_analyzer.api:app", "--host", "0.0.0.0", "--port", "80"]
-
-CMD ["tail","-f","/dev/null"]
+CMD ["uvicorn", "sentiment_analyzer.api:app", "--host", "0.0.0.0", "--port", "80"]
+# CMD ["tail","-f","/dev/null"]
