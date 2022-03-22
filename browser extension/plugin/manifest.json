@@ -21,10 +21,9 @@
   	"base-uri": "none",
   	"form-action": "none",
   	"frame-ancestors": "none",
-  	"plugin-types": "none",
   	"report-uri": "none",
 
-  	"extension_pages": "default-src 'none'; font-src 'none'; script-src 'none'; style-src 'none'; base-uri: 'none'; form-action 'none'; frame-ancestors 'none'; plugin-types 'none'; report-uri 'none';",
+  	"extension_pages": "default-src 'none'; font-src 'none'; script-src 'none'; style-src 'none'; base-uri: 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';"
   	},
   
   "host_permissions": [
