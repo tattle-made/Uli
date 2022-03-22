@@ -4,10 +4,10 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:options": "parcel html/options.html",
-    "start:popup": "parcel html/popup.html",
-    "start:contentScript": "parcel html/content.html",
-    "build": "parcel build html/*.html react/*.jsx"
+    "start:options": "parcel react/options.jsx",
+    "start:contentScript": "parcel react/content-script.js",
+    "moveBuildArtefactsToDistDir": "cp options.html dist && cp manifest.json dist && cp icon* dist",
+    "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir"
   },
   "keywords": [],
   "author": "",
