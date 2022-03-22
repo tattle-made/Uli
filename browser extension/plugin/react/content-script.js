@@ -2,6 +2,11 @@ import ReactDOM from "react-dom";
 import { Box, Text } from "grommet";
 import { InlineButtons } from "./InlineButtons";
 import { replaceSlur, updateSlurList } from "./slur-replace";
+import {
+  createTopBannerElement,
+  getTopBannerElement,
+  setTimelineChangeListener,
+} from "./twitter";
 let currentTweetCount = 0;
 import repository from "./repository";
 const { getPreferenceData } = repository;
@@ -42,6 +47,7 @@ const processTweets = async function (mutationsList, observer) {
     if (mutation.type === "childList") {
       console.log("A child node has been added or removed.");
       console.log(mutation);
+
       // console.log(typeof mutation);
       const nodes = Array.from(mutation.addedNodes);
       nodes.map((node) => {
@@ -79,14 +85,12 @@ const processTweets = async function (mutationsList, observer) {
 };
 
 async function initialize() {
-  let main = document.getElementsByTagName("main")[0];
-  var inlineButtonDiv = document.createElement("div");
-  inlineButtonDiv.id = "ogbv-inline-button";
-  main.prepend(inlineButtonDiv);
-  const app = document.getElementById("ogbv-inline-button");
+  createTopBannerElement(document);
+  const node = getTopBannerElement(document);
+
   ReactDOM.render(
-    <InlineButtons style={{ position: "sticky", top: 0 }} node={main} />,
-    app
+    <InlineButtons style={{ position: "sticky", top: 0 }} node={node} />,
+    node
   );
 
   const preference = await getPreferenceData();
@@ -95,24 +99,19 @@ async function initialize() {
     updateSlurList(preference.slurList);
   }
 
-  const observer = new MutationObserver(processTweets);
-  const timeline = document.querySelector(
-    '[aria-label="Timeline: Conversation"]'
-  ).firstChild;
-  const config = { attributes: true, childList: true, subtree: false };
-  observer.observe(timeline, config);
+  setTimelineChangeListener(processTweets);
 }
 
-chrome.addListener(
-  "updateData",
-  async () => {
-    console.log("data changed. time to update slurs");
-    const preference = await getPreferenceData();
-    console.log(preference);
-    if (preference.slurList != undefined) {
-      updateSlurList(preference.slurList);
-      processTweets();
-    }
-  },
-  "done"
-);
+// chrome.addListener(
+//   "updateData",
+//   async () => {
+//     console.log("data changed. time to update slurs");
+//     const preference = await getPreferenceData();
+//     console.log(preference);
+//     if (preference.slurList != undefined) {
+//       updateSlurList(preference.slurList);
+//       processTweets();
+//     }
+//   },
+//   "done"
+// );
