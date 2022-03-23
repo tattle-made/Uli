@@ -2,15 +2,17 @@ import ReactDOM from "react-dom";
 import { Box, Text } from "grommet";
 import { InlineButtons } from "./InlineButtons";
 import { replaceSlur, updateSlurList } from "./slur-replace";
-import {
-  createTopBannerElement,
-  getTopBannerElement,
-  setTimelineChangeListener,
-} from "./twitter";
+import { dom } from "./twitter";
 let currentTweetCount = 0;
 import repository from "./repository";
 const { getPreferenceData } = repository;
 import chrome from "./chrome";
+
+const {
+  createTopBannerElement,
+  getTopBannerElement,
+  setTimelineChangeListener,
+} = dom;
 
 /**
  * This script is injected into the website when the extension loads. It is responsible for injecting
