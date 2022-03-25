@@ -292,7 +292,7 @@ def regex_exact_slurs(tweet,slurs_list_lower):
       
     result = {}
     
-    matches = re.findall(r"(?=("+'|'.join(slurs_list_lower)+r"))", tweet.lower())
+    matches = re.findall(r"(?=(\b" + '\\b|\\b'.join(slurs_list_lower) + r"\b))", tweet.lower())
     
     slurs = []
     tokens = []
