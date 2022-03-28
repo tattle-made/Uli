@@ -1,3 +1,6 @@
+import ReactDOM from "react-dom";
+import { TweetControl } from "./tweet-controls";
+
 /**
  * dom is responsible for
  * 1. Parsing the DOM and converting it into structured tweet objects
@@ -17,22 +20,70 @@ const INLNE_OPTIONS_SPACE =
 const TWEET_TEXT =
   "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) > div:nth-child(2) > div:first-child > div:first-child > span";
 
-function createTopBannerElement(document) {
+function createTopBannerElement() {
   let main = document.getElementsByTagName("main")[0];
   var inlineButtonDiv = document.createElement("div");
   inlineButtonDiv.id = "ogbv-inline-button";
   main.prepend(inlineButtonDiv);
 }
 
-function getTopBannerElement(document) {
+function getTopBannerElement() {
   return document.getElementById("ogbv-inline-button");
 }
 
-function setTimelineChangeListener(onChange) {
-  const observer = new MutationObserver(onChange);
+function addInlineMenu(item) {
+  const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+
+  item.setAttribute("id", id);
+  const tweet = getTweet(item);
+  if (tweet) {
+    var inlineButtonDiv = document.createElement("div");
+    inlineButtonDiv.id = id;
+    item.prepend(inlineButtonDiv);
+
+    ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+  }
+}
+
+const processTweets = async function (mutationsList, observer) {
+  console.log("process tweets");
+  // console.log(mutationsList);
+  for (const mutation of mutationsList) {
+    if (mutation.type === "childList") {
+      if (mutation.addedNodes.length != 0) {
+        console.log("A child node has been added");
+        const nodes = Array.from(mutation.addedNodes);
+        nodes.map((node) => {
+          const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+          console.log(id, node.innerText, node);
+          node.setAttribute("id", id);
+          const tweet = getTweet(node);
+          if (tweet) {
+            var inlineButtonDiv = document.createElement("div");
+            inlineButtonDiv.id = id;
+            node.prepend(inlineButtonDiv);
+
+            ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+          }
+        });
+      }
+    } else if (mutation.type === "attributes") {
+      // console.log("The " + mutation.attributeName + " attribute was modified.");
+    }
+  }
+};
+
+function setTimelineChangeListener() {
+  const observer = new MutationObserver(processTweets);
   const timeline = document.querySelector(
     '[aria-label="Timeline: Conversation"]'
   ).firstChild;
+  console.log(timeline);
+  const nodes = Array.from(timeline.children);
+  console.log({ nodes });
+  nodes.map((item) => {
+    addInlineMenu(item);
+  });
   const config = { attributes: true, childList: true, subtree: false };
   observer.observe(timeline, config);
 }
