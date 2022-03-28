@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState } from "react";
 import { Box, Text, Button, CheckBox } from "grommet";
 import { UserContext } from "./AppContext";
-import repository from "./repository";
-import config from "./config";
+import repository from "../repository";
+import config from "../config";
 import { useTranslation } from "react-i18next";
 const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
   repository;

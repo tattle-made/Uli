@@ -1,7 +1,12 @@
 /**
- * The chrome object only available to the content script and the popup script in the context of an extension. This makes it inconvinient to develop this plugin because you have to reload the extension anytime you make a change to the extension.
+ * The chrome object only available to the content script and the popup script in the context of an extension.
+ * This makes it inconvinient to develop this plugin because you have to reload the extension anytime you make
+ * a change to the extension.
  *
- * This object looks at the environment variable ENVIRONMENT and returns a mocked chrome object if ENVIRONMENT is "development". If it is production, it returns the actual chrome object. This way you can mock the return values to be whatever it is that you need it for the feature you are working on. This also lets you take advantage of the dev tools you are familiar with for developing React Apps.
+ * This object looks at the environment variable ENVIRONMENT and returns a mocked chrome object if ENVIRONMENT
+ * is "development". If it is production, it returns the actual chrome object. This way you can mock the return
+ * values to be whatever it is that you need it for the feature you are working on. This also lets you take
+ * advantage of the dev tools you are familiar with for developing React Apps.
  */
 import config from "./config";
 

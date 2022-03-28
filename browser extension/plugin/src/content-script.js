@@ -1,42 +1,20 @@
 import ReactDOM from "react-dom";
 import { Box, Text } from "grommet";
-import { InlineButtons } from "./InlineButtons";
+import { InlineButtons } from "./ui-components/pages/InlineButtons";
 import { replaceSlur, updateSlurList } from "./slur-replace";
 import { dom } from "./twitter";
-let currentTweetCount = 0;
 import repository from "./repository";
+import { TweetControl } from "./twitter/tweet-controls";
 const { getPreferenceData } = repository;
-import chrome from "./chrome";
+
+console.log("hi 2");
 
 const {
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
+  getTweet,
 } = dom;
-
-/**
- * This script is injected into the website when the extension loads. It is responsible for injecting
- * the extension's UI elements and setting up listeners for DOM events.
- */
-
-const TestComponent = () => (
-  <Box round border>
-    <Text>Hello</Text>
-  </Box>
-);
-
-// console.log("Content Script Loaded Again");
-// if (document.readyState === "loading") {
-//   // document.addEventListener("DOMContentLoaded", initialize);
-//   document.addEventListener("DOMContentLoaded", () => {
-//     console.log(" ---- 1");
-//   });
-// } else {
-//   console.log(" ---- 2");
-//   // initialize();
-//   let main = document.getElementsByTagName("article")[0];
-//   console.log(main);
-// }
 
 setTimeout(async () => {
   await initialize();
@@ -47,17 +25,28 @@ const processTweets = async function (mutationsList, observer) {
   // console.log(mutationsList);
   for (const mutation of mutationsList) {
     if (mutation.type === "childList") {
-      console.log("A child node has been added or removed.");
-      console.log(mutation);
+      if (mutation.addedNodes.length != 0) {
+        console.log("A child node has been added");
+        // console.log(mutation.addedNodes[0]);
 
-      // console.log(typeof mutation);
-      const nodes = Array.from(mutation.addedNodes);
-      nodes.map((node) => {
-        const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-        console.log(id, node.innerText);
-        node.setAttribute("id", id);
-        // ReactDOM.render(<TestComponent />, node);
-      });
+        // console.log(typeof mutation);
+        const nodes = Array.from(mutation.addedNodes);
+        nodes.map((node) => {
+          const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+          console.log(id, node.innerText, node);
+          node.setAttribute("id", id);
+          const tweet = getTweet(node);
+          if (tweet) {
+            // console.log(tweet);
+
+            var inlineButtonDiv = document.createElement("div");
+            inlineButtonDiv.id = id;
+            node.prepend(inlineButtonDiv);
+
+            ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+          }
+        });
+      }
     } else if (mutation.type === "attributes") {
       // console.log("The " + mutation.attributeName + " attribute was modified.");
     }

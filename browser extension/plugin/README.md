@@ -18,3 +18,17 @@ run `npm run build` and it will give you a bundled and minified files in the `/d
 
 ![Preferences Page in English](../assets/ogbv-preferences-en.png)
 ![Preferences Page in Hindi](../assets/ogbv-preferences-hi.png)
+
+
+
+# Code Organization
+| Directory | Description | 
+| --- | --- |
+| scripts/ | helper scripts that aren't directly part of the bundled extension |
+| src/twitter/ | all code related to parsing and processing data from twitter and injecting UI elements into twitter |
+| src/ui-components/atoms | react components that serve as the building blocks for the UI |
+| src/ui-components/molecules | multiple atoms combined to create a coherent UI element |
+| src/ui-components/pages | these correspond to UI pages you see in the extension |
+| src/content-script.js | entry point into the extension |
+| src/background.js | empty for now. meant to store background workers for performing long running tasks in the background |
+| src/config.js | configurable options of the plugin |

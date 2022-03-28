@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:options": "parcel react/options.jsx",
-    "start:contentScript": "parcel react/content-script.js",
+    "start:options": "parcel src/options.jsx",
+    "start:contentScript": "parcel src/content-script.js",
     "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist",
     "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir"
   },

@@ -1,16 +1,15 @@
-import "./i18n";
+import "../atoms/i18n";
 import { useEffect, useState } from "react";
 import { Grommet, Box, Text, Button, TextArea, Layer, Spinner } from "grommet";
 import { Archive, Users, Activity } from "react-feather";
-import config from "./config";
-import Api from "./Api";
+import Api from "../pages/Api";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
-import Theme from "./Theme";
-import repository from "./repository";
+import Theme from "../atoms/Theme";
+import repository from "../../repository";
 const { getUserData, getPreferenceData } = repository;
 import { useTranslation } from "react-i18next";
-import { langNameMap } from "./language";
+import { langNameMap } from "../atoms/language";
 const { uploadArchivedMedia, invokeNetwork } = Api;
 
 const CTAButton = ({ icon, label, onClick }) => {
