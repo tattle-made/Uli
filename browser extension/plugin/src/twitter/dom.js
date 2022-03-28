@@ -41,7 +41,31 @@ function setTimelineChangeListener(onChange) {
  * Returns a tweet object with structured access to all relevant tweet data
  * Throws an exception if the dom structure has changed.
  */
-function getTweet(tweetDom) {}
+function getTweet(tweetDom) {
+  try {
+    const language = tweetDom
+      .querySelector(TWEET_LANGUAGE)
+      .getAttribute("lang");
+    const tweetUrl = tweetDom.querySelector(TWEET_URL).getAttribute("href");
+    const inlineActionIconsDiv = tweetDom.querySelector(INLNE_OPTIONS_SPACE);
+    const text = tweetDom.querySelector(TWEET_TEXT).innerText;
+    return {
+      language,
+      tweetUrl,
+      inlineActionIconsDiv,
+      text,
+    };
+  } catch (err) {
+    console.log("Unexpected Structure", err);
+    return undefined;
+  }
+}
+
+/**
+ * This is where the tweet text is replaced with plugin specific features.
+ *
+ */
+function processTweet(tweetDom) {}
 
 export default {
   getTweet,
