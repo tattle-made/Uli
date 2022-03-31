@@ -19,6 +19,8 @@ const INLNE_OPTIONS_SPACE =
   "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) >  div:nth-child(1) >  div:nth-child(1) >  div:nth-child(1)";
 const TWEET_TEXT =
   "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) > div:nth-child(2) > div:first-child > div:first-child > span";
+const TWEET_DIV = "div > div > span";
+const TWEET_DIV_CONTENT = "";
 
 function createTopBannerElement() {
   let main = document.getElementsByTagName("main")[0];
