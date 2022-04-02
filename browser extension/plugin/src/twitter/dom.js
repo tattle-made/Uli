@@ -8,20 +8,6 @@ import { TweetControl } from "./tweet-controls";
  * 3. Registering event handlers
  */
 
-/**
- * Path to all DOM elements related to parsing tweets.
- */
-const TWEET_LANGUAGE =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) > div:nth-child(2) > div:first-child > div:first-child";
-const TWEET_URL =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) >  div:nth-child(1) >  div:nth-child(1) >  div:nth-child(1) > div:nth-child(1) > a";
-const INLNE_OPTIONS_SPACE =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) >  div:nth-child(1) >  div:nth-child(1) >  div:nth-child(1)";
-const TWEET_TEXT =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) > div:nth-child(2) > div:first-child > div:first-child > span";
-const TWEET_DIV = "div > div > span";
-const TWEET_DIV_CONTENT = "";
-
 function createTopBannerElement() {
   let main = document.getElementsByTagName("main")[0];
   var inlineButtonDiv = document.createElement("div");
@@ -59,11 +45,12 @@ const processTweets = async function (mutationsList, observer) {
           const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
           console.log(id, node.innerText, node);
           node.setAttribute("id", id);
-          const tweet = getTweet(node);
+          const tweet = parseAndMakeTweet(node);
           if (tweet) {
             var inlineButtonDiv = document.createElement("div");
             inlineButtonDiv.id = id;
             node.prepend(inlineButtonDiv);
+            // tweets[id] = getTweet(node);
 
             ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
           }
@@ -91,27 +78,47 @@ function setTimelineChangeListener() {
 }
 
 /**
- * Returns a tweet object with structured access to all relevant tweet data
- * Throws an exception if the dom structure has changed.
+ * Parses the DOM and extracts structured data from it.
+ * @param {DOMElement obtained from document.getElementById query} tweetDom
+ * @return {Object} Tweet - stuctured tweet with values extracted from the dom
  */
-function getTweet(tweetDom) {
-  try {
-    const language = tweetDom
-      .querySelector(TWEET_LANGUAGE)
-      .getAttribute("lang");
-    const tweetUrl = tweetDom.querySelector(TWEET_URL).getAttribute("href");
-    const inlineActionIconsDiv = tweetDom.querySelector(INLNE_OPTIONS_SPACE);
-    const text = tweetDom.querySelector(TWEET_TEXT).innerText;
-    return {
-      language,
-      tweetUrl,
-      inlineActionIconsDiv,
-      text,
-    };
-  } catch (err) {
-    console.log("Unexpected Structure", err);
-    return undefined;
+function parseAndMakeTweet(tweetDom) {
+  const TWEET_PATH_GENERAL = new RegExp(
+    "DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(1\\):DIV\\(1\\):DIV\\(1\\):DIV\\([0-9]+\\):DIV\\(0\\):DIV\\([0-9]+\\):DIV\\([0-9]+\\):DIV\\(0\\):SPAN"
+  );
+  let leaves = {};
+
+  function getId() {
+    const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+    return id;
   }
+
+  function DFT(node, currentPath) {
+    let elementTag = node.tagName;
+    if (elementTag == undefined) {
+      elementTag = "UND";
+    }
+    node.childNodes.forEach((a, ix) => {
+      const newCurrentPath = currentPath + `(${ix})` + ":" + elementTag;
+      DFT(a, newCurrentPath);
+    });
+    if (
+      node.childNodes.length === 0 &&
+      (elementTag === "SPAN" || elementTag === "A" || elementTag === "UND")
+    ) {
+      console.log({ currentPath, node });
+      if (TWEET_PATH_GENERAL.test(currentPath)) {
+        const id = getId();
+        const parentElement = node.parentElement;
+        parentElement.setAttribute("id", id);
+        leaves[id] = parentElement;
+      }
+    }
+  }
+
+  DFT(tweetDom, "DIV");
+
+  return leaves;
 }
 
 /**
@@ -125,4 +132,5 @@ export default {
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
+  tweets,
 };
