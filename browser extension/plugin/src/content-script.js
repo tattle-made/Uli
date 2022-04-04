@@ -10,8 +10,9 @@ const {
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
-  getTweet,
 } = dom;
+
+console.log("TEST : CS loaded");
 
 if (process.env.ENVIRONMENT) {
   console.log("Content Script Loaded");
@@ -19,10 +20,9 @@ if (process.env.ENVIRONMENT) {
 
 setTimeout(async () => {
   await initialize();
-}, 3000);
+}, 5000);
 
 async function initialize() {
-  setTimelineChangeListener();
   createTopBannerElement();
 
   const node = getTopBannerElement();
@@ -37,4 +37,5 @@ async function initialize() {
   if (preference != undefined && preference.slurList != undefined) {
     updateSlurList(preference.slurList);
   }
+  setTimelineChangeListener();
 }

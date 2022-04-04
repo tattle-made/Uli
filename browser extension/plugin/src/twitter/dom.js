@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import { TweetControl } from "./tweet-controls";
+import { getTimelineElement } from "./config";
 
 /**
  * dom is responsible for
@@ -9,10 +10,15 @@ import { TweetControl } from "./tweet-controls";
  */
 
 function createTopBannerElement() {
-  let main = document.getElementsByTagName("main")[0];
-  var inlineButtonDiv = document.createElement("div");
-  inlineButtonDiv.id = "ogbv-inline-button";
-  main.prepend(inlineButtonDiv);
+  console.log("TEST : Creating Top Banner");
+  try {
+    let main = document.getElementsByTagName("main")[0];
+    var inlineButtonDiv = document.createElement("div");
+    inlineButtonDiv.id = "ogbv-inline-button";
+    main.prepend(inlineButtonDiv);
+  } catch (err) {
+    console.log("TEST : Error Creating Top Banner");
+  }
 }
 
 function getTopBannerElement() {
@@ -23,7 +29,7 @@ function addInlineMenu(item) {
   const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
 
   item.setAttribute("id", id);
-  const tweet = getTweet(item);
+  const tweet = parseAndMakeTweet(item);
   if (tweet) {
     var inlineButtonDiv = document.createElement("div");
     inlineButtonDiv.id = id;
@@ -64,9 +70,8 @@ const processTweets = async function (mutationsList, observer) {
 
 function setTimelineChangeListener() {
   const observer = new MutationObserver(processTweets);
-  const timeline = document.querySelector(
-    '[aria-label="Timeline: Conversation"]'
-  ).firstChild;
+  const timeline = getTimelineElement(location.href);
+
   console.log(timeline);
   const nodes = Array.from(timeline.children);
   console.log({ nodes });
@@ -112,6 +117,7 @@ function parseAndMakeTweet(tweetDom) {
         const parentElement = node.parentElement;
         parentElement.setAttribute("id", id);
         leaves[id] = parentElement;
+        console.log({ leaf: parentElement });
       }
     }
   }
@@ -128,9 +134,7 @@ function parseAndMakeTweet(tweetDom) {
 function processTweet(tweetDom) {}
 
 export default {
-  getTweet,
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
-  tweets,
 };
