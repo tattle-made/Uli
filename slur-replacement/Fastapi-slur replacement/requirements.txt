@@ -1,0 +1,5 @@
+fuzzywuzzy==0.18.0
+levenshtein==0.18.1
+fastapi
+uvicorn
+pydantic

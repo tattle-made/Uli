@@ -3,18 +3,21 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
+    "prepare": "cd ../.. && husky install \"browser extension/plugin/.husky\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:options": "parcel src/options.html",
+    "start:options": "parcel src/options.jsx",
     "start:contentScript": "parcel src/content-script.js",
-    "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist",
-    "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir"
+    "moveBuildArtefactsToDistDlsir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist",
+    "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
+    "pre-commit": "npm audit --audit-level=moderate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "parcel": "2.4.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "husky": "^7.0.4"
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -30,5 +33,9 @@
     "react-i18next": "^11.15.3",
     "react-router-dom": "^6.2.1",
     "styled-components": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.14.0",
+    "npm": ">=8.3.1"
   }
 }
