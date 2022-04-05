@@ -2,7 +2,10 @@
   "manifest_version": 3,
   "name": "ogbv",
   "version": "0.0.10",
-  "author": "tattlemade|cis",
+  "author": "tattlemade|cis",  
+  "content_security_policy": {
+  	"extension_pages": "default-src 'none'; connect-src http://localhost:3000; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self'; style-src https://fonts.googleapis.com 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';"
+  	},
   "host_permissions": [
     "https://twitter.com/*",
     "https://ogbv-plugin.tattle.co.in/",
@@ -20,4 +23,4 @@
     "default_popup": "options.html"
   },
   "icons": { "16": "icon16.png", "48": "icon32.png" }
-}
+}	
