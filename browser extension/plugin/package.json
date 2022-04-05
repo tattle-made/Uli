@@ -11,9 +11,7 @@
     "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
     "pre-commit": "npm audit --audit-level=moderate",
     "lint-staged": {
-      "*.(js|jsx)": [
-        "eslint --fix"
-      ]
+      "*.(js|jsx)": "eslint --fix"
     }
   },
   "keywords": [],
