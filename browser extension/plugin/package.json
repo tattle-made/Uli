@@ -10,9 +10,7 @@
     "moveBuildArtefactsToDistDir": "cp options.html dist && cp manifest.json dist && cp icon* dist",
     "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
     "pre-commit": "npm audit --audit-level=moderate",
-    "lint-staged": {
-      "*.(js|jsx)": "eslint --fix"
-    }
+    "lint": "lint-staged"
   },
   "keywords": [],
   "author": "",
@@ -43,5 +41,10 @@
   "engines": {
     "node": ">=16.14.0",
     "npm": ">=8.3.1"
+  },
+  "lint-staged": {
+      "*.(js|jsx)": [
+        "eslint --fix"
+      ]
   }
 }
