@@ -137,4 +137,5 @@ export default {
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
+  parseAndMakeTweet,
 };
