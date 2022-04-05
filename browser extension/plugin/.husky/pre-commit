@@ -3,3 +3,4 @@
 
 cd "browser extension/plugin"
 npm run pre-commit
+npm run lint-staged

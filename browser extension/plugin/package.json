@@ -9,13 +9,22 @@
     "start:contentScript": "parcel src/content-script.js",
     "moveBuildArtefactsToDistDir": "cp options.html dist && cp manifest.json dist && cp icon* dist",
     "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
-    "pre-commit": "npm audit --audit-level=moderate"
+    "pre-commit": "npm audit --audit-level=moderate",
+    "lint-staged": {
+      "*.(js|jsx)": [
+        "eslint --fix"
+      ]
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.12.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.29.4",
     "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
     "parcel": "^2.2.1"
   },
   "dependencies": {
