@@ -3,16 +3,19 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
+    "prepare": "cd ../.. && husky install \"browser extension/plugin/.husky\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:options": "parcel src/options.jsx",
     "start:contentScript": "parcel src/content-script.js",
     "moveBuildArtefactsToDistDir": "cp options.html dist && cp manifest.json dist && cp icon* dist",
-    "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir"
+    "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
+    "pre-commit": "npm audit --audit-level=moderate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "husky": "^7.0.4",
     "parcel": "^2.2.1"
   },
   "dependencies": {
@@ -29,5 +32,9 @@
     "react-i18next": "^11.15.3",
     "react-router-dom": "^6.2.1",
     "styled-components": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.14.0",
+    "npm": ">=8.3.1"
   }
 }
