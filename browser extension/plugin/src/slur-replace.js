@@ -1,5 +1,5 @@
 console.log("slur replace loaded");
-let userSlurList;
+// let userSlurList;
 
 const PUNCTUATIONS = [" ", ".", ",", ";", "#"];
 
