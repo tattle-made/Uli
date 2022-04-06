@@ -7,6 +7,7 @@ import config from "./config";
 
 const ENVIRONMENT = config.ENVIRONMENT;
 
+/*
 const storageMock = {
   local: {
     set: (object, callback) => {
@@ -33,6 +34,7 @@ const storageMock = {
     },
   },
 };
+*/
 
 const storage = ENVIRONMENT === "production" ? chrome.storage : chrome.storage;
 // const storage = ENVIRONMENT === "production" ? chrome.storage : storageMock;
@@ -64,14 +66,14 @@ const set = (key, value) => {
   });
 };
 
-function sendMessage(type, payload) {
+function sendMessage(type) {
   if (type == "updateData") {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       chrome.tabs.sendMessage(
         tabs[0].id,
         { type: "updateData" },
         function (response) {
-          // alert(response);
+          console.log(response);
         }
       );
     });

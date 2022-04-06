@@ -5,8 +5,7 @@ var result = "";
 fs.readFileSync("slur_list_withspace.txt", "utf-8")
   .split(/\r?\n/)
   .forEach(function (line) {
-    if (line === "---") {
-    } else {
+    if (line !== "---") {
       //console.log(line);
       result += "|" + line;
     }
