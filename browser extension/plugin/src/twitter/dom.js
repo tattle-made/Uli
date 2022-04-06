@@ -1,12 +1,13 @@
 import ReactDOM from "react-dom";
+import { InlineButtons } from "../ui-components/pages/InlineButtons";
 import { TweetControl } from "./tweet-controls";
 import { getTimelineElement } from "./config";
+import { parseTweet } from "./parser";
 
 /**
  * dom is responsible for
- * 1. Parsing the DOM and converting it into structured tweet objects
- * 2. DOM editing - adding divs, editing classes and attributes etc
- * 3. Registering event handlers
+ * 1. DOM editing - adding divs, editing classes and attributes etc
+ * 2. Registering event handlers
  */
 
 function createTopBannerElement() {
@@ -16,8 +17,12 @@ function createTopBannerElement() {
     var inlineButtonDiv = document.createElement("div");
     inlineButtonDiv.id = "ogbv-inline-button";
     main.prepend(inlineButtonDiv);
+    ReactDOM.render(
+      <InlineButtons style={{ position: "sticky", top: 0 }} />,
+      inlineButtonDiv
+    );
   } catch (err) {
-    console.log("TEST : Error Creating Top Banner");
+    console.log("TEST : Error Creating Top Banner", err);
   }
 }
 
@@ -27,16 +32,13 @@ function getTopBannerElement() {
 
 function addInlineMenu(item) {
   const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-
   item.setAttribute("id", id);
-  const tweet = parseAndMakeTweet(item);
-  if (tweet) {
-    var inlineButtonDiv = document.createElement("div");
-    inlineButtonDiv.id = id;
-    item.prepend(inlineButtonDiv);
 
-    ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
-  }
+  var inlineButtonDiv = document.createElement("div");
+  inlineButtonDiv.id = id;
+  item.prepend(inlineButtonDiv);
+
+  ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
 }
 
 const processTweets = async function (mutationsList, observer) {
@@ -48,17 +50,9 @@ const processTweets = async function (mutationsList, observer) {
         console.log("A child node has been added");
         const nodes = Array.from(mutation.addedNodes);
         nodes.map((node) => {
-          const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-          console.log(id, node.innerText, node);
-          node.setAttribute("id", id);
-          const tweet = parseAndMakeTweet(node);
+          const tweet = parseTweet(node);
           if (tweet) {
-            var inlineButtonDiv = document.createElement("div");
-            inlineButtonDiv.id = id;
-            node.prepend(inlineButtonDiv);
-            // tweets[id] = getTweet(node);
-
-            ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+            addInlineMenu(node);
           }
         });
       }
@@ -83,51 +77,6 @@ function setTimelineChangeListener() {
 }
 
 /**
- * Parses the DOM and extracts structured data from it.
- * @param {DOMElement obtained from document.getElementById query} tweetDom
- * @return {Object} Tweet - stuctured tweet with values extracted from the dom
- */
-function parseAndMakeTweet(tweetDom) {
-  const TWEET_PATH_GENERAL = new RegExp(
-    "DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(1\\):DIV\\(1\\):DIV\\(1\\):DIV\\([0-9]+\\):DIV\\(0\\):DIV\\([0-9]+\\):DIV\\([0-9]+\\):DIV\\(0\\):SPAN"
-  );
-  let leaves = {};
-
-  function getId() {
-    const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-    return id;
-  }
-
-  function DFT(node, currentPath) {
-    let elementTag = node.tagName;
-    if (elementTag == undefined) {
-      elementTag = "UND";
-    }
-    node.childNodes.forEach((a, ix) => {
-      const newCurrentPath = currentPath + `(${ix})` + ":" + elementTag;
-      DFT(a, newCurrentPath);
-    });
-    if (
-      node.childNodes.length === 0 &&
-      (elementTag === "SPAN" || elementTag === "A" || elementTag === "UND")
-    ) {
-      console.log({ currentPath, node });
-      if (TWEET_PATH_GENERAL.test(currentPath)) {
-        const id = getId();
-        const parentElement = node.parentElement;
-        parentElement.setAttribute("id", id);
-        leaves[id] = parentElement;
-        console.log({ leaf: parentElement });
-      }
-    }
-  }
-
-  DFT(tweetDom, "DIV");
-
-  return leaves;
-}
-
-/**
  * This is where the tweet text is replaced with plugin specific features.
  *
  */
@@ -137,5 +86,4 @@ export default {
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
-  parseAndMakeTweet,
 };

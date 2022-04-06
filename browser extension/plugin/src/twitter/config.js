@@ -25,12 +25,10 @@ function getTimelineElement(location) {
   }
 
   const timeline = document.querySelector(
-    '[aria-label="Timeline: Your Home Timeline"]'
+    '[aria-label="Timeline: Conversation"]'
   ).firstChild;
 
   return timeline;
 }
 
-export default {
-  getTimelineElement,
-};
+export { getTimelineElement };

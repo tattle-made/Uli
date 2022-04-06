@@ -1,16 +1,10 @@
 import ReactDOM from "react-dom";
-import { Box, Text } from "grommet";
-import { InlineButtons } from "./ui-components/pages/InlineButtons";
 import { replaceSlur, updateSlurList } from "./slur-replace";
 import { dom } from "./twitter";
 import repository from "./repository";
 import { TweetControl } from "./twitter/tweet-controls";
 const { getPreferenceData } = repository;
-const {
-  createTopBannerElement,
-  getTopBannerElement,
-  setTimelineChangeListener,
-} = dom;
+const { createTopBannerElement, setTimelineChangeListener } = dom;
 
 console.log("TEST : CS loaded");
 
@@ -24,13 +18,6 @@ setTimeout(async () => {
 
 async function initialize() {
   createTopBannerElement();
-
-  const node = getTopBannerElement();
-
-  ReactDOM.render(
-    <InlineButtons style={{ position: "sticky", top: 0 }} node={node} />,
-    node
-  );
 
   const preference = await getPreferenceData();
 
