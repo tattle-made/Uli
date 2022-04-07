@@ -48,7 +48,7 @@
   "lint-staged": {
     "*.(js|jsx|ts|tsx)": [
       "eslint --fix",
-      "tsc-files --noEmit --strict true"
+      "tsc-files --project tsconfig.json --noEmit --strict true"
     ],
     "*": "prettier --ignore-unknown --write"
   }
