@@ -23,7 +23,8 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
     "parcel": "^2.2.1",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "tsc-files": "^1.1.3"
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -45,8 +46,9 @@
     "npm": ">=8.3.1"
   },
   "lint-staged": {
-    "*.(js|jsx)": [
-      "eslint --fix"
+    "*.(js|jsx|ts|tsx)": [
+      "eslint --fix",
+      "tsc-files --noEmit --strict true"
     ],
     "*": "prettier --ignore-unknown --write"
   }
