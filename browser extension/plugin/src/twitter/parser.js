@@ -44,7 +44,7 @@ function parseTweet(id, tweetDom) {
   }
 
   DFT(tweetDom, "DIV");
-  console.log({ leaf });
+  // console.log(leaf);
   return leaf;
 }
 
