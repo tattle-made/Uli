@@ -3,6 +3,10 @@ import { InlineButtons } from "../ui-components/pages/InlineButtons";
 import { TweetControl } from "./tweet-controls";
 import { getTimelineElement } from "./config";
 import { parseTweet } from "./parser";
+import { hashCode } from "./util";
+import { replaceSlur } from "../slur-replace";
+
+let tweets = {};
 
 /**
  * dom is responsible for
@@ -30,18 +34,35 @@ function getTopBannerElement() {
   return document.getElementById("ogbv-inline-button");
 }
 
-function addInlineMenu(item) {
-  const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+function debug(id) {
+  console.log(tweets[id]);
+  // unblur(id);
+}
+
+function unblur(id) {
+  const tweetToUnBlur = tweets[id];
+  for (var i = 0; i < tweetToUnBlur.spans.length; i++) {
+    tweetToUnBlur.spans[i].innerText = tweetToUnBlur.original_text[i];
+  }
+}
+
+function addInlineMenu(id, item) {
+  // const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+  // const id = hashCode(item.innerHTML);
+
   item.setAttribute("id", id);
 
   var inlineButtonDiv = document.createElement("div");
   inlineButtonDiv.id = id;
   item.prepend(inlineButtonDiv);
 
-  ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+  ReactDOM.render(
+    <TweetControl id={id} debug={debug} unblur={unblur} />,
+    inlineButtonDiv
+  );
 }
 
-const processTweets = async function (mutationsList, observer) {
+const processNodes = async function (mutationsList) {
   console.log("process tweets");
   // console.log(mutationsList);
   for (const mutation of mutationsList) {
@@ -50,10 +71,16 @@ const processTweets = async function (mutationsList, observer) {
         console.log("A child node has been added");
         const nodes = Array.from(mutation.addedNodes);
         nodes.map((node) => {
-          const tweet = parseTweet(node);
-          if (tweet) {
-            addInlineMenu(node);
+          const id = hashCode(node.innerHTML);
+          tweets[id] = parseTweet(id, node);
+
+          for (const tweet of tweets[id].spans) {
+            // console.log({ 2: tweet });
+            const text = tweet.innerText;
+            tweet.innerText = replaceSlur(text);
           }
+
+          addInlineMenu(id, node);
         });
       }
     } else if (mutation.type === "attributes") {
@@ -63,17 +90,21 @@ const processTweets = async function (mutationsList, observer) {
 };
 
 function setTimelineChangeListener() {
-  const observer = new MutationObserver(processTweets);
+  const observer = new MutationObserver(processNodes);
   const timeline = getTimelineElement(location.href);
+  const config = { attributes: true, childList: true, subtree: false };
+  observer.observe(timeline, config);
+}
 
+function processExistingNodes() {
+  // add inline menu for already nodes
+  const timeline = getTimelineElement(location.href);
   console.log(timeline);
   const nodes = Array.from(timeline.children);
   console.log({ nodes });
   nodes.map((item) => {
     addInlineMenu(item);
   });
-  const config = { attributes: true, childList: true, subtree: false };
-  observer.observe(timeline, config);
 }
 
 /**
@@ -86,4 +117,6 @@ export default {
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
+  processExistingNodes,
+  tweets,
 };

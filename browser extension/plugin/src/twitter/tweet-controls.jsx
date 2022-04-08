@@ -12,11 +12,13 @@ function UnfocussedButton({ onClick, children }) {
   );
 }
 
-export function TweetControl({ id, slursToBlur }) {
+export function TweetControl({ id, slursToBlur, debug, unblur }) {
   const [category, setCategory] = useState("Uncategorized");
+  const [slurFlagVisibility, setSlurFlagVisibility] = useState(true);
   const removeBanner = useState([]);
   function clickActivity() {
     console.log(id);
+    debug(id);
   }
 
   useEffect(async () => {
@@ -49,7 +51,9 @@ export function TweetControl({ id, slursToBlur }) {
           <Camera size={16} />
         </UnfocussedButton>
         <Wifi size={16} />
-        <Eye size={16} />
+        <UnfocussedButton onClick={() => unblur(id)}>
+          <Eye size={16} />
+        </UnfocussedButton>
         <UnfocussedButton onClick={clickActivity}>
           <Activity size={16} />
         </UnfocussedButton>

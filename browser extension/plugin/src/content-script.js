@@ -1,10 +1,12 @@
-import ReactDOM from "react-dom";
-import { replaceSlur, updateSlurList } from "./slur-replace";
+import { updateSlurList } from "./slur-replace";
 import { dom } from "./twitter";
 import repository from "./repository";
-import { TweetControl } from "./twitter/tweet-controls";
 const { getPreferenceData } = repository;
-const { createTopBannerElement, setTimelineChangeListener } = dom;
+const {
+  createTopBannerElement,
+  setTimelineChangeListener,
+  processExistingNodes,
+} = dom;
 
 console.log("TEST : CS loaded");
 
@@ -24,5 +26,7 @@ async function initialize() {
   if (preference != undefined && preference.slurList != undefined) {
     updateSlurList(preference.slurList);
   }
+
+  // processExistingNodes();
   setTimelineChangeListener();
 }

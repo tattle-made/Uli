@@ -8,16 +8,15 @@
  * @param {DOMElement obtained from document.getElementById query} tweetDom
  * @return {Object} Tweet - stuctured tweet with values extracted from the dom
  */
-function parseTweet(tweetDom) {
+function parseTweet(id, tweetDom) {
   const TWEET_PATH_GENERAL = new RegExp(
     "DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(1\\):DIV\\(1\\):DIV\\(1\\):DIV\\([0-9]+\\):DIV\\(0\\):DIV\\([0-9]+\\):DIV\\([0-9]+\\):DIV\\(0\\):SPAN"
   );
-  let leaves = {};
-
-  function getId() {
-    const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-    return id;
-  }
+  let leaf = {
+    id,
+    original_text: [],
+    spans: [],
+  };
 
   function DFT(node, currentPath) {
     let elementTag = node.tagName;
@@ -34,18 +33,19 @@ function parseTweet(tweetDom) {
     ) {
       // console.log({ currentPath, node });
       if (TWEET_PATH_GENERAL.test(currentPath)) {
-        const id = getId();
         const parentElement = node.parentElement;
         parentElement.setAttribute("id", id);
-        leaves[id] = parentElement;
+        leaf.original_text.push(parentElement.innerText);
+        leaf.spans.push(parentElement);
+        // leaves.push(parentElement);
         // console.log({ leaf: parentElement });
       }
     }
   }
 
   DFT(tweetDom, "DIV");
-
-  return leaves;
+  console.log({ leaf });
+  return leaf;
 }
 
 export { parseTweet };
