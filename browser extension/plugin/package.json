@@ -5,17 +5,23 @@
   "scripts": {
     "prepare": "cd ../.. && husky install \"browser extension/plugin/.husky\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:options": "parcel src/options.jsx",
+    "start:options": "parcel src/ui-components/pages/options.jsx",
     "start:contentScript": "parcel src/content-script.js",
     "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist",
+<<<<<<< HEAD
     "build": "parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
     "pre-commit": "npm audit --audit-level=moderate",
     "lint": "lint-staged"
+=======
+    "build": "parcel build src/ui-components/pages/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
+    "pre-commit": "npm audit --audit-level=moderate"
+>>>>>>> 79efc8b81fe9f7af4d020ff5e968a6cd9e027ec1
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+<<<<<<< HEAD
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
@@ -24,6 +30,11 @@
     "lint-staged": "^12.3.7",
     "parcel": "^2.2.1",
     "prettier": "^2.6.2"
+=======
+    "parcel": "^2.2.1",
+    "process": "^0.11.10",
+    "husky": "^7.0.4"
+>>>>>>> 79efc8b81fe9f7af4d020ff5e968a6cd9e027ec1
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -44,10 +55,15 @@
     "node": ">=16.14.0",
     "npm": ">=8.3.1"
   },
+<<<<<<< HEAD
   "lint-staged": {
     "*.(js|jsx)": [
       "eslint --fix"
     ],
     "*": "prettier --ignore-unknown --write"
+=======
+  "target": {
+    "context": "browser"
+>>>>>>> 79efc8b81fe9f7af4d020ff5e968a6cd9e027ec1
   }
 }

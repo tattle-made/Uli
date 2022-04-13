@@ -38,7 +38,7 @@ const CTAButton = ({ icon, label, onClick }) => {
   );
 };
 
-export function InlineButtons({ node }) {
+export function InlineButtons() {
   const [message, setMessage] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [progress, showProgress] = useState(false);

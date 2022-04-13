@@ -1,53 +1,68 @@
 import ReactDOM from "react-dom";
+import { InlineButtons } from "../ui-components/pages/InlineButtons";
 import { TweetControl } from "./tweet-controls";
+import { getTimelineElement } from "./config";
+import { parseTweet } from "./parser";
+import { hashCode } from "./util";
+import { replaceSlur } from "../slur-replace";
+
+let tweets = {};
 
 /**
  * dom is responsible for
- * 1. Parsing the DOM and converting it into structured tweet objects
- * 2. DOM editing - adding divs, editing classes and attributes etc
- * 3. Registering event handlers
+ * 1. DOM editing - adding divs, editing classes and attributes etc
+ * 2. Registering event handlers
  */
-
-/**
- * Path to all DOM elements related to parsing tweets.
- */
-const TWEET_LANGUAGE =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) > div:nth-child(2) > div:first-child > div:first-child";
-const TWEET_URL =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) >  div:nth-child(1) >  div:nth-child(1) >  div:nth-child(1) > div:nth-child(1) > a";
-const INLNE_OPTIONS_SPACE =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) >  div:nth-child(1) >  div:nth-child(1) >  div:nth-child(1)";
-const TWEET_TEXT =
-  "div > div > div > div > div > article > div > div > div:nth-child(1) >  div:nth-child(2) >  div:nth-child(2) > div:nth-child(2) > div:first-child > div:first-child > span";
-const TWEET_DIV = "div > div > span";
-const TWEET_DIV_CONTENT = "";
 
 function createTopBannerElement() {
-  let main = document.getElementsByTagName("main")[0];
-  var inlineButtonDiv = document.createElement("div");
-  inlineButtonDiv.id = "ogbv-inline-button";
-  main.prepend(inlineButtonDiv);
+  console.log("TEST : Creating Top Banner");
+  try {
+    let main = document.getElementsByTagName("main")[0];
+    var inlineButtonDiv = document.createElement("div");
+    inlineButtonDiv.id = "ogbv-inline-button";
+    main.prepend(inlineButtonDiv);
+    ReactDOM.render(
+      <InlineButtons style={{ position: "sticky", top: 0 }} />,
+      inlineButtonDiv
+    );
+  } catch (err) {
+    console.log("TEST : Error Creating Top Banner", err);
+  }
 }
 
 function getTopBannerElement() {
   return document.getElementById("ogbv-inline-button");
 }
 
-function addInlineMenu(item) {
-  const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+function debug(id) {
+  console.log(tweets[id]);
+  // unblur(id);
+}
 
-  item.setAttribute("id", id);
-  const tweet = getTweet(item);
-  if (tweet) {
-    var inlineButtonDiv = document.createElement("div");
-    inlineButtonDiv.id = id;
-    item.prepend(inlineButtonDiv);
-
-    ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+function unblur(id) {
+  const tweetToUnBlur = tweets[id];
+  for (var i = 0; i < tweetToUnBlur.spans.length; i++) {
+    tweetToUnBlur.spans[i].innerText = tweetToUnBlur.original_text[i];
   }
 }
 
-const processTweets = async function (mutationsList, observer) {
+function addInlineMenu(id, item) {
+  // const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
+  // const id = hashCode(item.innerHTML);
+
+  item.setAttribute("id", id);
+
+  var inlineButtonDiv = document.createElement("div");
+  inlineButtonDiv.id = id;
+  item.prepend(inlineButtonDiv);
+
+  ReactDOM.render(
+    <TweetControl tweet={tweets[id]} id={id} debug={debug} unblur={unblur} />,
+    inlineButtonDiv
+  );
+}
+
+const processNodes = async function (mutationsList) {
   console.log("process tweets");
   // console.log(mutationsList);
   for (const mutation of mutationsList) {
@@ -56,17 +71,16 @@ const processTweets = async function (mutationsList, observer) {
         console.log("A child node has been added");
         const nodes = Array.from(mutation.addedNodes);
         nodes.map((node) => {
-          const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-          console.log(id, node.innerText, node);
-          node.setAttribute("id", id);
-          const tweet = getTweet(node);
-          if (tweet) {
-            var inlineButtonDiv = document.createElement("div");
-            inlineButtonDiv.id = id;
-            node.prepend(inlineButtonDiv);
+          const id = hashCode(node.innerHTML);
+          tweets[id] = parseTweet(id, node);
 
-            ReactDOM.render(<TweetControl id={id} />, inlineButtonDiv);
+          for (const tweet of tweets[id].spans) {
+            // console.log({ 2: tweet });
+            const text = tweet.innerText;
+            tweet.innerText = replaceSlur(text);
           }
+
+          addInlineMenu(id, node);
         });
       }
     } else if (mutation.type === "attributes") {
@@ -76,42 +90,21 @@ const processTweets = async function (mutationsList, observer) {
 };
 
 function setTimelineChangeListener() {
-  const observer = new MutationObserver(processTweets);
-  const timeline = document.querySelector(
-    '[aria-label="Timeline: Conversation"]'
-  ).firstChild;
+  const observer = new MutationObserver(processNodes);
+  const timeline = getTimelineElement(location.href);
+  const config = { attributes: true, childList: true, subtree: false };
+  observer.observe(timeline, config);
+}
+
+function processExistingNodes() {
+  // add inline menu for already nodes
+  const timeline = getTimelineElement(location.href);
   console.log(timeline);
   const nodes = Array.from(timeline.children);
   console.log({ nodes });
   nodes.map((item) => {
     addInlineMenu(item);
   });
-  const config = { attributes: true, childList: true, subtree: false };
-  observer.observe(timeline, config);
-}
-
-/**
- * Returns a tweet object with structured access to all relevant tweet data
- * Throws an exception if the dom structure has changed.
- */
-function getTweet(tweetDom) {
-  try {
-    const language = tweetDom
-      .querySelector(TWEET_LANGUAGE)
-      .getAttribute("lang");
-    const tweetUrl = tweetDom.querySelector(TWEET_URL).getAttribute("href");
-    const inlineActionIconsDiv = tweetDom.querySelector(INLNE_OPTIONS_SPACE);
-    const text = tweetDom.querySelector(TWEET_TEXT).innerText;
-    return {
-      language,
-      tweetUrl,
-      inlineActionIconsDiv,
-      text,
-    };
-  } catch (err) {
-    console.log("Unexpected Structure", err);
-    return undefined;
-  }
 }
 
 /**
@@ -121,8 +114,9 @@ function getTweet(tweetDom) {
 function processTweet(tweetDom) {}
 
 export default {
-  getTweet,
   createTopBannerElement,
   getTopBannerElement,
   setTimelineChangeListener,
+  processExistingNodes,
+  tweets,
 };

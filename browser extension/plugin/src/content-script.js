@@ -1,17 +1,14 @@
-import ReactDOM from "react-dom";
-import { Box, Text } from "grommet";
-import { InlineButtons } from "./ui-components/pages/InlineButtons";
-import { replaceSlur, updateSlurList } from "./slur-replace";
+import { updateSlurList } from "./slur-replace";
 import { dom } from "./twitter";
 import repository from "./repository";
-import { TweetControl } from "./twitter/tweet-controls";
 const { getPreferenceData } = repository;
 const {
   createTopBannerElement,
-  getTopBannerElement,
   setTimelineChangeListener,
-  getTweet,
+  processExistingNodes,
 } = dom;
+
+console.log("TEST : CS loaded");
 
 if (process.env.ENVIRONMENT) {
   console.log("Content Script Loaded");
@@ -19,7 +16,7 @@ if (process.env.ENVIRONMENT) {
 
 setTimeout(async () => {
   await initialize();
-}, 3000);
+}, 5000);
 
 const processTweets = async function () {
   // const userData = await repository.getUserData();
@@ -40,19 +37,14 @@ const processTweets = async function () {
 };
 
 async function initialize() {
-  setTimelineChangeListener();
   createTopBannerElement();
-
-  const node = getTopBannerElement();
-
-  ReactDOM.render(
-    <InlineButtons style={{ position: "sticky", top: 0 }} node={node} />,
-    node
-  );
 
   const preference = await getPreferenceData();
 
   if (preference != undefined && preference.slurList != undefined) {
     updateSlurList(preference.slurList);
   }
+
+  // processExistingNodes();
+  setTimelineChangeListener();
 }
