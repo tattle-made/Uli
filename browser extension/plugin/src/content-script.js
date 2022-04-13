@@ -21,6 +21,24 @@ setTimeout(async () => {
   await initialize();
 }, 3000);
 
+const processTweets = async function () {
+  // const userData = await repository.getUserData();
+  // const preferenceData = await repository.getPreferenceData();
+  // console.log({ userData, preferenceData });
+  var spans = document.getElementsByClassName(
+    "css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0"
+  );
+  spans = Array.from(spans);
+  if (spans.length != currentTweetCount) {
+    console.log("replacing slur");
+    currentTweetCount = spans.length;
+    spans.map((span) => {
+      const text = span.innerText;
+      span.innerText = replaceSlur(text);
+    });
+  }
+};
+
 async function initialize() {
   setTimelineChangeListener();
   createTopBannerElement();
