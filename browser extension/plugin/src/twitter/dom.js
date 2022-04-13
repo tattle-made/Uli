@@ -57,7 +57,7 @@ function addInlineMenu(id, item) {
   item.prepend(inlineButtonDiv);
 
   ReactDOM.render(
-    <TweetControl id={id} debug={debug} unblur={unblur} />,
+    <TweetControl tweet={tweets[id]} id={id} debug={debug} unblur={unblur} />,
     inlineButtonDiv
   );
 }

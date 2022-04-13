@@ -12,7 +12,7 @@ function UnfocussedButton({ onClick, children }) {
   );
 }
 
-export function TweetControl({ id, slursToBlur, debug, unblur }) {
+export function TweetControl({ id, tweet, slursToBlur, debug, unblur }) {
   const [category, setCategory] = useState("Uncategorized");
   const [slurFlagVisibility, setSlurFlagVisibility] = useState(true);
   const removeBanner = useState([]);
@@ -24,7 +24,7 @@ export function TweetControl({ id, slursToBlur, debug, unblur }) {
   useEffect(async () => {
     try {
       const response = await axios.post("http://localhost:8000/predict", {
-        text: "This restaurant is disgusting",
+        text: tweet.original_text.join(" "),
       });
       const { data } = response;
 
