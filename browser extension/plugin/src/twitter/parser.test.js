@@ -1,4 +1,9 @@
-import dom from "./dom";
+import dom from './dom';
 const { parseAndMakeTweet } = dom;
 
-parseAndMakeTweet(input, "DIV");
+/**
+ * to be replaced by actual dom content which can be obtained by inspecting DOM in the browser.
+ */
+let input = '';
+
+parseAndMakeTweet(input, 'DIV');

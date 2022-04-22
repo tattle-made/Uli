@@ -1,63 +1,99 @@
-import React, { useState, useEffect } from "react";
-import { Box, Text } from "grommet";
-import { Camera, Wifi, Eye, Activity } from "react-feather";
-import { saveScreenshot } from "../service-screenshot";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Box, Text } from 'grommet';
+import { Camera, Wifi, Eye, Menu, XCircle, Activity } from 'react-feather';
+import { saveScreenshot } from '../service-screenshot';
+import axios from 'axios';
 
 function UnfocussedButton({ onClick, children }) {
-  return (
-    <Box onClick={onClick} focusIndicator={false}>
-      {children}
-    </Box>
-  );
+    return (
+        <Box onClick={onClick} focusIndicator={false}>
+            {children}
+        </Box>
+    );
 }
 
-export function TweetControl({ id, tweet, slursToBlur, debug, unblur }) {
-  const [category, setCategory] = useState("Uncategorized");
-  const [slurFlagVisibility, setSlurFlagVisibility] = useState(true);
-  const removeBanner = useState([]);
-  function clickActivity() {
-    console.log(id);
-    debug(id);
-  }
+UnfocussedButton.propTypes = {
+    onClick: PropTypes.func,
+    children: PropTypes.arrayOf(PropTypes.element)
+};
 
-  useEffect(async () => {
-    try {
-      const response = await axios.post("http://localhost:8000/predict", {
-        text: tweet.original_text.join(" "),
-      });
-      const { data } = response;
-
-      if (data.confidence > 0.5) {
-        setCategory(data.sentiment);
-      }
-    } catch (err) {
-      console.log(`Error : server could not classify tweet`, err);
+export function TweetControl({ tweet, id, debug, setBlur }) {
+    const [collapsed, setCollapsed] = useState(true);
+    const [category, setCategory] = useState('Uncategorized');
+    const [blurFlag, setBlurFlag] = useState(true);
+    function clickActivity() {
+        console.log(id);
+        debug(id);
     }
-  }, []);
 
-  async function clickCamera() {
-    const node = document.getElementById(id);
-    console.log(node);
-    await saveScreenshot(node);
-  }
+    useEffect(async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/predict', {
+                text: tweet.original_text.join(' ')
+            });
+            const { data } = response;
+            if (data.confidence > 0.5) {
+                setCategory(data.sentiment);
+            }
+        } catch (err) {
+            console.log(`Error : server could not classify tweet`, err);
+        }
+    }, []);
 
-  return (
-    <Box direction="row">
-      <Box flex="grow"></Box>
-      <Box direction="row" gap={"small"} padding={"medium"}>
-        <Text size="'small">{category}</Text>
-        <UnfocussedButton onClick={clickCamera}>
-          <Camera size={16} />
-        </UnfocussedButton>
-        <Wifi size={16} />
-        <UnfocussedButton onClick={() => unblur(id)}>
-          <Eye size={16} />
-        </UnfocussedButton>
-        <UnfocussedButton onClick={clickActivity}>
-          <Activity size={16} />
-        </UnfocussedButton>
-      </Box>
-    </Box>
-  );
+    async function clickCamera() {
+        const node = document.getElementById(id);
+        console.log(node);
+        await saveScreenshot(node);
+    }
+
+    return (
+        <Box direction="row">
+            <Box flex="grow"></Box>
+            {!collapsed ? (
+                <Box direction="row" gap={'small'} padding={'medium'}>
+                    {category != 'Uncategorized' || category != 'None' ? (
+                        <Text size="'small">{category}</Text>
+                    ) : null}
+                    <UnfocussedButton onClick={clickCamera}>
+                        <Camera size={16} />
+                    </UnfocussedButton>
+                    <Wifi size={16} />
+                    <UnfocussedButton
+                        onClick={() => {
+                            setBlurFlag(!blurFlag);
+                            setBlur(id, blurFlag);
+                        }}
+                    >
+                        <Eye size={16} />
+                    </UnfocussedButton>
+                    <UnfocussedButton onClick={clickActivity}>
+                        <Activity size={16} />
+                    </UnfocussedButton>
+                    <UnfocussedButton
+                        onClick={() => {
+                            setCollapsed(!collapsed);
+                        }}
+                    >
+                        <XCircle size={16} />
+                    </UnfocussedButton>
+                </Box>
+            ) : (
+                <UnfocussedButton
+                    onClick={() => {
+                        setCollapsed(!collapsed);
+                    }}
+                >
+                    <Menu size={16} />
+                </UnfocussedButton>
+            )}
+        </Box>
+    );
 }
+
+TweetControl.propTypes = {
+    tweet: PropTypes.object,
+    id: PropTypes.string,
+    debug: PropTypes.func,
+    setBlur: PropTypes.func
+};
