@@ -11,15 +11,14 @@ import {
   Select,
   CheckBox,
 } from "grommet";
-import config from "./config";
-import Api from "./Api";
-import repository from "./repository";
+import Api from "../pages/Api";
+import repository from "../../repository";
 import { useTranslation } from "react-i18next";
-import chrome from "./chrome";
-import { langNameMap } from "./language";
+import chrome from "../../chrome";
+import { langNameMap } from "../atoms/language";
 
 const { getPreferenceForUser, savePreference } = Api;
-import { UserContext, NotificationContext } from "./AppContext";
+import { UserContext, NotificationContext } from "../atoms/AppContext";
 const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};

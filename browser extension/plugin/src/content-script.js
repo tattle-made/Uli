@@ -1,105 +1,80 @@
-import ReactDOM from "react-dom";
-import { InlineButtons } from "./InlineButtons";
-import { replaceSlur, updateSlurList } from "./slur-replace";
-let currentTweetCount = 0;
-import repository from "./repository";
+import { updateSlurList } from './slur-replace';
+import { dom } from './twitter';
+import { current } from './twitter/pages';
+import repository from './repository';
 const { getPreferenceData } = repository;
-import chrome from "./chrome";
+const { createTopBannerElement, setOnChangeListener } = dom;
+import transform from './transform';
 
-// console.log("Content Script Loaded Again");
-// if (document.readyState === "loading") {
-//   // document.addEventListener("DOMContentLoaded", initialize);
-//   document.addEventListener("DOMContentLoaded", () => {
-//     console.log(" ---- 1");
-//   });
-// } else {
-//   console.log(" ---- 2");
-//   // initialize();
-//   let main = document.getElementsByTagName("article")[0];
-//   console.log(main);
-// }
+console.log('TEST : CS loaded');
 
-setTimeout(async () => {
-  await initialize();
-}, 3000);
-
-const processTweets = async function () {
-  // const userData = await repository.getUserData();
-  // const preferenceData = await repository.getPreferenceData();
-  // console.log({ userData, preferenceData });
-  var spans = document.getElementsByClassName(
-    "css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0"
-  );
-  spans = Array.from(spans);
-  if (spans.length != currentTweetCount) {
-    console.log("replacing slur");
-    currentTweetCount = spans.length;
-    spans.map((span) => {
-      const text = span.innerText;
-      span.innerText = replaceSlur(text);
-    });
-  }
-};
-
-async function initialize() {
-  let main = document.getElementsByTagName("main")[0];
-  var inlineButtonDiv = document.createElement("div");
-  inlineButtonDiv.id = "ogbv-inline-button";
-  main.prepend(inlineButtonDiv);
-  const app = document.getElementById("ogbv-inline-button");
-  ReactDOM.render(
-    <InlineButtons style={{ position: "sticky", top: 0 }} node={main} />,
-    app
-  );
-
-  const preference = await getPreferenceData();
-
-  if (preference != undefined && preference.slurList != undefined) {
-    updateSlurList(preference.slurList);
-  }
-
-  const observer = new MutationObserver(processTweets);
-  const bodyNode = document.getElementsByTagName("body")[0];
-  const config = { attributes: true, childList: true, subtree: true };
-  observer.observe(bodyNode, config);
+if (process.env.ENVIRONMENT) {
+    console.log(`Content Script Loaded : ${process.env.ENVIRONMENT}`);
 }
 
-chrome.addListener(
-  "updateData",
-  async () => {
-    console.log("data changed. time to update slurs");
+setTimeout(async () => {
+    await initialize();
+}, 5000);
+
+async function initialize() {
+    createTopBannerElement();
+
     const preference = await getPreferenceData();
-    console.log(preference);
-    if (preference.slurList != undefined) {
-      updateSlurList(preference.slurList);
-      processTweets();
+
+    if (preference != undefined && preference.slurList != undefined) {
+        updateSlurList(preference.slurList);
     }
-  },
-  "done"
-);
 
-// setTimeout(() => {
-//   initialize();
-// }, 5000);
+    // process page
+}
 
-// setTimeout(() => {
-//   const observer = new MutationObserver(processTweets);
-//   observer.observe(bodyNode, config);
+function handleNewPage(newUrl) {
+    // processExistingNodes();
+    let currentPage = current(newUrl);
+    console.log({ currentPage });
+    const { page } = currentPage;
+    const { getTimeline } = page;
 
-//   let main = document.getElementsByTagName("main")[0];
-//   var inlineButtonDiv = document.createElement("div");
-//   inlineButtonDiv.id = "ogbv-inline-button";
-//   main.prepend(inlineButtonDiv);
-//   const app = document.getElementById("ogbv-inline-button");
-//   ReactDOM.render(
-//     <InlineButtons style={{ position: "sticky", top: 0 }} node={main} />,
-//     app
-//   );
-// }, 5000);
+    if (getTimeline === undefined) {
+        console.log('UNKNOWN STATE : could not find timeline');
+        // todo : this is where we should default to basic slur replacement
+    } else {
+        // debugger;
+        let timeline = getTimeline();
+        transform.processNewlyAddedNodes(timeline.children);
+        setOnChangeListener(timeline, transform.processNewlyAddedNodes);
+    }
+}
 
-// let main = document.getElementsByTagName("main")[0];
-// var inlineButtonDiv = document.createElement("div");
-// inlineButtonDiv.id = "ogbv-inline-button";
-// main.prepend(inlineButtonDiv);
-// const app = document.getElementById("ogbv-inline-button");
-// ReactDOM.render(<InlineButtons node={main} />, app);
+chrome.runtime.onMessage.addListener(function (request) {
+    if (request.message === 'URL_CHANGED') {
+        console.log({ status: request.status });
+        const newUrl = request.url;
+        setTimeout(async () => {
+            handleNewPage(newUrl);
+        }, 1500);
+    }
+});
+
+const targetNode = document.getElementsByTagName('main')[0];
+const config = { attributes: true, childList: true, subtree: true };
+
+const callback = function (mutationsList) {
+    // Use traditional 'for loops' for IE 11
+    for (const mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+            // console.log('A child node has been added or removed.');
+            // console.log(mutation.addedNodes);
+            const nodes = Array.from(mutation.addedNodes);
+            nodes.map((node) => {
+                if (node.tagName === 'SECTION') {
+                    console.log('section loaded');
+                    handleNewPage(location.href);
+                }
+            });
+        }
+    }
+};
+
+const observer = new MutationObserver(callback);
+observer.observe(targetNode, config);

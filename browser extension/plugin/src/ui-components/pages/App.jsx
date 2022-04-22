@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { Grommet, Box, Heading, Text, Paragraph, Button } from "grommet";
 import { useTranslation } from "react-i18next";
-import Theme from "./Theme";
+import Theme from "../atoms/Theme";
 import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
 import { Debug } from "./Debug";
 import { Preferences } from "./Preferences";
 import { Resources } from "./Resources";
 import { Archive } from "./Archive";
-import "./i18n";
-import { UserContext, NotificationContext } from "./AppContext";
+import "../atoms/i18n";
+import { UserContext, NotificationContext } from "../atoms/AppContext";
 import Api from "./Api";
-import repository from "./repository";
-import { langNameMap } from "./language";
+import repository from "../../repository";
+import { langNameMap } from "../atoms/language";
 const { registerNewUser } = Api;
 const {
   initialize,

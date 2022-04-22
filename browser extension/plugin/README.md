@@ -19,3 +19,21 @@ run `npm run build` and it will give you a bundled and minified files in the `/d
 
 ![Preferences Page in English](../assets/ogbv-preferences-en.png)
 ![Preferences Page in Hindi](../assets/ogbv-preferences-hi.png)
+
+# Code Organization
+
+| Directory                   | Description                                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| scripts/                    | helper scripts that aren't directly part of the bundled extension                                    |
+| src/twitter/                | all code related to parsing and processing data from twitter and injecting UI elements into twitter  |
+| src/ui-components/atoms     | react components that serve as the building blocks for the UI                                        |
+| src/ui-components/molecules | multiple atoms combined to create a coherent UI element                                              |
+| src/ui-components/pages     | these correspond to UI pages you see in the extension                                                |
+| src/content-script.js       | entry point into the extension                                                                       |
+| src/background.js           | empty for now. meant to store background workers for performing long running tasks in the background |
+| src/config.js               | configurable options of the plugin                                                                   |
+
+## Entry Points :
+
+The Chrome Extension has 2 entry points - content-script.js and options.html.
+Content Script is a javascript file that is loaded on every page that this plugin is permitted to, in our case twitter.com. Optionsl.html is the UI of the plugin that can be accessed by clicking on the UI icon in the browser.

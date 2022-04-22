@@ -1,5 +1,9 @@
+console.log(`in config.js. environment ${process.env.NODE_ENV}`);
+
+const { ENVIRONMENT, LOCAL_STORAGE_NAME, API_URL } = process.env;
+
 export default {
-  ENVIRONMENT: "development", //  "development" || "production"
-  LOCAL_STORAGE_NAME: "ogbvData",
-  API_URL: "http://localhost:3000", // "https://ogbv-plugin.tattle.co.in" || "http://localhost:3000"
+  ENVIRONMENT,
+  LOCAL_STORAGE_NAME,
+  API_URL,
 };

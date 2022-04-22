@@ -1,7 +1,7 @@
 import { Box, Text, Tag, Image, Button } from "grommet";
 import { Refresh } from "grommet-icons";
 import { useEffect, useState, useContext } from "react";
-import { UserContext, NotificationContext } from "./AppContext";
+import { UserContext, NotificationContext } from "../atoms/AppContext";
 import Api from "./Api";
 import { t } from "i18next";
 
