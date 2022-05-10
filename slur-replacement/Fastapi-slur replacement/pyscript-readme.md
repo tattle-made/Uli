@@ -18,3 +18,8 @@ python3 -m http.server 12345  # serve from from pwd on port 12345
 ### Change made to python code: 
 1. Using pylev instead of levenshtein library since pylev is pure python
 2. Commented print statements
+
+
+### Additional info:
+1. `<py-env>` is a list of dependencies and external modules to load
+2. We can use our own pyscript (serve pyscript.js from our server) - that should lock the version.
