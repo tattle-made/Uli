@@ -1,0 +1,7 @@
+@import "./typography.css";
+
+body {
+    font-family: "millisime", sans-serif;
+    font-size: 24px;
+    background-color: #fdf6ed;
+}
