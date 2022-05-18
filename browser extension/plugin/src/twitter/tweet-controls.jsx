@@ -56,16 +56,16 @@ export function TweetControl({ tweet, id, debug, setBlur }) {
                         <Text size="'small">{category}</Text>
                     ) : null}
                     <UnfocussedButton onClick={clickCamera}>
-                        <Camera size={16} />
+                        <Camera size={16} color={'#212121'} />
                     </UnfocussedButton>
-                    <Wifi size={16} />
+                    <Wifi size={16} color={'#212121'} />
                     <UnfocussedButton
                         onClick={() => {
                             setBlurFlag(!blurFlag);
                             setBlur(id, blurFlag);
                         }}
                     >
-                        <Eye size={16} />
+                        <Eye size={16} color={'#212121'} />
                     </UnfocussedButton>
                     <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
@@ -84,7 +84,7 @@ export function TweetControl({ tweet, id, debug, setBlur }) {
                         setCollapsed(!collapsed);
                     }}
                 >
-                    <Menu size={16} />
+                    <Menu size={16} color={'#212121'} />
                 </UnfocussedButton>
             )}
         </Box>
