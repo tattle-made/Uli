@@ -70,7 +70,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: master
+        ref: main
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -89,7 +89,7 @@ jobs:
       uses: rtCamp/action-slack-notify@v2.0.0
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: 'Deployed website to production environment'
+        SLACK_MESSAGE: 'Deployed uli-website to production environment'
         SLACK_TITLE: 'deploy-production workflow complete'
         SLACK_COLOR: '#020637'
         SLACK_ICON: https://tattle-media.s3.amazonaws.com/monogram-dark.svg
