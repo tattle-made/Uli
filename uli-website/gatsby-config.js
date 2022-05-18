@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: `https://uli.tattle.co.in`,
   },
   plugins: [
     "gatsby-plugin-styled-components",
@@ -33,6 +33,12 @@ module.exports = {
         path: "./src/pages/",
       },
       __key: "pages",
+    },
+    {
+      resolve: `gatsby-plugin-s3`,
+      options: {
+        bucketName: "uli.tattle.co.in",
+      },
     },
   ],
 };
