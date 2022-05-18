@@ -78,13 +78,15 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
     - name: Install Packages
-      run: npm install 
+      run: |
+        pwd
+        cd uli-website 
+        pwd
+        ls
+        npm install 
+        npm run build
+        npm run deploy
 
-    - name: Build Site
-      run: npm run build
-    - name: Deploy Site
-      run: npm run deploy
-    
     - name: Notify on Slack
       uses: rtCamp/action-slack-notify@v2.0.0
       env:
