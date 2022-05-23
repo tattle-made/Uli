@@ -25,7 +25,7 @@ export default function NavBar() {
         <Box direction="row" gap={"medium"}>
           <NavLink to={"/user-guide"}>User Guide</NavLink>
           <NavLink to={"/blog"}>Blog</NavLink>
-          <NavLink to={"/team"}>Team</NavLink>
+          <NavLink to={"/about"}>About</NavLink>
         </Box>
       </Box>
     </Box>

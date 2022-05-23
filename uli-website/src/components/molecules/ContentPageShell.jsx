@@ -6,7 +6,7 @@ const ContentPageShell = ({ children }) => {
   return (
     <AppShell>
       <Box align="center" margin={"large"}>
-        {children}
+        <Box width={"large"}>{children}</Box>
       </Box>
     </AppShell>
   );
