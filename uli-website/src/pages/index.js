@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
 
-import { Box, ResponsiveContext } from "grommet";
+import { Box, ResponsiveContext, Text } from "grommet";
 import {
   Colors,
   Theme,
@@ -16,6 +16,7 @@ import {
   BorderBox,
   SectionCenteredBody,
   SectionLableOne,
+  CTALinkPlainPrimary,
 } from "../components/atoms/UliCore";
 import styled from "styled-components";
 import AppShell from "../components/molecules/AppShell";
@@ -73,7 +74,25 @@ const IndexPage = () => {
               slurs, allowing you to archive problematic tweets and coordinating
               actions with your friends.
             </p>
-            <a href={"/"}>Install Now</a>
+            <Box width={"fit-content"} align="center">
+              <Box
+                round
+                background={Colors.COLOR_BLACK}
+                width={"fit-content"}
+                pad={{
+                  top: "xsmall",
+                  bottom: "xsmall",
+                  left: "medium",
+                  right: "medium",
+                }}
+                align={"center"}
+              >
+                <CTALinkPlainPrimary href={"/"}>
+                  Add to Browser
+                </CTALinkPlainPrimary>
+              </Box>
+              <Text size={"small"}>supported on Chrome and Brave</Text>
+            </Box>
           </Box>
           <Box width={"26em"}>
             <img src={"/HeroIllustration.gif"}></img>
