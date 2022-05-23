@@ -107,6 +107,9 @@ const IndexPage = () => {
       <Box align="center" margin={"large"}>
         <Box width={"fit-content"} direction={"row-responsive"} gap={"xlarge"}>
           <Box width={"small"} gap={"xsmall"} alignSelf={"center"}>
+            <Box width={"1.2em"}>
+              <img src={"/Archive Tweet Icon.png"}></img>
+            </Box>
             <FeatureLabel>ARCHIVE TWEETS</FeatureLabel>
             <FeatureHeadline>
               Archive tweets as evidence, to build a discourse or mobilise.
@@ -137,6 +140,9 @@ const IndexPage = () => {
             <img src={"/SlurReplacement-HideAndSeekTweet.gif"}></img>
           </Box>
           <Box width={"small"} gap={"xsmall"} alignSelf={"center"}>
+            <Box width={"1.2em"}>
+              <img src={"/Slur Replacement Icon.png"}></img>
+            </Box>
             <FeatureLabel>{"SLUR REPLACEMENT"}</FeatureLabel>
             <FeatureHeadline>
               Automatic blurring of slurs in Hindi, English and Tamil
@@ -156,7 +162,12 @@ const IndexPage = () => {
       <Box align="center" margin={"large"}>
         <Box width={"fit-content"} direction={"row-responsive"} gap={"xlarge"}>
           <Box width={"small"} gap={"xsmall"} alignSelf={"center"}>
-            <FeatureLabel>INVOKE NETWORK</FeatureLabel>
+            <Box>
+              <Box width={"1.2em"}>
+                <img src={"/Invoke Network Icon.png"}></img>
+              </Box>
+              <FeatureLabel>INVOKE NETWORK</FeatureLabel>
+            </Box>
             <FeatureHeadline>You are not alone in this.</FeatureHeadline>
             <FeatureDescription>
               Involve your friends and community to act on problematic tweets
