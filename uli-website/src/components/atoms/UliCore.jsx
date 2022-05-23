@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Box } from "grommet";
+import { Link } from "gatsby";
 
 const COLOR_CREAM = "#fdf6ed";
 const COLOR_BLACK = "#212121";
@@ -94,6 +95,28 @@ export const CTALinkPlain = styled.a`
   }  
 `;
 
+export const CTALinkPlainPrimary = styled.a`
+  font-family: "MixStitch";
+  font-weight: 500;
+  font-style: normal;
+  color : ${Colors.COLOR_CREAM}
+  text-decoration: none;
+  font-size: 1.4em;
+  &:hover{
+    text-decoration: underline;
+    color : ${Colors.COLOR_ORANGE};
+
+  };
+  &:link  {
+    color : ${Colors.COLOR_CREAM};
+    text-decoration: none;
+  };
+  &:visited  {
+    color : ${Colors.COLOR_CREAM};
+    text-decoration: none;
+  }  
+`;
+
 export const CTALink = styled.a`
   background-color: red;
   padding: 1em 3em 1em 3em;
@@ -145,4 +168,18 @@ export const BorderBox = styled(Box)`
   border-image-source: url("/ResourceBorder.png");
   border-image-slice: 33%;
   border-image-repeat: round;
+`;
+
+export const NavLink = styled(Link)`
+  text-decoration: none;
+  color: ${Colors.COLOR_BLACK};
+  &:hover {
+    color: ${Colors.COLOR_BLACK};
+  }
+  &:link {
+    color: ${Colors.COLOR_BLACK};
+  }
+  &:visited {
+    color: ${Colors.COLOR_BLACK};
+  }
 `;

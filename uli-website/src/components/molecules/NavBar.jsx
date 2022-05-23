@@ -1,18 +1,31 @@
 import React from "react";
 import { Box } from "grommet";
+import { NavLink } from "../atoms/UliCore";
+import { navigate } from "gatsby";
 
 export default function NavBar() {
   return (
     <Box align="center">
-      <Box width={"large"} direction={"row-responsive"} align={"center"}>
-        <Box width={"4em"}>
+      <Box
+        margin={{ top: "small" }}
+        width={"large"}
+        direction={"row-responsive"}
+        align={"center"}
+      >
+        <Box
+          width={"4em"}
+          hoverIndicator
+          focusIndicator={false}
+          onClick={() => navigate("/")}
+        >
           <img src={"/Uli_Logo.png"} alt={"Uli Logo"} />
         </Box>
+
         <Box flex={"grow"} />
         <Box direction="row" gap={"medium"}>
-          <p>About</p>
-          <p>User Guide</p>
-          <p>Team</p>
+          <NavLink to={"/user-guide"}>User Guide</NavLink>
+          <NavLink to={"/blog"}>Blog</NavLink>
+          <NavLink to={"/team"}>Team</NavLink>
         </Box>
       </Box>
     </Box>
