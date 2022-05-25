@@ -23,9 +23,10 @@ export default function NavBar() {
 
         <Box flex={"grow"} />
         <Box direction="row" gap={"medium"}>
-          <NavLink to={"/user-guide"}>User Guide</NavLink>
+          {/* <NavLink to={"/user-guide"}>User Guide</NavLink> */}
           {/* <NavLink to={"/blog"}>Blog</NavLink> */}
           <NavLink to={"/about"}>About</NavLink>
+          <NavLink to={"/privacy-policy"}>Privacy Policy</NavLink>
         </Box>
       </Box>
     </Box>

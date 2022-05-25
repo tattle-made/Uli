@@ -22,13 +22,13 @@ export default function AppShell({ children }) {
 
         <NavBar />
         {children}
-        <Box align="center" pad={"medium"}>
+        {/* <Box align="center" pad={"medium"}>
           <Box direction="row" gap={"medium"}>
             <NavLink to={"/privacy-policy"}>Privacy Policy</NavLink>
             <NavLink to={"/blog"}>Blog</NavLink>
             <NavLink to={"/about"}>About</NavLink>
           </Box>
-        </Box>
+        </Box> */}
       </main>
     </Grommet>
   );

@@ -232,7 +232,7 @@ const IndexPage = () => {
           <Box width={"16em"}></Box>
           <Box direction={"row-responsive"} gap={"large"}>
             <CTALinkPlain href="/">INSTALL NOW</CTALinkPlain>
-            <CTALinkPlain href="/">LEARN HOW TO USE</CTALinkPlain>
+            {/* <CTALinkPlain href="/">LEARN HOW TO USE</CTALinkPlain> */}
           </Box>
         </Box>
       </Box>
