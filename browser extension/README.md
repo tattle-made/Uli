@@ -1,6 +1,6 @@
-# Browser Extension
+# Uli - Browser Extension to moderate your Twitter Feed
 
-![Cover Image](docs/assets/browser-extension-repo-cover.png)
+![Cover Image](docs/assets/hero-illustrations.gif)
 
 ## Features
 - Slur Replacement
@@ -13,3 +13,4 @@
 | --- | --- |
 | plugin | code for browser extension |
 | api-server | a rest server for storing user preferences and archived tweets |
+
