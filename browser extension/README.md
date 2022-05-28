@@ -1,6 +1,6 @@
 # Browser Extension
 
-![Cover Image](assets/browser-extension-repo-cover.png)
+![Cover Image](docs/assets/browser-extension-repo-cover.png)
 
 ## Features
 - Slur Replacement
