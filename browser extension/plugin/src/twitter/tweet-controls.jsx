@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text, Layer, TextArea, Button, Spinner } from 'grommet';
+import { Box, Text, Layer, TextArea, Button, Spinner, Grommet } from 'grommet';
 import {
     Camera,
     Wifi,
@@ -13,6 +13,7 @@ import {
 import { saveScreenshot } from '../service-screenshot';
 import repository from '../repository';
 import Api from '../ui-components/pages/Api';
+import Theme from '../ui-components/atoms/Theme';
 const { getUserData, getPreferenceData } = repository;
 const { invokeNetwork } = Api;
 
@@ -29,7 +30,7 @@ UnfocussedButton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element)
 };
 
-export function TweetControl({ id, setBlur }) {
+export function TweetControl({ tweet, id, setBlur }) {
     const [collapsed, setCollapsed] = useState(true);
     // const [category, setCategory] = useState('Uncategorized');
     const [blurFlag, setBlurFlag] = useState(true);
@@ -86,11 +87,20 @@ export function TweetControl({ id, setBlur }) {
     async function clickCamera() {
         const node = document.getElementById(id);
         console.log(node);
-        await saveScreenshot(
-            node,
-            preferenceLS.storeLocally,
-            userLS.accessToken
-        );
+        let tweetUrl = tweet.tweet_url ? tweet.tweet_url : location.href;
+        try {
+            await saveScreenshot(
+                node,
+                preferenceLS.storeLocally,
+                userLS.accessToken,
+                tweetUrl
+            );
+            showProgress(false);
+            showNotification({ message: 'Post Archived' });
+        } catch (err) {
+            showProgress(false);
+            showNotification({ message: 'Error Archiving Post on Server' });
+        }
     }
 
     function clickInvokeNetwork() {
@@ -101,10 +111,8 @@ export function TweetControl({ id, setBlur }) {
         showProgress(false);
         await updateData();
         try {
-            console.log('-----');
-            console.log({ message, url: location.href });
-            console.log('-----');
-            await invokeNetwork(userLS.accessToken, message, location.href);
+            let tweetUrl = tweet.tweet_url ? tweet.tweet_url : location.href;
+            await invokeNetwork(userLS.accessToken, message, tweetUrl);
             showProgress(false);
             showNotification({ message: 'Successfully Messaged Friends' });
         } catch (err) {
@@ -115,85 +123,89 @@ export function TweetControl({ id, setBlur }) {
     }
 
     return (
-        // <Grommet theme={Theme}>
-        <Box direction="row">
-            <Box flex="grow"></Box>
-            {!collapsed ? (
-                <Box direction="row" gap={'small'} padding={'medium'}>
-                    {/* {category != 'Uncategorized' || category != 'None' ? (
+        <Grommet theme={Theme}>
+            <Box direction="row" background={'white'}>
+                <Box flex="grow"></Box>
+                {!collapsed ? (
+                    <Box direction="row" gap={'small'} padding={'medium'}>
+                        {/* {category != 'Uncategorized' || category != 'None' ? (
                         <Text size="'small">{category}</Text>
                     ) : null} */}
-                    <Box direction="row">
-                        {progress ? <Spinner /> : null}
-                        {notification ? (
-                            <Text color={'brand'}>{notification.message}</Text>
-                        ) : null}
-                    </Box>
-                    <UnfocussedButton onClick={clickCamera}>
-                        <Camera size={16} color={'#212121'} />
-                    </UnfocussedButton>
-                    <UnfocussedButton onClick={clickInvokeNetwork}>
-                        <Wifi size={16} color={'#212121'} />
-                    </UnfocussedButton>
-                    <UnfocussedButton
-                        onClick={() => {
-                            setBlurFlag(!blurFlag);
-                            setBlur(id, blurFlag);
-                        }}
-                    >
-                        <Eye size={16} color={'#212121'} />
-                    </UnfocussedButton>
-                    {/* <UnfocussedButton onClick={clickActivity}>
+                        <Box direction="row">
+                            {progress ? <Spinner /> : null}
+                            {notification ? (
+                                <Text color={'brand'} size={'small'}>
+                                    {notification.message}
+                                </Text>
+                            ) : null}
+                        </Box>
+                        <UnfocussedButton onClick={clickCamera}>
+                            <Camera size={16} color={'#212121'} />
+                        </UnfocussedButton>
+                        <UnfocussedButton onClick={clickInvokeNetwork}>
+                            <Wifi size={16} color={'#212121'} />
+                        </UnfocussedButton>
+                        <UnfocussedButton
+                            onClick={() => {
+                                setBlurFlag(!blurFlag);
+                                setBlur(id, blurFlag);
+                            }}
+                        >
+                            <Eye size={16} color={'#212121'} />
+                        </UnfocussedButton>
+                        {/* <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
                     </UnfocussedButton> */}
+                        <UnfocussedButton
+                            onClick={() => {
+                                setCollapsed(!collapsed);
+                            }}
+                        >
+                            <XCircle size={16} />
+                        </UnfocussedButton>
+                    </Box>
+                ) : (
                     <UnfocussedButton
                         onClick={() => {
                             setCollapsed(!collapsed);
                         }}
                     >
-                        <XCircle size={16} />
+                        <ChevronLeft size={16} color={'#212121'} />
                     </UnfocussedButton>
-                </Box>
-            ) : (
-                <UnfocussedButton
-                    onClick={() => {
-                        setCollapsed(!collapsed);
-                    }}
-                >
-                    <ChevronLeft size={16} color={'#212121'} />
-                </UnfocussedButton>
-            )}
-            {showPopup ? (
-                <Layer
-                    onEsc={() => setShowPopup(false)}
-                    onClickOutside={() => setShowPopup(false)}
-                >
-                    <Box width={'medium'} gap={'medium'} margin={'large'}>
-                        <TextArea
-                            placeholder={
-                                'Hey, can you help me report this post?'
-                            }
-                            value={message}
-                            onChange={(event) => setMessage(event.target.value)}
-                        ></TextArea>
-                        <Box direction={'row'} gap={'small'}>
-                            <Button
-                                label="Cancel"
-                                onClick={() => setShowPopup(false)}
-                            />
-                            <Button
-                                label="Send"
-                                onClick={() => {
-                                    clickSend();
-                                }}
-                                primary
-                            />
+                )}
+                {showPopup ? (
+                    <Layer
+                        onEsc={() => setShowPopup(false)}
+                        onClickOutside={() => setShowPopup(false)}
+                    >
+                        <Box width={'medium'} gap={'medium'} margin={'large'}>
+                            <TextArea
+                                placeholder={
+                                    'Hey, can you help me report this post?'
+                                }
+                                value={message}
+                                onChange={(event) =>
+                                    setMessage(event.target.value)
+                                }
+                            ></TextArea>
+                            <Box direction={'row'} gap={'small'}>
+                                <Button
+                                    label="Cancel"
+                                    onClick={() => setShowPopup(false)}
+                                />
+                                <Button
+                                    label="Send"
+                                    onClick={() => {
+                                        clickSend();
+                                    }}
+                                    primary
+                                />
+                            </Box>
                         </Box>
-                    </Box>
-                </Layer>
-            ) : null}
-        </Box>
-        // </Grommet>
+                    </Layer>
+                ) : null}
+            </Box>
+        </Grommet>
     );
 }
 

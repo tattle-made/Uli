@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import Api from './ui-components/pages/Api';
 const { uploadArchivedMedia } = Api;
 
-export function saveScreenshot(element, storeLocally, accessToken) {
+export function saveScreenshot(element, storeLocally, accessToken, tweetUrl) {
     try {
         return domtoimage
             .toBlob(element.lastChild, { bgcolor: 'white' })
@@ -37,7 +37,7 @@ export function saveScreenshot(element, storeLocally, accessToken) {
 
                 var formData = new FormData();
                 formData.append('screenshot', blob);
-                formData.append('url', location.href);
+                formData.append('url', tweetUrl);
                 // await uploadArchivedMedia(accessToken, formData);
                 await uploadArchivedMedia(accessToken, formData);
             });
