@@ -1,9 +1,20 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text } from 'grommet';
-import { Camera, Wifi, Eye, Menu, XCircle, Activity } from 'react-feather';
+import { Box, Text, Layer, TextArea, Button, Spinner } from 'grommet';
+import {
+    Camera,
+    Wifi,
+    Eye,
+    // Menu,
+    ChevronLeft,
+    XCircle
+    // Activity,
+} from 'react-feather';
 import { saveScreenshot } from '../service-screenshot';
-import axios from 'axios';
+import repository from '../repository';
+import Api from '../ui-components/pages/Api';
+const { getUserData, getPreferenceData } = repository;
+const { invokeNetwork } = Api;
 
 function UnfocussedButton({ onClick, children }) {
     return (
@@ -18,47 +29,112 @@ UnfocussedButton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element)
 };
 
-export function TweetControl({ tweet, id, debug, setBlur }) {
+export function TweetControl({ id, setBlur }) {
     const [collapsed, setCollapsed] = useState(true);
-    const [category, setCategory] = useState('Uncategorized');
+    // const [category, setCategory] = useState('Uncategorized');
     const [blurFlag, setBlurFlag] = useState(true);
-    function clickActivity() {
-        console.log(id);
-        debug(id);
+    const [userLS, setUserLS] = useState(undefined);
+    const [preferenceLS, setPreferenceLS] = useState(undefined);
+
+    const [message, setMessage] = useState(
+        'Hey, can you help me report this post?'
+    );
+    const [showPopup, setShowPopup] = useState(false);
+    const [progress, showProgress] = useState(false);
+    const [notification, setNotification] = useState(undefined);
+
+    function showNotification(notification) {
+        setNotification(notification);
+        setTimeout(() => {
+            setNotification(undefined);
+        }, 2000);
     }
 
+    // function clickActivity() {
+    //     debug(id);
+    // }
+
     useEffect(async () => {
-        try {
-            const response = await axios.post('http://localhost:8000/predict', {
-                text: tweet.original_text.join(' ')
-            });
-            const { data } = response;
-            if (data.confidence > 0.5) {
-                setCategory(data.sentiment);
-            }
-        } catch (err) {
-            console.log(`Error : server could not classify tweet`, err);
-        }
+        await updateData();
     }, []);
+
+    async function updateData() {
+        const userData = await getUserData();
+        const preferenceData = await getPreferenceData();
+        setUserLS(userData);
+        setPreferenceLS(preferenceData);
+    }
+
+    useEffect(() => {
+        console.log({ preferenceLS });
+    }, [preferenceLS]);
+
+    // useEffect(async () => {
+    //     try {
+    //         const response = await axios.post('http://localhost:8000/predict', {
+    //             text: tweet.original_text.join(' ')
+    //         });
+    //         const { data } = response;
+    //         if (data.confidence > 0.5) {
+    //             setCategory(data.sentiment);
+    //         }
+    //     } catch (err) {
+    //         console.log(`Error : server could not classify tweet`, err);
+    //     }
+    // }, []);
 
     async function clickCamera() {
         const node = document.getElementById(id);
         console.log(node);
-        await saveScreenshot(node);
+        await saveScreenshot(
+            node,
+            preferenceLS.storeLocally,
+            userLS.accessToken
+        );
+    }
+
+    function clickInvokeNetwork() {
+        setShowPopup(true);
+    }
+
+    async function clickSend() {
+        showProgress(false);
+        await updateData();
+        try {
+            console.log('-----');
+            console.log({ message, url: location.href });
+            console.log('-----');
+            await invokeNetwork(userLS.accessToken, message, location.href);
+            showProgress(false);
+            showNotification({ message: 'Successfully Messaged Friends' });
+        } catch (err) {
+            console.log('Error invoking network', err);
+        } finally {
+            setShowPopup(false);
+        }
     }
 
     return (
+        // <Grommet theme={Theme}>
         <Box direction="row">
             <Box flex="grow"></Box>
             {!collapsed ? (
                 <Box direction="row" gap={'small'} padding={'medium'}>
-                    {category != 'Uncategorized' || category != 'None' ? (
+                    {/* {category != 'Uncategorized' || category != 'None' ? (
                         <Text size="'small">{category}</Text>
-                    ) : null}
+                    ) : null} */}
+                    <Box direction="row">
+                        {progress ? <Spinner /> : null}
+                        {notification ? (
+                            <Text color={'brand'}>{notification.message}</Text>
+                        ) : null}
+                    </Box>
                     <UnfocussedButton onClick={clickCamera}>
                         <Camera size={16} color={'#212121'} />
                     </UnfocussedButton>
-                    <Wifi size={16} color={'#212121'} />
+                    <UnfocussedButton onClick={clickInvokeNetwork}>
+                        <Wifi size={16} color={'#212121'} />
+                    </UnfocussedButton>
                     <UnfocussedButton
                         onClick={() => {
                             setBlurFlag(!blurFlag);
@@ -67,9 +143,9 @@ export function TweetControl({ tweet, id, debug, setBlur }) {
                     >
                         <Eye size={16} color={'#212121'} />
                     </UnfocussedButton>
-                    <UnfocussedButton onClick={clickActivity}>
+                    {/* <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
-                    </UnfocussedButton>
+                    </UnfocussedButton> */}
                     <UnfocussedButton
                         onClick={() => {
                             setCollapsed(!collapsed);
@@ -84,10 +160,40 @@ export function TweetControl({ tweet, id, debug, setBlur }) {
                         setCollapsed(!collapsed);
                     }}
                 >
-                    <Menu size={16} color={'#212121'} />
+                    <ChevronLeft size={16} color={'#212121'} />
                 </UnfocussedButton>
             )}
+            {showPopup ? (
+                <Layer
+                    onEsc={() => setShowPopup(false)}
+                    onClickOutside={() => setShowPopup(false)}
+                >
+                    <Box width={'medium'} gap={'medium'} margin={'large'}>
+                        <TextArea
+                            placeholder={
+                                'Hey, can you help me report this post?'
+                            }
+                            value={message}
+                            onChange={(event) => setMessage(event.target.value)}
+                        ></TextArea>
+                        <Box direction={'row'} gap={'small'}>
+                            <Button
+                                label="Cancel"
+                                onClick={() => setShowPopup(false)}
+                            />
+                            <Button
+                                label="Send"
+                                onClick={() => {
+                                    clickSend();
+                                }}
+                                primary
+                            />
+                        </Box>
+                    </Box>
+                </Layer>
+            ) : null}
         </Box>
+        // </Grommet>
     );
 }
 

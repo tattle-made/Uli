@@ -3,6 +3,8 @@
  * 1. Parsing the DOM and converting it into structured tweet objects
  */
 
+import { log } from '../logger';
+
 /**
  * Parses the DOM and extracts structured data from it.
  * @param {DOMElement obtained from document.getElementById query} tweetDom
@@ -12,6 +14,10 @@ function parseTweet(id, tweetDom) {
     const TWEET_PATH_GENERAL = new RegExp(
         'DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(1\\):DIV\\(1\\):DIV\\(1\\):DIV\\([0-9]+\\):DIV\\(0\\):DIV\\([0-9]+\\):DIV\\([0-9]+\\):SPAN'
     );
+    const TWEET_PATH_MAIN = new RegExp(
+        'DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(2\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):SPAN'
+    );
+
     let leaf = {
         id,
         original_text: [],
@@ -39,9 +45,14 @@ function parseTweet(id, tweetDom) {
                 parentElement.setAttribute('id', id);
                 leaf.original_text.push(parentElement.innerText);
                 leaf.spans.push(parentElement);
-                console.log({ id });
-                // leaves.push(parentElement);
-                // console.log({ leaf: parentElement });
+                log('Leaf Identified', node);
+            }
+            if (TWEET_PATH_MAIN.test(currentPath)) {
+                const parentElement = node.parentElement;
+                parentElement.setAttribute('id', id);
+                leaf.original_text.push(parentElement.innerText);
+                leaf.spans.push(parentElement);
+                log('Leaf Identified', node);
             }
         }
     }
