@@ -1,57 +1,54 @@
-import { updateSlurList } from './slur-replace';
 import { dom } from './twitter';
 import { current } from './twitter/pages';
-import repository from './repository';
-const { getPreferenceData } = repository;
-const { createTopBannerElement, setOnChangeListener } = dom;
+const { setOnChangeListener } = dom;
 import transform from './transform';
+import { log } from './logger';
 
-console.log('TEST : CS loaded');
+log('Content Script Loaded');
 
-if (process.env.ENVIRONMENT) {
-    console.log(`Content Script Loaded : ${process.env.ENVIRONMENT}`);
-}
+// setTimeout(async () => {
+//     processPage(location.href);
+// }, 5000);
 
-setTimeout(async () => {
-    await initialize();
-}, 5000);
+// async function initialize() {
+//     createTopBannerElement();
 
-async function initialize() {
-    createTopBannerElement();
+//     const preference = await getPreferenceData();
 
-    const preference = await getPreferenceData();
+//     if (preference != undefined && preference.slurList != undefined) {
+//         updateSlurList(preference.slurList);
+//     }
 
-    if (preference != undefined && preference.slurList != undefined) {
-        updateSlurList(preference.slurList);
-    }
+//     // process page
+// }
 
-    // process page
-}
-
-function handleNewPage(newUrl) {
-    // processExistingNodes();
+function processPage(newUrl) {
     let currentPage = current(newUrl);
-    console.log({ currentPage });
+    log({ currentPage });
     const { page } = currentPage;
     const { getTimeline } = page;
 
     if (getTimeline === undefined) {
-        console.log('UNKNOWN STATE : could not find timeline');
-        // todo : this is where we should default to basic slur replacement
+        log('Unknown State. Could not find Timeline');
     } else {
-        // debugger;
         let timeline = getTimeline();
+        log({ timeline });
         transform.processNewlyAddedNodes(timeline.children);
         setOnChangeListener(timeline, transform.processNewlyAddedNodes);
     }
 }
 
+/**
+ * This Listens to any changed on the URL
+ * eg : When a user clicks on a tweet on their home timeline, they
+ * go from the home page to the user status page.
+ */
 chrome.runtime.onMessage.addListener(function (request) {
     if (request.message === 'URL_CHANGED') {
-        console.log({ status: request.status });
         const newUrl = request.url;
+        log('Url Changed', newUrl);
         setTimeout(async () => {
-            handleNewPage(newUrl);
+            processPage(location.href);
         }, 1500);
     }
 });
@@ -60,16 +57,16 @@ const targetNode = document.getElementsByTagName('main')[0];
 const config = { attributes: true, childList: true, subtree: true };
 
 const callback = function (mutationsList) {
-    // Use traditional 'for loops' for IE 11
     for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
-            // console.log('A child node has been added or removed.');
-            // console.log(mutation.addedNodes);
+            log('A child node has been added or removed.');
             const nodes = Array.from(mutation.addedNodes);
             nodes.map((node) => {
                 if (node.tagName === 'SECTION') {
-                    console.log('section loaded');
-                    handleNewPage(location.href);
+                    log('Section Loaded', node);
+                    setTimeout(async () => {
+                        processPage(location.href);
+                    }, 500);
                 }
             });
         }
