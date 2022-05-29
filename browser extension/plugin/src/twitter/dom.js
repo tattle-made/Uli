@@ -27,7 +27,6 @@ function findTimeline(url) {
 }
 
 function createTopBannerElement() {
-    console.log('TEST : Creating Top Banner');
     try {
         let main = document.getElementsByTagName('main')[0];
         var inlineButtonDiv = document.createElement('div');

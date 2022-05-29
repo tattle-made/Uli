@@ -3,16 +3,16 @@ import { parseTweet } from './twitter/parser';
 import { hashCode } from './util';
 import { replaceSlur } from './slur-replace';
 import { TweetControl } from './twitter/tweet-controls';
+import { log } from './logger';
 
 let tweets = {};
 
 function debug(id) {
-    console.log(tweets[id]);
+    console.log(id, tweets[id]);
     // unblur(id);
 }
 
 function setBlur(id, blurFlag) {
-    console.log({ id, blurFlag });
     if (blurFlag === true) {
         const tweetToUnBlur = tweets[id];
         for (let i = 0; i < tweetToUnBlur.spans.length; i++) {
@@ -50,16 +50,14 @@ function addInlineMenu(id, item) {
 }
 
 const processNewlyAddedNodes = function (addedNodes) {
-    console.log('processing new nodes');
+    log('processing new nodes');
     const nodes = Array.from(addedNodes);
     nodes.map((node) => {
-        console.log(node);
+        log('node', node);
         const id = hashCode(node.innerHTML);
         const tweet = parseTweet(id, node);
         tweets[id] = tweet;
-
         for (const tweet of tweets[id].spans) {
-            // console.log({ 2: tweet });
             const text = tweet.innerText;
             tweet.innerText = replaceSlur(text);
         }

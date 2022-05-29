@@ -8,7 +8,7 @@
  * values to be whatever it is that you need it for the feature you are working on. This also lets you take
  * advantage of the dev tools you are familiar with for developing React Apps.
  */
-import config from "./config";
+import config from './config';
 
 const ENVIRONMENT = config.ENVIRONMENT;
 
@@ -41,66 +41,69 @@ const storageMock = {
 };
 */
 
-const storage = ENVIRONMENT === "production" ? chrome.storage : chrome.storage;
+const storage = ENVIRONMENT === 'production' ? chrome.storage : chrome.storage;
 // const storage = ENVIRONMENT === "production" ? chrome.storage : storageMock;
 
 /**
  * This promisifies the callback mechanism of the native chrome object.
  */
 const get = async (key) => {
-  return new Promise((resolve, reject) => {
-    try {
-      storage.local.get([key], (result) => {
-        resolve(result[key]);
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
+    return new Promise((resolve, reject) => {
+        try {
+            storage.local.get([key], (result) => {
+                resolve(result[key]);
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
 };
 
 const set = (key, value) => {
-  return new Promise((resolve, reject) => {
-    try {
-      storage.local.set({ [key]: value }, () => {
-        resolve();
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
+    return new Promise((resolve, reject) => {
+        try {
+            storage.local.set({ [key]: value }, () => {
+                resolve();
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
 };
 
 function sendMessage(type) {
-  if (type == "updateData") {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        { type: "updateData" },
-        function (response) {
-          console.log(response);
-        }
-      );
-    });
-  }
+    if (type == 'updateData') {
+        chrome.tabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+                chrome.tabs.sendMessage(
+                    tabs[0].id,
+                    { type: 'updateData' },
+                    function (response) {
+                        console.log(response);
+                    }
+                );
+            }
+        );
+    }
 }
 
 function addListener(type, func, response) {
-  chrome.runtime.onMessage.addListener(async function (
-    message,
-    sender,
-    sendResponse
-  ) {
-    if (message.type === type) {
-      func();
-      sendResponse(response);
-    }
-  });
+    chrome.runtime.onMessage.addListener(async function (
+        message,
+        sender,
+        sendResponse
+    ) {
+        if (message.type === type) {
+            func();
+            sendResponse(response);
+        }
+    });
 }
 
 export default {
-  get,
-  set,
-  sendMessage,
-  addListener,
+    get,
+    set,
+    sendMessage,
+    addListener
 };
