@@ -27,6 +27,17 @@ Requirements :
 - npm : v8.7.0
 - nodejs : 16.4.2
 
+Ensure that the followin Environment Variables are available to your api-server process:
+```
+NODE_ENV=development
+AWS_BUCKET_NAME=XXXXXXXXXXX
+SERVICE_AWS_ACCESS_KEY_ID=XXXXXXXXXX
+SERVICE_AWS_SECRET_ACCESS_KEY=XXXXXXX
+DB_HOST: XXXXXXXXXXX
+DB_USERNAME: XXXXXXXXXXX
+DB_PASSWORD: XXXXXXXXXXX
+``` 
+
 ## For Development
 ```
 git clone https://github.com/tattle-made/OGBV.git
@@ -53,3 +64,5 @@ Look into individual README within the `api-server` and `plugin` folder for more
 cd plugin && npm run build
 ```
 
+# Contributing
+Head over to the [contribution guide](CONTRIBUTING.md)
