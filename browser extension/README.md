@@ -23,6 +23,10 @@
 
 # Build from Source
 
+Requirements :
+- npm : v8.7.0
+- nodejs : 16.4.2
+
 ## For Development
 ```
 git clone https://github.com/tattle-made/OGBV.git
