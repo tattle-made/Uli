@@ -87,7 +87,12 @@ const IndexPage = () => {
                 }}
                 align={"center"}
               >
-                <CTALinkPlainPrimary href={"/"}>
+                <CTALinkPlainPrimary
+                  href={
+                    "https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
+                  }
+                  target={"_blank"}
+                >
                   Add to Browser
                 </CTALinkPlainPrimary>
               </Box>
@@ -231,7 +236,12 @@ const IndexPage = () => {
         >
           <Box width={"16em"}></Box>
           <Box direction={"row-responsive"} gap={"large"}>
-            <CTALinkPlain href="/">INSTALL NOW</CTALinkPlain>
+            <CTALinkPlain
+              target={"_blank"}
+              href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
+            >
+              INSTALL NOW
+            </CTALinkPlain>
             {/* <CTALinkPlain href="/">LEARN HOW TO USE</CTALinkPlain> */}
           </Box>
         </Box>
