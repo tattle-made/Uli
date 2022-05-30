@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text, Layer, TextArea, Button, Spinner, Grommet } from 'grommet';
+import {
+    Box,
+    Text,
+    Layer,
+    TextArea,
+    Button,
+    Spinner,
+    Grommet,
+    Tip
+} from 'grommet';
 import {
     Camera,
     Wifi,
@@ -31,7 +40,7 @@ UnfocussedButton.propTypes = {
 };
 
 export function TweetControl({ tweet, id, setBlur }) {
-    const [collapsed, setCollapsed] = useState(true);
+    const [collapsed, setCollapsed] = useState(false);
     // const [category, setCategory] = useState('Uncategorized');
     const [blurFlag, setBlurFlag] = useState(true);
     const [userLS, setUserLS] = useState(undefined);
@@ -140,10 +149,14 @@ export function TweetControl({ tweet, id, setBlur }) {
                             ) : null}
                         </Box>
                         <UnfocussedButton onClick={clickCamera}>
-                            <Camera size={16} color={'#212121'} />
+                            <Tip content={'Archive'}>
+                                <Camera size={16} color={'#212121'} />
+                            </Tip>
                         </UnfocussedButton>
                         <UnfocussedButton onClick={clickInvokeNetwork}>
-                            <Wifi size={16} color={'#212121'} />
+                            <Tip content={'Invoke Network'}>
+                                <Wifi size={16} color={'#212121'} />
+                            </Tip>
                         </UnfocussedButton>
                         <UnfocussedButton
                             onClick={() => {
@@ -151,7 +164,9 @@ export function TweetControl({ tweet, id, setBlur }) {
                                 setBlur(id, blurFlag);
                             }}
                         >
-                            <Eye size={16} color={'#212121'} />
+                            <Tip content={'Show/Hide Slur'}>
+                                <Eye size={16} color={'#212121'} />
+                            </Tip>
                         </UnfocussedButton>
                         {/* <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
