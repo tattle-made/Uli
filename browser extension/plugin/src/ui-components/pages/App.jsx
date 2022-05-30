@@ -41,9 +41,9 @@ export function App() {
             const { language } = preferenceData;
             i18n.changeLanguage(langNameMap[language]);
         }
-        if (userData != undefined && Object.keys(userData).length != 0) {
-            setUser(userData);
-        }
+        // if (userData != undefined && Object.keys(userData).length != 0) {
+        //     setUser(userData);
+        // }
         // alert(process.env.API_URL);
     }, []);
 
@@ -60,12 +60,11 @@ export function App() {
                 <NotificationContext.Provider
                     value={{ notification, showNotification }}
                 >
-                    <Box width={{ min: '520px' }} background={'#fdf6ed'}>
-                        {notification ? (
-                            <Box background="accent-1" pad={'xsmall'}>
-                                <Text>{notification.message}</Text>
-                            </Box>
-                        ) : null}
+                    <Box
+                        width={{ min: '520px' }}
+                        background={'#fdf6ed'}
+                        pad={'small'}
+                    >
                         <Box direction={'row'} gap={'medium'} align={'center'}>
                             <Box
                                 width={'3em'}
@@ -81,7 +80,22 @@ export function App() {
                             <Text size={'small'} color={'dark-2'}>
                                 {process.env.NODE_ENV}
                             </Text>
+                            {notification ? (
+                                <Box
+                                    background="accent-1"
+                                    pad={{
+                                        top: 'xsmall',
+                                        bottom: 'xsmall',
+                                        left: 'medium',
+                                        right: 'medium'
+                                    }}
+                                    margin={{ bottom: 'xsmall' }}
+                                >
+                                    <Text>{notification.message}</Text>
+                                </Box>
+                            ) : null}
                         </Box>
+
                         {user ? (
                             <BrowserRouter>
                                 <nav>
@@ -101,8 +115,10 @@ export function App() {
                                     </Box>
                                 </nav>
                                 <Box height={'2.0em'} />
+
                                 <Routes>
                                     <Route
+                                        exact
                                         path={`/`}
                                         element={<Preferences />}
                                     />
