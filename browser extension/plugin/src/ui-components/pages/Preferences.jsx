@@ -8,8 +8,10 @@ import {
     Text,
     Button,
     Select,
-    CheckBox
+    CheckBox,
+    Anchor
 } from 'grommet';
+import { HelpCircle } from 'react-feather';
 import Api from '../pages/Api';
 import repository from '../../repository';
 import { useTranslation } from 'react-i18next';
@@ -98,19 +100,13 @@ export function Preferences() {
     }
 
     return (
-        <Box width="medium" gap={'small'}>
+        <Box fill gap={'small'}>
             {/* <CheckBox
         checked={enable}
         label={t("enable_plugin")}
         onChange={(e) => setEnable(e.target.checked)}
       /> */}
-            <CheckBox
-                checked={storeLocally}
-                label={t('store_locally')}
-                onChange={(e) => changeLocalStorageOption(e.target.checked)}
-            />
-
-            <Box width={'small'} direction="row" gap={'medium'} align="center">
+            <Box direction="row" gap={'large'} align="center">
                 <Text>{t('language')}</Text>
                 <Select
                     options={['English', 'Tamil', 'Hindi']}
@@ -120,7 +116,27 @@ export function Preferences() {
                     }}
                     size={'small'}
                 />
+                <Anchor
+                    href={'http://uli.tattle.co.in/user-guide/#conf'}
+                    target={'_blank'}
+                >
+                    <HelpCircle size={16} color={'#343434'} />
+                </Anchor>
             </Box>
+            <Box direction="row" gap={'large'} align="center">
+                <CheckBox
+                    checked={storeLocally}
+                    label={t('store_locally')}
+                    onChange={(e) => changeLocalStorageOption(e.target.checked)}
+                />
+                <Anchor
+                    href={'http://uli.tattle.co.in/user-guide/#conf'}
+                    target={'_blank'}
+                >
+                    <HelpCircle size={16} color={'#343434'} />
+                </Anchor>
+            </Box>
+
             <Box
                 height={'2px'}
                 background={'dark-4'}
@@ -145,28 +161,68 @@ export function Preferences() {
           disabled={!enable}
           onChange={()=>{}}
         /> */}
+
                 <FormField
                     name="email"
                     htmlFor="emailId"
-                    label={t('your_email_address')}
+                    label={
+                        <Box direction={'row'} gap={'small'}>
+                            <Text>{t('your_email_address')}</Text>
+                            <Anchor
+                                href={
+                                    'http://uli.tattle.co.in/user-guide/#conf'
+                                }
+                                target={'_blank'}
+                            >
+                                <HelpCircle size={16} color={'#343434'} />
+                            </Anchor>
+                        </Box>
+                    }
                     type="email"
                     disabled={!enable}
                     component={TextInput}
                 />
+
                 <FormField
                     name="friends"
                     htmlFor="friendsId"
-                    label={t('friends')}
+                    label={
+                        <Box direction={'row'} gap={'small'}>
+                            <Text>{t('friends')}</Text>
+                            <Anchor
+                                href={
+                                    'http://uli.tattle.co.in/user-guide/#conf'
+                                }
+                                target={'_blank'}
+                            >
+                                <HelpCircle size={16} color={'#343434'} />
+                            </Anchor>
+                        </Box>
+                    }
                     disabled={!enable}
                     component={TextArea}
                 />
+
                 <FormField
                     name="slurList"
                     htmlFor="slurListId"
-                    label={t('your_slur_list')}
+                    label={
+                        <Box direction={'row'} gap={'small'}>
+                            <Text>{t('your_slur_list')}</Text>
+                            <Anchor
+                                href={
+                                    'http://uli.tattle.co.in/user-guide/#conf'
+                                }
+                                target={'_blank'}
+                            >
+                                <HelpCircle size={16} color={'#343434'} />
+                            </Anchor>
+                        </Box>
+                    }
                     disabled={!enable}
                     component={TextArea}
                 />
+
                 <Box
                     margin={{ top: 'medium' }}
                     direction="row"
