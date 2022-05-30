@@ -66,16 +66,21 @@ export function App() {
                                 <Text>{notification.message}</Text>
                             </Box>
                         ) : null}
-                        <Box
-                            width={'3em'}
-                            hoverIndicator={false}
-                            focusIndicator={false}
-                            margin={{ bottom: 'medium' }}
-                        >
-                            <img
-                                src={'http://uli.tattle.co.in/Uli_Logo.png'}
-                                alt={'Uli Logo'}
-                            />
+                        <Box direction={'row'} gap={'medium'} align={'center'}>
+                            <Box
+                                width={'3em'}
+                                hoverIndicator={false}
+                                focusIndicator={false}
+                                margin={{ bottom: 'medium' }}
+                            >
+                                <img
+                                    src={'http://uli.tattle.co.in/Uli_Logo.png'}
+                                    alt={'Uli Logo'}
+                                />
+                            </Box>
+                            <Text size={'small'} color={'dark-2'}>
+                                {process.env.NODE_ENV}
+                            </Text>
                         </Box>
                         {user ? (
                             <BrowserRouter>

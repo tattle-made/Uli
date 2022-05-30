@@ -8,7 +8,7 @@
         "start:options": "parcel src/ui-components/pages/options.jsx",
         "start:contentScript": "parcel src/content-script.js",
         "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist && cp src/background.js dist",
-        "build": "NODE_ENV=production parcel build src/ui-components/pages/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
+        "build": "NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
         "pre-commit": "npm audit --audit-level=moderate",
         "lint": "lint-staged"
     },
@@ -42,8 +42,7 @@
         "styled-components": "^5.3.3"
     },
     "engines": {
-        "node": ">=16.14.0",
-        "npm": ">=8.3.1"
+        "browsers": "> 0.25%"
     },
     "lint-staged": {
         "*.(js|jsx)": [

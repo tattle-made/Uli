@@ -49,7 +49,7 @@ chrome.runtime.onMessage.addListener(function (request) {
         log('Url Changed', newUrl);
         setTimeout(async () => {
             processPage(location.href);
-        }, 1500);
+        }, 2000);
     }
 });
 
