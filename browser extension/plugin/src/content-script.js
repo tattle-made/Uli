@@ -50,6 +50,11 @@ chrome.runtime.onMessage.addListener(function (request) {
 chrome.runtime.onMessage.addListener(async function (message) {
     if (message.type === 'updateData') {
         console.log('data changed. time to update slurs');
+        // Remove all earlier grommets first
+        let old = document.getElementsByClassName('ogbv-tweetcontrol-bar');
+        Array.prototype.forEach(old, (el) => {
+            el.remove();
+        });
         const preference = await getPreferenceData();
         console.log(preference);
         if (preference.slurList != undefined) {
