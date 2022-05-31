@@ -33,13 +33,13 @@ export function saveScreenshot(element, storeLocally, accessToken, tweetUrl) {
                 }
                 if (storeLocally) {
                     saveAs(blob, `ogbv_plugin_tweet_${fileName}.png`);
+                } else {
+                    var formData = new FormData();
+                    formData.append('screenshot', blob);
+                    formData.append('url', tweetUrl);
+                    // await uploadArchivedMedia(accessToken, formData);
+                    await uploadArchivedMedia(accessToken, formData);
                 }
-
-                var formData = new FormData();
-                formData.append('screenshot', blob);
-                formData.append('url', tweetUrl);
-                // await uploadArchivedMedia(accessToken, formData);
-                await uploadArchivedMedia(accessToken, formData);
             });
     } catch (err) {
         console.log('Could not save Image', err);

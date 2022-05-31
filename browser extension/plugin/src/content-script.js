@@ -3,6 +3,9 @@ import { current } from './twitter/pages';
 const { setOnChangeListener } = dom;
 import transform from './transform';
 import { log } from './logger';
+import repository from './repository';
+const { getPreferenceData } = repository;
+import { updateSlurList } from './slur-replace';
 
 log('Content Script Loaded');
 
@@ -41,6 +44,18 @@ chrome.runtime.onMessage.addListener(function (request) {
         const newUrl = request.url;
         log('Url Changed', newUrl);
         processPage(location.href);
+    }
+});
+
+chrome.runtime.onMessage.addListener(async function (message) {
+    if (message.type === 'updateData') {
+        console.log('data changed. time to update slurs');
+        const preference = await getPreferenceData();
+        console.log(preference);
+        if (preference.slurList != undefined) {
+            updateSlurList(preference.slurList);
+            processPage(location.href);
+        }
     }
 });
 

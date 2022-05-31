@@ -94,21 +94,28 @@ export function TweetControl({ tweet, id, setBlur }) {
     // }, []);
 
     async function clickCamera() {
+        showProgress(true);
         const node = document.getElementById(id);
         console.log(node);
-        let tweetUrl = tweet.tweet_url ? tweet.tweet_url : location.href;
+        let tweetUrl =
+            tweet && tweet.tweet_url ? tweet.tweet_url : location.href;
+        let accessToken =
+            userLS && userLS.accessToken ? userLS.accessToken : undefined;
+        let storeLocally =
+            preferenceLS && preferenceLS.storeLocally != undefined
+                ? preferenceLS.storeLocally
+                : true;
+        console.log({ node, accessToken, storeLocally, tweetUrl });
         try {
-            await saveScreenshot(
-                node,
-                preferenceLS.storeLocally,
-                userLS.accessToken,
-                tweetUrl
-            );
+            await saveScreenshot(node, storeLocally, accessToken, tweetUrl);
             showProgress(false);
             showNotification({ message: 'Post Archived' });
         } catch (err) {
             showProgress(false);
             showNotification({ message: 'Error Archiving Post on Server' });
+            console.log(err);
+        } finally {
+            showProgress(false);
         }
     }
 
@@ -141,7 +148,9 @@ export function TweetControl({ tweet, id, setBlur }) {
                         <Text size="'small">{category}</Text>
                     ) : null} */}
                         <Box direction="row">
-                            {progress ? <Spinner /> : null}
+                            {progress ? (
+                                <Spinner color={'#212121'} size={'xsmall'} />
+                            ) : null}
                             {notification ? (
                                 <Text color={'brand'} size={'small'}>
                                     {notification.message}

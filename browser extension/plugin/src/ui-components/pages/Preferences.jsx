@@ -29,7 +29,7 @@ export function Preferences() {
     const { user } = useContext(UserContext);
     const { showNotification } = useContext(NotificationContext);
     const [enable, setEnable] = useState(true);
-    const [storeLocally, setStoreLocally] = useState(false);
+    const [storeLocally, setStoreLocally] = useState(true);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
 
