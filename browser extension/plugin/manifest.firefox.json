@@ -1,0 +1,38 @@
+{
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "manifest_version": 2,
+    "name": "uli",
+    "description": "Moderate your Twitter Feed",
+    "version": "0.1.2",
+    "author": "tattlemade|cis",
+    "permissions": [
+        "storage",
+        "https://twitter.com/*",
+        "https://ogbv-plugin.tattle.co.in/",
+        "https://s3.ap-south-1.amazonaws.com/ogbv-plugin.tattle.co.in/*",
+        "http://uli.tattle.co.in/*",
+        "https://*.twimg.com/*"
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://twitter.com/*"],
+            "js": ["content-script.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "page_action": {
+        "default_icon": {
+            "19": "icon16.png",
+            "38": "icon32.png"
+        },
+        "default_popup": "options.html",
+        "show_matches": ["https://*.twitter.com/*"]
+    },
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon32.png"
+    }
+}

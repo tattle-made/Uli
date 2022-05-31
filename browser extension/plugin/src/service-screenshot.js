@@ -6,7 +6,11 @@ const { uploadArchivedMedia } = Api;
 export function saveScreenshot(element, storeLocally, accessToken, tweetUrl) {
     try {
         return domtoimage
-            .toBlob(element.lastChild, { bgcolor: 'white' })
+            .toBlob(element.lastChild, {
+                bgcolor: window
+                    .getComputedStyle(document.body, null)
+                    .getPropertyValue('background-color')
+            })
             .then(async function (blob) {
                 let fileName;
                 const url = location.href;
