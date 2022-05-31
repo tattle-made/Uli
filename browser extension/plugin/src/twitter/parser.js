@@ -23,6 +23,13 @@ function parseTweet(id, tweetDom) {
     const TWEET_PATH_MAIN_TIMESTAMP = new RegExp(
         'DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(2\\):DIV\\(3\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):A\\(0\\):SPAN'
     );
+
+    const TWEET_PATH_CLICKED = new RegExp(
+        'DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(2\\):DIV\\(1\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):SPAN'
+    );
+    const TWEET_PATH_CLICKED_TIMESTAMP = new RegExp(
+        'DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):ARTICLE\\(0\\):DIV\\(0\\):DIV\\(2\\):DIV\\(4\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):DIV\\(0\\):A\\(0\\):SPAN'
+    );
     let leaf = {
         id,
         tweet_url: undefined,
@@ -65,6 +72,18 @@ function parseTweet(id, tweetDom) {
                 log('Main Tweet Leaf Identified', node);
             }
             if (TWEET_PATH_MAIN_TIMESTAMP.test(currentPath)) {
+                leaf.tweet_url = node.parentElement.parentElement.href;
+                log('Main Tweet Timestamp Leaf Identified', node);
+            }
+
+            if (TWEET_PATH_CLICKED.test(currentPath)) {
+                const parentElement = node.parentElement;
+                parentElement.setAttribute('id', id);
+                leaf.original_text.push(parentElement.innerText);
+                leaf.spans.push(parentElement);
+                log('Main Tweet Leaf Identified', node);
+            }
+            if (TWEET_PATH_CLICKED_TIMESTAMP.test(currentPath)) {
                 leaf.tweet_url = node.parentElement.parentElement.href;
                 log('Main Tweet Timestamp Leaf Identified', node);
             }
