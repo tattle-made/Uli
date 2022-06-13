@@ -39,7 +39,7 @@ jobs:
           echo "setting variables"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           cd annotators/annotation-ui
-          npm install
+          npm install --force
           npm run build
           
       - name: Publish to Docker
