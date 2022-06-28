@@ -31,9 +31,12 @@ Machine learning tools can also be designed to reflect the values of those at th
 |slur-replacement| Python notebook that documents our exact and approximate slur replacement techniques |
 | Scrapers | Twitter and Instagram scrapers we used to collect data for training ML models |
 
-# Project Status
-Currently Working Towards the Chrome Extension's v1.0.0 Release.
-You can track the project [here](https://github.com/orgs/tattle-made/projects/16)
+# Contributing
+We are currently working wowards the Chrome and Firefox Extension's v0.2.0 Release.
+You can track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
+Find an issue or domain that interests you and reach out to us.
+
+There's also a list of [good first issues](https://github.com/tattle-made/OGBV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started on.
 
 ## Contact
 For more details on this project please send an email to one of the following email IDs:
