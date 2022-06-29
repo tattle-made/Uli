@@ -139,7 +139,7 @@ export function TweetControl({ tweet, id, setBlur }) {
     }
 
     return (
-        <Grommet theme={Theme}>
+        <Grommet className="ogbv-tweetcontrol-bar" theme={Theme}>
             <Box direction="row" background={'white'}>
                 <Box flex="grow"></Box>
                 {!collapsed ? (

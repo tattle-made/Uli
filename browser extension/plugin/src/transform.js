@@ -62,7 +62,10 @@ const processNewlyAddedNodes = function (addedNodes) {
             tweet.innerText = replaceSlur(text);
         }
 
-        if (tweet.spans.length > 0) {
+        if (
+            tweet.spans.length > 0 &&
+            node.getElementsByClassName('ogbv-tweetcontrol-bar').length == 0
+        ) {
             addInlineMenu(id, node);
         }
     });
