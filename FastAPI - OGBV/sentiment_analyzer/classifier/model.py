@@ -40,7 +40,7 @@ class Model:
     def predict(self,text):
 
         clean_text = preprocess(text)
-        encoded_input = self.tokenizer(clean_text, return_tensors='pt', padding=True, truncation=True, max_length=70)
+        encoded_input = self.tokenizer(clean_text, return_tensors='pt', padding=True, truncation=True, max_length=128)
     
         encoded_input.to(self.device)
 
