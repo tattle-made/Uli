@@ -1,5 +1,7 @@
 # OGBV ML REST Server
 
+v:0.0.1
+
 ## Developing Locally
 
 1. Clone the repository in your local machine and navigate to the 'FastAPI - OGBV' folder.
@@ -8,7 +10,9 @@
 ```
 docker build -t ml .
 ```
+
 3. After your docker is built, run it using the following command
+
 ```
 docker run -p 8080:80 ml
 ```
@@ -18,7 +22,9 @@ docker run -p 8080:80 ml
 ```
 curl -X POST http://localhost:8080/predict -H 'Content-Type: application/json' -d '{"text":"The food in this restaurant is disgusting"}'
 ```
+
 Note that if you are on windows and are using PowerShell, you might need to run this command instead of the previous one for making POST requests:
+
 ```
 Invoke-RestMethod -Method 'Post' -Uri http://localhost:8080/predict -Body (@{"text"="The food in this restaurant is disgusting"}|ConvertTo-Json) -ContentType "application/json"
 ```
