@@ -1,6 +1,6 @@
 name: Deploy Staging
 on:
-  push: 
+  push:
     branches:
       - development
 
@@ -42,7 +42,6 @@ jobs:
           npm install
           npm run build
 
-          
       - name: Publish to Docker
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
@@ -69,9 +68,9 @@ jobs:
     needs: changes
     if: ${{ needs.changes.outputs.ogbv-ml-rest == 'true' }}
     steps:
-      - name: Checkout 
+      - name: Checkout
         uses: actions/checkout@v2
-        with: 
+        with:
           ref: development
 
       - name: Declare some variables
@@ -80,15 +79,12 @@ jobs:
         run: |
           echo "setting variables"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-          
+
       - name: Build and Push to Docker
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
           username: tattletech
           password: ${{ secrets.DOCKER_PASSWORD }}
-          name: tattletech/ogbv_annotator
+          name: tattletech/ogbv-ml-rest
           tags: ${{ steps.vars.outputs.sha_short }}
           workdir: ogbv-ml-rest
-          
-          
-
