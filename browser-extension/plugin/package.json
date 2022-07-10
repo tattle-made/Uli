@@ -8,7 +8,7 @@
         "start:options": "parcel src/options.jsx",
         "start:contentScript": "parcel src/content-script.js",
         "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist && cp src/background.js dist",
-        "build": "NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
+        "build": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
         "pre-commit": "npm audit --audit-level=moderate",
         "lint": "lint-staged"
     },

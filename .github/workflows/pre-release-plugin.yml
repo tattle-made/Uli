@@ -1,0 +1,36 @@
+name: Pre Release Browser Extension
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        default: "pre-release:latest"
+
+jobs:
+  pre-release:
+    name: "Pre Release Extension"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: development
+      url: "https://github.com/tattle-made/OGBV/releases"
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v2
+        with:
+          ref: development
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          npm run build
+          zip extension.zip ./dist/ -r
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build : ${{ github.event.inputs.version }}"
+          files: |
+            browser-extension/plugin/extension.zip
