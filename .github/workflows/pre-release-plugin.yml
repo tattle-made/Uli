@@ -26,6 +26,7 @@ jobs:
           cd browser-extension/plugin
           ls
           pwd
+          npm install
           npm run build
           zip extension.zip ./dist/ -r
 
