@@ -25,6 +25,7 @@ import Api from '../ui-components/pages/Api';
 import Theme from '../ui-components/atoms/Theme';
 const { getUserData, getPreferenceData } = repository;
 const { invokeNetwork } = Api;
+const axios = require('axios');
 
 function UnfocussedButton({ onClick, children }) {
     return (
@@ -41,7 +42,7 @@ UnfocussedButton.propTypes = {
 
 export function TweetControl({ tweet, id, setBlur }) {
     const [collapsed, setCollapsed] = useState(false);
-    // const [category, setCategory] = useState('Uncategorized');
+    const [category, setCategory] = useState('Uncategorized');
     const [blurFlag, setBlurFlag] = useState(true);
     const [userLS, setUserLS] = useState(undefined);
     const [preferenceLS, setPreferenceLS] = useState(undefined);
@@ -79,19 +80,22 @@ export function TweetControl({ tweet, id, setBlur }) {
         console.log({ preferenceLS });
     }, [preferenceLS]);
 
-    // useEffect(async () => {
-    //     try {
-    //         const response = await axios.post('http://localhost:8000/predict', {
-    //             text: tweet.original_text.join(' ')
-    //         });
-    //         const { data } = response;
-    //         if (data.confidence > 0.5) {
-    //             setCategory(data.sentiment);
-    //         }
-    //     } catch (err) {
-    //         console.log(`Error : server could not classify tweet`, err);
-    //     }
-    // }, []);
+    useEffect(async () => {
+        try {
+            const response = await axios.post(
+                'https://ogbv-ml-rest.tattle.co.in/predict',
+                {
+                    text: tweet.original_text.join(' ')
+                }
+            );
+            const { data } = response;
+            if (data.confidence > 0.4) {
+                setCategory(data.sentiment);
+            }
+        } catch (err) {
+            console.log(`Error : server could not classify tweet`, err);
+        }
+    }, []);
 
     async function clickCamera() {
         showProgress(true);
@@ -144,9 +148,9 @@ export function TweetControl({ tweet, id, setBlur }) {
                 <Box flex="grow"></Box>
                 {!collapsed ? (
                     <Box direction="row" gap={'small'} padding={'medium'}>
-                        {/* {category != 'Uncategorized' || category != 'None' ? (
-                        <Text size="'small">{category}</Text>
-                    ) : null} */}
+                        {category != 'Uncategorized' || category != 'None' ? (
+                            <Text size="'small">{category}</Text>
+                        ) : null}
                         <Box direction="row">
                             {progress ? (
                                 <Spinner color={'#212121'} size={'xsmall'} />
