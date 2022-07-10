@@ -124,3 +124,15 @@ jobs:
           name: tattletech/ogbv-ml-rest
           tags: ${{ steps.vars.outputs.sha_short }}
           workdir: ogbv-ml-rest
+
+      - name: deploy to cluster
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
+          command: set image --record deployment/ogbv-ml-rest ogbv-ml-rest=tattletech/ogbv-ml-rest:${{ steps.vars.outputs.sha_short }}
+      - name: verify deployment
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
+          version: v1.21.0 # specify kubectl binary version explicitly
+          command: rollout status deployment/ogbv-ml-rest
