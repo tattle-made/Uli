@@ -20,21 +20,19 @@ Contributing to Uli takes 4 easy steps
 
 The very first thing you should do is letting us know that you are interested in contributing by the following means :
 
-If you are unsure about how to contribute to Kosh, simply join our slack and introduce yourself and mention what interests you about Uli. We'll reach out and assist you further.
+If you are unsure about how to contribute to Uli, simply join our slack and introduce yourself and mention what interests you about the project. We'll reach out and assist you further.
 
 If there's a particular improvement you want to suggest, or a bug in kosh you want to fix, simply create a Github Issue regarding it and we'll reach out to assist you further.
 
 If you are interested in knowing what we are working on right now, head over to the [project page](https://github.com/tattle-made/OGBV/projects?type=beta). If any issue there interests you, comment on it for any clarification.
 
 # 🔨 Do your thing
-You should be able to run Uli on your own machine (guide)[README.md] and make changes.
+You should be able to run Uli on your own machine by following the instructions [here](../README.md). Find a github issue and make changes in the codebase to address the issue.
 
 
 ## Pair programming
 
 We offer pair programming sessions with community members to familiarize them with the product and the code base. This will give you an opportunity to clarify any doubts regarding the codebase and the features that interest you.
-
-Once you have a local instance of Kosh running, you can make the changes you want to the code. Test the features and add appropriate documentation for it if needed.
 
 # 📞 Tell us
 
