@@ -1,8 +1,12 @@
+import sys
 import re
 from fuzzywuzzy import process
 from fuzzywuzzy import fuzz
 
-import Levenshtein as lev
+# import Levenshtein as lev
+import pylev
+
+distance_func = pylev.levenshtein
 
 # save slurs in a file
 
@@ -296,11 +300,11 @@ def regex_exact_slurs(tweet,slurs_list_lower):
     
     slurs = []
     tokens = []
-    #print(matches)
+    ## print(matches)
     
     for match in matches:
     
-        print(match)
+        # print(match)
         
         slurs.append(match)
         
@@ -315,7 +319,7 @@ def regex_exact_slurs(tweet,slurs_list_lower):
 
 def approx_matching_slurs(tweet,slurs_list_lower,threshold_score=70):
     
-    print("\nApprox matching")
+    # print("\nApprox matching")
     check = 0
          
     match_dict = dict(process.extract(tweet,slurs_list_lower,limit = 10,scorer=fuzz.partial_ratio))
@@ -339,7 +343,7 @@ def approx_matching_slurs(tweet,slurs_list_lower,threshold_score=70):
             
             if (token,slur) not in token_slur_dict:
                 
-                dis = lev.distance(token,slur)
+                dis = distance_func(token,slur)
                             
                 token_slur_dict[(token,slur)] = dis
             
@@ -357,7 +361,7 @@ def approx_matching_slurs(tweet,slurs_list_lower,threshold_score=70):
     
     for dist,match in dist_sort.items():
         
-        #print(dist,match)
+        ## print(dist,match)
         loop_break = 0
         
         for token,slur in match:
@@ -365,12 +369,12 @@ def approx_matching_slurs(tweet,slurs_list_lower,threshold_score=70):
             #does it work for hin and tamil?
             if token:
                 
-                #print(slur)
-                #print(match_dict[slur])
+                ## print(slur)
+                ## print(match_dict[slur])
     
                 if (slur[0].lower() == token[0].lower()) and (match_dict[slur] >= threshold_score) and (token.lower() not in ['muslim','muslims']):
                     
-                    #print(f'slur,token : {slur} {token}')
+                    ## print(f'slur,token : {slur} {token}')
                     result_dict[('slur','token')] = (slur,token)
                     
                     #token,slur value pair
@@ -390,18 +394,14 @@ def approx_matching_slurs(tweet,slurs_list_lower,threshold_score=70):
 def slur_replacement_slurs(tweet,slurs_list_lower=slurs_list_lower,threshold_score=90):
     
     tweet1,exact_result = regex_exact_slurs(tweet,slurs_list_lower)
-    print(f'exact : {exact_result}')
+    # print(f'exact : {exact_result}')
     tweet2,approx_result = approx_matching_slurs(tweet1,slurs_list_lower,threshold_score=threshold_score)
-    print(f'approx : {approx_result}')
+    # print(f'approx : {approx_result}')
     
     exact_result.update(approx_result)
-    print(f'combined : {exact_result}')
+    # print(f'combined : {exact_result}')
     
-    print(f'\n original tweet : {tweet}\n')
-    print(f'final tweet : {tweet2}')
+    # print(f'\n original tweet : {tweet}\n')
+    # print(f'final tweet : {tweet2}')
     
     return tweet2
-
-# if __name__ == "__main__":
-
-#     return slur_replacement_slurs(tweet,)

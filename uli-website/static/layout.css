@@ -1,0 +1,24 @@
+@import "./typography.css";
+
+body {
+    font-family: "millisime", sans-serif;
+    font-size: 32px;
+    background-color: #fdf6ed;
+    margin:0;
+}
+
+a{
+    color: #212121;
+}
+
+a:hover {
+    color: #212121;
+}
+
+a:link {
+    color: #212121;
+}
+
+a:visited {
+    color: #212121;
+}

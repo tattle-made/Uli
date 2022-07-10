@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+#from tqdm import tqdm
+import requests
+import os
+
+#URL to be downloaded
+url = "https://huggingface.co/Maha/xlmtwtroberta_label2/resolve/main/pytorch_model.bin"
+
+#download the file
+r = requests.get(url, allow_redirects=True, stream = True)
+
+#save downloaded file
+
+os.mkdir('assets')
+
+os.chdir('assets')
+
+with open("model_state_dict.bin","wb") as pdf:
+     for chunk in (r.iter_content(chunk_size=1024)):
+         # writing one chunk at a time to pdf file
+         if chunk:
+              pdf.write(chunk)

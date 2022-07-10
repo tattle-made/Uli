@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+  <div id="output">
+  </div>
+
+  <div>
+    <h2>Status: <span id="ready">Loading..</span></h2>
+  </div>
+  <div>
+    <span>
+      <label>Enter tweet</label>
+    </span>
+    <span>
+      <input style="border: 1px solid;" type="text" id="tweet"></input>
+    </span>
+    <span>
+      <button type="button" id="submit">Convert</button>
+    </span>
+  </div>
+  <div>
+    <span>
+      <label>Output</label>
+    </span>
+    <span>
+      <label id="converted"></label>
+    </span>
+  </div>
+</body>
+
+<!-- Pyscript things below -->
+
+<div id="mypyscript-out" style="display: none">
+</div>
+
+<py-env>
+- fuzzywuzzy
+- pylev
+- paths:
+  - /slur_replacement.py
+</py-env>
+<py-script output="mypyscript-out" style="display: none">
+import pyodide
+from js import document
+def doit(*a, **b):
+  tweet = Element('tweet').element.value
+  from slur_replacement import slur_replacement_slurs
+  converted = slur_replacement_slurs(tweet)
+  pyscript.write('converted', converted)
+
+pyscript.write("ready", "Ready")
+submit = document.getElementById("submit")
+submit.addEventListener("click", pyodide.create_proxy(doit))
+
+</py-script>
+</html>

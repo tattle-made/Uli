@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'MixStitch';
+    src: url('/MixStitch.woff2') format('woff2'),
+        url('/MixStitch.woff') format('woff'),
+        url('/MixStitch.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'XStitch';
+    src: url('/Kingthings Xstitch.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Eenvoudige Batik';
+    src: url('Eenvoudige-Batik-.woff2') format('woff2'),
+        url('Eenvoudige-Batik-.woff') format('woff'),
+        url('Eenvoudige-Batik-.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
