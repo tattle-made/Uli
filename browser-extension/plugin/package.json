@@ -42,7 +42,9 @@
         "styled-components": "^5.3.3"
     },
     "engines": {
-        "browsers": "> 0.25%"
+        "browsers": "> 0.25%",
+        "node": ">=16.14.0",
+        "npm": ">=8.3.1"
     },
     "lint-staged": {
         "*.(js|jsx)": [
