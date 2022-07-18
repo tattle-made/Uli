@@ -155,10 +155,10 @@ export function TweetControl({ tweet, id, setBlur }) {
                     <Box flex="grow"></Box>
                     {!collapsed ? (
                         <Box direction="row" gap={'small'} padding={'medium'}>
-                            {category != 'Uncategorized' ||
+                            {/* {category != 'Uncategorized' ||
                             category != 'None' ? (
                                 <Text size="'small">{category}</Text>
-                            ) : null}
+                            ) : null} */}
                             <Box direction="row">
                                 {progress ? (
                                     <Spinner
