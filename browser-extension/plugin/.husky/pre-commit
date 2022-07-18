@@ -1,6 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd "browser extension/plugin"
+cd "browser-extension/plugin"
 npm run pre-commit
 npm run lint
