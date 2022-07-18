@@ -31,7 +31,7 @@ var expression = new RegExp(`(?:${slurList})`, 'gi');
 })();
 
 export function replaceSlur(sentence) {
-    console.log({ slurList });
+    // console.log({ slurList });
     return sentence.replace(expression, generateMask);
 }
 

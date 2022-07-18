@@ -23,7 +23,7 @@ function processPage(newUrl) {
                 log('Unknown State. Could not find Timeline');
             } else {
                 let timeline = getTimeline();
-                log({ timeline });
+                // log({ timeline });
                 transform.processNewlyAddedNodes(timeline.children);
                 setOnChangeListener(timeline, transform.processNewlyAddedNodes);
             }
