@@ -4,8 +4,8 @@
 	<h2 align="center">Moderate your Twitter Feed</h2>
 </p>
 
-
 ## Features
+
 - Automatic Slur Replacement for Languages spoken in India (Currently supported Tamil, Hindi and English)
 - Archive Tweets
 - Invoke Networks
@@ -14,20 +14,22 @@
 	<img src="docs/assets/hero-illustrations.gif" width="350"/>
 </p>
 
-
 ## Code Organization
-| Directory | Description | 
-| --- | --- |
-| plugin | code for browser extension |
+
+| Directory  | Description                                                    |
+| ---------- | -------------------------------------------------------------- |
+| plugin     | code for browser extension                                     |
 | api-server | a rest server for storing user preferences and archived tweets |
 
 # Build from Source
 
 Requirements :
+
 - npm : v8.7.0
 - nodejs : 16.4.2
 
 Ensure that the followin Environment Variables are available to your api-server process:
+
 ```
 NODE_ENV=development
 AWS_BUCKET_NAME=XXXXXXXXXXX
@@ -36,9 +38,10 @@ SERVICE_AWS_SECRET_ACCESS_KEY=XXXXXXX
 DB_HOST: XXXXXXXXXXX
 DB_USERNAME: XXXXXXXXXXX
 DB_PASSWORD: XXXXXXXXXXX
-``` 
+```
 
 ## For Development
+
 ```
 git clone https://github.com/tattle-made/OGBV.git
 cd browser\ extension/
@@ -47,11 +50,12 @@ cd ..
 cd api-server && npm install
 docker-compose up
 ```
+
 Now you can run the development server for the following entities in different tabs/windows and monitor their logs :
 | Service | Command To Run |
-| --- | --- | 
+| --- | --- |
 | api server | cd api-server && nodemon index.js |
-| content script | cd plugin && npm run start:contentScript | 
+| content script | cd plugin && npm run start:contentScript |
 | options page | cd plugin && npm run start:options |
 
 If all services run correctly, you should be able to load the plugin from `plugin/dist` folder into Chrome or Brave browser.
@@ -60,9 +64,13 @@ To learn how to install unreleased extension in your browser follow the instruct
 Look into individual README within the `api-server` and `plugin` folder for more info.
 
 ## For Production
+
 ```
 cd plugin && npm run build
 ```
 
+This will bundle all files related to the plugin into `/dist`, this can now be loaded on a browser or uploaded to the chrome store.
+
 # Contributing
+
 Head over to the [contribution guide](CONTRIBUTING.md)
