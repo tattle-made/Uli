@@ -256,9 +256,15 @@ export function TweetControl({ tweet, id, setBlur }) {
                             width: '100%',
                             height: '100%',
                             backgroundColor: '#fdf6ed',
-                            zIndex: '499'
+                            zIndex: '499',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '1.4em'
                         }}
-                    />
+                    >
+                        <p>Uli detected this tweet to be oGBV</p>
+                    </div>
                 ) : null}
             </Box>
         </Grommet>
