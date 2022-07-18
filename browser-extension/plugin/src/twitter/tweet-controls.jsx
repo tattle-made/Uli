@@ -43,6 +43,7 @@ UnfocussedButton.propTypes = {
 export function TweetControl({ tweet, id, setBlur }) {
     const [collapsed, setCollapsed] = useState(false);
     const [category, setCategory] = useState('Uncategorized');
+    const [hideTweet, setHideTweet] = useState('false');
     const [blurFlag, setBlurFlag] = useState(true);
     const [userLS, setUserLS] = useState(undefined);
     const [preferenceLS, setPreferenceLS] = useState(undefined);
@@ -91,6 +92,7 @@ export function TweetControl({ tweet, id, setBlur }) {
             const { data } = response;
             if (data.confidence > 0.4) {
                 setCategory(data.sentiment);
+                setHideTweet(true);
             }
         } catch (err) {
             console.log(`Error : server could not classify tweet`, err);
@@ -144,93 +146,119 @@ export function TweetControl({ tweet, id, setBlur }) {
 
     return (
         <Grommet className="ogbv-tweetcontrol-bar" theme={Theme}>
-            <Box direction="row" background={'white'}>
-                <Box flex="grow"></Box>
-                {!collapsed ? (
-                    <Box direction="row" gap={'small'} padding={'medium'}>
-                        {category != 'Uncategorized' || category != 'None' ? (
-                            <Text size="'small">{category}</Text>
-                        ) : null}
-                        <Box direction="row">
-                            {progress ? (
-                                <Spinner color={'#212121'} size={'xsmall'} />
+            <Box>
+                <Box
+                    direction="row"
+                    background={'white'}
+                    style={{ zIndex: '500' }}
+                >
+                    <Box flex="grow"></Box>
+                    {!collapsed ? (
+                        <Box direction="row" gap={'small'} padding={'medium'}>
+                            {category != 'Uncategorized' ||
+                            category != 'None' ? (
+                                <Text size="'small">{category}</Text>
                             ) : null}
-                            {notification ? (
-                                <Text color={'brand'} size={'small'}>
-                                    {notification.message}
-                                </Text>
-                            ) : null}
-                        </Box>
-                        <UnfocussedButton onClick={clickCamera}>
-                            <Tip content={'Archive'}>
-                                <Camera size={16} color={'#212121'} />
-                            </Tip>
-                        </UnfocussedButton>
-                        <UnfocussedButton onClick={clickInvokeNetwork}>
-                            <Tip content={'Invoke Network'}>
-                                <Wifi size={16} color={'#212121'} />
-                            </Tip>
-                        </UnfocussedButton>
-                        <UnfocussedButton
-                            onClick={() => {
-                                setBlurFlag(!blurFlag);
-                                setBlur(id, blurFlag);
-                            }}
-                        >
-                            <Tip content={'Show/Hide Slur'}>
-                                <Eye size={16} color={'#212121'} />
-                            </Tip>
-                        </UnfocussedButton>
-                        {/* <UnfocussedButton onClick={clickActivity}>
+                            <Box direction="row">
+                                {progress ? (
+                                    <Spinner
+                                        color={'#212121'}
+                                        size={'xsmall'}
+                                    />
+                                ) : null}
+                                {notification ? (
+                                    <Text color={'brand'} size={'small'}>
+                                        {notification.message}
+                                    </Text>
+                                ) : null}
+                            </Box>
+                            <UnfocussedButton onClick={clickCamera}>
+                                <Tip content={'Archive'}>
+                                    <Camera size={16} color={'#212121'} />
+                                </Tip>
+                            </UnfocussedButton>
+                            <UnfocussedButton onClick={clickInvokeNetwork}>
+                                <Tip content={'Invoke Network'}>
+                                    <Wifi size={16} color={'#212121'} />
+                                </Tip>
+                            </UnfocussedButton>
+                            <UnfocussedButton
+                                onClick={() => {
+                                    setBlurFlag(!blurFlag);
+                                    setHideTweet(!hideTweet);
+                                    setBlur(id, blurFlag);
+                                }}
+                            >
+                                <Tip content={'Show/Hide Slur'}>
+                                    <Eye size={16} color={'#212121'} />
+                                </Tip>
+                            </UnfocussedButton>
+                            {/* <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
                     </UnfocussedButton> */}
+                            <UnfocussedButton
+                                onClick={() => {
+                                    setCollapsed(!collapsed);
+                                }}
+                            >
+                                <XCircle size={16} />
+                            </UnfocussedButton>
+                        </Box>
+                    ) : (
                         <UnfocussedButton
                             onClick={() => {
                                 setCollapsed(!collapsed);
                             }}
                         >
-                            <XCircle size={16} />
+                            <ChevronLeft size={16} color={'#212121'} />
                         </UnfocussedButton>
-                    </Box>
-                ) : (
-                    <UnfocussedButton
-                        onClick={() => {
-                            setCollapsed(!collapsed);
-                        }}
-                    >
-                        <ChevronLeft size={16} color={'#212121'} />
-                    </UnfocussedButton>
-                )}
-                {showPopup ? (
-                    <Layer
-                        onEsc={() => setShowPopup(false)}
-                        onClickOutside={() => setShowPopup(false)}
-                    >
-                        <Box width={'medium'} gap={'medium'} margin={'large'}>
-                            <TextArea
-                                placeholder={
-                                    'Hey, can you help me report this post?'
-                                }
-                                value={message}
-                                onChange={(event) =>
-                                    setMessage(event.target.value)
-                                }
-                            ></TextArea>
-                            <Box direction={'row'} gap={'small'}>
-                                <Button
-                                    label="Cancel"
-                                    onClick={() => setShowPopup(false)}
-                                />
-                                <Button
-                                    label="Send"
-                                    onClick={() => {
-                                        clickSend();
-                                    }}
-                                    primary
-                                />
+                    )}
+                    {showPopup ? (
+                        <Layer
+                            onEsc={() => setShowPopup(false)}
+                            onClickOutside={() => setShowPopup(false)}
+                        >
+                            <Box
+                                width={'medium'}
+                                gap={'medium'}
+                                margin={'large'}
+                            >
+                                <TextArea
+                                    placeholder={
+                                        'Hey, can you help me report this post?'
+                                    }
+                                    value={message}
+                                    onChange={(event) =>
+                                        setMessage(event.target.value)
+                                    }
+                                ></TextArea>
+                                <Box direction={'row'} gap={'small'}>
+                                    <Button
+                                        label="Cancel"
+                                        onClick={() => setShowPopup(false)}
+                                    />
+                                    <Button
+                                        label="Send"
+                                        onClick={() => {
+                                            clickSend();
+                                        }}
+                                        primary
+                                    />
+                                </Box>
                             </Box>
-                        </Box>
-                    </Layer>
+                        </Layer>
+                    ) : null}
+                </Box>
+                {category === 'Hate' && hideTweet ? (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: '#fdf6ed',
+                            zIndex: '499'
+                        }}
+                    />
                 ) : null}
             </Box>
         </Grommet>
