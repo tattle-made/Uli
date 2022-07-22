@@ -28,7 +28,7 @@ function setBlur(id, blurFlag) {
     }
 }
 
-function addInlineMenu(id, item) {
+function addInlineMenu(id, item, hasSlur) {
     // const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
     // const id = hashCode(item.innerHTML);
 
@@ -44,6 +44,7 @@ function addInlineMenu(id, item) {
             id={id}
             debug={debug}
             setBlur={setBlur}
+            hasSlur={hasSlur}
         />,
         inlineButtonDiv
     );
@@ -57,16 +58,21 @@ const processNewlyAddedNodes = function (addedNodes) {
         const id = hashCode(node.innerHTML);
         const tweet = parseTweet(id, node);
         tweets[id] = tweet;
+        let hasSlur = false;
         for (const tweet of tweets[id].spans) {
             const text = tweet.innerText;
-            tweet.innerText = replaceSlur(text);
+            const replacementText = replaceSlur(text);
+            tweet.innerText = replacementText;
+            if (text !== replacementText) {
+                hasSlur = true;
+            }
         }
 
         if (
             tweet.spans.length > 0 &&
             node.getElementsByClassName('ogbv-tweetcontrol-bar').length == 0
         ) {
-            addInlineMenu(id, node);
+            addInlineMenu(id, node, hasSlur);
         }
     });
 };

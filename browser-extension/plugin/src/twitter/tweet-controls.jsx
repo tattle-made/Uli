@@ -40,10 +40,11 @@ UnfocussedButton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element)
 };
 
-export function TweetControl({ tweet, id, setBlur }) {
+export function TweetControl({ tweet, id, setBlur, hasSlur }) {
     const [collapsed, setCollapsed] = useState(false);
     const [category, setCategory] = useState('Uncategorized');
     const [hideTweet, setHideTweet] = useState('false');
+    const [hasOGBV, setHasOGBV] = useState(false);
     const [blurFlag, setBlurFlag] = useState(true);
     const [userLS, setUserLS] = useState(undefined);
     const [preferenceLS, setPreferenceLS] = useState(undefined);
@@ -90,9 +91,10 @@ export function TweetControl({ tweet, id, setBlur }) {
                 }
             );
             const { data } = response;
-            if (data.confidence > 0.4) {
+            if (data.confidence > 0.4 && data.sentiment === 'Hate') {
                 setCategory(data.sentiment);
                 setHideTweet(true);
+                setHasOGBV(true);
             }
         } catch (err) {
             console.log(`Error : server could not classify tweet`, err);
@@ -159,6 +161,7 @@ export function TweetControl({ tweet, id, setBlur }) {
                             category != 'None' ? (
                                 <Text size="'small">{category}</Text>
                             ) : null} */}
+                            {/* <Text>{`${hasSlur}, ${hasOGBV}`}</Text> */}
                             <Box direction="row">
                                 {progress ? (
                                     <Spinner
@@ -177,22 +180,24 @@ export function TweetControl({ tweet, id, setBlur }) {
                                     <Camera size={16} color={'#212121'} />
                                 </Tip>
                             </UnfocussedButton>
-                            <UnfocussedButton onClick={clickInvokeNetwork}>
+                            {/* <UnfocussedButton onClick={clickInvokeNetwork}>
                                 <Tip content={'Invoke Network'}>
                                     <Wifi size={16} color={'#212121'} />
                                 </Tip>
-                            </UnfocussedButton>
-                            <UnfocussedButton
-                                onClick={() => {
-                                    setBlurFlag(!blurFlag);
-                                    setHideTweet(!hideTweet);
-                                    setBlur(id, blurFlag);
-                                }}
-                            >
-                                <Tip content={'Show/Hide Slur'}>
-                                    <Eye size={16} color={'#212121'} />
-                                </Tip>
-                            </UnfocussedButton>
+                            </UnfocussedButton> */}
+                            {hasSlur || hasOGBV ? (
+                                <UnfocussedButton
+                                    onClick={() => {
+                                        setBlurFlag(!blurFlag);
+                                        setHideTweet(!hideTweet);
+                                        setBlur(id, blurFlag);
+                                    }}
+                                >
+                                    <Tip content={'Show/Hide original tweet'}>
+                                        <Eye size={16} color={'#212121'} />
+                                    </Tip>
+                                </UnfocussedButton>
+                            ) : null}
                             {/* <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
                     </UnfocussedButton> */}
