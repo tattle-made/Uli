@@ -163,6 +163,7 @@ export function Preferences() {
         /> */}
 
                 <FormField
+                    id="app_field_email"
                     name="email"
                     htmlFor="emailId"
                     label={
@@ -230,6 +231,7 @@ export function Preferences() {
                     justify="start"
                 >
                     <Button
+                        id="app_btn_save"
                         fill={false}
                         label={t('save')}
                         type="submit"

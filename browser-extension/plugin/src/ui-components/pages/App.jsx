@@ -77,7 +77,11 @@ export function App() {
                                     alt={'Uli Logo'}
                                 />
                             </Box>
-                            <Text size={'small'} color={'dark-2'}>
+                            <Text
+                                id="app_label_environment"
+                                size={'small'}
+                                color={'dark-2'}
+                            >
                                 {process.env.NODE_ENV}
                             </Text>
                             {notification ? (
@@ -100,13 +104,19 @@ export function App() {
                             <BrowserRouter>
                                 <nav>
                                     <Box direction="row" gap={'medium'}>
-                                        <Link to="/">
+                                        <Link id="app_nav_preference" to="/">
                                             {t('navigation_preferences')}
                                         </Link>
-                                        <Link to="/archive">
+                                        <Link
+                                            id="app_nav_archive"
+                                            to="/archive"
+                                        >
                                             {t('navigation_archive')}
                                         </Link>
-                                        <Link to="/resources">
+                                        <Link
+                                            id="app_nav_resources"
+                                            to="/resources"
+                                        >
                                             {t('navigation_resources')}
                                         </Link>
                                         <Link to="/debug">
@@ -139,6 +149,7 @@ export function App() {
                         ) : (
                             <Box>
                                 <Button
+                                    id="app_btn_activate"
                                     label={t('activate_account')}
                                     onClick={clickActivateAccount}
                                 ></Button>
