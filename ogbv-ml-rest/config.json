@@ -1,9 +1,6 @@
 {
-    "MODEL": "Maha/xlmtwtroberta_label2",
-    "PRE_TRAINED_MODEL": "assets/model_state_dict.bin",
-    "CLASS_NAMES": [
-        "None",
-        "Hate"
-    ],
-    "MAX_SEQUENCE_LEN": 128
+  "MODEL": "tattle-admin/july22-xlmtwtroberta-da-multi",
+  "PRE_TRAINED_MODEL": "assets/model_state_dict.bin",
+  "CLASS_NAMES": ["None", "Hate"],
+  "MAX_SEQUENCE_LEN": 128
 }
