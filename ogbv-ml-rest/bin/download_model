@@ -5,7 +5,7 @@ import requests
 import os
 
 #URL to be downloaded
-url = "https://huggingface.co/Maha/xlmtwtroberta_label2/resolve/main/pytorch_model.bin"
+url = "https://huggingface.co/tattle-admin/july22-xlmtwtroberta-da-multi/resolve/main/pytorch_model.bin"
 
 #download the file
 r = requests.get(url, allow_redirects=True, stream = True)
