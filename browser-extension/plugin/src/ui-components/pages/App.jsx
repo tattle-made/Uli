@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Grommet, Box, Text, Button } from 'grommet';
 import { useTranslation } from 'react-i18next';
 import Theme from '../atoms/Theme';
-import { Link, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import { Debug } from './Debug';
 import { Preferences } from './Preferences';
 import { Resources } from './Resources';
@@ -20,6 +20,7 @@ export function App() {
     const { t, i18n } = useTranslation();
     const { registerNewUser } = Api;
     const { getUserData, setUserData } = repository;
+    let navigate = useNavigate();
 
     function showNotification(notification) {
         setNotification(notification);
@@ -52,6 +53,7 @@ export function App() {
         const user = data.user;
         await setUserData(user);
         setUser(user);
+        navigate('/preferences');
     }
 
     return (
@@ -101,51 +103,48 @@ export function App() {
                         </Box>
 
                         {user ? (
-                            <BrowserRouter>
-                                <nav>
-                                    <Box direction="row" gap={'medium'}>
-                                        <Link id="app_nav_preference" to="/">
-                                            {t('navigation_preferences')}
-                                        </Link>
-                                        <Link
-                                            id="app_nav_archive"
-                                            to="/archive"
-                                        >
-                                            {t('navigation_archive')}
-                                        </Link>
-                                        <Link
-                                            id="app_nav_resources"
-                                            to="/resources"
-                                        >
-                                            {t('navigation_resources')}
-                                        </Link>
-                                        <Link to="/debug">
-                                            {t('navigation_debug')}
-                                        </Link>
-                                    </Box>
-                                </nav>
+                            <div>
+                                <Box direction="row" gap={'medium'}>
+                                    <Link
+                                        id="app_nav_preference"
+                                        to="/preferences"
+                                    >
+                                        {t('navigation_preferences')}
+                                    </Link>
+                                    <Link id="app_nav_archive" to="/archive">
+                                        {t('navigation_archive')}
+                                    </Link>
+                                    <Link
+                                        id="app_nav_resources"
+                                        to="/resources"
+                                    >
+                                        {t('navigation_resources')}
+                                    </Link>
+                                    <Link to="/debug">
+                                        {t('navigation_debug')}
+                                    </Link>
+                                </Box>
+
                                 <Box height={'2.0em'} />
 
                                 <Routes>
+                                    <Route></Route>
                                     <Route
                                         exact
-                                        path={`/`}
+                                        path="/preferences"
                                         element={<Preferences />}
                                     />
                                     <Route
-                                        path={`/archive`}
+                                        path="archive"
                                         element={<Archive />}
                                     />
                                     <Route
-                                        path={`/resources`}
+                                        path="resources"
                                         element={<Resources />}
                                     />
-                                    <Route
-                                        path={`/debug`}
-                                        element={<Debug />}
-                                    />
+                                    <Route path="debug" element={<Debug />} />
                                 </Routes>
-                            </BrowserRouter>
+                            </div>
                         ) : (
                             <Box>
                                 <Button
