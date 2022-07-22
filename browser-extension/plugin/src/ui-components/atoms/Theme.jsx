@@ -1,8 +1,5 @@
 const Theme = {
     global: {
-        font: {
-            family: 'millisime'
-        },
         button: {
             default: {
                 background: {
