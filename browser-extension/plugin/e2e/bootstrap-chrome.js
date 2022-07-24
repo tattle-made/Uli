@@ -35,18 +35,18 @@ async function bootstrap(options = {}) {
 (async function startChrome() {
     const { extPage, appPage } = await bootstrap();
 
-    // await appPage.bringToFront();
+    await appPage.bringToFront();
     // await sleep(5000);
-    await extPage.bringToFront();
-    await extPage.click('#app_btn_activate');
-    await sleep(150);
-    await extPage.click('#app_nav_preference');
-    await extPage.type('#app_field_email', 'denny@tattle.co.in');
-    await extPage.click('#app_btn_save');
-    await sleep(500);
-    await extPage.evaluate(() => {
-        alert(JSON.stringify(localStorage));
-    });
+    // await extPage.bringToFront();
+    // await sleep(150);
+    // await extPage.click('#app_btn_activate');
+    // await extPage.click('#app_nav_preference');
+    // await extPage.type('#app_field_email', 'denny@tattle.co.in');
+    // await extPage.click('#app_btn_save');
+    // await sleep(500);
+    // await extPage.evaluate(() => {
+    //     alert(JSON.stringify(localStorage));
+    // });
     // await sleep(5000);
     // await sleep(10000);
     // await browser.close();
