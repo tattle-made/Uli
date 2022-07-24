@@ -1,3 +1,5 @@
+const { user } = require("./db/models");
+
 async function authentication(req, res, next) {
   if (req.path.startsWith("/auth/")) {
     next();

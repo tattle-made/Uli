@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const { upload } = require("./s3");
 
-const { user, preference, post } = require("./db/models");
+const { preference, post } = require("./db/models");
 const { Op } = require("sequelize");
 const { registerAnonymousUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
@@ -83,7 +83,7 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
       sourceUrl: url,
       permanentUrl: null,
       tags: null,
-      screenshotUrl: fileName,
+      screenshot: fileName,
     });
 
     const result = await preference.findOne({
