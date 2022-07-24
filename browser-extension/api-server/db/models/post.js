@@ -20,9 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: DataTypes.STRING,
       sourceUrl: DataTypes.STRING,
-      permanentUrl: DataTypes.STRING,
-      tags: DataTypes.STRING,
-      screenshotUrl: DataTypes.STRING,
+      screenshot: DataTypes.STRING,
     },
     {
       sequelize,

@@ -16,9 +16,6 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
       },
-      friends: {
-        type: Sequelize.STRING,
-      },
       slurList: {
         type: Sequelize.STRING,
       },

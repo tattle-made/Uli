@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.STRING,
       email: DataTypes.STRING,
       language: DataTypes.STRING,
-      friends: DataTypes.STRING,
       slurList: DataTypes.STRING,
     },
     {

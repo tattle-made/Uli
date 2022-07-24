@@ -13,13 +13,7 @@ module.exports = {
       sourceUrl: {
         type: Sequelize.STRING,
       },
-      permanentUrl: {
-        type: Sequelize.STRING,
-      },
-      tags: {
-        type: Sequelize.STRING,
-      },
-      screenshotUrl: {
+      screenshot: {
         type: Sequelize.STRING,
       },
       createdAt: {

@@ -20,8 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      username: DataTypes.STRING,
-      password: DataTypes.STRING,
       accessToken: DataTypes.STRING,
       refreshToken: DataTypes.STRING,
     },
