@@ -14,7 +14,6 @@ const {
   sendAskFriendsForHelpEmail,
 } = require("./controller-email");
 
-
 app.use(cors());
 app.use(express.json());
 app.options("*", cors());
@@ -139,7 +138,7 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
       sourceUrl: url,
       permanentUrl: null,
       tags: null,
-      screenshotUrl: req.file.location,
+      screenshotUrl: fileName,
     });
 
     const result = await preference.findOne({
@@ -152,7 +151,11 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
       (result != null && resultPlain.email != undefined) ||
       resultPlain.email != null
     ) {
-      await sendArchiveEmail(resultPlain.email, url, req.file.location);
+      await sendArchiveEmail(
+        resultPlain.email,
+        url,
+        `https://uli-media.tattle.co.in/${fileName}`
+      );
     }
 
     res.send({ msg: "Tweet Archived" });
