@@ -37,6 +37,7 @@ export function Preferences() {
     useEffect(async () => {
         try {
             const preference = await getPreferenceData();
+            // console.log({ preference });
             setLocalPreferences(preference);
             if (
                 preference != undefined &&
@@ -184,7 +185,7 @@ export function Preferences() {
                     component={TextInput}
                 />
 
-                <FormField
+                {/* <FormField
                     name="friends"
                     htmlFor="friendsId"
                     label={
@@ -202,7 +203,7 @@ export function Preferences() {
                     }
                     disabled={!enable}
                     component={TextArea}
-                />
+                /> */}
 
                 <FormField
                     name="slurList"

@@ -1,3 +1,7 @@
+GET http://localhost:3000/auth/register
+
+###
+
 GET http://localhost:3000/auth/login?username=denny&password=denny_pw
 
 ###
@@ -9,12 +13,12 @@ GET http://localhost:3000/user/e3be8f99-7ec7-11ec-a714-0242ac140002
 # IF id is sent, it updates the post else creates a new one
 POST http://localhost:3000/preference
 content-type : application/json
-Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
+Authorization: token f88f7ab3-c428-40a9-90fb-3cee9e820f90
 
 {
     "id" : "8066828c-4928-4bc2-8b98-c79f0b5e2bb3",
     "language":"ta",
-    "friends": "denny@tattle.co.in,tarunima@tattle.co.in,rahul@tattle.co.in,swastika@tattle.co.in",
+    "email": "dog@tattle.co.in",
     "slurList": "apple,dog,cat"
 }
 
@@ -33,7 +37,7 @@ Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
 
 ### 
 GET http://localhost:3000/preference
-Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
+Authorization: token f88f7ab3-c428-40a9-90fb-3cee9e820f90
 
 ###
 GET http://localhost:3000/auth/register

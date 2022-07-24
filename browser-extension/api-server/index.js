@@ -14,6 +14,7 @@ const {
   sendAskFriendsForHelpEmail,
 } = require("./controller-email");
 const { authentication } = require("./middlewares");
+const { encrypt, decrypt } = require("./encryption");
 
 app.use(cors());
 app.use(express.json());
@@ -39,11 +40,19 @@ app.post("/preference/", async (req, res) => {
   const result = await preference.upsert({
     id,
     userId: user.id,
-    email,
+    email: encrypt(email),
     language,
     slurList,
   });
-  res.send({ ...result[0].get({ plain: true }) });
+
+  let plainResult = result[0].get({ plain: true });
+  console.log({ plainResult });
+  res.send({
+    ...plainResult,
+    email,
+  });
+
+  // res.send({ ...result[0].get({ plain: true }) });
 });
 
 app.get("/preference/", async (req, res) => {
@@ -56,7 +65,12 @@ app.get("/preference/", async (req, res) => {
   if (result == null) {
     res.status(404).send();
   } else {
-    res.send({ preference: result.get({ plain: true }) });
+    let plainResult = result.get({ plain: true });
+    // console.log({ plainResult });
+    res.send({
+      ...plainResult,
+      email: decrypt(plainResult.email),
+    });
   }
 });
 
@@ -92,6 +106,10 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
       },
     });
     resultPlain = result.get({ plain: true });
+    resultPlain = { ...resultPlain, email: decrypt(resultPlain.email) };
+
+    console.log({ resultPlain });
+
     if (
       (result != null && resultPlain.email != undefined) ||
       resultPlain.email != null

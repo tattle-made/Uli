@@ -53,15 +53,17 @@ export function Debug() {
                     </Box>
 
                     {/* {localStorageData ? (
-            <Box>
-              <Text weight={500}>Local Storage</Text>
-              <Text>{JSON.stringify(localStorageData, null, 2)}</Text>
-            </Box>
-          ) : (
-            <Text color={"status-critical"}>
-              {t("message_error_local_storage")}
-            </Text>
-          )} */}
+                        <Box>
+                            <Text weight={500}>Local Storage</Text>
+                            <Text>
+                                {JSON.stringify(localStorageData, null, 2)}
+                            </Text>
+                        </Box>
+                    ) : (
+                        <Text color={'status-critical'}>
+                            {t('message_error_local_storage')}
+                        </Text>
+                    )} */}
 
                     <Box
                         pad={'small'}
