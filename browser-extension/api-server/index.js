@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const cors = require("cors");
+const axios = require("axios");
 
 const { upload } = require("./s3");
 
@@ -139,6 +140,18 @@ app.get("/archive", async (req, res) => {
   const archive = rows.map((row) => row.get({ plain: true }));
 
   res.send({ archive, count });
+});
+
+app.post("/predict", async (req, res) => {
+  const { text } = req.body;
+  try {
+    const response = await axios.post("http://ogbv-ml-rest/predict", {
+      text,
+    });
+    res.send(response);
+  } catch (err) {
+    res.status(501).send("Could not label this tweet");
+  }
 });
 
 app.listen(port, () => {
