@@ -153,6 +153,7 @@ export function TweetControl({ tweet, id, setBlur, hasSlur }) {
                     direction="row"
                     background={'white'}
                     style={{ zIndex: '500' }}
+                    pad={'xsmall'}
                 >
                     <Box flex="grow"></Box>
                     {!collapsed ? (
@@ -201,13 +202,13 @@ export function TweetControl({ tweet, id, setBlur, hasSlur }) {
                             {/* <UnfocussedButton onClick={clickActivity}>
                         <Activity size={16} />
                     </UnfocussedButton> */}
-                            <UnfocussedButton
+                            {/* <UnfocussedButton
                                 onClick={() => {
                                     setCollapsed(!collapsed);
                                 }}
                             >
                                 <XCircle size={16} />
-                            </UnfocussedButton>
+                            </UnfocussedButton> */}
                         </Box>
                     ) : (
                         <UnfocussedButton
