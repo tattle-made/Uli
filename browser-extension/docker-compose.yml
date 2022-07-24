@@ -8,7 +8,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root_pw
       MYSQL_USER: tattle
-      MYSQL_DATABASE: ogbv_plugin
+      MYSQL_DATABASE: uli_dev
       MYSQL_PASSWORD: tattle_pw
     ports:
       - 3306:3306
