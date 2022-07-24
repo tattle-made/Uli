@@ -13,53 +13,15 @@ const {
   sendArchiveEmail,
   sendAskFriendsForHelpEmail,
 } = require("./controller-email");
+const { authentication } = require("./middlewares");
 
 app.use(cors());
 app.use(express.json());
 app.options("*", cors());
 
-app.use(async (req, res, next) => {
-  console.log("auth middleware pinged");
-  // console.log(req.headers);
-  if (req.path.startsWith("/auth/")) {
-    console.log("hi2");
-    next();
-  } else {
-    if (!req.headers.authorization) {
-      return res.status(403).json({ error: "No credentials sent!" });
-    } else {
-      authorization = req.headers.authorization;
-      token = authorization.split(" ")[1];
-      const result = await user.findOne({
-        where: {
-          accessToken: token,
-        },
-      });
-      if (result == null) {
-        res.status(401).json({ error: "Unauthorized user" });
-      } else {
-        req.user = result;
-        next();
-      }
-    }
-  }
-});
+app.use(authentication);
 
 console.log(process.env.NODE_ENV);
-
-app.get("/auth/login", async (req, res) => {
-  const { username, password } = req.query;
-  const result = await user.findOne({
-    where: {
-      [Op.and]: [{ username }, { password }],
-    },
-  });
-  if (result == null) {
-    res.status(404).send();
-  } else {
-    res.send({ user: result.get({ plain: true }) });
-  }
-});
 
 app.get("/auth/register", async (req, res) => {
   try {
@@ -70,31 +32,15 @@ app.get("/auth/register", async (req, res) => {
   }
 });
 
-app.get("/user/:userId", async (req, res) => {
-  const { userId } = req.params;
-  const result = await user.findOne({
-    where: {
-      id: userId,
-    },
-  });
-  if (result == null) {
-    res.send({ user: undefined, msg: "No user found" });
-  } else {
-    res.send({ user: result.get({ plain: true }) });
-  }
-});
-
 app.post("/preference/", async (req, res) => {
   console.log("POST preferences");
-  const { id, language, friends, slurList, email } = req.body;
+  const { id, language, slurList, email } = req.body;
   const user = req.user;
-  console.log({ user, id, language, email, friends, slurList });
   const result = await preference.upsert({
     id,
     userId: user.id,
     email,
     language,
-    friends,
     slurList,
   });
   res.send({ ...result[0].get({ plain: true }) });
@@ -131,7 +77,6 @@ app.post("/archive", upload.single("screenshot"), async (req, res) => {
     const s3URL = req.file.location;
     const { url } = req.body;
     const user = req.user;
-    console.log({ fileName, url, s3URL });
 
     await post.create({
       userId: user.id,
@@ -178,30 +123,6 @@ app.get("/archive", async (req, res) => {
   res.send({ archive, count });
 });
 
-app.post("/invoke-network", async (req, res) => {
-  const user = req.user;
-  const { message, url } = req.body;
-
-  const result = await preference.findOne({
-    where: {
-      userId: user.id,
-    },
-  });
-  const plainResult = result.get({ plain: true });
-  if (result != null && plainResult.friends != null) {
-    const { friends } = plainResult;
-    let temp = friends.replace(/ /g, "");
-    const friendArray = temp.split(",");
-    friendArray.map(async (friend) => {
-      await sendAskFriendsForHelpEmail(friend, url, message);
-    });
-  }
-
-  res.send("ok");
-});
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
-// userId : e3be8f99-7ec7-11ec-a714-0242ac140002
