@@ -1,0 +1,42 @@
+name: "Create Plugin Release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  pre-release:
+    name: "Pre Release Extension"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: development
+      url: "https://github.com/tattle-made/OGBV/releases"
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Get commit SHA
+        shell: bash
+        run: |
+          echo "setting variables"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          ls
+          pwd
+          npm install
+          npm run build
+          zip extension.zip ./dist/ -r
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GH_RELEASE_TOKEN }}"
+          title: "Development Build : ${{ github.event.inputs.version }}"
+          files: |
+            browser-extension/plugin/extension.zip
