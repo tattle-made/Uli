@@ -40,7 +40,7 @@ UnfocussedButton.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element)
 };
 
-export function TweetControl({ tweet, id, setBlur, hasSlur }) {
+export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
     const [collapsed, setCollapsed] = useState(false);
     const [category, setCategory] = useState('Uncategorized');
     const [hideTweet, setHideTweet] = useState('false');
@@ -76,35 +76,44 @@ export function TweetControl({ tweet, id, setBlur, hasSlur }) {
         const preferenceData = await getPreferenceData();
         setUserLS(userData);
         setPreferenceLS(preferenceData);
-    }
 
-    useEffect(() => {
-        console.log({ preferenceLS });
-    }, [preferenceLS]);
+        // Classify Tweet if enableML is true
+        let accessToken =
+            userData && userData.accessToken ? userData.accessToken : undefined;
+        let enableML =
+            preferenceData && preferenceData.enableML
+                ? preferenceData.enableML
+                : undefined;
 
-    useEffect(async () => {
-        try {
-            const response = await axios.post(
-                'https://ogbv-ml-rest.tattle.co.in/predict',
-                {
-                    text: tweet.original_text.join(' ')
+        if (enableML && accessToken) {
+            try {
+                const response = await axios.post(
+                    `${process.env.API_URL}/predict`,
+                    {
+                        text: tweet.original_text.join(' ')
+                    },
+                    {
+                        headers: {
+                            Authorization: `token ${accessToken}`
+                        }
+                    }
+                );
+                const { data } = response;
+                if (data.confidence > 0.4 && data.sentiment === 'Hate') {
+                    setCategory(data.sentiment);
+                    setHideTweet(true);
+                    setHasOGBV(true);
                 }
-            );
-            const { data } = response;
-            if (data.confidence > 0.4 && data.sentiment === 'Hate') {
-                setCategory(data.sentiment);
-                setHideTweet(true);
-                setHasOGBV(true);
+            } catch (err) {
+                console.log(`Error : server could not classify tweet`, err);
             }
-        } catch (err) {
-            console.log(`Error : server could not classify tweet`, err);
         }
-    }, []);
+    }
 
     async function clickCamera() {
         showProgress(true);
         const node = document.getElementById(id);
-        console.log(node);
+        // console.log(node);
         let tweetUrl =
             tweet && tweet.tweet_url ? tweet.tweet_url : location.href;
         let accessToken =
@@ -113,7 +122,7 @@ export function TweetControl({ tweet, id, setBlur, hasSlur }) {
             preferenceLS && preferenceLS.storeLocally != undefined
                 ? preferenceLS.storeLocally
                 : true;
-        console.log({ node, accessToken, storeLocally, tweetUrl });
+        // console.log({ node, accessToken, storeLocally, tweetUrl });
         try {
             await saveScreenshot(node, storeLocally, accessToken, tweetUrl);
             showProgress(false);

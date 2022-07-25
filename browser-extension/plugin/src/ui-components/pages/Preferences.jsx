@@ -29,6 +29,7 @@ export function Preferences() {
     const { user } = useContext(UserContext);
     const { showNotification } = useContext(NotificationContext);
     const [enable, setEnable] = useState(true);
+    const [enableML, setEnableMLOption] = useState(false);
     const [storeLocally, setStoreLocally] = useState(true);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
@@ -43,9 +44,12 @@ export function Preferences() {
                 preference != undefined &&
                 Object.keys(preference).length != 0
             ) {
-                const { enable, storeLocally, language } = preference;
+                const { enable, enableML, storeLocally, language } = preference;
                 if (enable != undefined) {
                     setEnable(enable);
+                }
+                if (enableML != undefined) {
+                    setEnableMLOption(enableML);
                 }
                 if (storeLocally != undefined) {
                     setStoreLocally(storeLocally);
@@ -64,6 +68,7 @@ export function Preferences() {
     }, [user]);
 
     async function clickSave(preference) {
+        console.log('-----');
         console.log({ user, preference });
         try {
             const preferenceRemote = await savePreference(
@@ -74,6 +79,7 @@ export function Preferences() {
             await setPreferenceData({
                 ...preferenceRemote.data,
                 enable,
+                enableML,
                 storeLocally,
                 language
             });
@@ -100,14 +106,27 @@ export function Preferences() {
         setStoreLocally(checked);
     }
 
+    async function changeEnableMLOption(checked) {
+        setEnableMLOption(checked);
+    }
+
     return (
-        <Box fill gap={'small'}>
+        <Box fill gap={'medium'}>
+            {/* <Anchor
+                href={'http://uli.tattle.co.in/user-guide/#conf'}
+                target={'_blank'}
+            >
+                <Box direction={'row'} gap={'small'}>
+                    <HelpCircle size={20} color={'#343434'} />
+                    <Text>Read Configuration Guide Here</Text>
+                </Box>
+            </Anchor> */}
             {/* <CheckBox
         checked={enable}
         label={t("enable_plugin")}
         onChange={(e) => setEnable(e.target.checked)}
       /> */}
-            <Box direction="row" gap={'large'} align="center">
+            <Box direction="column" gap={'small'}>
                 <Text>{t('language')}</Text>
                 <Select
                     options={['English', 'Tamil', 'Hindi']}
@@ -117,12 +136,6 @@ export function Preferences() {
                     }}
                     size={'small'}
                 />
-                <Anchor
-                    href={'http://uli.tattle.co.in/user-guide/#conf'}
-                    target={'_blank'}
-                >
-                    <HelpCircle size={16} color={'#343434'} />
-                </Anchor>
             </Box>
             <Box direction="row" gap={'large'} align="center">
                 <CheckBox
@@ -130,18 +143,19 @@ export function Preferences() {
                     label={t('store_locally')}
                     onChange={(e) => changeLocalStorageOption(e.target.checked)}
                 />
-                <Anchor
-                    href={'http://uli.tattle.co.in/user-guide/#conf'}
-                    target={'_blank'}
-                >
-                    <HelpCircle size={16} color={'#343434'} />
-                </Anchor>
+            </Box>
+            <Box direction="row" gap={'large'} align="center">
+                <CheckBox
+                    checked={enableML}
+                    label={t('enable_ml')}
+                    onChange={(e) => changeEnableMLOption(e.target.checked)}
+                />
             </Box>
 
             <Box
                 height={'2px'}
                 background={'dark-4'}
-                margin={{ top: '1em', bottom: '2em' }}
+                margin={{ top: '1.2em', bottom: '1.2em' }}
             />
             <Form
                 value={localPreferences}
@@ -170,14 +184,6 @@ export function Preferences() {
                     label={
                         <Box direction={'row'} gap={'small'}>
                             <Text>{t('your_email_address')}</Text>
-                            <Anchor
-                                href={
-                                    'http://uli.tattle.co.in/user-guide/#conf'
-                                }
-                                target={'_blank'}
-                            >
-                                <HelpCircle size={16} color={'#343434'} />
-                            </Anchor>
                         </Box>
                     }
                     type="email"
@@ -211,14 +217,6 @@ export function Preferences() {
                     label={
                         <Box direction={'row'} gap={'small'}>
                             <Text>{t('your_slur_list')}</Text>
-                            <Anchor
-                                href={
-                                    'http://uli.tattle.co.in/user-guide/#conf'
-                                }
-                                target={'_blank'}
-                            >
-                                <HelpCircle size={16} color={'#343434'} />
-                            </Anchor>
                         </Box>
                     }
                     disabled={!enable}
