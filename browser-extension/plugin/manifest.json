@@ -5,13 +5,12 @@
     "version": "0.1.6",
     "author": "tattlemade|cis",
     "content_security_policy": {
-        "extension_pages": "default-src 'none'; connect-src http://localhost:3000 https://ogbv-plugin.tattle.co.in/; font-src https://fonts.gstatic.com https://use.typekit.net; object-src 'none'; script-src 'self'; style-src https://fonts.googleapis.com https://use.typekit.net https://p.typekit.net 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-o7bYsu5iNiTxIObyslerFNZrDfkROYhElKhuOItXvVk='; img-src http://uli.tattle.co.in/; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';"
+        "extension_pages": "default-src 'none'; connect-src http://localhost:3000 https://ogbv-plugin.tattle.co.in/; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self'; style-src https://fonts.googleapis.com 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-o7bYsu5iNiTxIObyslerFNZrDfkROYhElKhuOItXvVk='; img-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';"
     },
     "host_permissions": [
         "https://twitter.com/*",
         "https://ogbv-plugin.tattle.co.in/",
-        "https://s3.ap-south-1.amazonaws.com/ogbv-plugin.tattle.co.in/*",
-        "http://uli.tattle.co.in/*"
+        "https://uli-media.tattle.co.in/*"
     ],
     "permissions": ["storage"],
     "background": {
