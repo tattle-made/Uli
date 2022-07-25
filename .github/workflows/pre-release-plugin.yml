@@ -19,7 +19,7 @@ jobs:
       - name: "Checkout Development Branch"
         uses: actions/checkout@v2
         with:
-          ref: development
+          ref: main
 
       - name: "Build and Test"
         run: |
