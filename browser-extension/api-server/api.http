@@ -56,3 +56,13 @@ Authorization: token 9b402c49-c975-467e-a091-3d36ed96ff84
     "message":"Please help me report this",
     "url" : "http://twitter.url.com"
 }
+
+
+### Use Classifier
+POST http://localhost:3000/predict
+content-type : application/json
+Authorization: token ae20d1ac-8939-49fc-b260-9507947a1412
+
+{
+    "text":"This woman is crazy"
+}

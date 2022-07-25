@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const cors = require("cors");
-const axios = require("axios");
-
 const { upload } = require("./s3");
 
 const { preference, post } = require("./db/models");
@@ -16,6 +14,7 @@ const {
 } = require("./controller-email");
 const { authentication } = require("./middlewares");
 const { encrypt, decrypt } = require("./encryption");
+const { classify } = require("./service-classifier");
 
 app.use(cors());
 app.use(express.json());
@@ -23,7 +22,7 @@ app.options("*", cors());
 
 app.use(authentication);
 
-console.log(process.env.NODE_ENV);
+console.log(`Environment : ${process.env.NODE_ENV}`);
 
 app.get("/auth/register", async (req, res) => {
   try {
@@ -145,11 +144,11 @@ app.get("/archive", async (req, res) => {
 app.post("/predict", async (req, res) => {
   const { text } = req.body;
   try {
-    const response = await axios.post("http://ogbv-ml-rest/predict", {
-      text,
-    });
-    res.send(response);
+    const label = await classify(text);
+    res.send(label);
   } catch (err) {
+    console.log("Error : could not classify tweet");
+    console.log(err);
     res.status(501).send("Could not label this tweet");
   }
 });
