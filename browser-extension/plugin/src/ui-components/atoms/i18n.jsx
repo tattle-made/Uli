@@ -82,7 +82,7 @@ const resources = {
             navigation_preferences: 'முன்னுரிமைகள்',
             navigation_archive: 'சுவடிக்கூடம்',
             navigation_resources: 'வழிவகைகள்',
-            navigation_debug: 'பிழை திருத்து',
+            navigation_debug: 'செட்டிங்ஸ்',
             activate_account: 'கணக்கை செயல்படுத்தவும்',
             user_guide: 'பயனர் கையேடு',
             mental_health: 'மனநல வளங்கள்',
