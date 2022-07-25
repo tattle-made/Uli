@@ -5,20 +5,20 @@ export function Resources() {
     // const { t, i18n } = useTranslation();
     return (
         <Box width={'medium'}>
-            <Heading level={3}>English</Heading>
+            {/* <Heading level={3}>English</Heading> */}
 
             <Anchor
-                href={'https://iheartmob.org/resources'}
-                label={'Resources related to Online Harassment:'}
+                href={'https://uli.tattle.co.in/user-guide'}
+                label={'User Guide'}
                 target={'_blank'}
             />
             <Anchor
-                href={'https://iheartmob.org/pages/twitter-safety-guide'}
-                label={'Twitter Guidelines Simplified'}
+                href={'https://uli.tattle.co.in/resources'}
+                label={'Community Resources'}
                 target={'_blank'}
             />
 
-            <Heading level={4}>Understand Online Harassment:</Heading>
+            {/* <Heading level={4}>Understand Online Harassment:</Heading>
             <Anchor
                 href={
                     'https://vikaspedia.in/education/digital-litercy/information-security/being-safe-online-1/cyber-harassment'
@@ -167,7 +167,7 @@ export function Resources() {
             <Text>
                 Support Networks: Dhwani 24*7 toll free helpline by PCVC:
                 044-43111143 / Whatsapp chat support: 9840888882
-            </Text>
+            </Text> */}
 
             {/* <Button
         label={"test"}
