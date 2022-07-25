@@ -37,10 +37,11 @@ app.post("/preference/", async (req, res) => {
   console.log("POST preferences");
   const { id, language, slurList, email } = req.body;
   const user = req.user;
+  const encryptedEmail = email ? encrypt(email) : null;
   const result = await preference.upsert({
     id,
     userId: user.id,
-    email: encrypt(email),
+    email: encryptedEmail,
     language,
     slurList,
   });
