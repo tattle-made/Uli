@@ -42,6 +42,8 @@ export function App() {
             const { language } = preferenceData;
             i18n.changeLanguage(langNameMap[language]);
         }
+
+        navigate('/preferences');
         // if (userData != undefined && Object.keys(userData).length != 0) {
         //     setUser(userData);
         // }
