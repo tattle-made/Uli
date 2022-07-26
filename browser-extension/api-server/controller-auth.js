@@ -13,4 +13,17 @@ async function registerAnonymousUser() {
   return newUser.get({ plain: true });
 }
 
-module.exports = { registerAnonymousUser };
+async function resetUser(userId) {
+  await user.update(
+    {
+      status: "RESET",
+    },
+    {
+      where: {
+        id: userId,
+      },
+    }
+  );
+}
+
+module.exports = { registerAnonymousUser, resetUser };

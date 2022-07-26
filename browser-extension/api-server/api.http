@@ -13,7 +13,7 @@ GET http://localhost:3000/user/e3be8f99-7ec7-11ec-a714-0242ac140002
 # IF id is sent, it updates the post else creates a new one
 POST http://localhost:3000/preference
 content-type : application/json
-Authorization: token f88f7ab3-c428-40a9-90fb-3cee9e820f90
+Authorization: token 6334913f-5926-4d55-b647-817a4aa00fe5
 
 {
     "id" : "8066828c-4928-4bc2-8b98-c79f0b5e2bb3",
@@ -66,3 +66,9 @@ Authorization: token ae20d1ac-8939-49fc-b260-9507947a1412
 {
     "text":"This woman is crazy"
 }
+
+### RESET ACCOUNT
+
+POST http://localhost:3000/reset
+content-type : application/json
+Authorization: token 6334913f-5926-4d55-b647-817a4aa00fe5

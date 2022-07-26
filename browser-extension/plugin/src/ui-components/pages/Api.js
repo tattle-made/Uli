@@ -68,6 +68,14 @@ async function invokeNetwork(accessToken, message, url) {
     );
 }
 
+async function resetAccount(accessToken) {
+    return axios.post(`${API_URL}/reset`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+}
+
 export default {
     login,
     getPreferenceForUser,
@@ -75,5 +83,6 @@ export default {
     uploadArchivedMedia,
     invokeNetwork,
     registerNewUser,
-    getArchive
+    getArchive,
+    resetAccount
 };

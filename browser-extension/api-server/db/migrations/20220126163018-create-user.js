@@ -13,6 +13,10 @@ module.exports = {
       refreshToken: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.ENUM("ACTIVE", "BLOCKED", "RESET"),
+        defaultValue: "ACTIVE",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

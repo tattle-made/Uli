@@ -4,6 +4,7 @@ import { UserContext } from '../atoms/AppContext';
 import repository from '../../repository';
 import config from '../../config';
 import { useTranslation } from 'react-i18next';
+import { resetAccount } from './Api';
 const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
     repository;
 
@@ -21,6 +22,7 @@ export function Debug() {
 
     async function clickReset() {
         try {
+            await resetAccount(user.id);
             await setUserData({});
             await setPreferenceData({});
             setUser(undefined);

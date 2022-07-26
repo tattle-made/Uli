@@ -6,7 +6,7 @@ const { upload } = require("./s3");
 
 const { preference, post } = require("./db/models");
 const { Op } = require("sequelize");
-const { registerAnonymousUser } = require("./controller-auth");
+const { registerAnonymousUser, resetUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
 const {
   sendArchiveEmail,
@@ -151,6 +151,20 @@ app.post("/predict", async (req, res) => {
     console.log("Error : could not classify tweet");
     console.log(err);
     res.status(501).send("Could not label this tweet");
+  }
+});
+
+app.post("/reset", async (req, res) => {
+  const { user } = req;
+  const userId = user.id;
+  console.log();
+  try {
+    await resetUser(userId);
+    res.send({ message: "Account reset" });
+  } catch (err) {
+    console.log(`Error : unable to reset account`);
+    console.log(err);
+    res.status(501).send("Could not reset account");
   }
 });
 

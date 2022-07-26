@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       accessToken: DataTypes.STRING,
       refreshToken: DataTypes.STRING,
+      status: DataTypes.ENUM("ACTIVE", "BLOCKED", "RESET"),
     },
     {
       sequelize,
