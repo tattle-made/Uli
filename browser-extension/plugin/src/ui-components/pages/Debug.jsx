@@ -4,9 +4,10 @@ import { UserContext } from '../atoms/AppContext';
 import repository from '../../repository';
 import config from '../../config';
 import { useTranslation } from 'react-i18next';
-import { resetAccount } from './Api';
+import Api from './Api';
 const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
     repository;
+const { resetAccount } = Api;
 
 export function Debug() {
     const { user, setUser } = useContext(UserContext);
