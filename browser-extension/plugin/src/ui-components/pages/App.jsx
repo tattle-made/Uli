@@ -77,7 +77,9 @@ export function App() {
                                 margin={{ bottom: 'medium' }}
                             >
                                 <img
-                                    src={'http://uli.tattle.co.in/Uli_Logo.png'}
+                                    src={
+                                        'https://uli-media.tattle.co.in/assets/uli-logo.png'
+                                    }
                                     alt={'Uli Logo'}
                                 />
                             </Box>
