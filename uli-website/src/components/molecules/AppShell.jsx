@@ -13,6 +13,8 @@ export default function AppShell({ children }) {
           <title>Uli</title>
           <link rel="stylesheet" href="layout.css" />
           <link rel="stylesheet" href="https://use.typekit.net/twt1ywc.css" />
+          <meta name="icon" href="images/favicon-32x32.png" />
+
           <script
             defer
             data-domain="uli.tattle.co.in"

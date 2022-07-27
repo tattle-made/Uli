@@ -40,5 +40,15 @@ module.exports = {
         bucketName: "uli.tattle.co.in",
       },
     },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Uli Website`,
+        short_name: `uli`,
+        start_url: `/`,
+        display: `minimal-ui`,
+        icon: `src/images/favicon-32x32.png`, // This path is relative to the root of the site.
+      },
+    },
   ],
 };
