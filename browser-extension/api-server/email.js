@@ -30,8 +30,8 @@ const constructParamsObject = ({ subject, body, receiver }) => {
         Data: subject,
       },
     },
-    Source: "admin@tattle.co.in",
-    ReplyToAddresses: ["admin@tattle.co.in"],
+    Source: "uli_support@tattle.co.in",
+    ReplyToAddresses: ["uli_support@tattle.co.in"],
   };
 
   return params;
