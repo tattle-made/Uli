@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useContext } from "react";
-
 import { Box, ResponsiveContext, Text } from "grommet";
 import {
   Colors,
@@ -17,47 +16,9 @@ import {
   SectionCenteredBody,
   SectionLableOne,
   CTALinkPlainPrimary,
+  TestShape,
 } from "../components/atoms/UliCore";
-import styled from "styled-components";
 import AppShell from "../components/molecules/AppShell";
-import NavBar from "../components/molecules/NavBar";
-
-// one image in each corner
-// const BorderBox = styled.div`
-//   padding: 2em;
-//   border: 36px solid;
-//   border-image: url("https://cdn.iconscout.com/icon/free/png-256/flower-1958565-1651708.png");
-// `;
-
-const TestOne = styled.h1`
-  font-family: "MixStitch";
-  font-weight: 500;
-  font-style: normal;
-`;
-const TestTwo = styled.h1`
-  font-family: "XStitch";
-  font-weight: 500;
-  font-style: normal;
-`;
-const TestThree = styled.h1`
-  font-family: "Eenvoudige Batik";
-  font-weight: 300;
-  font-style: normal;
-`;
-const TestFour = styled.h1`
-  font-family: millisime, sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 80px;
-`;
-
-// const BorderBox = styled.div`
-//   padding: 2em;
-//   border: 40px solid;
-//   border-image-source: url("https://tattle-media.s3.amazonaws.com/boder.png");
-//   border-image-slice: 33%;
-//   border-image-repeat: round;
-// `;
 
 const IndexPage = () => {
   const size = useContext(ResponsiveContext);
@@ -75,27 +36,14 @@ const IndexPage = () => {
               actions with your friends.
             </p>
             <Box width={"fit-content"} align="center">
-              <Box
-                round
-                background={Colors.COLOR_BLACK}
-                width={"fit-content"}
-                pad={{
-                  top: "xsmall",
-                  bottom: "xsmall",
-                  left: "medium",
-                  right: "medium",
-                }}
-                align={"center"}
-              >
-                <CTALinkPlainPrimary
-                  href={
-                    "https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
-                  }
+              <CTALinkPlainPrimary>
+                <a
+                  href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
                   target={"_blank"}
                 >
                   Add to Browser
-                </CTALinkPlainPrimary>
-              </Box>
+                </a>
+              </CTALinkPlainPrimary>
               <Text size={"small"}>supported on Chrome and Brave</Text>
             </Box>
           </Box>
@@ -242,7 +190,7 @@ const IndexPage = () => {
             >
               INSTALL NOW
             </CTALinkPlain>
-            {/* <CTALinkPlain href="/">LEARN HOW TO USE</CTALinkPlain> */}
+            <CTALinkPlain href="/">LEARN HOW TO USE</CTALinkPlain>
           </Box>
         </Box>
       </Box>

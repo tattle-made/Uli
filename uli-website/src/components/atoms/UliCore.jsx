@@ -32,7 +32,7 @@ export const FeatureLabel = styled.p`
 
 export const FeatureHeadline = styled.h2`
   font-family: millisime, sans-serif;
-  font-weight: 400;
+  font-weight: 200;
   font-size: 1.2em;
   line-height: 1.2em;
   color: ${COLOR_BLACK};
@@ -95,26 +95,36 @@ export const CTALinkPlain = styled.a`
   }  
 `;
 
-export const CTALinkPlainPrimary = styled.a`
+export const CTALinkPlainPrimary = styled.div`
+  text-align: center;
+  width: fit-content;
+  height:'fit-content';
+  border: 20px solid;
+  border-image-source: url("https://uli-media.tattle.co.in/assets/cta-background.png");
+  border-image-slice: 33%;
+  border-image-repeat: round;
   font-family: "MixStitch";
-  font-weight: 500;
+  font-weight: 800;
   font-style: normal;
   color : ${Colors.COLOR_CREAM}
   text-decoration: none;
   font-size: 1.4em;
-  &:hover{
-    text-decoration: underline;
+  a{
+    color:${Colors.COLOR_BLACK};
+  }
+  a:hover{
+    text-decoration: none;
     color : ${Colors.COLOR_ORANGE};
 
   };
-  &:link  {
-    color : ${Colors.COLOR_CREAM};
+  a:link  {
+    color : ${Colors.COLOR_BLACK};
     text-decoration: none;
   };
-  &:visited  {
-    color : ${Colors.COLOR_CREAM};
+  a:visited  {
+    color : ${Colors.COLOR_BLACK};
     text-decoration: none;
-  }  
+  }
 `;
 
 export const CTALink = styled.a`
@@ -181,5 +191,22 @@ export const NavLink = styled(Link)`
   }
   &:visited {
     color: ${Colors.COLOR_BLACK};
+  }
+`;
+
+export const TestShape = styled.div`
+  width: fit-content;
+  font-size: 1.4em;
+  background: red;
+  position: relative;
+
+  &::before {
+    content: ".";
+    background: cyan;
+  }
+  &::after {
+    content: ">";
+    background: cyan;
+    border-radius: 4em;
   }
 `;
