@@ -1,12 +1,36 @@
 import React from "react";
 import AppShell from "./AppShell";
-import { Box } from "grommet";
+import { Box, Text } from "grommet";
+import { MDXProvider } from "@mdx-js/react";
+import styled from "styled-components";
+
+const HeadingOne = styled(Text)`
+  font-size: 2em;
+  line-height: 2.4em;
+`;
+
+const HeadingTwo = styled(Text)`
+  font-size: 1.6em;
+`;
+
+const HeadingThree = styled(Text)`
+  font-size: 1.2em;
+`;
 
 const ContentPageShell = ({ children }) => {
   return (
     <AppShell>
       <Box align="center" margin={"large"}>
-        <Box width={"large"}>{children}</Box>
+        <MDXProvider
+          components={{
+            // Map HTML element tag to React component
+            h1: HeadingOne,
+            h2: HeadingTwo,
+            h3: HeadingThree,
+          }}
+        >
+          <Box width={"large"}>{children}</Box>
+        </MDXProvider>
       </Box>
     </AppShell>
   );

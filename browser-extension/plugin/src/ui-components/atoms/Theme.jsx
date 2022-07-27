@@ -58,6 +58,9 @@ const Theme = {
             },
             extend: 'max-height: 250px;'
         }
+    },
+    heading: {
+        weight: 200
     }
 };
 
