@@ -19,32 +19,31 @@ import {
   TestShape,
 } from "../components/atoms/UliCore";
 import AppShell from "../components/molecules/AppShell";
+import { useTranslation } from "react-i18next";
 
 const IndexPage = () => {
   const size = useContext(ResponsiveContext);
+  const { t, i18n } = useTranslation();
+
   return (
     <AppShell>
       <Box align="center" margin={"large"}>
         <Box width={"fit-content"} direction={"row-responsive"}>
           <Box width={"18em"} alignSelf={"center"}>
             <LandingSectionHeading>
-              Moderate Your Twitter Feed
+              {t("section_hero_head")}
             </LandingSectionHeading>
-            <p>
-              Uli lets you take control over your Twitter timeline by redacting
-              slurs, allowing you to archive problematic tweets and coordinating
-              actions with your friends.
-            </p>
+            <p>{t("section_hero_subhead")}</p>
             <Box width={"fit-content"} align="center">
               <CTALinkPlainPrimary>
                 <a
                   href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
                   target={"_blank"}
                 >
-                  Add to Browser
+                  {t("section_hero_cta")}
                 </a>
               </CTALinkPlainPrimary>
-              <Text size={"small"}>supported on Chrome and Brave</Text>
+              <Text size={"small"}>{t("section_hero_cta_subhead")}</Text>
             </Box>
           </Box>
           <Box width={"26em"}>
@@ -54,7 +53,7 @@ const IndexPage = () => {
       </Box>
 
       <Box align="center">
-        <h1>Features</h1>
+        <h1>{t("section_feature_head")}</h1>
       </Box>
 
       <Box align="center" margin={"large"}>
@@ -63,18 +62,13 @@ const IndexPage = () => {
             <Box width={"1.2em"}>
               <img src={"/Archive Tweet Icon.png"}></img>
             </Box>
-            <FeatureLabel>ARCHIVE TWEETS</FeatureLabel>
-            <FeatureHeadline>
-              Archive tweets as evidence, to build a discourse or mobilise.
-            </FeatureHeadline>
+            <FeatureLabel>{t("section_feature_1_label")}</FeatureLabel>
+            <FeatureHeadline>{t("section_feature_1_head")}</FeatureHeadline>
             <FeatureDescription>
-              Uli provides an easy mechanism to take screenshots of offending
-              tweets. These tweets can be stored locally or sent as an email to
-              yourself.
+              {t("section_feature_1_description")}
             </FeatureDescription>
             <FeatureFollowUp>
-              This crowdsourced list of offensive phrases is dynamic and each
-              user can gather around with Uli and help build a longer list.
+              {t("section_feature_1_follow_up")}
             </FeatureFollowUp>
           </Box>
           <Box width={"28em"}>
@@ -96,17 +90,13 @@ const IndexPage = () => {
             <Box width={"1.2em"}>
               <img src={"/Slur Replacement Icon.png"}></img>
             </Box>
-            <FeatureLabel>{"SLUR REPLACEMENT"}</FeatureLabel>
-            <FeatureHeadline>
-              Automatic blurring of slurs in Hindi, English and Tamil
-            </FeatureHeadline>
+            <FeatureLabel>{t("section_feature_2_label")}</FeatureLabel>
+            <FeatureHeadline>{t("section_feature_2_head")}</FeatureHeadline>
             <FeatureDescription>
-              Uli uses a crowdsourced list of slurs in Indian languages and
-              detects them in your tweet and hides them in real-time.
+              {t("section_feature_2_description")}
             </FeatureDescription>
             <FeatureFollowUp>
-              This crowdsourced list of offensive phrases is dynamic and each
-              user can gather around with Uli and help build a longer list.
+              {t("section_feature_2_follow_up")}
             </FeatureFollowUp>
           </Box>
         </Box>
@@ -119,17 +109,14 @@ const IndexPage = () => {
               <Box width={"1.2em"}>
                 <img src={"/Invoke Network Icon.png"}></img>
               </Box>
-              <FeatureLabel>INVOKE NETWORK</FeatureLabel>
+              <FeatureLabel>{t("section_feature_3_label")}</FeatureLabel>
             </Box>
-            <FeatureHeadline>You are not alone in this.</FeatureHeadline>
+            <FeatureHeadline>{t("section_feature_3_head")}</FeatureHeadline>
             <FeatureDescription>
-              Involve your friends and community to act on problematic tweets
-              and combat online hate speech.
+              {t("section_feature_3_description")}
             </FeatureDescription>
             <FeatureFollowUp>
-              This feature will invite people to support each other, share
-              stories, initiate conversations around intermediary responsibility
-              and interpersonal relationships and what it means to be online.
+              {t("section_feature_3_follow_up")}
             </FeatureFollowUp>
           </Box>
           <Box width={"28em"}>
@@ -142,15 +129,11 @@ const IndexPage = () => {
         <BorderBox width={"large"}>
           <Box width={"medium"} alignSelf={"center"}>
             <Box align="center">
-              <SectionLableOne>RESOURCES</SectionLableOne>
+              <SectionLableOne>{t("section_resources_label")}</SectionLableOne>
             </Box>
 
             <SectionCenteredBody>
-              We will also add a few resources such as Twitter's community
-              guidelines, a digital safety guidelines as well as a legal
-              resource document that builds critical legal literacy to help
-              tackle instances of hate speech and harassment. All these
-              resources will be made available in Hindi, Tamil and English.
+              {t("section_resources_description")}
             </SectionCenteredBody>
           </Box>
         </BorderBox>
@@ -171,9 +154,7 @@ const IndexPage = () => {
             <img src={"/Uli_Logo_Light.png"}></img>
           </Box>
           <Box width={"medium"}>
-            <CTAHeadlineOne>
-              is now available on Chrome Store to try out.
-            </CTAHeadlineOne>
+            <CTAHeadlineOne>{t("section_cta_head")}</CTAHeadlineOne>
           </Box>
         </Box>
         <Box
@@ -188,10 +169,13 @@ const IndexPage = () => {
               target={"_blank"}
               href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
             >
-              INSTALL NOW
+              {t("section_cta_primary")}
             </CTALinkPlain>
-            <CTALinkPlain href="/">LEARN HOW TO USE</CTALinkPlain>
+            <CTALinkPlain href="/">{t("section_cta_secondary")}</CTALinkPlain>
           </Box>
+          {/* <Box direction={'row-responsive'}>
+            <Text></Text>
+          </Box> */}
         </Box>
       </Box>
       {/* <TestOne>Features</TestOne>

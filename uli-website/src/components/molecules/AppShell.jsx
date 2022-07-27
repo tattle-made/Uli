@@ -3,8 +3,16 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import { Colors, NavLink, Theme } from "../atoms/UliCore";
 import NavBar from "./NavBar";
+import i18n from "../atoms/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function AppShell({ children }) {
+  const { t, i18n } = useTranslation();
+  React.useEffect(() => {
+    const lang = localStorage.getItem("uli-lang");
+    i18n.changeLanguage(lang);
+  }, []);
+
   return (
     <Grommet theme={Theme}>
       <main>

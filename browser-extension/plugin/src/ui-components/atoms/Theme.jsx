@@ -3,7 +3,7 @@ const Theme = {
         button: {
             default: {
                 background: {
-                    color: '212121'
+                    color: '#212121'
                 }
             },
             color: '#fdf6ed',
@@ -38,6 +38,25 @@ const Theme = {
     button: {
         border: {
             radius: '0.2em'
+        }
+    },
+    select: {
+        control: {
+            extend: 'padding: 3px 6px;',
+            open: {
+                background: '#ece0fa',
+                border: '1px solid #7D4CDB'
+            }
+        },
+        icons: {
+            color: 'dark-1',
+            margin: 'small'
+        },
+        container: {
+            text: {
+                size: 'small'
+            },
+            extend: 'max-height: 250px;'
         }
     }
 };
