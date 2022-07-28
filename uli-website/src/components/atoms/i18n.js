@@ -61,6 +61,13 @@ const resources = {
       ug_configure_5_desc:
         "You can add words that you find offensive and want to hide from your timeline. You can specify multiple slurs if you separate them by commas.",
       ug_faq_head: "FAQ",
+      about_head_1: "About Uli ",
+      about_para_1:
+        "Navigating the online world has increasingly become reflective of the offline world: targeted gender-based violence against all gender and sexual minorities is now commonplace. Uli (meaning chisel in Tamil) is our attempt to hand the chisel and power over to users most affected by online gender-based violence. Uli invites each one of us to gather around and take control of our experience on social media platforms. With Uli, we lay the groundwork to demand more responsible and proactive tech from the powers to be.",
+      about_para_2:
+        "This plugin is also an ode to the efforts of different groups, organizations and movements that strive to empower each one of us. It was born from the collective labour of journalists, activists, community influencers, and writers engaged in the struggle against the interwoven caste, religion, gender and sexuality-based violence both online and offline. They have contributed towards the development of this plugin that allows us to filter out offensive words/phrases, call our friends for help or start online conversations, and archive problematic tweets. This plugin is a reminder of our ability to reclaim spaces and take control of our online experience.",
+      about_para_3:
+        "Uli is not the final product, rather it’s a simple tool, a chisel, that allows one to make a room of one’s own or courtyards where people can come together, share stories, and reflect on the future we all want to see.",
     },
   },
   hi: {
@@ -97,6 +104,13 @@ const resources = {
       section_cta_head: "Chrome स्टोर पर उपलब्ध है।",
       section_cta_primary: "अभी इनस्टॉल करें",
       section_cta_secondary: "उपयोग करना सीखें",
+      about_head_1: "उली क्या है?",
+      about_para_1:
+        "ऑनलाइन दुनिया को नेविगेट करना तेजी से ऑफ़लाइन दुनिया का प्रतिबिंब बन गया है: सभी लिंग और यौन अल्पसंख्यकों के खिलाफ लक्षित लिंग आधारित हिंसा अब आम बात है। उली, तमिल भाषा में जिसका अर्थ है छेनी, ऑनलाइन लिंग-आधारित हिंसा से सबसे अधिक प्रभावित यूज़र्स  को लड़ने की कुछ क्षमता प्रदान करता है। उली हम में से प्रत्येक को इकट्ठा होने और अपने सोशल मीडिया  प्लेटफार्म के अनुभव को नियंत्रित करने के लिए आमंत्रित करता है। उली के साथ, हम एक जिम्मेदार और सक्रिय तकनीक की मांग करने का एक आधार तैयार कर रहे हैं ।",
+      about_para_2:
+        "यह प्लगइन विभिन्न समूहों, संगठनों और आंदोलनों के सामूहिक प्रयासों से प्रेरित हुआ  हैं  जो हम में से प्रत्येक को सशक्त बनाने का प्रयास करते हैं। इसका जन्म जाति, धर्म,  लिंग आधारित हिंसा के खिलाफ संघर्ष में लगे पत्रकारों, कार्यकर्ताओं, सामुदायिक प्रभावकों और लेखकों के सामूहिक श्रम से हुआ है । इस प्लगइन के विकास में उनका योगदान हमें आपत्तिजनक शब्दों/वाक्यांशों को फ़िल्टर करने, मदद के लिए हमारे दोस्तों को कॉल करने या ऑनलाइन बातचीत शुरू करने, और समस्याग्रस्त ट्वीट्स को संग्रहीत करने में मदद करता है। यह प्लगइन इस बात का चिन्ह है कि हम अपने ऑनलाइन अनुभव को खुद नियंत्रित कर सकते है।",
+      about_para_3:
+        "उली एक साधारण उपकरण है, एक छेनी, जो किसी को अपना एक कमरा बनाने में मदद करता है या एक आंगन जहां लोग इकट्ठा हो सकते हैं, अपना एक कांथा बुन सकते हैं, आपस में कहानियां साझा कर सकते हैं, और उस भविष्य  की  कलपना  कर सकते हैं जिसे हम सभी देखना चाहते हैं।",
     },
   },
   ta: {
@@ -134,6 +148,13 @@ const resources = {
       section_cta_head: "இப்போது க்ரோம் ஸ்டோரில் சரிபார்க்க",
       section_cta_primary: "இப்போது இன்ஸ்டால்",
       section_cta_secondary: "LEARN HOW TO USE",
+      about_head_1: "உளி பற்றி",
+      about_para_1:
+        "ஆன்லைன் உலகில் வழிசெலுத்துவது, ஆஃப்லைன் உலகத்தைப் பிரதிபலிப்பதாக மாறியுள்ளது: அனைத்து பாலினம் மற்றும் பாலியல் சிறுபான்மையினருக்கு எதிரான பாலினம் சார்ந்த வன்முறை இப்போது பொதுவானது. உளி (ஒரு வகையான சுத்தியல்) என்பது ஆன்லைன் பாலினம் சார்ந்த வன்முறை / ஆன்லைன் பாலின அடிப்படையிலான வன்முறையால் பாதிக்கப்பட்ட பயனர்களுக்கு ஒரு விதமான அதிகாரத்தை ஒப்படைக்கும் எங்கள் முயற்சியாகும். உளி நம் ஒவ்வொருவரையும் சமூக வலைதளங்களில் ஒன்றுகூடி நம்முடைய அனுபவத்தைக் கட்டுப்படுத்த அழைக்கிறது. உளி மூலம், அதிகாரம் உள்ளவர்களிடம் இருந்து அதிக பொறுப்பான மற்றும் செயலூக்கமுள்ள தொழில்நுட்பத்தைக் கோருவதற்கான அடித்தளத்தை நாங்கள் அமைத்துள்ளோம்.",
+      about_para_2:
+        "இந்த பிளகின், நம் ஒவ்வொருவருக்கும் அதிகாரம் அளிக்க பாடுபடும் பல்வேறு குழுக்கள், அமைப்புகள் மற்றும் இயக்கங்களின் முயற்சிகளுக்கு ஒரு அடையாளமாகவும் இருக்கிறது. இணையத்திலும் ஆஃப்லைனிலும் பின்னிப்பிணைந்த ஜாதி, மதம், பாலினம் மற்றும் பாலியல் அடிப்படையிலான வன்முறைகளுக்கு எதிரான போராட்டத்தில் ஈடுபட்ட பத்திரிகையாளர்கள், ஆர்வலர்கள், சமூகத்தின் செல்வாக்கு செலுத்துபவர்கள் மற்றும் எழுத்தாளர்களின் கூட்டு உழைப்பில் இருந்து பிறந்தது. புண்படுத்தும் வார்த்தைகள்/சொற்றொடர்களை வடிகட்டவும், உதவிக்கு எங்கள் நண்பர்களை அழைக்கவும் அல்லது ஆன்லைன் உரையாடல்களை தொடங்கவும், பிரச்சனைக்குரிய ட்வீட்களை காப்பகப்படுத்தவும் அனுமதிக்கும் இந்த பிளகினின் வளர்ச்சிக்கு அவர்கள் பங்களித்துள்ளனர். இந்த பிளகின், இடைவெளிகளை மீட்டெடுக்கும் மற்றும் எங்கள் ஆன்லைன் அனுபவத்தின் கட்டுப்பாட்டை எடுப்பதற்கான எங்களின் திறனை நினைவூட்டுகிறது.",
+      about_para_3:
+        "உளி ஒரு தயாரிப்பு அல்ல, இது ஒரு எளிய கருவியாகும், இது ஒருவருக்கு சொந்தமாக ஒரு அறையை அல்லது தனி இடங்களை உருவாக்க அனுமதிக்கிறது, அங்கு மக்கள் ஒன்று கூடலாம், கதைகளைப் பகிர்ந்து கொள்ளலாம் மற்றும் நாம் அனைவரும் பார்க்க விரும்பும் எதிர்காலத்தைப் பற்றி சிந்திக்கலாம்.",
     },
   },
 };

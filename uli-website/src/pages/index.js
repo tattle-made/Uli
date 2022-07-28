@@ -20,6 +20,7 @@ import {
 } from "../components/atoms/UliCore";
 import AppShell from "../components/molecules/AppShell";
 import { useTranslation } from "react-i18next";
+import { Link } from "gatsby";
 
 const IndexPage = () => {
   const size = useContext(ResponsiveContext);
@@ -130,6 +131,7 @@ const IndexPage = () => {
           <Box width={"medium"} alignSelf={"center"}>
             <Box align="center">
               <SectionLableOne>{t("section_resources_label")}</SectionLableOne>
+              <Link to="/resources">Current Resources</Link>
             </Box>
 
             <SectionCenteredBody>
