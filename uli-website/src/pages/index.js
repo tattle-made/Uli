@@ -104,6 +104,39 @@ const IndexPage = () => {
       </Box>
 
       <Box align="center" margin={"large"}>
+        <Box
+          width={"fit-content"}
+          direction={size === "small" ? "row-reverse" : "row-responsive"}
+          gap={"xlarge"}
+        >
+          <Box width={"small"} gap={"xsmall"} alignSelf={"center"}>
+            <Box width={"1.2em"}>
+              <img src={"/Slur Replacement Icon.png"}></img>
+            </Box>
+            <FeatureLabel>Detecting problematic posts:</FeatureLabel>
+            <FeatureHeadline>
+              The machine learning feature uses pattern recognition drawing from
+              previously tagged oGBV posts to detect and hide problematic posts
+              from a user’s feed.
+            </FeatureHeadline>
+            <FeatureDescription>
+              Both these features are work in progress.
+            </FeatureDescription>
+            <FeatureFollowUp>
+              {t("section_feature_2_follow_up")}
+            </FeatureFollowUp>
+          </Box>
+          <Box width={"20em"}>
+            <img src={"/MLFeature.png"}></img>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box align="center">
+        <h1>Coming Soon</h1>
+      </Box>
+
+      <Box align="center" margin={"large"}>
         <Box width={"fit-content"} direction={"row-responsive"} gap={"xlarge"}>
           <Box width={"small"} gap={"xsmall"} alignSelf={"center"}>
             <Box>
