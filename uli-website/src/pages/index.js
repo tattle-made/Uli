@@ -113,7 +113,7 @@ const IndexPage = () => {
             <Box width={"1.2em"}>
               <img src={"/Slur Replacement Icon.png"}></img>
             </Box>
-            <FeatureLabel>Detecting problematic posts:</FeatureLabel>
+            <FeatureLabel>DETECTING OGBV</FeatureLabel>
             <FeatureHeadline>
               The machine learning feature uses pattern recognition drawing from
               previously tagged oGBV posts to detect and hide problematic posts
@@ -122,9 +122,9 @@ const IndexPage = () => {
             <FeatureDescription>
               Both these features are work in progress.
             </FeatureDescription>
-            <FeatureFollowUp>
+            {/* <FeatureFollowUp>
               {t("section_feature_2_follow_up")}
-            </FeatureFollowUp>
+            </FeatureFollowUp> */}
           </Box>
           <Box width={"20em"}>
             <img src={"/MLFeature.png"}></img>
