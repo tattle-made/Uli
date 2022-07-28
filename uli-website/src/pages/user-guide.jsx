@@ -106,98 +106,122 @@ const UserGuide = () => {
             <Text style={{ fontSize: "2em" }}>{t("ug_faq_head")}</Text>
           </Box>
           <Box gap={"medium"}>
-            <Text size={"large"}>Who can use this tool?</Text>
-            <Text>
-              After the first phase of development, we hope that the tool can be
-              used by persons of marginalized gender who have an active,
-              assertive presence on Twitter and are targeted for their opinions.
-              We will introduce more features along the way and the tool should
-              be useful for a number of people out there who face online abuse.
-              You can see a list of potential features
-              [https://tinyurl.com/2p9bnefk] or suggest some more features here:
+            <Text size={"large"} weight={"700"}>
+              {t("faq_1_head")}
+            </Text>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_1_desc")}
             </Text>
 
-            <Text size={"large"}> Will I have to pay to use the tool?</Text>
-            <Text>
-              No, the tool will be free to use and free to modify without any
-              prior permission.
+            <Text size={"large"} weight={"700"}>
+              {t("faq_2_head")}
             </Text>
+            <Text size={"large"}>{t("faq_2_desc")}</Text>
 
-            <Text size={"large"}>
-              Will the moderation happen at the platform level or the
-              user-level?
+            <Text size={"large"} weight={"700"}>
+              {t("faq_3_head")}
             </Text>
-            <Text>
-              The moderation will only happen at the user level. The idea is to
-              arrive at user-facing, bottom-up approaches as opposed to top-down
-              platform level approaches.
+            <Text size={"large"}>{t("faq_3_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_4_head")}
             </Text>
+            <Text size={"large"}>{t("faq_4_desc")}</Text>
 
-            <Text size={"large"}>
-              How did you arrive at the Non-ML features on the tool? ``
+            <Text size={"large"} weight={"700"}>
+              {t("faq_5_head")}
             </Text>
-            <Text>
-              The feature list developed after our conversations with activists,
-              journalists, members of community based organization and
-              individuals who have been at the receiving end of violence. A list
-              of other festures suggested during our conversion can be accessed
-              here: https://tinyurl.com/2p9bnefk
+            <Text size={"large"}>{t("faq_5_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_6_head")}
             </Text>
+            <Text size={"large"}>{t("faq_6_desc")}</Text>
 
-            <Box>
-              <Text size={"xlarge"}>
-                How will you continue to maintain this tool?
-              </Text>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_7_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_7_desc")}</Text>
 
-              <Text>
-                This pilot project is supported by a grant from Omidyar Network
-                India. Given the experience of other similar projects, we
-                understand that projects such as these should be sustainable in
-                order to remain useful in the long run. With this in mind, we
-                aim to design the tool in such a way that it can be managed
-                affordably in the long run. If the pilot succeeds, we would
-                focus on long-term fundraising to keep this project running.
-              </Text>
-            </Box>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_8_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_8_desc")}</Text>
 
-            <Box>
-              <Text size={"xlarge"}>
-                What are your future plans with the archive feature?
-              </Text>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_9_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_9_desc")}</Text>
 
-              <Text>
-                We hope to create an anonymised public repository.of hatespeech
-                and harassment on social media targetting sexual and gender
-                minorities. We hope that this data base will support future
-                research on online violence and will also help activists,
-                lawyers and researchers in their advicacy efforts and build
-                discourse around online violence.
-              </Text>
-            </Box>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_10_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_10_desc")}</Text>
 
-            <Box>
-              <Text size={"xlarge"}>Why do you need my email address?</Text>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_11_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_11_desc")}</Text>
 
-              <Text>
-                We need your email address in order to send your archived tweets
-                to your email address. Your email is not used to correspond with
-                you regarding any Tattle or CIS events, promotions etc. It is
-                not shared with any third party as well.
-              </Text>
-            </Box>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_12_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_12_desc")}</Text>
 
-            <Box>
-              <Text size={"xlarge"}>What is this slur list? </Text>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_13_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_13_desc")}</Text>
 
-              <Text>
-                We crowdsourced a list of offensive words and phrases that
-                areused online. We used this list to scrape some of the content
-                off Twitter and build an inclusive dataset to train the machine
-                learning model. A smaller version of this list, containing slurs
-                that are commonly used was coded into the plugin to help with
-                the slur replacement feature.
-              </Text>
-            </Box>
+            <Text size={"large"} weight={"700"}>
+              {t("faq_14_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_14_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_15_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_15_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_16_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_16_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_17_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_17_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_18_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_18_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_19_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_19_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_20_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_20_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_21_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_21_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_22_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_22_desc")}</Text>
+
+            <Text size={"large"} weight={"700"}>
+              {t("faq_23_head")}
+            </Text>
+            <Text size={"large"}>{t("faq_23_desc")}</Text>
           </Box>
         </Box>
       </Box>

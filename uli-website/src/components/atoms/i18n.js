@@ -61,6 +61,83 @@ const resources = {
       ug_configure_5_desc:
         "You can add words that you find offensive and want to hide from your timeline. You can specify multiple slurs if you separate them by commas.",
       ug_faq_head: "FAQ",
+      faq_1_head: "Who can use this tool?",
+      faq_1_desc:
+        "After the first phase of development, we hope that the tool can be used by persons of marginalized gender who have an active, assertive presence on Twitter and are targeted for their opinions. We will introduce more features along the way and the tool should be useful for a number of people out there who face online abuse. You can see a list of potential features [https://tinyurl.com/2p9bnefk] or suggest some more features here: uli_support@tattle.co.in",
+      faq_2_head: "Will I have to pay to use the tool?",
+      faq_2_desc:
+        "No, the tool will be free to use and free to modify without any prior permission. You are also free to modify the codebase and build another tool using this! The code is licensed under GPL-3.  See: https://github.com/tattle-made/OGBV",
+      faq_3_head:
+        "Will the moderation happen at the platform level or the user-level?",
+      faq_3_desc:
+        "The moderation will only happen at the user level. The idea is to arrive at user-facing, bottom-up approaches as opposed to top-down platform level approaches.",
+      faq_4_head: "How did you arrive at the Non-ML features on the tool?",
+      faq_4_desc:
+        "The feature list developed after our conversations with activists, journalists, members of community-based organizations and individuals who have been at the receiving end of violence. A list of other features suggested during our conversion can be accessed here: https://tinyurl.com/2p9bnefk",
+      faq_5_head: "How will you continue to maintain this tool?",
+      faq_5_desc:
+        "This pilot project is supported by a grant from Omidyar Network India. Given the experience of other similar projects, we understand that projects such as these should be sustainable in order to remain useful in the long run. With this in mind, we aim to design the tool in such a way that it can be managed affordably in the long run. If the pilot succeeds, we would focus on long-term fundraising to keep this project running.",
+      faq_6_head: "Our future plans with the archive option",
+      faq_6_desc:
+        " We hope to create an anonymised public repository.of hatespeech and harassment on social media targetting sexual and gender minorities. We hope that this data base will support future research on online violence and will also help activists, lawyers and researchers in their advicacy efforts and build discourse around online violence.",
+      faq_7_head: "Why do we need your email address?",
+      faq_7_desc:
+        "We need your email address in order to send your archived tweets to your email address. Your email is not used to correspond with you regarding any Tattle or CIS events, promotions etc. It is not shared with any third party as well. If you have more concerns vis-a-vis your privacy, you can read our privacy guide here: https://uli.tattle.co.in/privacy-policy",
+      faq_8_head: "What is this slur list? ",
+      faq_8_desc:
+        "We crowdsourced a list of offensive words and phrases that are used online. We used this list to scrape some of the content off Twitter and build an inclusive dataset to train the machine learning model. A smaller version of this list, containing slurs that are commonly used was coded into the plugin to help with the slur replacement feature.",
+      faq_9_head:
+        "I want you to remove a word from your slur list because it is not offensive.",
+      faq_9_desc:
+        "We understand that there might be a few words in the slur list that are regular words which are used offensively but including them as a ‘slur’ in the slur list might be problematic. If you think a word has been wrongly added as a slur and should be removed from our slur list, you can let us know here with a proper rationale that doesn’t offend any other marginalized group or community.",
+      faq_10_head: "Can we add more words and phrases to the list?",
+      faq_10_desc:
+        "We understand that our slur list is not exhaustive but for now there’s no option to add more words to it.  For your personal use, you can add more words by creating your custom slur list.",
+      faq_11_head:
+        "Can anyone else see the words I add to the ‘Custom Slur List’ feature?",
+      faq_11_desc: "No, only you can see the words added to your slur list.",
+      faq_12_head:
+        "Can anyone else see the words I add to the ‘Custom Slur List’ feature?",
+      faq_12_desc: "No, only you can see the words added to your slur list.",
+      faq_13_head:
+        "How can I share any resource on oGBV or ML/AI that you can link on your tool?",
+      faq_13_desc:
+        "If you know of any resources in Hindi, English or Tamil that we can link on the tool then let us know here",
+      faq_14_head: "Can I use this plug-in on my mobile device?",
+      faq_14_desc:
+        "For now, we have built it as a browser extension. You can only use it on your computer.",
+      faq_15_head:
+        "I have more questions that your FAQ didn’t answer, how can I get in touch ?",
+      faq_15_desc:
+        "Let us know here: uli_support@tattle.co.in and we will try to get back as soon as possible",
+      faq_16_head:
+        "I want to access the data and the guidelines that were used for annotations, where can I find those?",
+      faq_16_desc:
+        "In the spirit of maintaining transparency, we have made our annotation guidelines and dataset public, you can find them here",
+      faq_17_head: "How can I contribute to the project?",
+      faq_17_desc:
+        "In many many ways. Uli is an open source project. So if you have the time to contribute code or documentation, please head to Tattle’s Slack channel and holler in the Introduction. You can also support financially by sponsoring the repository on GitHub - https://github.com/tattle-made/OGBV",
+      faq_18_head: "What exactly is a machine learning approach?",
+      faq_18_desc:
+        "Machine learning based approaches are a commonly used technique to automate decision making when the volume of data is large. To put it briefly, machine learning works by finding patterns in existing data to ascribe a value to future queries. Instead of telling an algorithm what to do, in machine learning, the algorithm figures out what to do based on the data it is fed.",
+      faq_19_head:
+        "But we know prediction systems can be so wrong, I have been de-platformed so many times! ",
+      faq_19_desc:
+        "Yes, all machine learning systems, like every prediction system, make errors and can never be 100% correct. There are two kinds of errors that these systems make: False Positives and False Negatives. But not all decisions taken by the ML model can be attributed to errors. Some decisions reflect the social values in the data and algorithms behind the model. So, what many communities find harmful may not be harmful as per the guidelines set by social media platforms. But machine learning tools can also be designed to reflect the values of those at the forefront of tackling violence, to support those who will be at the receiving end of the violence. This is precisely the goal of our project.",
+      faq_20_head: "But, can machine learning really work?",
+      faq_20_desc:
+        "We recognize that machine learning as an approach is homogenizing and flattens experiential differences and we believe that this is a tension that our project must confront. However, given the vast amount of content on social media of which 2-3% is violent, hateful content, we believe that ML techniques can help with sorting and mitigating the violence caused by this content. We don’t want to use ML to find solutions but merely to mitigate violence and build resources (such as an archive of this content to build conversations around it) that can support other actions that aim to bring structural changes. ",
+      faq_21_head: "What decisions will the tool make on my own behalf?",
+      faq_21_desc:
+        "Tool will not make any decisions on your behalf. ML features will only detect some problematic content. Only the user will decide what actions should be taken for the problematic content that is identified. You can choose to report it, archive it, redact it etc.",
+      faq_22_head:
+        "I don’t like your ML feature, can I still use the tool without it?",
+      faq_22_desc:
+        "Since the ML model is a work in progress, we understand that it can feel clunky and ineffective. For the time being you can switch off the ML feature and use the rest of the option on the tool. To know how to switch off the ML feature, click here. ",
+      faq_23_head:
+        "You have the custom slur feature, why was ML needed at all for this tool?",
+      faq_23_desc:
+        "We wanted to develop this model as a proof of concept which can be used to demand responsible algorithmic designs that take into account the concerns of the communities and make a case for more investment from social media companies in non-English languages.",
       about_head_1: "About Uli ",
       about_para_1:
         "Navigating the online world has increasingly become reflective of the offline world: targeted gender-based violence against all gender and sexual minorities is now commonplace. Uli (meaning chisel in Tamil) is our attempt to hand the chisel and power over to users most affected by online gender-based violence. Uli invites each one of us to gather around and take control of our experience on social media platforms. With Uli, we lay the groundwork to demand more responsible and proactive tech from the powers to be.",
