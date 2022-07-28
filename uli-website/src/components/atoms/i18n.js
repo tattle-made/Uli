@@ -40,6 +40,27 @@ const resources = {
       section_cta_head: "is now available on Chrome Store to try out.",
       section_cta_primary: "INSTALL NOW",
       section_cta_secondary: "LEARN HOW TO USE",
+      ug_install_heading: "Installing",
+      ug_step_1: "Visit Chrome Store",
+      ug_step_2: "Install Extension",
+      ug_step_3: "Pin the Icon",
+      ug_configure_heading: "Configuring Uli",
+      ug_configure_1_head: "1. Language",
+      ug_configure_1_desc:
+        "Set the primary language for Uli. We currently support English, Hindi and Tamil.",
+      ug_configure_2_head: "2. Store Tweets on Computer",
+      ug_configure_2_desc:
+        "If you only want to store your images locally, select this. This will ensure that your screenshots don't leave your device",
+      ug_configure_3_head: "3. Enable OGBV Detection",
+      ug_configure_3_desc:
+        "Use machine learning to hide tweets containing oGBV",
+      ug_configure_4_head: "4. Your Email Address",
+      ug_configure_4_desc:
+        "We use this email to send you a copy of any archived tweet.",
+      ug_configure_5_head: "5. Your Slur List",
+      ug_configure_5_desc:
+        "You can add words that you find offensive and want to hide from your timeline. You can specify multiple slurs if you separate them by commas.",
+      ug_faq_head: "FAQ",
     },
   },
   hi: {
@@ -70,9 +91,9 @@ const resources = {
         "समस्याग्रस्त ट्वीट्स पर कार्रवाई करने और ऑनलाइन अभद्र भाषा का मुकाबला करने के लिए अपने मित्रों और समुदाय को शामिल करें।",
       section_feature_3_follow_up:
         "हमारी उम्मीद है की यह फीचर लोगों को इकट्ठा होने, एक-दूसरे का समर्थन करने, सोशल मीडिया कंपनियों और पारस्परिक संबंधों की जिम्मेदारी, और ऑनलाइन हमारे अनुभवों के बारे में बातचीत शुरू करने में मदद कर सकेगा।",
-      section_resources_label: "RESOURCES",
+      section_resources_label: "संसाधन",
       section_resources_description:
-        "We will also add a few resources such as Twitter's community guidelines, a digital safety guidelines as well as a legal resource document that builds critical legal literacy to help tackle instances of hate speech and harassment. All these resources will be made available in Hindi, Tamil and English.",
+        "हमने कुछ संसाधन भी जोड़े  हैं जैसे कि ट्विटर के सामुदायिक दिशानिर्देश, डिजिटल सुरक्षा दिशानिर्देश (डिजिटल सुरक्षा के लिए सेफ सिस्टर्स की सामान्य ज्ञान मार्गदर्शिका का एक अनुकूलन), साथ ही एक कानूनी संसाधन दस्तावेज़ । ये सभी संसाधन हिंदी, तमिल और अंग्रेजी में उपलब्ध हैं।",
       section_cta_head: "Chrome स्टोर पर उपलब्ध है।",
       section_cta_primary: "अभी इनस्टॉल करें",
       section_cta_secondary: "उपयोग करना सीखें",
