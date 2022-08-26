@@ -1,5 +1,8 @@
 # Privacy Preserving Features of Uli
 
+* Authors: Denny George and Sudeep Duggal *
+
+
 We believe we've built Uli thoughtfully in a way that users can get value out of it without giving any of their personal data to us. For all the features, whenever possible, we have built a version of the feature that allows it to be used locally. What we mean by ‘locally’ is that unless users opt in, the processing required for a feature, happens on the user’s machine and no data is sent to us. For features where data is sent to us, we’ve tried to minimize any storage of PII. PII like email when stored is stored encrypted. The server source code is open source and can be audited here. 
 
 ## Slur Detection and Blurring
