@@ -11,7 +11,7 @@ We had the privilege to speak to more than 50 individuals who have been either a
 
 ![image](/qr_word_cloud.png)
 
-To the left is a word map built from our conversations. Fatigue resulting from hate speech was the most prominent affective response that our respondents noted. This was followed by humour as the most prominent strategy to reclaim the space of social media. We learnt of many other responses that come up when one is face to face with hate speech, harassment, and violence targeting gender and sexual minorities.
+This is a word map built from our conversations. Fatigue resulting from hate speech was the most prominent affective response that our respondents noted. This was followed by humour as the most prominent strategy to reclaim the space of social media. We learnt of many other responses that come up when one is face to face with hate speech, harassment, and violence targeting gender and sexual minorities.
 Fatigue, as an affective response to posts that you can neither ignore nor engage with, gives us some directions on how our model should be designed and the kind of content we should be focussing our energies on. Simultaneously, predominance of humour, in the form of memes, counter speech, or posts extending support to one’s friends, warns us of the content that the tool shouldn’t be acting upon at all. Other responses such as seeking a support group, blocking, deleting etc. allows us to arrive at other features that will be as useful as the proposed ML model.	
 
 ## Features that emerged during our conversations
