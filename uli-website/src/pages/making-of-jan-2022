@@ -1,0 +1,32 @@
+# The making of the ML tool to mitigate online gender based violence in three Indian languages
+
+This post is adapted from the Uli newsletter update sent in January 2022
+
+Greetings from the teams at CIS and Tattle! As you might remember from our last email, our plan was to start labelling 8000 social media posts in 3 languages by January. This is the dataset that we will feed to our algorithm to make it understand what gender-based violence is. We have been working to come up with a set of annotation guidelines that would define what oGBV is in a “standard” manner for an algorithm. Our problem is: these guidelines need to capture the lived experience and context of users who face violence while also accounting for the constraints of ML which is at best a good pattern matching system.
+
+After two months of head-breaking, we have three final labels:
+Label 1: Is it oGBV?
+Label 2: Is it oGBV when directed at gender and sexual minorities?
+Label 3: Is it explicit/aggressive?
+
+We will ask the annotators to consider two things: the text of the tweet and if a tweet is a reply or contains @mention. If they find the tweet problematic, i.e. a post containing gender/sexual overtones, they will label the post as oGBV under Label 1. For example, 
+
+We need tons of patience while fighting false Fabricated cases filed by misusing #GenderBiasedLaws #498A . May god give you all the strength #Repeal498A #MarriageStrike
+
+For Label 2, the annotators will assume that every post is directed towards a person of marginalized gender or sexuality. After this assumption, if they think that particular phrases or words (even when non-gendered) are often used to target gender and sexual minorities on Twitter, they will have the freedom to mark a post as oGBV under Label 2. For example, both these posts would be marked as oGBV under label 2: 
+
+<handle replaced>Just a normal day for a Feminist and Victim card gang
+<handle replaced><handle replaced>Ur own quom is not afraid of you … look what is happening in Afghanistan … 
+
+We believe that abusive tweets that are directed are more harmful because they tend to shrink the space of engagement especially for users such as journalists, activists, community influencers, celebrities who join Twitter to engage with a wider audience. Hence, with label 1 and label 2, we are trying to capture the difference between a directed and undirected tweet and how the meaning of a post changes if it is directed towards a person of marginalized gender or sexuality.
+
+Through this distinction between directed and undirected tweets, we want to capture the intersectional nature of oGBV as well as hate speech (including caste and religion-based hate speech) that increasingly targets gender and sexual minorities, and other posts that intend to create information disorder to disparage journalists, activists, celebrities, community influencers, and academics of marginalized gender and sexuality. This label is expansive, relies on the expertise of the annotators but avoids detailed typologies of oGBV. 
+
+With Label 3, the annotators will help capture aggression in a post. Our tool will remove the post marked 1 on all three labels from the feeds of users because those will be the ‘most egregious’ if we were to make a hierarchy of harm for the ML-based tool. For example, 
+<handle replaced>Who the fucks is asking you to care about anything or anybody?? And what the fucks gives you the idea that your bloody care is of any consequence ??
+
+We have been told that others have used similar schema to capture the context – of intersectionality and directed hate speech – through expert annotations and ours is not “an absolutely outlandish idea” but these schemas are still at an experimental stage and arriving at “a good model performance is a real nightmare”, as one data science researcher put it to us in their feedback on the proposed guidelines.
+Which means that the worst is yet to come. 
+
+However, we will be doing a beta test of our plug-in in February to test non-ML features that are building parallelly. During this beta test with 50 users, we will test the archiving as well as the simple filtering feature but more on this later. 
+If nothing else, we are sure that the non-ML features will keep the plug-in alive till we figure out how to model context into these machines.
