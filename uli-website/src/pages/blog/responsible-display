@@ -1,0 +1,23 @@
+# Responsible Way of Showcasing the Countering of OGBV
+
+*Author: Yash Budhwar, Tattle Civic Tech*
+
+Uli is a tool that aims to redress problems of online gender-based violence (OGBV) through a feminist lens and find empowering ways in which moderation can empower multiple users, especially the ones that are most affected. It is a chrome/brave extension that helps users moderate instances of online violence in Indian languages with a focus on the experience of persons situated at the margins of gender, caste, religion, and sexuality. 
+
+Given the goals of Uli (accessibility, transparency of process), explaining the features and the process in a way that is accessible to Internet users in India, is important to us. We need to parse some of the complexity behind the tool without introducing inaccuracies. One of the other challenges we face in visually describing the tool and its features is displaying instances of abuse. While we want to show the plugin acting on abusive content, showing the abusive content on websites can be triggering for viewers. Here we discuss different ways that we thought of, to showcase and videograph Uli. We lean on practices adopted from other applications/software/products.
+
+- Block Party's [instructions](https://www.blockpartyapp.com/how-it-works/) contain an easily digestible pathway and focus on diagrammatic and headline representation of its features, rather than the harmful tweet itself. There is an emphasis on instructional material and usage of safety words like “day-to-day more bearable,” “strength,” “anti-harassment,” “without the mental health impact,” etc. The harmful content is itself faded or represented with an unclear, hazy picture which serves to remove the focus away from it. The takeaway from this would be to focus on the empowering functions and features of the plugin, with simple instructional diagrammatic flow representations.
+- FB’s [Hateful Memes dataset](https://ai.facebook.com/blog/hateful-memes-challenge-and-data-set/) and their blog post is helpful as it highlights the specific kind of content the tool can moderate (in their case, it is memes). While also explaining how their dataset can be used by multiple stakeholders and the sensitivity of such data, it does so by utilising examples of meme content that will be found in the dataset once the context is taken into picture. The takeaway from this would be to highlight the use-cases of the plugin from the perspective of the different stakeholders and to dispel any privacy concerns users of the plugin might have.
+- The game, [Get Bad News](https://www.getbadnews.com/#intro) houses a [handy booklet](https://www.getbadnews.com/wp-content/uploads/2019/03/Bad-News-Game-info-sheet-for-educators-English.pdf) on its About page on what disinformation is, how it's being tackled by different authorities and how to properly utilise its tool, amidst other relevant information. While the length of the document may come in the way of accessibilty, the way it talks about disinformation (by referring users to current tools and solutions) instead of trying to define it, can be a helpful tactic. 
+- This online educating tool (<https://get.checkology.org/>) posits similarly sensitive information but by focusing on its use cases, features, and stakeholders. Another similar product- and feature-packed explanation is available here (<https://idir.uta.edu/claimbuster/>)
+- The simplicity and messaging of this web plugin is to be admired (<https://adobserver.org/>).\
+  It is available in one other language, is contained in one webpage only and has no links to anywhere else. The content is put across in a survivor-centric manner and is empowering such as through messaging like “how you can help.” It takes a very personal experience and topic (political advertisements) and handles it very deftly while still being sensitive.
+- This community-centric tool (<https://iheartmob.org/>) focuses on feelings of belonging and safety. It highlights user experiences and features of the tool as the main representations on the website. Another potentiality for Uli could be quotes from users of the plugin.
+
+Overall Discussion points::
+
+- Focus on educating the Indian audience (most of whom might be unaware of disinformation and GBV very broadly, and come from nuanced and specific social milieu and contexts).
+- Blur out, anonymise, resituate/re-contextualise the hateful content, if at all it is being referred to.
+- Highlight use-cases and stakeholders.
+- Empower users through educating and disseminating relevant, user-centric, remedy- and action-focused content.
+- Diagrammatic representations and process flow diagrams are the simplest and easiest to understand in an alerted/agitated state of mind.
