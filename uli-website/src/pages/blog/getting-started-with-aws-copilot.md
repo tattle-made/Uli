@@ -1,0 +1,203 @@
+Around a few days ago, I was introduced to, what is, from the time of writing a relatively new framework for hosting containers in the cloud, known as AWS co-pilot. This blog post serves as a collection of all that I've learnt and more regarding the usage of co-pilot, a potential way to deploy and host Uli, using copilot and relevant resources which were useful to me in learning about co-pilot and its various use cases.&#x20;
+
+## Configuring AWS:
+
+The first thing you need to do before running co-pilot is install the AWS command line interface locally as well as creating an account on the AWS console. The necessary guide required in order to install AWS and configure it can be found here:&#x20;
+
+<https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html>
+
+Next, you will need to open your AWS console and create a user since as the root user, you will, by design not be allowed to perform any tasks or use any of the resources assigned to you by AWS. An IAM user role needs to be created with various policies being attached to it which will dictate the permissions and the powers of that role, for more guidance on how to do that, refer this:&#x20;
+
+<https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html>
+
+For using co-pilot, it would be ideal (in my knowledge so far) to include policies that allow full access to EC2, CloudFormation, and AWS Fargate to the user, however co-pilot does use a wider array of resources than that and more policies can be attached later as and when needed (for the sake of learning, you can also just attach the policy named "AdministratorAccess" to the user, which should give it authority over all resources).&#x20;
+
+Next, after your role is created, you will be given Access Keys for the user, please make sure to note them down since they will be useful shortly. As soon as the role is created, you can configure it in your command line using the following command:&#x20;
+
+```shell
+$ aws configure
+```
+
+Running this command will allow you to edit four fields, two of which would have the access key and the secret access key respectively to determine which user is accessing resources when the commands are run, the third field refers to the region where you can enter "ap-south-1". This is the region code for Mumbai, which not only determines your VPC, but also the region covered by your internet facing services. In the last field, you may either leave it blank or just enter the file format most suited to you, by default it would be JSON.&#x20;
+
+## Getting started with Copilot:
+
+Once you are done with the configuration mentioned above, you can proceed to install AWS Copilot. The basic steps for which are given in the documentation:
+
+[Overview - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/overview/ "Overview - AWS Copilot CLI")
+
+This documentation not only has a guide through installation but also a basic tutorial that helps you start a very basic load balanced service on the web, which is a good first application. After this, I proceeded in certain specific direction based on a few tasks I wanted to accomplish.&#x20;
+
+The first one was wishing to host a basic server on the web, for which I had to firstly understand the basic structure of any copilot application which consists of a list of services, each of which are deployed on various environments and are one of four services namely a Load Balanced Web Service, a Request Driven Web Service, a  Worker service and a Backend service. The first two often face the public web whereas the last two are private.  These basic concepts are very well explained in the documentation itself, however they sometimes miss some important caveats such as how to deploy in custom environments and how does the local file structure of the application affect the services. What I found more helpful are a couple of videos from AWS events itself, which not only explain the structure well but also answer a few FAQs that I had. I strongly suggest going through both of them if you are just starting out and have only gone through the preliminary pages of the documentation:&#x20;
+
+[](https://www.youtube.com/watch?v=EqW--TKQ_PQ)
+
+[](https://www.youtube.com/watch?v=drYy_V7X1BU)
+
+## Service Discovery and deploying on the Web:
+
+The next thing I wanted to try out is deploying two services in the same environment that can talk to each other. Turns out, co-pilot offers a much more elegant solution to it rather than the traditional way of them sending each other communication on the web. AWS has  a feature known as service discovery, which gives a unique identity to each service allowing them to communicate within the VPC without ever having to expose themselves to the web. A basic explanation of this is given under the "Developing" section of the documentation bunched up with a lot of other services you may wish to use:
+
+[Service Discovery - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/developing/service-discovery/ "Service Discovery - AWS Copilot CLI")
+
+However, the best and most practical explanation of service discovery for co-pilot that I found on the web is on the following website; which in on itself is also another great resource apart from the official documentation to get some hands on practice on the basic features of co-pilot:
+
+[How-To: Implement Service Discovery - Copilot.rocks 🤘🏻](https://www.copilot.rocks/implementing-architectural-patterns/10-service-discovery/ "How-To: Implement Service Discovery - Copilot.rocks 🤘🏻")
+
+This is also where I learnt practicals of the usage of the manifest file that is created for every application. In the official documentation, this is given pretty early on when you do not know about service discovery, however I would recommend going through the manifest file after you have finished the tutorial and/or have a basic idea about how service discovery works between different applications. Here, I would especially recommend going through the manifest of the Load Balanced Web Service and how it has the potential to connect to every other service in the application, potentially acting as a central service that reroutes requests to each service according to need (which is another problem that I was working towards):
+
+[Load Balanced Web Service - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/ "Load Balanced Web Service - AWS Copilot CLI")
+
+The entire website is full of a bunch of tutorials, all of which explaining some basic feature that you might want to leverage, all fulfilled with a code repository that also has all the codes you might need for the tutorials mentioned. These tutorials however are a great resource for using flags and customizing and manually configuring every little component of your application including each and every environment and service.&#x20;
+
+The most useful thing however, is the website taking you through what is essentially the core loop of building environments and services which follows the commands "init - show - deploy - delete", usually in that order, where init initialized the application, show and other such commands show the key details about the service, the deploy command deploys it in a particular environment that you can specify using the "-e" flag and the delete command which cleans up the service and allocated resources.&#x20;
+
+## Running specific tasks and debugging:
+
+Next, I want to talk about a topic that I personally briefly touched upon in my journey through learning co-pilot is running specific commands in the running instance of a container, which can be done by the "exec" command which allows for further optimization where you can run specific tasks in a container only when the need arises for it. The flexibility is vast since it allows you to open a bash session as a part of the service. The reference to the same can be found here:&#x20;
+
+[](https://www.youtube.com/watch?v=Evrl9Vux31k)
+
+Next, I tackled the other few components that are a part of the full deployment of an application. First of which is jobs, which, simply put, are tasks running as a part of the CloudFormation structure. These are usually much more automated and are useful for debugging purposes since you can track their logs and find exact points of failure and resolve them accordingly. Use the following command if needed for the same: &#x20;
+
+```shell
+$ copilot job logs
+```
+
+The final component of an application is a pipeline, which, as the name suggests is a CI/CD framework that is completely optional and which deploys changes into select environments as soon as they are pushed in your repository, similar to Github actions by creating a manifest file for the pipeline itself. It is suggested in various forums to have one setup for large applications since the distribution of resources in AWS under the hood is often very complicated and it is better to run the "pipeline deploy" command atleast in order to deploy the changes in the test environment before they are pushed into the build. A more complicated workflow would be required however to achieve the same through purely github actions and this seems to be the most straightforward way to implement CI/CD. However, more verification on the previous statement is needed
+
+## About VPCs, Storage and other services:
+
+Next, I tackled VPCs and how deployment into specific ones work. How this is tackled via AWS is that a default VPC is assigned to your account whenever you create it along with a few VPCs for each region, all fulfilled with routing tables and such. This is when setting a default region while using the "aws configure" command comes into play, where just doing that configures your machine to deploy all of your applications and related services in the EC2 instances and the VPC assigned to you for that region. Thus by default, most environments that you initialize for your application are assigned subnets specific to the VPC of the region that you are working with, making all deployments in that environment the part of the same VPC. By rule of thumb, it is essential to ensure two services are in the same environment in order to ensure they are in the same VPC. More information that I found useful on VPCs and what happens under the hood can be found here:
+
+<https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html>
+
+<https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html>
+
+Finally, it would also be helpful to go through the 'Domain' section of the documentation, which, amongst information tackling with using a specific domain name for your app, talks about 'hosted\_zones' which are associated with each environment due to their associations with a VPC:&#x20;
+
+[Load Balanced Web Service - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#http-hosted-zone "Load Balanced Web Service - AWS Copilot CLI")
+
+A service that I could not practically look into is the storage feature that is provided, which would be useful in order to create persistent databases that is given here:&#x20;
+
+[Storage - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/developing/storage/ "Storage - AWS Copilot CLI")
+
+It talks about integrating  with your application, among other things, a persistent file system that persists till the environment it is deployed in gets deleted, a [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html), an [S3 Bucket ](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-buckets-s3.html)and so on in order to store and organize data related to the application.&#x20;
+
+## For Uli:
+
+Finally, I wish to talk about a way to deploy Uli using co-pilot and what I see its advantages would be. Firstly, the major difference here is that we would be able to divide the API and the model into two different serviced within the application where the API can be a Load Balanced Web Service that listens for requests and passes them on to the model which would be a Backend service. This can be very useful since now we can not only add more and more services to which the API can redirect various queries to but we can also make changes to both of them without having to build either one, saving relevant time and resources. Another bit of optimization that is possible is allocating the resources to the ML server, which while already being optimized by AWS could be fine tuned by us using the **manifest.yml** file of the ML server service adding required scalability. Lastly, we can also use co-pilot in order to attempt a system where the ML model runs only when the API calls upon it in order to further cut down on costs, this is something I have not tested yet and will hopefully test and update on the blog in the foreseeable future. Thanks for reading!
+
+## Cheat sheet:
+
+In this section, I'll be quickly going over various commands you might want to refer to while running co-pilot on your machine. For reasons pertaining to brevity, this section might not be all encompassing and you *may* run into errors occasionally due to you local configuration. With that out of the way, let's get started:&#x20;
+
+### Installation:
+
+With homebrew
+
+```shell
+$ brew install aws/tap/copilot-cli
+```
+
+On Linux x86 (64-bit)
+
+```shell
+$ curl -Lo copilot https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux && chmod +x copilot && sudo mv copilot /usr/local/bin/copilot && copilot --help
+```
+
+On Windows (preferrably run this on the Windows terminal, running it as an administrator)
+
+```shell
+$ Invoke-WebRequest -OutFile 'C:\Program Files\copilot.exe' https://github.com/aws/copilot-cli/releases/latest/download/copilot-windows.exe
+```
+
+### Configuring AWS:
+
+```shell
+$ aws configure
+```
+
+After running the above commands, the following prompt will show up:
+
+![configure help.png](<https://files.nuclino.com/files/c195b361-6d70-4183-a408-579882afa955/configure help.png>)
+
+Add your access key and secret access key to the prompts, add the region whose VPC you wish to use and keep the output format as json.&#x20;
+
+### Starting a copilot app:
+
+The most basic command to get started with copilot is the following:
+
+```shell
+$ copilot init
+```
+
+That command initiates an app with a service inside it, both of which it prompts you to name and after you do that it will also ask you to deploy a test environment to deploy the app to. This is a great method to test new applications however the better command to start an app is the following:
+
+```shell
+$ copilot app init --domain example.com
+```
+
+Note that the domain name is optional and you can add only if you have a specific domain name for your app in that VPC. Running this command will give you a prompt asking you the name of your application, ideally this should be the name of the parent application you are creating. All other services will be tagged with this name. You can use the following command to delete the app and clean all the relevant files, this is recommended for all apps that you run in order to test out copilot
+
+```shell
+$ copilot app delete
+```
+
+### Building an environment:
+
+```shell
+$ copilot env init --app [appname] --name [env name]
+```
+
+Run the above code to build an environment. There is a caveat to this where the documentation asks you to start an environment with your default profile and the default configuration but based on how you have configured aws, your default profile would be your root profile and not the IAM account that you are using in order to run co-pilot, in this case it is better to not use the default configuration and go with the above setup. There are specific setups available if you wish to initialize an environment within a specific VPC, I suggest you refer to the documentation for that since that is a bit extensive to cover for a cheat sheet.&#x20;
+
+Use the following to delete environments (this sample command is useful for jobs and services as well as we go forward, just replace env with the relevant characters):
+
+```shell
+$ copilot env delete --name [env name]
+```
+
+### Service related commands:
+
+To build a service which is a load balanced web service, run the following command:
+
+```shell
+$ copilot svc init --name frontend --svc-type "Load Balanced Web Service" --dockerfile ./frontend/Dockerfile
+```
+
+The above command specified all the flags, creates the service frontend, with the specified type that can be changed and with the specified dockerfile. Note that the path to the dockerfile starts from the directory where you initialized you app which is considered as root for all intents and purposes of the app, and there cannot be more than one app running in a directory. To get details of the service, run the following command:&#x20;
+
+```shell
+$ copilot svc show -n frontend
+```
+
+This will give you details of the service, everything from what you need for service discovery within particular environments. It will give you strings that your other services can use within environments to discover this service without having to go through the web. Follow this link for more details related to service discovery: [How-To: Implement Service Discovery - Copilot.rocks 🤘](https://www.copilot.rocks/implementing-architectural-patterns/10-service-discovery/ "How-To: Implement Service Discovery - Copilot.rocks 🤘🏻"). Run the following two commands to log and delete the service respectively:
+
+```shell
+$ copilot svc logs -n frontend -e test
+```
+
+```shell
+$ copilot svc delete --name frontend
+```
+
+Similar commands can be followed for jobs are well by replacing svc with job.&#x20;
+
+### Storage
+
+For an S3 bucket:
+
+```shell
+# For a guided experience.
+$ copilot storage init -t S3
+
+# To create a bucket named "my-bucket" accessible by the "api" service.
+$ copilot storage init -n my-bucket -t S3 -w frontend
+```
+
+This will automatically create a bucked for when the frontend service is created with relevant permissions. Similar commands can be run for dynamoDB as well.&#x20;
+
+These wold be most of the commands required to get started with copilot and its features relevant to ULI, I shall update this blog later if more commands come to my mind.&#x20;
+
+<br>
