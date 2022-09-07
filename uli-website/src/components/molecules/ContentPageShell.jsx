@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const HeadingOne = styled(Text)`
   font-size: 2em;
-  line-height: 2.4em;
+  line-height: 1em;
 `;
 
 const HeadingTwo = styled(Text)`

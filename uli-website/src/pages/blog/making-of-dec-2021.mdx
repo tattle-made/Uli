@@ -1,3 +1,11 @@
+---
+name: Making of December 2021
+excerpt:
+author: Bhargav Dave
+project:
+date: 05-05-2022
+---
+
 # The making of the ML tool to mitigate online gender based violence in three Indian languages
 
 **This post is adapted from the Uli newsletter update sent in December 2021**
@@ -12,18 +20,19 @@ We had the privilege to speak to more than 50 individuals who have been either a
 ![image](/qr_word_cloud.png)
 
 This is a word map built from our conversations. Fatigue resulting from hate speech was the most prominent affective response that our respondents noted. This was followed by humour as the most prominent strategy to reclaim the space of social media. We learnt of many other responses that come up when one is face to face with hate speech, harassment, and violence targeting gender and sexual minorities.
-Fatigue, as an affective response to posts that you can neither ignore nor engage with, gives us some directions on how our model should be designed and the kind of content we should be focussing our energies on. Simultaneously, predominance of humour, in the form of memes, counter speech, or posts extending support to one’s friends, warns us of the content that the tool shouldn’t be acting upon at all. Other responses such as seeking a support group, blocking, deleting etc. allows us to arrive at other features that will be as useful as the proposed ML model.	
+Fatigue, as an affective response to posts that you can neither ignore nor engage with, gives us some directions on how our model should be designed and the kind of content we should be focussing our energies on. Simultaneously, predominance of humour, in the form of memes, counter speech, or posts extending support to one’s friends, warns us of the content that the tool shouldn’t be acting upon at all. Other responses such as seeking a support group, blocking, deleting etc. allows us to arrive at other features that will be as useful as the proposed ML model.
 
 ## Features that emerged during our conversations
+
 To make sure that our model doesn’t turn into a killing machine, we asked our participants to share with us the most desirable features that will keep the decision making power in the hands of the users. Thanks to our respondents, we learnt the most exciting features for a tool. The list is available here: https://tinyurl.com/2p9bnefk
 While we might not be able to incorporate all of these design suggestions in our proposed ML oGBV Tool 1.0 (this is what we are calling it until we have a name), we want to share this as a list that can help others who might be interested in building community facing tools.
 
-
 ## The annotation process
+
 To build the model on detection of abuse, the data collected was annotated by 6 ‘expert’ annotators who have been dealing with (online) violence as activists, journalists, community influencers or members of community-based organizations. The effort is part of an undercurrent within the ML community to ensure that automated content moderation models are built around a notion of harm that reflects the everyday realities of the people for whom the model is being built.
 To create guidelines for the annotators, we had long discussions internally over what oGBV is and we all agreed that it is notoriously hard to define. As was expected, the definitions were contested through the course of the project. For instance, all four of us agreed that we do not have a consensus on whether following posts should be tagged as oGBV or not:
 @INCIndia In deeper R&amp;D this is politically planted Case just like hatras case. Its all about politics, Human divisions and Money. Selective politics won't help. #JusticeForSwapnilPandey
 @prof_mirya I'd love to say I'll take care of whomever it is ... today is not the day. I'm with @Annammahoney on this, for the moment. #FeministMafia
 Because the meaning of oGBV is contested, the expert annotators will have the final word on what is and is not oGBV.
 
-Finally, we are wary that like all prediction models, unacknowledged prejudices will affect the proposed model. We are now evaluating the final model to understand how it may be biased against specific identity groups. 
+Finally, we are wary that like all prediction models, unacknowledged prejudices will affect the proposed model. We are now evaluating the final model to understand how it may be biased against specific identity groups.
