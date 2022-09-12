@@ -1,30 +1,3 @@
-# Contains definitions for all kubernetes resources needed by ogbv-ml-rest
-# If the file gets too large or unwieldy, feel free to separete
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ogbv-ml-rest-cache
-spec:
-  resources:
-    requests:
-      storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ogbv-ml-rest-assets
-spec:
-  resources:
-    requests:
-      storage: 2Gi
-  volumeMode: Filesystem
-  accesModes:
-    - ReadWriteOnce
----
 apiVersion: apps/v1
 kind: Deployment
 
@@ -35,7 +8,6 @@ metadata:
 
 spec:
   replicas: 1
-
   selector:
     matchLabels:
       app.kubernetes.io/name: ogbv-ml-rest
@@ -49,19 +21,19 @@ spec:
         - name: ogbv-ml-rest-cache
           persistentVolumeClaim:
             claimName: ogbv-ml-rest-cache
-        - name: ogbv-ml-rest-asets
+        - name: ogbv-ml-rest-assets
           persistentVolumeClaim:
             claimName: ogbv-ml-rest-assets
       containers:
         - name: ogbv-ml-rest
-          image: tattletech/ogbv-ml-rest:7bc5787
+          image: tattletech/ogbv-ml-rest:7513013
           resources:
             limits:
-              cpu: 256Mi
-              memory: 4Gi
+              cpu: 8m
+              memory: 16Gi
             requests:
-              cpu: 256Mi
-              memory: 4Gi
+              cpu: 8m
+              memory: 16Gi
           imagePullPolicy: Always
           command: ["uvicorn"]
           args:
@@ -73,19 +45,3 @@ spec:
               name: ogbv-ml-rest-cache
             - mountPath: "/app/assets"
               name: ogbv-ml-rest-assets
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ogbv-ml-rest
-  labels:
-    app.kubernetes.io/name: ogbv-ml-rest
-spec:
-  selector:
-    app.kubernetes.io/name: ogbv-ml-rest
-  type: NodePort
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-      protocol: TCP
