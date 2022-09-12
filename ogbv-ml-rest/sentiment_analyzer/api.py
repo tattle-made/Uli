@@ -4,8 +4,12 @@ from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
-from .classifier.model import Model, get_model
+from .classifier.model import Model, get_model #requires download_model.py to run
+
 app = FastAPI()
+
+import requests
+import os 
 
 origins = [
     "*"
@@ -30,7 +34,7 @@ class OGBVRequest(BaseModel):
 
 
 class OGBVResponse(BaseModel):
-    #probabilities: Dict[str, float]
+    # probabilities: Dict[str, float]
     sentiment: str
     confidence: float
 
@@ -44,3 +48,4 @@ def predict(request: OGBVRequest,model: Model = Depends(get_model)):
     return OGBVResponse(
         sentiment = sentiment,confidence = confidence
     )
+

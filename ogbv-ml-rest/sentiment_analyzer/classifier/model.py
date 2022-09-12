@@ -24,7 +24,7 @@ def preprocess(text):
 
 class Model:
 
-    def __init__(self):
+    def __init__(self): #logic to download the pytorch file
 
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -50,7 +50,7 @@ class Model:
 
             out = F.softmax(output[0].data, dim=-1).detach().cpu()
 
-            #print(out)
+            # print(out)
 
             out_label = torch.argmax(out,-1).numpy()
 
