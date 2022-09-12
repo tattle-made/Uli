@@ -29,15 +29,10 @@ spec:
           image: tattletech/ogbv-ml-rest:7513013
           resources:
             limits:
-              cpu: 8m
-              memory: 16Gi
-            requests:
-              cpu: 8m
-              memory: 16Gi
+              cpu: 1230m
+              memory: 8Gi
           imagePullPolicy: Always
-          command: ["uvicorn"]
-          args:
-            ["sentiment_analyzer.api:app", "--host", "0.0.0.0", "--port", "80"]
+          command: ["sh", "main.sh"]
           ports:
             - containerPort: 80
           volumeMounts:
