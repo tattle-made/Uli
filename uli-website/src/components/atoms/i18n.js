@@ -12,7 +12,7 @@ const resources = {
       section_hero_subhead:
         "Uli lets you take control over your Twitter timeline by redacting slurs, allowing you to archive problematic tweets and coordinating actions with your friends.",
       section_hero_cta: "Add to Browser",
-      section_hero_cta_subhead: "supported on Chrome and Brave",
+      section_hero_cta_subhead: "supported on Chrome, Brave and Firefox",
       section_feature_head: "Features",
       section_feature_1_label: "ARCHIVE TWEETS",
       section_feature_1_head:
