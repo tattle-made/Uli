@@ -25,6 +25,14 @@ import { Link } from "gatsby";
 const IndexPage = () => {
   const size = useContext(ResponsiveContext);
   const { t, i18n } = useTranslation();
+  const [userBrowser, setUserBrowser] = React.useState("chrome");
+
+  React.useEffect(() => {
+    const agent = navigator.userAgent;
+    if (agent.indexOf("Firefox") != -1) {
+      setUserBrowser("firefox");
+    }
+  }, []);
 
   return (
     <AppShell>
@@ -37,12 +45,21 @@ const IndexPage = () => {
             <p>{t("section_hero_subhead")}</p>
             <Box width={"fit-content"} align="center">
               <CTALinkPlainPrimary>
-                <a
-                  href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
-                  target={"_blank"}
-                >
-                  {t("section_hero_cta")}
-                </a>
+                {userBrowser === "firefox" ? (
+                  <a
+                    href="https://addons.mozilla.org/en-US/firefox/addon/uli/"
+                    target={"_blank"}
+                  >
+                    {t("section_hero_cta")}
+                  </a>
+                ) : (
+                  <a
+                    href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
+                    target={"_blank"}
+                  >
+                    {t("section_hero_cta")}
+                  </a>
+                )}
               </CTALinkPlainPrimary>
               <Text size={"small"}>{t("section_hero_cta_subhead")}</Text>
             </Box>
