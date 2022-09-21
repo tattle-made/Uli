@@ -1,6 +1,7 @@
 const { user } = require("./db/models");
 
 async function authentication(req, res, next) {
+  console.log("---1");
   if (req.path.startsWith("/auth/")) {
     next();
   } else {

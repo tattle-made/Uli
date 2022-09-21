@@ -87,6 +87,7 @@ app.get("/post", async (req, res) => {
 });
 
 app.post("/archive", upload.single("screenshot"), async (req, res) => {
+  console.log("archive POST request");
   try {
     const fileName = req.file.key;
     const s3URL = req.file.location;
@@ -157,7 +158,7 @@ app.post("/predict", async (req, res) => {
 app.post("/reset", async (req, res) => {
   const { user } = req;
   const userId = user.id;
-  console.log();
+  console.log(`reset request for ${userId}`);
   try {
     await resetUser(userId);
     res.send({ message: "Account reset" });

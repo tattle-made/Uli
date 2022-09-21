@@ -1,17 +1,16 @@
 {
-    "update_url": "https://clients2.google.com/service/update2/crx",
     "manifest_version": 2,
     "name": "uli",
     "description": "Moderate your Twitter Feed",
-    "version": "0.1.2",
+    "version": "0.1.9",
     "author": "tattlemade|cis",
+    "content_security_policy": "default-src 'none'; object-src 'none'; script-src 'unsafe-inline' ; font-src https://fonts.gstatic.com; style-src 'unsafe-inline';",
     "permissions": [
         "storage",
+        "webRequest",
         "https://twitter.com/*",
-        "https://ogbv-plugin.tattle.co.in/",
-        "https://s3.ap-south-1.amazonaws.com/ogbv-plugin.tattle.co.in/*",
-        "http://uli.tattle.co.in/*",
-        "https://*.twimg.com/*"
+        "https://ogbv-plugin.tattle.co.in/*",
+        "http://localhost:3000/*"
     ],
     "background": {
         "scripts": ["background.js"]

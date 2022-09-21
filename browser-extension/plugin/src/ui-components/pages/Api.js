@@ -35,12 +35,29 @@ async function savePreference(accessToken, preference) {
 // Authorization: token e3be8fa9-7ec7-11ec-a714-0242ac140002
 
 async function uploadArchivedMedia(accessToken, formData) {
-    return axios.post(`${API_URL}/archive`, formData, {
+    console.log('----3');
+    console.log(`${API_URL}/archive`);
+    console.log(formData);
+    console.log({
         headers: {
             Authorization: `token ${accessToken}`,
             'Content-Type': 'multipart/form-data'
         }
     });
+    let response;
+    try {
+        response = await axios.post(`${API_URL}/archive`, formData, {
+            headers: {
+                Authorization: `token ${accessToken}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log({ response });
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw 'Error : Could not upload archived media';
+    }
 }
 
 async function registerNewUser() {
@@ -69,11 +86,15 @@ async function invokeNetwork(accessToken, message, url) {
 }
 
 async function resetAccount(accessToken) {
-    return axios.post(`${API_URL}/reset`, {
-        headers: {
-            Authorization: `token ${accessToken}`
+    return axios.post(
+        `${API_URL}/reset`,
+        {},
+        {
+            headers: {
+                Authorization: `token ${accessToken}`
+            }
         }
-    });
+    );
 }
 
 export default {

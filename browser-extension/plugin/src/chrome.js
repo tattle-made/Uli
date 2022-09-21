@@ -41,7 +41,23 @@ const storageMock = {
 };
 */
 
-const storage = ENVIRONMENT === 'production' ? chrome.storage : chrome.storage;
+let userBrowser;
+const userAgent = navigator.userAgent.toString();
+if (userAgent.indexOf('Firefox')) {
+    userBrowser = 'firefox';
+} else if (userAgent.indexOf('Chrome')) {
+    userBrowser = 'chrome';
+} else {
+    userBrowser = 'unsupported';
+}
+
+let storage;
+if (userBrowser === 'firefox') {
+    storage = browser.storage;
+} else if (browser === 'chrome') {
+    storage = chrome.storage;
+}
+
 // const storage = ENVIRONMENT === "production" ? chrome.storage : storageMock;
 
 /**

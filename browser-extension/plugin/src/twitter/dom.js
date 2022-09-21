@@ -48,7 +48,7 @@ function getTopBannerElement() {
 function setOnChangeListener(timeline, onChange) {
     console.log({ TIMELINE: timeline, onChange });
     const onMutation = async function (mutationsList) {
-        console.log('process tweets');
+        // console.log('process tweets');
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
                 if (mutation.addedNodes.length != 0) {

@@ -1,7 +1,7 @@
 import repository from './repository';
 const { getPreferenceData } = repository;
 
-const PUNCTUATIONS = [' ', '.', ',', ';', '#'];
+const PUNCTUATIONS = [' ', '.', ',', ';', '#', '"'];
 
 function generateMask(word, offset, string) {
     const preceding_word = string[offset - 1];

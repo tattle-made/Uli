@@ -4,7 +4,12 @@
 
 All the code is organized into the `/src` folder. The extension uses content-script and popup page, both of which are bundled by parcel and placed in the `/dist` folder.
 
-In three different tabs, run the following commands - `npm run start:options` and `npm run start:contentScript` and `npm run moveBuildArtefactsToDistDir` one after the other.
+In three different tabs, run the following commands
+
+-   `npm run start:options`
+-   `npm run start:contentScript`
+-   `npm run moveBuildArtefactsToDistDir` (chrome) or `npm run moveBuildArtefactsToFirefoxDistDir` (firefox)
+
 These commands should place a few files in the `/dist` folder. The files of interest are - `options.html`, `options.js` and `content-script.js`
 
 At this point, try to load the plugin by following an online guide like [this](https://webkul.com/blog/how-to-install-the-unpacked-extension-in-chrome/)
@@ -22,15 +27,15 @@ run `npm run build` and it will give you a bundled and minified files in the `/d
 
 # Code Organization
 
-| Directory                   | Description                                                                                          |
-| --------------------------- | ---------------------------------------------------------------------------------------------------- |
-| scripts/                    | helper scripts that aren't directly part of the bundled extension                                    |
-| src/twitter/                | all code related to parsing and processing data from twitter and injecting UI elements into twitter  |
-| src/ui-components/{atoms,molecules}       | react components that serve as the building blocks for the UI.                                         |
-| src/ui-components/pages     | these correspond to UI pages you see in the extension's option page                                  |
-| src/content-script.js       | entry point into the extension                                                                       |
-| src/background.js           | empty for now. meant to store background workers for performing long running tasks in the background |
-| src/config.js               | configurable options of the plugin                                                                   |
+| Directory                           | Description                                                                                          |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| scripts/                            | helper scripts that aren't directly part of the bundled extension                                    |
+| src/twitter/                        | all code related to parsing and processing data from twitter and injecting UI elements into twitter  |
+| src/ui-components/{atoms,molecules} | react components that serve as the building blocks for the UI.                                       |
+| src/ui-components/pages             | these correspond to UI pages you see in the extension's option page                                  |
+| src/content-script.js               | entry point into the extension                                                                       |
+| src/background.js                   | empty for now. meant to store background workers for performing long running tasks in the background |
+| src/config.js                       | configurable options of the plugin                                                                   |
 
 ## Entry Points :
 

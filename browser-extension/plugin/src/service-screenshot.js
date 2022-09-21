@@ -1,4 +1,5 @@
-import domtoimage from 'dom-to-image';
+// import domtoimage from 'dom-to-image';
+import domtoimage from 'dom-to-image-improved';
 import { saveAs } from 'file-saver';
 import Api from './ui-components/pages/Api';
 const { uploadArchivedMedia } = Api;
@@ -15,37 +16,46 @@ export function saveScreenshot(element, storeLocally, accessToken, tweetUrl) {
                 let fileName;
                 const url = location.href;
 
+                console.log({ blob, url, fileName });
+
                 try {
-                    console.log('----- 1');
                     if (
                         url.startsWith('https://twitter.com') &&
                         url.search('/status/') != -1
                     ) {
-                        console.log('----- 2');
                         fileName = url.slice(url.search('/status/') + 8);
                     } else {
-                        console.log('----- 3');
                         fileName = new Date()
                             .toTimeString()
                             .split(' ')
                             .join('_');
                     }
                 } catch (err) {
-                    console.log('----- 4');
                     console.log(err);
                     fileName = new Date().toTimeString().split(' ').join('_');
                 }
-                if (storeLocally) {
-                    saveAs(blob, `ogbv_plugin_tweet_${fileName}.png`);
-                } else {
-                    var formData = new FormData();
-                    formData.append('screenshot', blob);
-                    formData.append('url', tweetUrl);
-                    // await uploadArchivedMedia(accessToken, formData);
-                    await uploadArchivedMedia(accessToken, formData);
+                try {
+                    if (storeLocally) {
+                        try {
+                            saveAs(blob, `ogbv_plugin_tweet_${fileName}.png`);
+                        } catch (err) {
+                            console.log('error saving locally');
+                            console.log(err);
+                        }
+                    } else {
+                        var formData = new FormData();
+                        formData.append('screenshot', blob);
+                        formData.append('url', tweetUrl);
+                        console.log('-----1');
+                        console.log({ formData });
+                        await uploadArchivedMedia(accessToken, formData);
+                    }
+                } catch (err) {
+                    throw err;
                 }
             });
     } catch (err) {
+        console.log('-----2');
         console.log('Could not save Image', err);
     }
 }

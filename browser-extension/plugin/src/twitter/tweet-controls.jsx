@@ -122,15 +122,16 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
             preferenceLS && preferenceLS.storeLocally != undefined
                 ? preferenceLS.storeLocally
                 : true;
-        // console.log({ node, accessToken, storeLocally, tweetUrl });
+        console.log({ node, accessToken, storeLocally, tweetUrl });
+
         try {
             await saveScreenshot(node, storeLocally, accessToken, tweetUrl);
             showProgress(false);
             showNotification({ message: 'Post Archived' });
         } catch (err) {
+            console.log(err);
             showProgress(false);
             showNotification({ message: 'Error Archiving Post on Server' });
-            console.log(err);
         } finally {
             showProgress(false);
         }

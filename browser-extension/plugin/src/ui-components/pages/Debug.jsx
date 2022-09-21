@@ -23,12 +23,13 @@ export function Debug() {
 
     async function clickReset() {
         try {
-            await resetAccount(user.id);
+            await resetAccount(user.accessToken);
             await setUserData({});
             await setPreferenceData({});
             setUser(undefined);
         } catch (err) {
-            alert('Error Resetting User', err);
+            console.log(err);
+            // alert('Error Resetting User', err);
         }
     }
 
