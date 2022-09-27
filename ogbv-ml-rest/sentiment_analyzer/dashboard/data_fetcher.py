@@ -1,20 +1,19 @@
 
 
-# import psycopg2 useful for pgsql
+import psycopg2
 import pandas as pd
 from sqlalchemy.engine import URL 
 from sqlalchemy import create_engine 
 import sqlalchemy
 from sqlalchemy.sql import text
-import os
 
-dbUsername = os.environ['DB_USERNAME']
-dbPassword = os.environ['DB_PASSWORD']
-dbHost = os.environ['DB_HOST']
-dbPort = os.environ['DB_PORT']
+dbUsername = 'postgres'
+dbPassword = 'admin'
+dbHost = 'localhost'
+dbPort = 9942
 
-url = 'mysql://{}:{}@{}:{}/uli'.format(dbUsername, dbPassword, dbHost, dbPort) #connect to the server
-engine = sqlalchemy.create_engine(url, echo = True) 
+url = 'postgresql+psycopg2://{}:{}@{}:{}/uli'.format(dbUsername, dbPassword, dbHost, dbPort) #connect to the server
+engine = sqlalchemy.create_engine(url) 
 
 
 
@@ -27,7 +26,7 @@ def num_users(start, end):
     sql_num_users = '''
 
     SELECT COUNT(id) FROM ogbv_plugin.users 
-    WHERE createdAt >= DATE_SUB(NOW(), INTERVAL '{}' DAY) AND createdAt <= DATE_SUB(NOW(), INTERVAL '{}' DAY)
+    WHERE createdAt >= (NOW() - '{} DAY'::INTERVAL) AND createdAt <= (NOW() - '{} DAY'::INTERVAL)
 
     '''.format(end, start)
 
@@ -47,7 +46,7 @@ def num_archived(start, end):
     sql_num_posts = '''
 
     SELECT COUNT(id) FROM ogbv_plugin.posts
-    WHERE createdAt >= DATE_SUB(NOW(), INTERVAL '{}' DAY) AND createdAt <= DATE_SUB(NOW(), INTERVAL '{}' DAY)
+    WHERE createdAt >= (NOW() - '{} DAY'::INTERVAL) AND createdAt <= (NOW() - '{} DAY'::INTERVAL)
 
     '''.format(end, start)
 
@@ -67,7 +66,7 @@ def archivers_list(start, end):
 
     Select userId, COUNT(id)
     FROM ogbv_plugin.posts
-    WHERE createdAt >= DATE_SUB(NOW(), INTERVAL '{}' DAY) AND createdAt <= DATE_SUB(NOW(), INTERVAL '{}' DAY)
+    WHERE createdAt >= (NOW() - '{} DAY'::INTERVAL) AND createdAt <= (NOW() - '{} DAY'::INTERVAL)
     GROUP BY userId
     ORDER BY COUNT(id) DESC
     LIMIT 10;
@@ -78,6 +77,7 @@ def archivers_list(start, end):
     with engine.connect().execution_options(autocommit=True) as conn:
         query = conn.execute(text(sql_posts_users))         
     users_per_post = pd.DataFrame(query.fetchall())
+    users_per_post = users_per_post.to_dict()
     return users_per_post
     conn.close()
     #print(users_per_post)
@@ -88,6 +88,6 @@ def archivers_list(start, end):
 def weekly_data():
     users_data = num_users(0,300)
     archived_data = num_archived(0,300)
-    archivers_data = archivers_list(0,300).to_json('foo.json', default_handler=str)
+    archivers_data = archivers_list(0,300)
     return users_data['count'][0], archived_data['count'][0], archivers_data
 

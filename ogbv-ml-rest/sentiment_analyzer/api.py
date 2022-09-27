@@ -8,7 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from .classifier.model import Model, get_model #requires download_model.py to run 
+# from .classifier.model import Model, get_model #requires download_model.py to run
 from .dashboard.data_fetcher import weekly_data
 
 app = FastAPI()
@@ -42,7 +42,7 @@ class OGBVResponse(BaseModel):
 class dashboardResponse(BaseModel):
     users_data: int
     archived_data: int
-    archivers: Json[Any]
+    archivers: Dict
 
 
 
@@ -61,15 +61,15 @@ async def read_items():
 
 
 
-@app.post("/predict", response_model=OGBVResponse)
-def predict(request: OGBVRequest,model: Model = Depends(get_model)):
-    payload_dict = jsonable_encoder(request)
-    print(payload_dict)
-    print(type(payload_dict))
-    sentiment,confidence = model.predict(payload_dict["text"])
-    return OGBVResponse(
-        sentiment = sentiment,confidence = confidence
-    )
+# @app.post("/predict", response_model=OGBVResponse)
+# def predict(request: OGBVRequest,model: Model = Depends(get_model)):
+#     payload_dict = jsonable_encoder(request)
+#     print(payload_dict)
+#     print(type(payload_dict))
+#     sentiment,confidence = model.predict(payload_dict["text"])
+#     return OGBVResponse(
+#         sentiment = sentiment,confidence = confidence
+#     )
 
 @app.post("/dashboard", response_model=dashboardResponse)
 async def dashboard():
