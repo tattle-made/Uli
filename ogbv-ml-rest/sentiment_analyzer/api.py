@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 from fastapi import Depends, FastAPI, status
 from fastapi.responses import HTMLResponse
@@ -40,8 +40,8 @@ class OGBVResponse(BaseModel):
     confidence: float
 
 class dashboardResponse(BaseModel):
-    users_data: int
-    archived_data: int
+    users_data: int 
+    archived_data: int 
     archivers: Dict
 
 
@@ -74,7 +74,9 @@ def predict(request: OGBVRequest,model: Model = Depends(get_model)):
 @app.post("/dashboard", response_model=dashboardResponse)
 async def dashboard():
     users_data, archived_data, archivers = weekly_data()
+    archiversDict = {}
+    archiversDict['archivers'] = archivers 
     return dashboardResponse(
-        users_data = users_data, archived_data = archived_data, archivers = archivers
+        users_data = users_data, archived_data = archived_data, archivers = archiversDict
     )
 

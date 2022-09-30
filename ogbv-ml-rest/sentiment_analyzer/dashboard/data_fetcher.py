@@ -58,21 +58,31 @@ def num_archived(start, end):
 def archivers_list(start, end):
 
     sql_posts_users = '''
+
     Select userId, COUNT(id)
     FROM ogbv_plugin.posts
     WHERE createdAt >= DATE_SUB(NOW(), INTERVAL '{}' DAY) AND createdAt <= DATE_SUB(NOW(), INTERVAL '{}' DAY)
     GROUP BY userId
     ORDER BY COUNT(id) DESC
     LIMIT 10;
+
+
     '''.format(end, start)
 
     with engine.connect().execution_options(autocommit=True) as conn:
         query = conn.execute(text(sql_posts_users))         
     posts_per_user = pd.DataFrame(query.fetchall())
-    posts_per_user = posts_per_user.to_dict()
-    return posts_per_user
     conn.close()
-    #print(users_per_post)
+    output_list = []
+    for ind in posts_per_user.index:
+        temp = []
+        temp.append(str(posts_per_user['userid'][ind]))
+        temp.append(int(posts_per_user['count'][ind]))
+        output_list.append(temp)
+        # output_dict[str(posts_per_user['userid'][ind])] = (posts_per_user['count'][ind])
+    # print(output_list)
+    # print(type(output_list))
+    return output_list
 
 
 # function to get weekly data, can be changed to get a desired range as required
