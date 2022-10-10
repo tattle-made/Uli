@@ -1,16 +1,24 @@
----
-name: QA Test Checklist
-about: Use this as a guide for manual QA
-title: "[QA]"
-labels: ''
-assignees: ''
+body:
+- type: markdown
+  attributes:
+    value: | 
+      "### QA Checklist for Uli"
+      Please use this as a guide for testing Uli. Please provide additional info on any issues that you discover during testing in the comments
+      
+- type: dropdown
+  attributes: 
+    label: "Platform"
+    options: 
+      - Chrome
+      - Brave
+      - Firefox
 
----
-
-### Platform
-Choose Chrome, Brave or Firefox
-
-### Features To Check : 
-- [ ] Local Tweet Archiving
-- [ ] Remote Tweet Archiving
-- [ ] OGBV ML filtering
+- type: checkboxes
+  attributes:
+    label: Tasks
+    options:
+      - label: Slur Replacement
+      - label: Local Tweet Archiving
+      - label: Remote Tweet Archiving
+      - label: Updating Preferences
+      - label: OGBV ML filter
