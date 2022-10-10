@@ -1,10 +1,10 @@
+name: QA
+description: File a bug report
+title: "[QA]: "
+labels: ["enhancement"]
+assignees:
+  - dennyabrain
 body:
-- type: markdown
-  attributes:
-    value: | 
-      "### QA Checklist for Uli"
-      Please use this as a guide for testing Uli. Please provide additional info on any issues that you discover during testing in the comments
-      
 - type: dropdown
   attributes: 
     label: "Platform"
@@ -22,3 +22,4 @@ body:
       - label: Remote Tweet Archiving
       - label: Updating Preferences
       - label: OGBV ML filter
+
