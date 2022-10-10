@@ -29,3 +29,14 @@ Note that if you are on windows and are using PowerShell, you might need to run 
 ```
 Invoke-RestMethod -Method 'Post' -Uri http://localhost:8080/predict -Body (@{"text"="The food in this restaurant is disgusting"}|ConvertTo-Json) -ContentType "application/json"
 ```
+## Testing
+
+1. Go to the following url and download the extension zip file present in the release: https://github.com/tattle-made/OGBV/releases
+2. Extract the files locally and put the path to the dist folder present in the newly extracted files in the "options.add_argument" function in the slur_detection_tester.py file
+3. Run the following in your test environment (in order):
+
+```
+pip install selenium
+pip install webdriver-manager
+```
+4. Find a tweet with a known slur, you can look them up here: https://github.com/tattle-made/OGBV/blob/main/browser-extension/plugin/src/slur-replace.js. You'll need to hardcode the url in the "driver.get()" function. A known url is the following: https://twitter.com/jackantonoff/status/1579311659742416896. This should set you up for running the code. 
