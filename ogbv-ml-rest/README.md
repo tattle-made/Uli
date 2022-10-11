@@ -16,6 +16,7 @@ docker build -t ml .
 ```
 docker run  -p 8080:80 -v ogbv-cache:/root/.cache/huggingface/transformers -v ogbv-assets:/app/assets ml
 ```
+
 If this is the first time you are running the container, then this will create volumes: ogbv-assets and ogbv-cache and link them to the directories created for the container, from the next time onwards, the volumes will persist and even if the container perishes, running this command will immediately fetch the data from the volumes to the relevant directories saving time and data. Please delete the volumes and rerun this command when the models itself are updated.
 
 4. Test the API endpoint by running the following command:
@@ -29,6 +30,7 @@ Note that if you are on windows and are using PowerShell, you might need to run 
 ```
 Invoke-RestMethod -Method 'Post' -Uri http://localhost:8080/predict -Body (@{"text"="The food in this restaurant is disgusting"}|ConvertTo-Json) -ContentType "application/json"
 ```
+
 ## Testing
 
 1. Go to the following url and download the extension zip file present in the release: https://github.com/tattle-made/OGBV/releases
@@ -39,4 +41,31 @@ Invoke-RestMethod -Method 'Post' -Uri http://localhost:8080/predict -Body (@{"te
 pip install selenium
 pip install webdriver-manager
 ```
-4. Find a tweet with a known slur, you can look them up here: https://github.com/tattle-made/OGBV/blob/main/browser-extension/plugin/src/slur-replace.js. You'll need to hardcode the url in the "driver.get()" function. A known url is the following: https://twitter.com/jackantonoff/status/1579311659742416896. This should set you up for running the code. 
+
+4. Find a tweet with a known slur, you can look them up here: https://github.com/tattle-made/OGBV/blob/main/browser-extension/plugin/src/slur-replace.js. You'll need to hardcode the url in the "driver.get()" function. A known url is the following: https://twitter.com/jackantonoff/status/1579311659742416896. This should set you up for running the code.
+
+### Using Docker-Compose
+
+1. Start the following backend services :
+
+1. SQL Database
+1. REST API Server for Uli
+1. OGBV ML REST
+
+```
+cd browser-extension
+docker-compose up
+```
+
+2. Start a development server for the plugin
+
+```
+cd browser-extension/plugin
+npm run dev:firefox
+or
+npm run dev:chrome
+```
+
+Now you should have a build of the plugin in the browser-extension/plugin/dist folder
+
+3. Run your tests
