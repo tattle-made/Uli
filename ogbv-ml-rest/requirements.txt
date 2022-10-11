@@ -3,3 +3,6 @@ uvicorn
 pydantic
 torch
 transformers
+pandas
+sqlalchemy
+mysqlclient
