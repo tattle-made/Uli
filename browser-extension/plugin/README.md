@@ -4,11 +4,10 @@
 
 All the code is organized into the `/src` folder. The extension uses content-script and popup page, both of which are bundled by parcel and placed in the `/dist` folder.
 
-In three different tabs, run the following commands
+## Run a dev server for the plugin depending on the platform (do )
 
--   `npm run start:options`
--   `npm run start:contentScript`
--   `npm run moveBuildArtefactsToDistDir` (chrome) or `npm run moveBuildArtefactsToFirefoxDistDir` (firefox)
+-   `npm run dev:chrome`
+-   `npm run dev:firefox`
 
 These commands should place a few files in the `/dist` folder. The files of interest are - `options.html`, `options.js` and `content-script.js`
 
