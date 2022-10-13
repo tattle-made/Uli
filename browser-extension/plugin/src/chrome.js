@@ -43,7 +43,7 @@ const storageMock = {
 
 let userBrowser;
 const userAgent = navigator.userAgent.toString();
-if (userAgent.indexOf('Firefox')) {
+if (userAgent.indexOf('Mozilla')) {
     userBrowser = 'firefox';
 } else if (userAgent.indexOf('Chrome')) {
     userBrowser = 'chrome';
@@ -52,9 +52,10 @@ if (userAgent.indexOf('Firefox')) {
 }
 
 let storage;
+console.log(userBrowser);
 if (userBrowser === 'firefox') {
     storage = browser.storage;
-} else if (browser === 'chrome') {
+} else if (userBrowser === 'chrome') {
     storage = chrome.storage;
 }
 
