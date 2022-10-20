@@ -14,7 +14,7 @@ options = webdriver.FirefoxOptions()
 driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options = options)
 # Note that you will need to run the web-ext command inside the dist folder
 # put the location to the xpi file here, it should end in /path/to/folder/web-ext-artifacts/[id].xpi
-driver.install_addon(r'C:\Work\playground\uli-tester\extension\dist_firefox_dev\web-ext-artifacts\31f8bff81027425aae30-0.1.10.xpi')
+driver.install_addon('path/to/xpi-file')
 sleep(2)
  
 
