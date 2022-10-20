@@ -20,13 +20,13 @@ sleep(5)
 # Check if the extension worked and log the result.
 try:
     # add the absolute path to the directory where your browser downloads files by default (you can verify this by commenting the files counting steps once an seeing where the new files are)
-    initial_count = len(os.listdir(r'path\to\downloads_folder')) # count the number of files in your downloads directory
+    initial_count = len(os.listdir('path\to\downloads-folder')) # count the number of files in your downloads directory
     twt_control_bar = driver.find_element(By.CLASS_NAME,'ogbv-tweetcontrol-bar') 
     icons = twt_control_bar.find_elements(By.TAG_NAME, 'svg')
     icons[0].click() # initiates download
     sleep(10)
     # sleep(100) if you wish to check where your download folder is
-    final_count = len(os.listdir(r'C:\Users\bharg\Downloads')) #recount the number of files in your downloads folder
+    final_count = len(os.listdir('path\to\downloads-folder')) #recount the number of files in your downloads folder
     if(final_count > initial_count):
         print('File archived successfully! :-)')  
     else:
