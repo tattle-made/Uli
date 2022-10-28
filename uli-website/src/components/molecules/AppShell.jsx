@@ -5,6 +5,7 @@ import { Colors, NavLink, Theme } from "../atoms/UliCore";
 import NavBar from "./NavBar";
 import i18n from "../atoms/i18n";
 import { useTranslation } from "react-i18next";
+import Footer from "./Footer";
 
 export default function AppShell({ children }) {
   const { t, i18n } = useTranslation();
@@ -39,6 +40,7 @@ export default function AppShell({ children }) {
             <NavLink to={"/about"}>About</NavLink>
           </Box>
         </Box> */}
+        <Footer />
       </main>
     </Grommet>
   );
