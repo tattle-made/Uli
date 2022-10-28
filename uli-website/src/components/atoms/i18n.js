@@ -37,7 +37,7 @@ const resources = {
       section_resources_label: "RESOURCES",
       section_resources_description:
         "We will also add a few resources such as Twitter's community guidelines, a digital safety guidelines as well as a legal resource document that builds critical legal literacy to help tackle instances of hate speech and harassment. All these resources will be made available in Hindi, Tamil and English.",
-      section_cta_head: "is now available on Chrome Store to try out.",
+      section_cta_head: "is now available to try out.",
       section_cta_primary: "INSTALL NOW",
       section_cta_secondary: "LEARN HOW TO USE",
       ug_install_heading: "Installing",
@@ -178,7 +178,7 @@ const resources = {
       section_resources_label: "संसाधन",
       section_resources_description:
         "हमने कुछ संसाधन भी जोड़े  हैं जैसे कि ट्विटर के सामुदायिक दिशानिर्देश, डिजिटल सुरक्षा दिशानिर्देश (डिजिटल सुरक्षा के लिए सेफ सिस्टर्स की सामान्य ज्ञान मार्गदर्शिका का एक अनुकूलन), साथ ही एक कानूनी संसाधन दस्तावेज़ । ये सभी संसाधन हिंदी, तमिल और अंग्रेजी में उपलब्ध हैं।",
-      section_cta_head: "Chrome स्टोर पर उपलब्ध है।",
+      section_cta_head: "उपलब्ध है।",
       section_cta_primary: "अभी इनस्टॉल करें",
       section_cta_secondary: "उपयोग करना सीखें",
       about_head_1: "उली क्या है?",

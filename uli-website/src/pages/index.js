@@ -223,7 +223,9 @@ const IndexPage = () => {
             >
               {t("section_cta_primary")}
             </CTALinkPlain>
-            <CTALinkPlain href="/">{t("section_cta_secondary")}</CTALinkPlain>
+            <CTALinkPlain href="/user-guide">
+              {t("section_cta_secondary")}
+            </CTALinkPlain>
           </Box>
           {/* <Box direction={'row-responsive'}>
             <Text></Text>
