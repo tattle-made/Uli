@@ -100,6 +100,117 @@ const UserGuide = () => {
             </Box>
           </Box>
           {/* add picture of preference screen with labels */}
+          <Box
+            alignSelf="center"
+            gap={"small"}
+            direction={"row-responsive"}
+            margin={{ top: "xlarge", bottom: "large" }}
+          >
+            <Text style={{ fontSize: "2em" }}>Instruction Videos</Text>
+          </Box>
+          <Box>
+            <Box>
+              <Text style={{ fontSize: "1.4em" }} margin={{ bottom: "0.8em" }}>
+                {" "}
+                How to install
+              </Text>
+              <Box fill>
+                <iframe
+                  width="100%"
+                  height="400"
+                  src="https://www.youtube.com/embed/mgkJritMbqM"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text
+                style={{ fontSize: "1.4em" }}
+                margin={{ top: "0.8em", bottom: "0.8em" }}
+              >
+                {" "}
+                How to Archive Tweets
+              </Text>
+              <Box fill>
+                <iframe
+                  width="100%"
+                  height="400"
+                  src="https://www.youtube.com/embed/93b2nK90qMk"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text
+                style={{ fontSize: "1.4em" }}
+                margin={{ top: "0.8em", bottom: "0.8em" }}
+              >
+                {" "}
+                How to replace slurs
+              </Text>
+              <Box fill>
+                <iframe
+                  width="100%"
+                  height="400"
+                  src="https://www.youtube.com/embed/2IBZzbQs6UU"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text
+                style={{ fontSize: "1.4em" }}
+                margin={{ top: "0.8em", bottom: "0.8em" }}
+              >
+                {" "}
+                How to hide tweets containing OGBV
+              </Text>
+              <Box fill>
+                <iframe
+                  width="100%"
+                  height="400"
+                  src="https://www.youtube.com/embed/jxpVxj2iCv8"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text
+                style={{ fontSize: "1.4em" }}
+                margin={{ top: "0.8em", bottom: "0.8em" }}
+              >
+                {" "}
+                How to uninstall Uli
+              </Text>
+              <Box fill>
+                <iframe
+                  width="100%"
+                  height="400"
+                  src="https://www.youtube.com/embed/LQPZ8YVsMoY"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </AppShell>
