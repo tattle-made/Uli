@@ -46,18 +46,18 @@ pip install webdriver-manager
 
 ### Using Docker-Compose
 
-1. Start the following backend services :
+1. Start the following backend services using the docker-compose:
 
-1. SQL Database
-1. REST API Server for Uli
-1. OGBV ML REST
+    1. SQL Database
+    2. REST API Server for Uli
+    3. OGBV ML REST
 
 ```
 cd browser-extension
 docker-compose up
 ```
 
-2. Start a development server for the plugin
+2. Start a development server for the plugin:
 
 ```
 cd browser-extension/plugin
@@ -68,4 +68,30 @@ npm run dev:chrome
 
 Now you should have a build of the plugin in the browser-extension/plugin/dist folder
 
-3. Run your tests
+3. Running tests: 
+
+    1. If you are on chrome, just putting the absolute path to the dist folder inside the scripts for chrome should be fine to run the tests
+    2. If you are on firefox, do the following: 
+        1. Note that in order to run the following you need to have `node` installed on your machine. Once that is taken care of, run the following command:
+            ```bash
+
+            npm install --global web-ext
+
+            ```
+        2. Next, you will need to run the following command inside the dist folder generated upon running a development server:
+            ```bash
+
+            web-ext sign --api-key=$WEB_EXT_API_KEY --api-secret=$WEB_EXT_API_SECRET
+
+            ```
+            In order to generate your own api key and api secret you may visit the following [page](https://addons.mozilla.org/en-US/developers/addon/api/key/)
+
+        3. This should give you an xpi file inside a "web-ext-artifacts" folder. The response upon successfully running the command should be something like this: 
+
+            ![output for running web-ext sign](./docs/xpi-file-creation.png)
+
+        4. Use the path to this '.xpi' file in the firefox testing scripts for loading the extension in the browser wherever needed. 
+
+
+
+

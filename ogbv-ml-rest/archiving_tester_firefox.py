@@ -1,32 +1,34 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 import os
 
-options = webdriver.ChromeOptions()
-# add the absolute path to your extension here
-options.add_argument(r'--load-extension=path\to\dist_folder_of_extension')
+# Configure the necessary command-line option
+options = webdriver.FirefoxOptions()
 
-# initiate the driver for chrome
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options = options)
-sleep(2)
-# hardcode the tweet you wish to load up for testing, a sample url is alraedy present with a known slur
+driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options = options)
+# Note that you will need to run the web-ext command inside the dist folder
+# put the location to the xpi file here, it should end in /path/to/folder/web-ext-artifacts/[id].xpi
+driver.install_addon('path/to/xpi-file')
+sleep(5)
+# add a hardcoded url leading to a particular tweet which you are using for testing 
 driver.get('https://twitter.com/jackantonoff/status/1579311659742416896')
+
 sleep(5)
 # Check if the extension worked and log the result.
 try:
     # add the absolute path to the directory where your browser downloads files by default (you can verify this by commenting the files counting steps once an seeing where the new files are)
-    initial_count = len(os.listdir('path\to\downloads-folder')) # count the number of files in your downloads directory
+    initial_count = len(os.listdir('path/to/downloads-folder')) # count the number of files in your downloads directory
     twt_control_bar = driver.find_element(By.CLASS_NAME,'ogbv-tweetcontrol-bar') 
     icons = twt_control_bar.find_elements(By.TAG_NAME, 'svg')
     icons[0].click() # initiates download
     sleep(10)
     # sleep(100) if you wish to check where your download folder is
-    final_count = len(os.listdir('path\to\downloads-folder')) #recount the number of files in your downloads folder
+    final_count = len(os.listdir('path/to/downloads-folder')) #recount the number of files in your downloads folder
     if(final_count > initial_count):
         print('File archived successfully! :-)')  
     else:
@@ -36,4 +38,3 @@ except NoSuchElementException:
 finally:
     # Clean up.
     driver.quit()
-    
