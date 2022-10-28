@@ -15,7 +15,7 @@
 4. run `npx sequelize-cli db:migrate`
    This should create your tables in the db.
 
-5. run `nodemon index.js`
+5. run `nodemon index.js` or `node index.js`
    This should start an express http server at port 3000
 
 # Deploying to Tattle's Kubernetes
