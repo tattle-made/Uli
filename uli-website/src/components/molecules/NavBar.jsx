@@ -3,30 +3,64 @@ import { Box, Select, Text } from "grommet";
 import { NavLink } from "../atoms/UliCore";
 import { navigate } from "gatsby";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "@reach/router";
+
+const NavBarByLang = {
+  en: (
+    <Box direction="row" gap={"medium"}>
+      <NavLink to={"/user-guide"}>User Guide</NavLink>
+      <NavLink to={"/about"}>About</NavLink>
+      <NavLink to={"/faq"}>FAQ</NavLink>
+    </Box>
+  ),
+  hi: (
+    <Box direction="row" gap={"medium"}>
+      <NavLink to={"/hi/about"}>About</NavLink>
+    </Box>
+  ),
+  ta: (
+    <Box direction="row" gap={"medium"}>
+      <NavLink to={"/ta/about"}>About</NavLink>
+    </Box>
+  ),
+};
 
 export default function NavBar() {
-  const { t, i18n } = useTranslation();
-  const LANGUAGES_MAP = {
-    English: "en",
-    Hindi: "hi",
-    Tamil: "ta",
-  };
   const [langOption, setLangOption] = useState(undefined);
+  const location = useLocation();
 
   useEffect(() => {
     console.log(`pageLoad `);
-    console.log({ langOption });
-    if (langOption === undefined) {
-      const langLS = localStorage.getItem("langCode");
-      const lang = langLS ? langLS : "English";
-      setLangOption(lang);
-      i18n.changeLanguage(LANGUAGES_MAP[lang]);
-      console.log(`setting i18n language to ${LANGUAGES_MAP[lang]}`);
+    let lang;
+    switch (location.pathname.slice(0, 3)) {
+      case "/hi":
+        lang = "hi";
+        break;
+      case "/en":
+        lang = "en";
+        break;
+      case "/ta":
+        lang = "ta";
+        break;
+      default:
+        lang = "en";
     }
+    setLangOption(lang);
   }, []);
 
   return (
-    <Box align="center">
+    <Box align="center" pad={"small"}>
+      <Box width={"large"} direction={"row-responsive"} gap={"small"}>
+        <NavLink to={"/"}>
+          <Text size={"small"}>English</Text>
+        </NavLink>
+        <NavLink to={"/ta/"}>
+          <Text size={"small"}>Tamil</Text>
+        </NavLink>
+        <NavLink to={"/hi/"}>
+          <Text size={"small"}>Hindi</Text>
+        </NavLink>
+      </Box>
       <Box
         margin={{ top: "small" }}
         width={"large"}
@@ -42,28 +76,9 @@ export default function NavBar() {
         >
           <img src={"/Uli_Logo.png"} alt={"Uli Logo"} />
         </Box>
-        <Box width={"small"}>
-          <Select
-            options={["English", "Tamil", "Hindi"]}
-            value={langOption}
-            onChange={({ option }) => {
-              localStorage.setItem("langCode", option);
-              setLangOption(option);
-              i18n.changeLanguage(LANGUAGES_MAP[option]);
-            }}
-          />
-        </Box>
-        {/* <Text>
-          {JSON.stringify({ languages: i18n.languages, lang: i18n.language })}
-        </Text> */}
 
         <Box flex={"grow"} />
-        <Box direction="row" gap={"medium"}>
-          <NavLink to={"/user-guide"}>User Guide</NavLink>
-          {/* <NavLink to={"/blog"}>Blog</NavLink> */}
-          <NavLink to={"/about"}>About</NavLink>
-          <NavLink to={"/faq"}>FAQ</NavLink>
-        </Box>
+        {NavBarByLang[langOption]}
       </Box>
     </Box>
   );
