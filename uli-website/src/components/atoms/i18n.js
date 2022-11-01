@@ -8,9 +8,9 @@ const resources = {
   en: {
     translation: {
       app_name: "Uli",
-      section_hero_head: "Moderate Your Twitter Feed",
+      section_hero_head: "Take Control of Your Twitter Feed",
       section_hero_subhead:
-        "Uli lets you take control over your Twitter timeline by redacting slurs, allowing you to archive problematic tweets and coordinating actions with your friends.",
+        "Use Uli to redact slurs and abusive content, archive problematic tweets, coordinate action with your friends and reclaim your space.",
       section_hero_cta: "Add to Browser",
       section_hero_cta_subhead: "supported on Chrome, Brave and Firefox",
       section_feature_head: "Features",
