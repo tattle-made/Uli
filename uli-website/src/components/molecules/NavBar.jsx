@@ -22,6 +22,7 @@ const NavBarByLang = {
   ta: (
     <Box direction="row" gap={"medium"}>
       <NavLink to={"/ta/about"}>About</NavLink>
+      <NavLink to={"/ta/faq"}>FAQ</NavLink>
     </Box>
   ),
 };
