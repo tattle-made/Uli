@@ -16,6 +16,7 @@ const NavBarByLang = {
   hi: (
     <Box direction="row" gap={"medium"}>
       <NavLink to={"/hi/about"}>About</NavLink>
+      <NavLink to={"/hi/faq"}>FAQ</NavLink>
     </Box>
   ),
   ta: (
