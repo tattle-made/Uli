@@ -7,7 +7,7 @@ jobs:
     name: "Pre Release Extension"
     runs-on: "ubuntu-latest"
     environment:
-      name: development
+      name: main
       url: "https://github.com/tattle-made/OGBV/releases"
 
     steps:
