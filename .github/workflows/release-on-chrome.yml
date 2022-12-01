@@ -1,0 +1,42 @@
+name: "Publish on Chrome"
+
+on: workflow_dispatch
+
+jobs:
+  chrome-publish:
+    name: "Pre Release Extension"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: development
+      url: "https://github.com/tattle-made/OGBV/releases"
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Get commit SHA
+        shell: bash
+        run: |
+          echo "setting variables"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          ls
+          pwd
+          npm install
+          npm run build
+          zip extension.zip ./dist/ -r
+
+      - name: "Upload to chrome"
+        uses: Klemensas/chrome-extension-upload-action@$VERSION
+        with:
+          refresh-token: ${{ secrets.CHROME_STORE_REFRESH_TOKEN }}
+          client-id: ${{ secrets.CHROME_STORE_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_STORE_CLIENT_SECRET }}
+          file-name: "./browser-extension/plugin/extension.zip"
+          app-id: "hbfmbflgailjeobfkhpdipcdmpclinki"
+          publish: false
