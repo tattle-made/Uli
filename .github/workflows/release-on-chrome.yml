@@ -32,7 +32,7 @@ jobs:
           zip extension.zip ./dist/ -r
 
       - name: "Upload to chrome"
-        uses: Klemensas/chrome-extension-upload-action@$VERSION
+        uses: Klemensas/chrome-extension-upload-action@v1.3
         with:
           refresh-token: ${{ secrets.CHROME_STORE_REFRESH_TOKEN }}
           client-id: ${{ secrets.CHROME_STORE_CLIENT_ID }}
