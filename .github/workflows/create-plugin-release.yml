@@ -32,11 +32,15 @@ jobs:
           pwd
           npm install
           npm run build
-          zip extension.zip ./dist/ -r
+          zip extension-chrome.zip ./dist/ -r
+          npm run build:firefox
+          rm -rf dist/
+          zip extension-firefox.zip ./dist/ -r
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GH_RELEASE_TOKEN }}"
           title: "Development Build : ${{ github.event.inputs.version }}"
           files: |
-            browser-extension/plugin/extension.zip
+            browser-extension/plugin/extension-chrome.zip
+            browser-extension/plugin/extension-firefox.zip
