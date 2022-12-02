@@ -4,7 +4,7 @@ const { setOnChangeListener } = dom;
 import transform from './transform';
 import { log } from './logger';
 import repository from './repository';
-const { getPreferenceData } = repository;
+const { getPreferenceData, setPreferenceData } = repository;
 import { updateSlurList } from './slur-replace';
 
 log('Content Script Loaded');
@@ -39,16 +39,9 @@ function processPage(newUrl) {
  * eg : When a user clicks on a tweet on their home timeline, they
  * go from the home page to the user status page.
  */
-chrome.runtime.onMessage.addListener(function (request) {
-    if (request.message === 'URL_CHANGED') {
-        const newUrl = request.url;
-        log('Url Changed', newUrl);
-        processPage(location.href);
-    }
-});
 
-chrome.runtime.onMessage.addListener(async function (message) {
-    if (message.type === 'updateData') {
+chrome.runtime.onMessage.addListener(async function (request) {
+    if (request.type === 'updateData') {
         console.log('data changed. time to update slurs');
         const preference = await getPreferenceData();
         console.log(preference);
@@ -56,6 +49,32 @@ chrome.runtime.onMessage.addListener(async function (message) {
             updateSlurList(preference.slurList);
             processPage(location.href);
         }
+        return true;
+    }
+    if (request.message === 'URL_CHANGED') {
+        const newUrl = request.url;
+        log('Url Changed', newUrl);
+        processPage(location.href);
+        return true;
+    }
+    if (request.type === 'SLUR_ADDED') {
+        const slur = request.slur;
+        log('slur added from bg', slur);
+        const pref = await getPreferenceData();
+        if (!pref) {
+            slurList = slur;
+            await setPreferenceData({ ...pref, slurList });
+        } else {
+            let { slurList } = pref;
+            if (!slurList || slurList === '') {
+                slurList += slur;
+            } else {
+                slurList += `,${slur}`;
+            }
+            await setPreferenceData({ ...pref, slurList });
+        }
+
+        return true;
     }
 });
 

@@ -10,7 +10,8 @@
         "webRequest",
         "https://twitter.com/*",
         "https://ogbv-plugin.tattle.co.in/*",
-        "http://localhost:3000/*"
+        "http://localhost:3000/*",
+        "contextMenus"
     ],
     "background": {
         "scripts": ["background.js"]
