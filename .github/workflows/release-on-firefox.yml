@@ -35,7 +35,7 @@ jobs:
       - name: "Upload to firefox"
         uses: cardinalby/webext-buildtools-firefox-addons-action@v1
         with:
-          zipFilePath: './browser-extension/plugin/extension.zip'
+          zipFilePath: './browser-extension/plugin/dist/extension.zip'
           extensionId: '6a87480c-944d-43de-aa34-95ee4052f9c5'
           jwtIssuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
           jwtSecret: ${{ secrets.FIREFOX_JWT_SECRET }}
