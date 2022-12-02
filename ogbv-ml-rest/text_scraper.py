@@ -9,15 +9,15 @@ size = 2000 # Number of tweets you want to scrape
 # Add the string that you want to look for in the double quotes in the function input
 # This function will scrape the tweets between the dates given in the 'since' and 'until fields'. You can remove those to get tweets from as early as 2006
 # The tweets will be ordered from latest to oldest
-for i,tweet in enumerate(sntwitter.TwitterSearchScraper('"Mahua Moitra" since:2022-01-08 until:2022-07-15').get_items()):
+for i,tweet in enumerate(sntwitter.TwitterSearchScraper('"Hate her" since:2022-11-01 until:2022-11-20').get_items()):
     if i>(size-1):
         break
     tweets_list2.append([tweet.user.username , tweet.content])
     
 # Creating a dataframe from the tweets list above
 tweets_df2 = pd.DataFrame(tweets_list2, columns=['username', 'text'])
-final_csv = []
-url = 'https://ogbv-ml-rest.tattle.co.in/predict' #URL where the model is deployed
+final_csv = []  
+url = 'http://127.0.0.1:8081/predict' #URL where the model is deployed
 hate_percent = 0 
 for ind in tweets_df2.index:
     postvar = {'text' : tweets_df2['text'][ind]}
@@ -33,6 +33,6 @@ result_df = pd.DataFrame(final_csv, columns = ['Tweet', 'Sentiment', 'Confidence
 
 print(result_df)
     
-result_df.to_csv(r'C:\Work\ExtensionData\keywords\keyword_mahua_moitra.csv', index = True) # Saving scraped tweets as a CSV
+result_df.to_csv(r'C:\Work\ExtensionData\keywords\keyword_hate_her_20-11-2022.csv', index = True) # Saving scraped tweets as a CSV
 print('------------------\n')
 print((hate_percent*100)/size)

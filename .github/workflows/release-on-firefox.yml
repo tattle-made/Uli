@@ -1,0 +1,40 @@
+name: "Publish on Firefox"
+
+on: workflow_dispatch
+
+jobs:
+  chrome-publish:
+    name: "Pre Release Extension"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: development
+      url: "https://github.com/tattle-made/OGBV/releases"
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Get commit SHA
+        shell: bash
+        run: |
+          echo "setting variables"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          ls
+          pwd
+          npm install
+          npm run build:firefox
+          zip extension.zip ./dist/ -r
+
+      - name: "Upload to firefox"
+        uses: cardinalby/webext-buildtools-firefox-addons-action@v1
+        with:
+          zipFilePath: './browser-extension/plugin/extension.zip'
+          extensionId: '6a87480c-944d-43de-aa34-95ee4052f9c5'
+          jwtIssuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          jwtSecret: ${{ secrets.FIREFOX_JWT_SECRET }}
