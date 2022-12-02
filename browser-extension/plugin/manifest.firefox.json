@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "uli",
     "description": "Moderate your Twitter Feed",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "author": "tattlemade|cis",
     "content_security_policy": "default-src 'none'; object-src 'none'; script-src 'unsafe-inline' ; font-src https://fonts.gstatic.com; style-src 'unsafe-inline';",
     "permissions": [
