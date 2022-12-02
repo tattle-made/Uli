@@ -39,4 +39,4 @@ jobs:
           client-secret: ${{ secrets.CHROME_STORE_CLIENT_SECRET }}
           file-name: "./browser-extension/plugin/extension.zip"
           app-id: "hbfmbflgailjeobfkhpdipcdmpclinki"
-          publish: false
+          publish: true
