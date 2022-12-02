@@ -29,7 +29,8 @@ jobs:
           pwd
           npm install
           npm run build:firefox
-          zip extension.zip ./dist/ -r
+          cd dist
+          zip extension.zip * -r
 
       - name: "Upload to firefox"
         uses: cardinalby/webext-buildtools-firefox-addons-action@v1
