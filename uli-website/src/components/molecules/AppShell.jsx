@@ -20,7 +20,7 @@ export default function AppShell({ children }) {
         <Helmet>
           <meta charSet="utf-8" />
           <title>Uli</title>
-          <link rel="stylesheet" href="layout.css" />
+          <link rel="stylesheet" href="/layout.css" />
           <link rel="stylesheet" href="https://use.typekit.net/twt1ywc.css" />
           <meta name="icon" href="images/favicon-32x32.png" />
 
