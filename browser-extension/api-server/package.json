@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/busboy": "^1.2.1",
     "aws-sdk": "^2.1064.0",
     "axios": "^0.27.2",
     "cors": "^2.8.5",

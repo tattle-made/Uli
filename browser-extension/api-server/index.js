@@ -1,4 +1,6 @@
-const express = require("express");
+//console.log(`Environment : ${process.env.NODE_ENV}`);
+
+const express = require("express");  
 const app = express();
 const port = 3000;
 const cors = require("cors");
@@ -15,6 +17,7 @@ const {
 const { authentication } = require("./middlewares");
 const { encrypt, decrypt } = require("./encryption");
 const { classify } = require("./service-classifier");
+const { text } = require("express");
 
 app.use(cors());
 app.use(express.json());
@@ -23,7 +26,6 @@ app.options("*", cors());
 app.use(authentication);
 
 console.log(`Environment : ${process.env.NODE_ENV}`);
-
 app.get("/auth/register", async (req, res) => {
   try {
     const newUser = await registerAnonymousUser();
@@ -55,6 +57,32 @@ app.post("/preference/", async (req, res) => {
 
   // res.send({ ...result[0].get({ plain: true }) });
 });
+
+
+// Feedback code from here
+
+app.post("/feedback", async (req, res) => {
+  console.log("POST feedback");
+  try {
+    
+    
+
+    await feedback.create({
+      userId: req.user_id,
+      tweetText: req.tweet_text,
+      sentiment: req.tweet_sentiment,
+      confidence: req.tweet_confidence
+      
+    });
+
+    res.send({ msg: "Feedback Sent" });
+  } catch (err) {
+    res.status(501).send({ msg: "Error sending feedback" });
+  }
+});
+
+
+// Feedback code ends here
 
 app.get("/preference/", async (req, res) => {
   const user = req.user;

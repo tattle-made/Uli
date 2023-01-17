@@ -1,7 +1,4 @@
-![Cover Image](../docs/browser-extension-repo-cover.png)
-
 # Developing Locally
-
 All the code is organized into the `/src` folder. The extension uses content-script and popup page, both of which are bundled by parcel and placed in the `/dist` folder.
 
 ## Run a dev server for the plugin depending on the platform (do )
