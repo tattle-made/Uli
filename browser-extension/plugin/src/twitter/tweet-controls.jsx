@@ -181,7 +181,7 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
         console.log(feedbackConfidence);
         try {
             const feedbackResponse = await axios.post(
-                `http://127.0.0.1:3000/feedback`,
+                `http://127.0.0.1:3000/feedback`, //sending feedback to local server, the url would change to ${API_URL} in prod code
                 {
                     user_id: userLS.id,
                     tweet_text: tweet.original_text.join(' '),
