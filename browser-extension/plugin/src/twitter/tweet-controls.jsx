@@ -171,14 +171,9 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
         // let tweetUrl =
         //     tweet && tweet.tweet_url ? tweet.tweet_url : location.href;
         // console.log(tweetUrl);
+        const user_Data = await getUserData();
         let accessToken =
-            userData && userData.accessToken ? userData.accessToken : undefined;
-        console.log(userLS.id);
-        
-        console.log(userLS.accessToken);
-        console.log(tweet.original_text.join(' '));
-        console.log(feedbackSentiment);
-        console.log(feedbackConfidence);
+            user_Data && user_Data.accessToken ? user_Data.accessToken : undefined;
         try {
             const feedbackResponse = await axios.post(
                 `http://127.0.0.1:3000/feedback`, //sending feedback to local server, the url would change to ${API_URL} in prod code

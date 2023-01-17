@@ -6,7 +6,7 @@ const port = 3000;
 const cors = require("cors");
 const { upload } = require("./s3");
 
-const { preference, post } = require("./db/models");
+const { preference, post, feedback } = require("./db/models");
 const { Op } = require("sequelize");
 const { registerAnonymousUser, resetUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
@@ -64,19 +64,21 @@ app.post("/preference/", async (req, res) => {
 app.post("/feedback", async (req, res) => {
   console.log("POST feedback");
   try {
-    
+    const data = req.body;
     
 
     await feedback.create({
-      userId: req.user_id,
-      tweetText: req.tweet_text,
-      sentiment: req.tweet_sentiment,
-      confidence: req.tweet_confidence
+      userId: data.user_id,
+      tweetText: data.tweet_text,
+      sentiment: data.tweet_sentiment,
+      confidence: data.tweet_confidence
       
     });
-
+    
     res.send({ msg: "Feedback Sent" });
-  } catch (err) {
+  }  
+  catch (err) {
+    console.log(err);
     res.status(501).send({ msg: "Error sending feedback" });
   }
 });
