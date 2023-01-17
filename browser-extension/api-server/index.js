@@ -78,7 +78,7 @@ app.post("/feedback", async (req, res) => {
     res.send({ msg: "Feedback Sent" });
   }  
   catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(501).send({ msg: "Error sending feedback" });
   }
 });
