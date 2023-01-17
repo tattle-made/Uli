@@ -27,8 +27,9 @@
         "eslint-plugin-react": "^7.29.4",
         "husky": "^7.0.4",
         "lint-staged": "^12.3.7",
-        "parcel": "^2.2.1",
+        "parcel": "^2.8.2",
         "prettier": "^2.6.2",
+        "process": "^0.11.10",
         "puppeteer": "^15.5.0"
     },
     "dependencies": {
@@ -42,6 +43,7 @@
         "grommet": "^2.20.0",
         "grommet-icons": "^4.7.0",
         "i18next": "^21.6.9",
+        "lmdb": "^2.7.3",
         "prop-types": "^15.8.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

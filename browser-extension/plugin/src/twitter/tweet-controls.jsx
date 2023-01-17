@@ -16,7 +16,8 @@ import {
     Eye,
     // Menu,
     ChevronLeft,
-    XCircle
+    XCircle,
+    Flag
     // Activity,
 } from 'react-feather';
 import { saveScreenshot } from '../service-screenshot';
@@ -46,8 +47,11 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
     const [hideTweet, setHideTweet] = useState('false');
     const [hasOGBV, setHasOGBV] = useState(false);
     const [blurFlag, setBlurFlag] = useState(true);
+    const [feedbackFlag, setFeedbackFlag] = useState(false); //setting feedback flag
     const [userLS, setUserLS] = useState(undefined);
     const [preferenceLS, setPreferenceLS] = useState(undefined);
+    const [feedbackSentiment, setFeedbackSentiment] = useState(undefined);
+    const [feedbackConfidence, setFeedbackConfidence] = useState(undefined);
 
     const [message, setMessage] = useState(
         'Hey, can you help me report this post?'
@@ -84,11 +88,14 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
             preferenceData && preferenceData.enableML
                 ? preferenceData.enableML
                 : undefined;
-
+        // console.log(enableML);
+        setFeedbackFlag(enableML);
         if (enableML && accessToken) {
+            
             try {
                 const response = await axios.post(
                     `${process.env.API_URL}/predict`,
+                    // `http://127.0.0.1:8081/predict`, // for local dev
                     {
                         text: tweet.original_text.join(' ')
                     },
@@ -99,6 +106,8 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
                     }
                 );
                 const { data } = response;
+                setFeedbackConfidence(data.confidence);
+                setFeedbackSentiment(data.sentiment);
                 if (data.confidence > 0.4 && data.sentiment === 'Hate') {
                     setCategory(data.sentiment);
                     setHideTweet(true);
@@ -108,6 +117,7 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
                 console.log(`Error : server could not classify tweet`, err);
             }
         }
+        
     }
 
     async function clickCamera() {
@@ -154,6 +164,46 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
         } finally {
             setShowPopup(false);
         }
+    }
+
+    async function sendFeedback() {
+        showProgress(false);
+        // let tweetUrl =
+        //     tweet && tweet.tweet_url ? tweet.tweet_url : location.href;
+        // console.log(tweetUrl);
+        let accessToken =
+            userData && userData.accessToken ? userData.accessToken : undefined;
+        console.log(userLS.id);
+        
+        console.log(userLS.accessToken);
+        console.log(tweet.original_text.join(' '));
+        console.log(feedbackSentiment);
+        console.log(feedbackConfidence);
+        try {
+            const feedbackResponse = await axios.post(
+                `http://127.0.0.1:3000/feedback`,
+                {
+                    user_id: userLS.id,
+                    tweet_text: tweet.original_text.join(' '),
+                    tweet_sentiment: feedbackSentiment,
+                    tweet_confidence: feedbackConfidence
+                },
+                {
+                    headers: {
+                        Authorization: `token ${accessToken}`
+                    }
+                }
+
+                );
+                showNotification({ message: 'Feedback Sent' });
+
+        } catch (err) {
+            console.log(err);
+            
+            showNotification({ message: 'Error Sending Feedback' });
+        }
+        
+
     }
 
     return (
@@ -206,6 +256,14 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
                                 >
                                     <Tip content={'Show/Hide original tweet'}>
                                         <Eye size={16} color={'#212121'} />
+                                    </Tip>
+                                </UnfocussedButton>
+                            ) : null}
+                            
+                            {feedbackFlag ? (                                
+                                <UnfocussedButton onClick={sendFeedback}>
+                                    <Tip content={'Give feedback'}>
+                                        <Flag size={16} color={'#212121'} />
                                     </Tip>
                                 </UnfocussedButton>
                             ) : null}

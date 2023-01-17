@@ -15,7 +15,7 @@ services:
     volumes:
       - "~/data/ogbv_plugin/db:/var/lib/mysql"
   db_gui:
-    image: adminer
+    image: adminer 
     restart: always
     ports:
       - 8080:8080

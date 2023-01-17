@@ -3,6 +3,8 @@ import config from '../../config';
 
 const { API_URL } = config;
 
+// change url from ${API_URL} to http://127.0.0.1:3000 for local dev
+
 async function login(username, password) {
     const result = await axios.get(
         `${API_URL}/auth/login?username=${username}&password=${password}`
