@@ -11,6 +11,8 @@ const NavBarByLang = {
       <NavLink to={"/user-guide"}>User Guide</NavLink>
       <NavLink to={"/about"}>About</NavLink>
       <NavLink to={"/faq"}>FAQ</NavLink>
+      <NavLink to={"/research"}>Research</NavLink>
+
     </Box>
   ),
   hi: (
