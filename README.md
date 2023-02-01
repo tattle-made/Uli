@@ -35,7 +35,7 @@ Machine learning tools can also be designed to reflect the values of those at th
 
 # Contributing
 
-We are currently working wowards the Chrome and Firefox Extension's v0.2.0 Release.
+We are currently working towards the Chrome and Firefox Extension's v0.1.13.
 You can track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
 Find an issue or domain that interests you and reach out to us.
 
@@ -48,3 +48,7 @@ For more details on this project please send an email to one of the following em
 - cheshta@cis-india.org
 - ambika@cis-india.org
 - tarunima@tattle.co.in
+
+## Website
+
+Visit the Uli website at https://uli.tattle.co.in/
