@@ -1,14 +1,14 @@
 # Development
 
 1. run `docker-compose up`
-   ensure that mysql is running. A gui can be found at localhost:8080.
+   ensure that mysql is running. A gui can be found at localhost:8080 after running the docker-compose
    Enter the following values to connect to it.
    Server : db
    Username : tattle
    Password : tattle_pw
-   Database : ogbv_plugin
+   Database : uli-dev
 
-2. Ensure all the environtment variables specified in development.env file are set.
+2. Ensure all the environment variables specified in development.env file are set.
 
 3. run `npm install`
 

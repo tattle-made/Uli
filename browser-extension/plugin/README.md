@@ -16,7 +16,9 @@ Sometimes you might have to press the reload button of your extension in the chr
 
 # Building The Extension
 
-run `npm run build` and it will give you a bundled and minified files in the `/dist` folder. This can then be shared to share the extension with others.
+run `npm run build` (`npm run build:firefox` when you are building for Firefox) and it will give you a bundled and minified files in the `/dist` folder. This can then be shared to share the extension with others.
+
+If you are developing on windows, a few common issues are resolved in `browser-extension/README.md`. Please visit that if you are facing issues.
 
 ![Preferences Page in English](../assets/ogbv-preferences-en.png)
 ![Preferences Page in Hindi](../assets/ogbv-preferences-hi.png)
@@ -36,4 +38,4 @@ run `npm run build` and it will give you a bundled and minified files in the `/d
 ## Entry Points :
 
 The Chrome Extension has 2 entry points - content-script.js and options.html.
-Content Script is a javascript file that is loaded on every page that this plugin is permitted to, in our case twitter.com. Optionsl.html is the UI of the plugin that can be accessed by clicking on the UI icon in the browser.
+Content Script is a javascript file that is loaded on every page that this plugin is permitted to, in our case twitter.com. Options.html is the UI of the plugin that can be accessed by clicking on the UI icon in the browser.
