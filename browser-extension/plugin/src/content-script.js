@@ -1,7 +1,7 @@
 import { dom } from './twitter';
 import { current } from './twitter/pages';
 const { setOnChangeListener } = dom;
-import transform from './transform';
+import transform_v2 from './transform-v2';
 import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData, setPreferenceData } = repository;
@@ -24,8 +24,8 @@ function processPage(newUrl) {
             } else {
                 let timeline = getTimeline();
                 // log({ timeline });
-                transform.processNewlyAddedNodes(timeline.children);
-                setOnChangeListener(timeline, transform.processNewlyAddedNodes);
+                transform_v2.processNewlyAddedNodes_v2(timeline.children); //changed to v2 here
+                setOnChangeListener(timeline, transform_v2.processNewlyAddedNodes_v2);
             }
             clearInterval(mainLoadedChecker);
         } else {
