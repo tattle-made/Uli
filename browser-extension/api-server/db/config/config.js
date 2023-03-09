@@ -3,7 +3,7 @@ module.exports = {
     username: "tattle",
     password: "tattle_pw",
     database: "uli_dev",
-    host: "127.0.0.1",
+    host: "db",
     dialect: "mysql",
   },
   test: {

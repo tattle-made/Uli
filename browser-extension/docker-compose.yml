@@ -8,17 +8,33 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root_pw
       MYSQL_USER: tattle
-      MYSQL_DATABASE: uli_dev
       MYSQL_PASSWORD: tattle_pw
+      MYSQL_DATABASE: uli_dev
     ports:
       - 3306:3306
     volumes:
       - "~/data/ogbv_plugin/db:/var/lib/mysql"
   db_gui:
-    image: adminer 
+    image: adminer
     restart: always
     ports:
       - 8080:8080
+
+  api-server:
+    container_name: api-server
+    build:
+      context: api-server
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    command: tail -f /dev/null
+    ports:
+      - 3000:3000
+    volumes:
+      - "./api-server:/app"
+    env_file:
+      - "./api-server/development.env"
+
   ogbv-ml-rest:
     container_name: ogbv-ml-rest
     build:

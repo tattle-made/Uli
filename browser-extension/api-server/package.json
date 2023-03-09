@@ -6,7 +6,8 @@
   "scripts": {
     "prepare": "cd ../.. && husky install \"browser extension/api-server/.husky\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pre-commit": "npm audit --audit-level=moderate"
+    "pre-commit": "npm audit --audit-level=moderate",
+    "dev": "npx sequelize-cli db:migrate && npx nodemon index.js"
   },
   "keywords": [],
   "author": "",
