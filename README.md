@@ -13,11 +13,11 @@ The plugin installation link and the user-guide can be found here: [https://uli.
 ![Uli September posts](https://user-images.githubusercontent.com/13188366/224235833-e6493aab-9706-4b05-ac5a-fb1c0cc97f03.gif)
 
 ## Quick Guide
-1. [Motivation](#Motivation)
-2. [Approach](#Approach)
-3. [Roadmap](#Roadmap)
-4. [Contribute](#Contribute)
-5. [Contact](#Contact)
+1. [Motivation](#motivation-)
+2. [Approach](#approach-)
+3. [Roadmap](roadmap.md)
+4. [Contribute](#contributing-)
+5. [Contact](#contact-)
 
 
 ## Motivation <a name="Motivation"></a>
