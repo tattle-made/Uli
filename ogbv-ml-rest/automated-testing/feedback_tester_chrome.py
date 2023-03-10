@@ -19,7 +19,7 @@ def expand_shadow_element(element):
 
 options = webdriver.ChromeOptions()
 # add absolute path to the dist folder of the extension here
-options.add_argument(r'--load-extension=C:\Work\playground\uli-tester\extension-chrome\dist')
+options.add_argument(r'--load-extension=path/to/dist/folder')
 
 # loading up the webdriver
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options = options)
@@ -55,7 +55,7 @@ try:
     save_button.click()
     # add a hardcoded url of a known ogbv tweet here, a sample url is already provided
     driver.get('https://twitter.com/jackantonoff/status/1579311659742416896')
-    sleep(5)
+    sleep(8)
     twt_control_bar = driver.find_element(By.CLASS_NAME,'ogbv-tweetcontrol-bar') 
     icons = twt_control_bar.find_elements(By.TAG_NAME, 'svg')
     icons[2].click() # initiates feedback

@@ -19,7 +19,7 @@ def expand_shadow_element(element):
 
 options = webdriver.ChromeOptions()
 # add absolute path to the dist folder of the extension here
-options.add_argument(r'--load-extension=path/to/dist_folder')
+options.add_argument(r'--load-extension=path/to/dist/folder')
 
 # loading up the webdriver
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options = options)
@@ -55,7 +55,7 @@ try:
     save_button.click()
     # add a hardcoded url of a known ogbv tweet here, a sample url is already provided
     driver.get('https://twitter.com/jackantonoff/status/1579311659742416896')
-    sleep(5)
+    sleep(10)
     driver.find_element('xpath','//p[contains(text(),"Uli detected this tweet to be oGBV")]') # detecting the banner
     print('Success! :-)')
 except NoSuchElementException:
