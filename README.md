@@ -1,16 +1,29 @@
-**This is a joint project by the [Centre for Internet and Society](https://cis-india.org/) and Tattle Civic Tech. It is funded by [Omidyar Network India](https://www.omidyarnetwork.in/) as part of their Digital Society Challenge grant.**
-
+**
 ## About
+
+![Uli Logo-Header-03](https://user-images.githubusercontent.com/13188366/224236305-6a3b3f26-f5b3-4256-b0dc-5d2b4b8d5e27.png)
+
+Uli is a browser plugin that:
+* De-normalizes the everyday violence that people of marginalized genders experience online in India, and
+* Provides tools for relief and collective response.
+
+It is an attempt to invert the top-down logics of platform moderation and center the experiences of those subject to online gender-based violence. 
+
+![Uli September posts](https://user-images.githubusercontent.com/13188366/224235833-e6493aab-9706-4b05-ac5a-fb1c0cc97f03.gif)
+
+
+## Motivation
 
 The graphic narrative titled ‘Personal (Cyber) Space’ published in 2016 by Parthasarthy and Malhotra narrates an experience of a young internet user. The animated short comic hosted by Kadak, a South Asian women collective, asks: ‘If one says something, there’s the fear of hateful response. But if one doesn’t say something, isn’t that silence counterproductive?’ only to end with the question, ‘so what does one say?’
 
-Violence, abuse, and hate speech on web 2.0 has become pervasive to one’s experience of social media and the existing scholarship suggests that it is those situated at the margins who are worst affected. The question posed by the comic evokes a range of problems that are at the heart of this everyday violence. The problem of online violence encompasses within itself legal, political, social, cultural and technological complexities that make any easy solution impossible. This overdetermined nature mandates that we seek solutions from multiple avenues.
+Violence, abuse, and hate speech on the web has become pervasive to one’s experience of social media and the existing scholarship suggests that it is those situated at the margins who are worst affected. People of marginalized genders in India are disproportionately affected. Simultaneously, the business models of social media platforms skew the incentives against protecting users who use social media in non-dominant languages. Uli is an attempt to build tools to protect and enable collective response for social media users of marginalizd genders. 
 
-Funded by [Omidyar Network India](https://www.omidyarnetwork.in/) as part of their Digital Society Challenge grant, the [Centre for Internet and Society](https://cis-india.org/) and Tattle Civic Tech are building a free-to-use user-facing web plugin. The plug-in will help users to moderate instances of online violence in Indian languages with a focus on the experience of persons situated at the margins of gender, caste, religion and sexuality.
 
 ## Approach
 
-The project borrows from feminist approaches to Machine Learning technology and aims to intervene into the ongoing debate around content moderation. The existing algorithmic approaches to automated content moderation strategies are generally biased towards English-language content paying very limited attention to social, cultural and linguistic diversity elsewhere. Moreover, the existing approaches understand moderation through a binary logic of: leave content up or remove it. With multiple political and legal implications emerging from these biases, the existing approaches threaten to pose more problems rather than solving them. With this tool, the project aims to redress these problems and find creative ways in which moderation can empower multiple users, especially the ones that are most affected.
+The problem of online violence encompasses within itself legal, political, social, cultural and technological complexities that make any easy solution impossible. This overdetermined nature mandates that we seek solutions from multiple avenues. As with all Tattle projects, we don't expect technology to provide all the answers, but for it to be intertwined in human action. 
+
+Specifically around redaction, the project borrows from feminist approaches to Machine Learning technology and aims to intervene into the ongoing debate around content moderation. The existing algorithmic approaches to automated content moderation strategies are generally biased towards English-language content paying very limited attention to social, cultural and linguistic diversity elsewhere. Moreover, the existing approaches understand moderation through a binary logic of: leave content up or remove it. With multiple political and legal implications emerging from these biases, the existing approaches threaten to pose more problems rather than solving them. With this tool, the project aims to redress these problems and find creative ways in which moderation can empower multiple users, especially the ones that are most affected.
 
 Through extensive qualitative data collection methods and participatory analysis, the project will seek participation from different communities to arrive at a co-liberation model. This model will be based on needs articulated by communities, rather than the priorities of powerful institutions. We will also aim to make our model for content moderation transparent and easily understandable for users. Our methodology, annotation guidelines, datasets, and the limitations in the dataset will be archived in public repositories online. Through this, we will aim to raise awareness about content moderation systems and gender-based violence online.
 
@@ -48,6 +61,10 @@ For more details on this project please send an email to one of the following em
 - cheshta@cis-india.org
 - ambika@cis-india.org
 - tarunima@tattle.co.in
+
+## Funding:
+
+The pilot of the project was managed by the [Centre for Internet and Society](https://cis-india.org/) and Tattle Civic Tech. It was funded by [Omidyar Network India](https://www.omidyarnetwork.in/) as part of their Digital Society Challenge grant.**
 
 ## Website
 
