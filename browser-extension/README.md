@@ -28,7 +28,7 @@ Requirements :
 - npm : v8.7.0^
 - nodejs : 16.4.2^
 
-Ensure that the following Environment Variables are available to your api-server process.
+When you run `docker-compose up`, ensure to have a `development.env` file with the following variables in the `api-server` directory.
 
 ```
 NODE_ENV=development
@@ -40,7 +40,7 @@ DB_USERNAME: XXXXXXXXXXX
 DB_PASSWORD: XXXXXXXXXXX
 ```
 
-Alternatively, create a `development.env` file with the variables in the `api-server` directory.
+
 
 ## For Development
 
