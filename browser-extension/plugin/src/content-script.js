@@ -6,32 +6,88 @@ import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData, setPreferenceData } = repository;
 import { updateSlurList } from './slur-replace';
+import transformGeneral from './transform-general';
 
 log('Content Script Loaded');
 
 function processPage(newUrl) {
-    var mainLoadedChecker = setInterval(() => {
-        console.log('tick');
-        const targetNode = document.getElementsByTagName('main')[0];
-        console.log({ targetNode });
-        if (targetNode) {
-            let currentPage = current(newUrl);
-            const { page } = currentPage;
-            const { getTimeline } = page;
 
-            if (getTimeline === undefined) {
-                log('Unknown State. Could not find Timeline');
-            } else {
-                let timeline = getTimeline();
-                // log({ timeline });
-                transform_v2.processNewlyAddedNodes_v2(timeline.children); //changed to v2 here
-                setOnChangeListener(timeline, transform_v2.processNewlyAddedNodes_v2);
+    const twitterUrl = 'twitter.com'
+    if (newUrl.includes(twitterUrl)) {
+
+        var mainLoadedChecker = setInterval(() => {
+            
+            if (newUrl.includes(twitterUrl)) {
+                console.log('tick');
+                const targetNode = document.getElementsByTagName('main')[0];
+                console.log({ targetNode });
+                if (targetNode) {
+                    let currentPage = current(newUrl);
+                    const { page } = currentPage;
+                    const { getTimeline } = page;
+    
+                    if (getTimeline === undefined) {
+                        log('Unknown State. Could not find Timeline');
+                    } else {
+                        let timeline = getTimeline();
+                        // log({ timeline });
+                        transform_v2.processNewlyAddedNodes_v2(timeline.children); //changed to v2 here
+                        setOnChangeListener(timeline, transform_v2.processNewlyAddedNodes_v2);
+                    }
+                    
+                    clearInterval(mainLoadedChecker);
+                } else {
+                    console.log('main section loaded');
+                }
             }
-            clearInterval(mainLoadedChecker);
-        } else {
-            console.log('main section loaded');
-        }
-    }, 500);
+            
+        }, 500);
+
+    }
+    else {
+
+
+        function mySetInterval(f,t) {
+            var x =
+              setInterval(
+                function() {
+                  f();
+                  clearInterval(x);
+                },
+                t 
+              )
+          }
+          
+        mySetInterval(function() {
+
+            console.log('tick');
+            const elems = document.querySelectorAll('p, span, li');
+            
+            console.log({ elems });
+            
+            if (elems) {
+                  
+
+                
+                
+                transformGeneral.processNewlyAddedNodesGeneral(elems); 
+                setOnChangeListener(elems, transformGeneral.processNewlyAddedNodesGeneral);
+                
+                clearInterval(mainLoadedChecker);
+                console.log(mainLoadedChecker);
+
+            }
+            else {
+                console.log('main section loaded');
+            }
+           
+    }, 500)
+    
+
+    }
+    
+
+    
 }
 
 /**
@@ -74,7 +130,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
             await setPreferenceData({ ...pref, slurList });
         }
 
-        return true;
+        return true; 
     }
 });
 
