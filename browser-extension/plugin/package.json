@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start:options": "parcel src/options.jsx",
         "start:contentScript": "parcel src/content-script.js",
-        "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && copy icon* dist && copy src/background.js dist",
+        "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist && cp src/background.js dist",
         "moveBuildArtefactsToFirefoxDistDir": "cp src/options.html dist && cp manifest.firefox.json dist/manifest.json && cp icon* dist && cp src/background.js dist",
         "build": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
         "build:firefox": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToFirefoxDistDir",
