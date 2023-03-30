@@ -46,7 +46,6 @@ function getTopBannerElement() {
 }
 
 function setOnChangeListener(timeline, onChange) {
-    console.log({ TIMELINE: timeline, onChange });
     const onMutation = async function (mutationsList) {
         // console.log('process tweets');
         for (const mutation of mutationsList) {

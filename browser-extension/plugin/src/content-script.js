@@ -11,12 +11,12 @@ import transformGeneral from './transform-general';
 log('Content Script Loaded');
 
 function processPage(newUrl) {
+    console.log(newUrl);
+    const twitterUrl = 'twitter.com';
+    let mainLoadedChecker;
 
-    const twitterUrl = 'twitter.com'
     if (newUrl.includes(twitterUrl)) {
-
-        var mainLoadedChecker = setInterval(() => {
-            
+        mainLoadedChecker = setInterval(() => {
             if (newUrl.includes(twitterUrl)) {
                 console.log('tick');
                 const targetNode = document.getElementsByTagName('main')[0];
@@ -25,58 +25,51 @@ function processPage(newUrl) {
                     let currentPage = current(newUrl);
                     const { page } = currentPage;
                     const { getTimeline } = page;
-    
+
                     if (getTimeline === undefined) {
                         log('Unknown State. Could not find Timeline');
                     } else {
                         let timeline = getTimeline();
                         // log({ timeline });
-                        transform_v2.processNewlyAddedNodes_v2(timeline.children); //changed to v2 here
-                        setOnChangeListener(timeline, transform_v2.processNewlyAddedNodes_v2);
+                        transform_v2.processNewlyAddedNodes_v2(
+                            timeline.children
+                        ); //changed to v2 here
+                        setOnChangeListener(
+                            timeline,
+                            transform_v2.processNewlyAddedNodes_v2
+                        );
                     }
-                    
+
                     clearInterval(mainLoadedChecker);
                 } else {
                     console.log('main section loaded');
                 }
             }
-            
         }, 500);
+    } else {
+        console.log('non twitter site detected');
 
-    }
-    else {
-
-
-        var mainLoadedChecker = setInterval(() => {
-
+        mainLoadedChecker = setInterval(() => {
             console.log('tick');
-            const elems = document.querySelectorAll('p, span, li');
-            
-            console.log({ elems });
-            
-            if (elems) {
-                  
+            const body = document.getElementsByTagName('body')[0];
 
-                
-                
-                transformGeneral.processNewlyAddedNodesGeneral(elems); 
-                setOnChangeListener(elems, transformGeneral.processNewlyAddedNodesGeneral);
-                
+            if (body) {
+                console.log('body found');
+                const elems = body.querySelectorAll('span,p,h1,h2,h3,h4,h5,h6');
+
+                transformGeneral.processNewlyAddedNodesGeneral(elems);
+                setOnChangeListener(
+                    body,
+                    transformGeneral.processNewlyAddedNodesGeneral
+                );
+
                 clearInterval(mainLoadedChecker);
                 console.log(mainLoadedChecker);
-
-            }
-            else {
+            } else {
                 console.log('main section loaded');
             }
-           
-        }, 500)
-    
-
+        }, 500);
     }
-    
-
-    
 }
 
 /**
@@ -107,7 +100,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
         log('slur added from bg', slur);
         const pref = await getPreferenceData();
         if (!pref) {
-            slurList = slur;
+            let slurList = slur;
             await setPreferenceData({ ...pref, slurList });
         } else {
             let { slurList } = pref;
@@ -119,7 +112,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
             await setPreferenceData({ ...pref, slurList });
         }
 
-        return true; 
+        return true;
     }
 });
 
