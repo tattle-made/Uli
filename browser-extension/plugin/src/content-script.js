@@ -47,18 +47,7 @@ function processPage(newUrl) {
     else {
 
 
-        function mySetInterval(f,t) {
-            var x =
-              setInterval(
-                function() {
-                  f();
-                  clearInterval(x);
-                },
-                t 
-              )
-          }
-          
-        mySetInterval(function() {
+        var mainLoadedChecker = setInterval(() => {
 
             console.log('tick');
             const elems = document.querySelectorAll('p, span, li');
@@ -81,7 +70,7 @@ function processPage(newUrl) {
                 console.log('main section loaded');
             }
            
-    }, 500)
+        }, 500)
     
 
     }
