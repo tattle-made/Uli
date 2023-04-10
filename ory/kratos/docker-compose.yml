@@ -3,7 +3,7 @@ services:
   kratos-migrate:
     image: oryd/kratos:v0.11.0
     environment:
-      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
+      - DSN=postgres://kratos:secret@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
       - type: volume
         source: kratos-sqlite
@@ -16,14 +16,20 @@ services:
     restart: on-failure
     networks:
       - intranet
+  
   kratos-selfservice-ui-node:
     image: oryd/kratos-selfservice-ui-node:v0.11.0
+    ports:
+      - "4455:4455"
     environment:
+      - PORT=4455
+      - SECURITY_MODE=
       - KRATOS_PUBLIC_URL=http://kratos:4433/
       - KRATOS_BROWSER_URL=http://127.0.0.1:4433/
     networks:
       - intranet
     restart: on-failure
+  
   kratos:
     depends_on:
       - kratos-migrate
@@ -33,7 +39,7 @@ services:
       - '4434:4434' # admin
     restart: unless-stopped
     environment:
-      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+      - DSN=postgres://kratos:secret@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
       - LOG_LEVEL=trace
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
     volumes:
@@ -46,6 +52,18 @@ services:
         target: /etc/config/kratos
     networks:
       - intranet
+  
+  postgresd:
+    image: postgres:9.6
+    ports:
+      - "5433:5433"
+    environment:
+      - POSTGRES_USER=kratos
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=kratos
+    networks:
+      - intranet
+    
   mailslurper:
     image: oryd/mailslurper:latest-smtps
     ports:
