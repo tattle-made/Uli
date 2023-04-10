@@ -18,6 +18,11 @@ selfservice:
   methods:
     password:
       enabled: true
+      config:
+        haveibeenpwned_enabled: true
+        ignore_network_errors: true
+        min_password_length: 8
+        identifier_similarity_check_enabled: true
     totp:
       config:
         issuer: Kratos
@@ -28,6 +33,8 @@ selfservice:
       enabled: false
     code:
       enabled: true
+      config:
+        lifespan: 15m
 
   flows:
     error:
@@ -42,13 +49,17 @@ selfservice:
       enabled: true
       ui_url: http://127.0.0.1:4455/recovery
       use: code
+      lifespan: 15m
+      #notify_unknown_recipients: false
 
     verification:
       enabled: true
       ui_url: http://127.0.0.1:4455/verification
       use: code
+      lifespan: 15m
+      #notify_unknown_recipients: false
       after:
-        default_browser_return_url: http://127.0.0.1:4455/
+        default_browser_return_url: http://127.0.0.1:4455/login
 
     logout:
       after:
@@ -65,11 +76,13 @@ selfservice:
     registration:
       lifespan: 10m
       ui_url: http://127.0.0.1:4455/registration
+      enabled: true
 
 log:
   level: debug
   format: text
-  leak_sensitive_values: true
+  leak_sensitive_values: false
+  redaction_text: "<REDACTED>"
 
 secrets:
   cookie:
@@ -83,7 +96,13 @@ ciphers:
 hashers:
   algorithm: bcrypt
   bcrypt:
-    cost: 8
+    cost: 12
+
+session:
+  lifespan: 24h
+  earliest_possible_extend: 24h
+  whoami:
+    required_aal: highest_available
 
 identity:
   default_schema_id: default
