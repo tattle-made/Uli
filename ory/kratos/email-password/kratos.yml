@@ -26,7 +26,7 @@ selfservice:
         identifier_similarity_check_enabled: true
     totp:
       config:
-        issuer: Kratos
+        issuer: Tattle
       enabled: true
     lookup_secret:
       enabled: true
