@@ -1,4 +1,4 @@
-version: v0.11.0
+version: v0.11.1
 
 dsn: memory
 
@@ -35,7 +35,13 @@ selfservice:
       enabled: true
       config:
         lifespan: 15m
-
+    oidc:
+      enabled: false
+    webauthn:
+      enabled: false
+    profile:
+      enabled: false
+  
   flows:
     error:
       ui_url: http://127.0.0.1:4455/error
