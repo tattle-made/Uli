@@ -21,6 +21,7 @@ selfservice:
       config:
         haveibeenpwned_enabled: true
         ignore_network_errors: true
+        haveibeenpwned_host: "api.pwnedpasswords.com"
         min_password_length: 8
         identifier_similarity_check_enabled: true
     totp:

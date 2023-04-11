@@ -5,10 +5,6 @@ services:
     environment:
       - DSN=postgres://kratos:secret@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
-      - type: volume
-        source: kratos-sqlite
-        target: /var/lib/sqlite
-        read_only: false
       - type: bind
         source: ./email-password
         target: /etc/config/kratos
@@ -43,10 +39,6 @@ services:
       - LOG_LEVEL=trace
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
     volumes:
-      - type: volume
-        source: kratos-sqlite
-        target: /var/lib/sqlite
-        read_only: false
       - type: bind
         source: ./email-password
         target: /etc/config/kratos
@@ -73,5 +65,3 @@ services:
       - intranet
 networks:
   intranet:
-volumes:
-  kratos-sqlite:
