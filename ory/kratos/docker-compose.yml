@@ -15,8 +15,8 @@ services:
   
   kratos-selfservice-ui-node:
     image: oryd/kratos-selfservice-ui-node:v0.12.6
-    ports:
-      - "4455:4455"
+    #ports:
+    #  - "4455:4455"
     environment:
       - PORT=4455
       - SECURITY_MODE=
