@@ -101,9 +101,16 @@ ciphers:
   algorithm: xchacha20-poly1305
 
 hashers:
-  algorithm: bcrypt
-  bcrypt:
-    cost: 12
+  algorithm: argon2
+  argon2:
+    iterations: 3
+    parallelism: 1
+    salt_length: 16
+    key_length: 32
+    expected_duration: 500ms
+    expected_deviation: 500ms
+    dedicated_memory: 1GB
+    memory: 128MB
 
 session:
   lifespan: 24h
