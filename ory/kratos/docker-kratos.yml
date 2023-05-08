@@ -30,9 +30,9 @@ services:
     depends_on:
       - kratos-migrate
     image: oryd/kratos:v0.11.1
-    ports:
-      - '4433:4433' # public
-      - '4434:4434' # admin
+    #ports:
+    #  - '4433:4433' # public
+    #  - '4434:4434' # admin
     restart: unless-stopped
     environment:
       - DSN=postgres://kratos:secret@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
@@ -47,8 +47,8 @@ services:
   
   postgresd:
     image: postgres:15.2
-    ports:
-      - "5433:5433"
+    #ports:
+    #  - "5433:5433"
     environment:
       - POSTGRES_USER=kratos
       - POSTGRES_PASSWORD=secret
