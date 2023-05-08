@@ -1,6 +1,8 @@
 log:
   level: debug
   format: json
+  leak_sensitive_values: false
+  redaction_text: "<REDACTED>"
 
 serve:
   proxy:
@@ -82,6 +84,7 @@ mutators:
     config:
       issuer_url: http://127.0.0.1:4455/
       jwks_url: file:///etc/config/oathkeeper/id_token.jwks.json
+      ttl: 1m
       claims: |
         {
           "session": {{ .Extra | toJson }}
