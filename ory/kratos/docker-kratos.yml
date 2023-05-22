@@ -2,6 +2,11 @@ version: '3.7'
 services:
   kratos-migrate:
     image: oryd/kratos:v0.11.1
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     environment:
       - DSN=postgres://kratos:secret@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
@@ -15,8 +20,6 @@ services:
   
   kratos-selfservice-ui-node:
     image: oryd/kratos-selfservice-ui-node:v0.12.6
-    #ports:
-    #  - "4455:4455"
     environment:
       - PORT=4455
       - SECURITY_MODE=
@@ -30,13 +33,15 @@ services:
     depends_on:
       - kratos-migrate
     image: oryd/kratos:v0.11.1
-    #ports:
-    #  - '4433:4433' # public
-    #  - '4434:4434' # admin
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     environment:
       - DSN=postgres://kratos:secret@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
-      - LOG_LEVEL=trace
+      - LOG_LEVEL=info
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
     volumes:
       - type: bind
@@ -46,9 +51,7 @@ services:
       - intranet
   
   postgresd:
-    image: postgres:15.2
-    #ports:
-    #  - "5433:5433"
+    image: postgres:15.3
     environment:
       - POSTGRES_USER=kratos
       - POSTGRES_PASSWORD=secret
