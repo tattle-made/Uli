@@ -58,9 +58,17 @@ The ML model is based on needs articulated by communities, rather than the prior
 | ----------------- | -------------------------------------------------------------------------------------------- |
 | [browser extension](https://github.com/tattle-made/OGBV/tree/main/annotators) | a browser extension that helps moderate and mitigate online gender based violence on twitter |
 | [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets                                                                 |
-| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques         |
-| [scrapers](https://github.com/tattle-made/OGBV/tree/main/scrapers)          | Twitter and Instagram scrapers we used to collect data for training ML models                |
-| [ogbv-ml-rest](https://github.com/tattle-made/OGBV/tree/main/ogbv-ml-rest)     | REST API server and OGBV classifier                                                          |
+| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques 
+
+### Features supported by versions
+
+| Feature         | Chrome Production Version     | Firefox Production Version |
+|--------------|-----------|------------|
+| Slur Replacement | :heavy_check_mark:      | :heavy_check_mark:       |
+| Machine Learning based OGBV filter    | :heavy_check_mark:  | :heavy_check_mark:       |
+| Feedback for the ML feature    | :heavy_check_mark:  | :heavy_multiplication_x:       |
+| Addition of Slurs Via Right Click    | :heavy_check_mark:  | :heavy_check_mark:       |
+| New Parsing system    | :heavy_check_mark:  | :heavy_multiplication_x:       |
 
 # Contributing <a name="Contribute"></a>
 
