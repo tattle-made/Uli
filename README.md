@@ -64,11 +64,14 @@ The ML model is based on needs articulated by communities, rather than the prior
 
 | Feature         | Chrome Production Version     | Firefox Production Version |
 |--------------|-----------|------------|
-| Slur Replacement | :heavy_check_mark:      | :heavy_check_mark:       |
+| Slur Replacement on Twitter | :heavy_check_mark:      | :heavy_check_mark:       |
 | Machine Learning based OGBV filter    | :heavy_check_mark:  | :heavy_check_mark:       |
 | Feedback for the ML feature    | :heavy_check_mark:  | :heavy_multiplication_x:       |
 | Addition of Slurs Via Right Click    | :heavy_check_mark:  | :heavy_check_mark:       |
 | New Parsing system    | :heavy_check_mark:  | :heavy_multiplication_x:       |
+| Slur Replacement on Web | :heavy_check_mark:      | :heavy_multiplication_x:       |
+
+Some of the features in Firefox are broken/missing because of the following issue: https://github.com/tattle-made/OGBV/issues/233
 
 # Contributing <a name="Contribute"></a>
 
