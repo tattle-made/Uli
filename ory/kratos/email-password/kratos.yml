@@ -1,0 +1,129 @@
+version: v0.11.1
+
+dsn: memory
+
+serve:
+  public:
+    base_url: http://127.0.0.1:4433/
+    cors:
+      enabled: true
+  admin:
+    base_url: http://kratos:4434/
+
+selfservice:
+  default_browser_return_url: http://127.0.0.1:4455/
+  allowed_return_urls:
+    - http://127.0.0.1:4455
+
+  methods:
+    password:
+      enabled: true
+      config:
+        haveibeenpwned_enabled: true
+        ignore_network_errors: true
+        haveibeenpwned_host: "api.pwnedpasswords.com"
+        min_password_length: 8
+        identifier_similarity_check_enabled: true
+    totp:
+      config:
+        issuer: Tattle
+      enabled: true
+    lookup_secret:
+      enabled: true
+    link:
+      enabled: false
+    code:
+      enabled: true
+      config:
+        lifespan: 15m
+    oidc:
+      enabled: false
+    webauthn:
+      enabled: false
+    profile:
+      enabled: false
+  
+  flows:
+    error:
+      ui_url: http://127.0.0.1:4455/error
+
+    settings:
+      ui_url: http://127.0.0.1:4455/settings
+      privileged_session_max_age: 15m
+      required_aal: highest_available
+
+    recovery:
+      enabled: true
+      ui_url: http://127.0.0.1:4455/recovery
+      use: code
+      lifespan: 15m
+      #notify_unknown_recipients: false
+
+    verification:
+      enabled: true
+      ui_url: http://127.0.0.1:4455/verification
+      use: code
+      lifespan: 15m
+      #notify_unknown_recipients: false
+      after:
+        default_browser_return_url: http://127.0.0.1:4455/login
+
+    logout:
+      after:
+        default_browser_return_url: http://127.0.0.1:4455/login
+
+    login:
+      ui_url: http://127.0.0.1:4455/login
+      lifespan: 10m
+      after:
+        password:
+          hooks:
+            - hook: require_verified_address
+
+    registration:
+      lifespan: 10m
+      ui_url: http://127.0.0.1:4455/registration
+      enabled: true
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: false
+  redaction_text: "<REDACTED>"
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+  cipher:
+    - 32-LONG-SECRET-NOT-SECURE-AT-ALL
+
+ciphers:
+  algorithm: xchacha20-poly1305
+
+hashers:
+  algorithm: argon2
+  argon2:
+    iterations: 3
+    parallelism: 1
+    salt_length: 16
+    key_length: 32
+    expected_duration: 500ms
+    expected_deviation: 500ms
+    dedicated_memory: 1GB
+    memory: 128MB
+
+session:
+  lifespan: 24h
+  earliest_possible_extend: 24h
+  whoami:
+    required_aal: highest_available
+
+identity:
+  default_schema_id: default
+  schemas:
+    - id: default
+      url: file:///etc/config/kratos/identity.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
