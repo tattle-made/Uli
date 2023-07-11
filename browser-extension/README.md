@@ -45,8 +45,8 @@ DB_PASSWORD: XXXXXXXXXXX
 ## For Development
 
 ```
-git clone https://github.com/tattle-made/OGBV.git
-cd OGBV/browser-extension/
+git clone https://github.com/tattle-made/Uli.git
+cd Uli/browser-extension/
 cd plugin && npm install
 cd ..
 cd api-server && npm install
@@ -55,7 +55,7 @@ docker-compose up
 ```
 
 If you get `ERROR: Unknown database 'uli_dev'`
-, the database was not successfully created and database migration failed. Manually create the `uli_dev` database by logging into `http://localhost:8080/` using the username and password from `OGBV/browser-extension/api-server/db/config/config.js` and execute the following
+, the database was not successfully created and database migration failed. Manually create the `uli_dev` database by logging into `http://localhost:8080/` using the username and password from `Uli/browser-extension/api-server/db/config/config.js` and execute the following
 
 ```
 docker compose down -v
