@@ -25,8 +25,8 @@
 
 Requirements :
 
-- npm : v8.7.0^
-- nodejs : 16.4.2^
+- npm : v8.3.1^
+- nodejs : 16.14.0^
 
 When you run `docker-compose up`, ensure to have a `development.env` file with the following variables in the `api-server` directory.
 
@@ -46,14 +46,24 @@ DB_PASSWORD: XXXXXXXXXXX
 
 ```
 git clone https://github.com/tattle-made/OGBV.git
-cd browser-extension/
+cd OGBV/browser-extension/
 cd plugin && npm install
+cd ..
+cd api-server && npm install
+cd ..
 docker-compose up
 ```
 
-Setup the database by running `docker exec -it api-server npx sequelize-cli db:migrate`. You should be able to see uli related tables in the sql database now.
+If you get `ERROR: Unknown database 'uli_dev'`
+, the database was not successfully created and database migration failed. Manually create the `uli_dev` database by logging into `http://localhost:8080/` using the username and password from `OGBV/browser-extension/api-server/db/config/config.js` and execute the following
 
-To run the the api server run `docker exec -it api-server npx sequelize-cli nodemon index.js`.
+```
+docker compose down -v
+docker compose up
+```
+You should now see database migration in the logs. The `api-server` will be running now.
+
+
 
 To run the plugin development server, run `cd plugin` and then the following :
 
