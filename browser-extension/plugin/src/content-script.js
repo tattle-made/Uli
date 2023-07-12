@@ -49,22 +49,17 @@ function processPage(newUrl) {
 
         var mainLoadedChecker = setInterval(() => {
 
-            console.log('tick');
-            const elems = document.querySelectorAll('p, span, li');
-            
-            console.log({ elems });
-            
-            if (elems) {
-                  
+            console.log('tick');            
+            let body = document.getElementsByTagName("body")
+            let first_body = body[0]
 
+            if (first_body) {
+                console.log('tick 2');
                 
-                
-                transformGeneral.processNewlyAddedNodesGeneral(elems); 
-                setOnChangeListener(elems, transformGeneral.processNewlyAddedNodesGeneral);
-                
+                transformGeneral.processNewlyAddedNodesGeneral(first_body);
+
                 clearInterval(mainLoadedChecker);
                 console.log(mainLoadedChecker);
-
             }
             else {
                 console.log('main section loaded');

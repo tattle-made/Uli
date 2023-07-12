@@ -50,19 +50,37 @@ function addInlineMenu(id, item, hasSlur) {
     );
 }
 
-const processNewlyAddedNodesGeneral = function (addedNodes) {
-    log('processing new nodes');
-    const nodes = Array.from(addedNodes);
-    nodes.map((node) => {
-        // console.log(node)
-        const text = node.innerText;
-        // console.log(text)
-        const replacementText = replaceSlur(text);
-        node.innerText = replacementText;
-             
+// Traverse dom nodes to find leaf node that are text nodes and process
+function bft(nodes){
+    // console.log("inside bft");
+    if(nodes.childNodes.length===0 && nodes.nodeType === 3){ 
+        // console.log("found leaf text node", nodes);
+        // console.log(nodes.textContent);
+        const replacementText = replaceSlur(nodes.textContent);
+        nodes.textContent = nodes.textContent.replace(nodes.textContent, replacementText)
+    }
+    else if(nodes.nodeName != "STYLE" && nodes.nodeName != "SCRIPT" && nodes.nodeName != "NOSCRIPT") {
+        // console.log(nodes.nodeName)
+        nodes.childNodes.forEach((nodes)=>bft(nodes))
+    }
+}
 
+const processNewlyAddedNodesGeneral = function (firstBody) {
+    log('processing new nodes');
+    const config = { attributes: true, childList: true, subtree: true };
+    
+    const callback = (mutationList, observer) => {
+        let elems = firstBody.children
+        const nodes = Array.from(elems);
+        let relevant_elements = nodes.filter((element)=>["P","DIV"].includes(element.nodeName))
         
-    });
+        relevant_elements.map((element) => {
+            bft(element)
+        });
+    }
+    const observer = new MutationObserver(callback);
+    observer.observe(firstBody, config); 
+    
 };
 
 export default {
