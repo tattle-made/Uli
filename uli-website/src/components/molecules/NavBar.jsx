@@ -12,7 +12,6 @@ const NavBarByLang = {
       <NavLink to={"/about"}>About</NavLink>
       <NavLink to={"/faq"}>FAQ</NavLink>
       <NavLink to={"/research"}>Research</NavLink>
-
     </Box>
   ),
   hi: (
@@ -53,17 +52,19 @@ export default function NavBar() {
   }, []);
 
   return (
-    <Box align="center" pad={"small"}>
+    <Box align="center" pad={"medium"}>
       <Box width={"large"} direction={"row-responsive"} gap={"small"}>
-        <NavLink to={"/"}>
-          <Text size={"small"}>English</Text>
-        </NavLink>
-        <NavLink to={"/ta/"}>
-          <Text size={"small"}>Tamil</Text>
-        </NavLink>
-        <NavLink to={"/hi/"}>
-          <Text size={"small"}>Hindi</Text>
-        </NavLink>
+        <Text>
+          <NavLink to={"/"}>
+            <Text size={"small"}>English</Text>
+          </NavLink>{" "}
+          <NavLink to={"/ta/"}>
+            <Text size={"small"}>Tamil</Text>
+          </NavLink>{" "}
+          <NavLink to={"/hi/"}>
+            <Text size={"small"}>Hindi</Text>
+          </NavLink>
+        </Text>
       </Box>
       <Box
         margin={{ top: "small" }}
