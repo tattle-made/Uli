@@ -4,11 +4,6 @@
     "description": "Moderate your Twitter Feed",
     "version": "0.1.11",
     "author": "tattlemade|cis",
-    "host_permissions": [
-        "https://twitter.com/*",
-        "https://ogbv-plugin.tattle.co.in/",
-        "https://*/*"
-    ],
     "content_security_policy": {
         "extension_pages": "default-src 'none'; connect-src http://localhost:3000 https://ogbv-plugin.tattle.co.in/ https://uli-media.tattle.co.in/; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; img-src https://uli-media.tattle.co.in/; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';"
     },
