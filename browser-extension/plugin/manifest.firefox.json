@@ -4,13 +4,12 @@
     "description": "Moderate your Twitter Feed",
     "version": "0.1.10",
     "author": "tattlemade|cis",
-    "content_security_policy": "default-src 'none'; object-src 'none'; script-src 'unsafe-inline' ; font-src https://fonts.gstatic.com; style-src 'unsafe-inline';",
+    "content_security_policy": "default-src 'none'; connect-src http://localhost:3000 https://ogbv-plugin.tattle.co.in/ https://uli-media.tattle.co.in/; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self' ; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; img-src https://uli-media.tattle.co.in/; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';",
     "permissions": [
         "storage",
         "webRequest",
+        "https://*/*",
         "https://twitter.com/*",
-        "https://ogbv-plugin.tattle.co.in/*",
-        "http://localhost:3000/*",
         "contextMenus"
     ],
     "background": {
@@ -18,7 +17,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://twitter.com/*"],
+            "matches": ["<all_urls>"],
             "js": ["content-script.js"],
             "run_at": "document_end"
         }
@@ -29,7 +28,7 @@
             "38": "icon32.png"
         },
         "default_popup": "options.html",
-        "show_matches": ["https://*.twitter.com/*"]
+        "show_matches": ["<all_urls>"]
     },
     "icons": {
         "16": "icon16.png",
