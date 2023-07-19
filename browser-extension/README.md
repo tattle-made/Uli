@@ -63,7 +63,10 @@ docker compose up
 ```
 You should now see database migration in the logs. The `api-server` will be running now.
 
-
+For local plugin development, add the following two entries to the `connect-src` in the manifest's `content_security_policy`:
+```
+http://localhost:3000 ws://localhost
+```
 
 To run the plugin development server, run `cd plugin` and then the following :
 
