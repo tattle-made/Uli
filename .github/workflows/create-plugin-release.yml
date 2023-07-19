@@ -11,11 +11,11 @@ jobs:
     runs-on: "ubuntu-latest"
     environment:
       name: development
-      url: "https://github.com/tattle-made/OGBV/releases"
+      url: "https://github.com/tattle-made/Uli/releases"
 
     steps:
       - name: "Checkout Development Branch"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: main
 
@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           echo "setting variables"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "sha_short==$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: "Build and Test"
         run: |
