@@ -8,13 +8,13 @@ const resources = {
   en: {
     translation: {
       app_name: "Uli",
-      section_hero_head: "Take Control of Your Twitter Feed",
+      section_hero_head: "Reclaiming your online space",
       section_hero_subhead:
-        "Use Uli to redact slurs and abusive content, archive problematic tweets, coordinate action with your friends and reclaim your space.",
+        "Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence",
       section_hero_cta: "Add to Browser",
       section_hero_cta_subhead: "supported on Chrome, Brave and Firefox",
       section_feature_head: "Features",
-      section_feature_1_label: "ARCHIVE TWEETS",
+      section_feature_1_label: "ARCHIVE Content",
       section_feature_1_head:
         "Archive tweets as evidence, to build a discourse or mobilise.",
       section_feature_1_description:
@@ -23,15 +23,15 @@ const resources = {
         "This crowdsourced list of offensive phrases is dynamic and each user can gather around with Uli and help build a longer list.",
       section_feature_2_label: "SLUR REPLACEMENT",
       section_feature_2_head:
-        "Automatic blurring of slurs in Hindi, English and Tamil",
+        "Automatic blurring of slurs in Hindi, English and Tamil on websites",
       section_feature_2_description:
-        "Uli uses a crowdsourced list of slurs in Indian languages and detects them in your tweet and hides them in real-time.",
+        "Uli uses a crowdsourced list of slurs in Indian languages and detects them on websites and hides them in real-time.",
       section_feature_2_follow_up:
         " This crowdsourced list of offensive phrases is dynamic and each user can gather around with Uli and help build a longer list.",
       section_feature_3_label: "INVOKE NETWORK",
       section_feature_3_head: "You are not alone in this.",
       section_feature_3_description:
-        "Involve your friends and community to act on problematic tweets and combat online hate speech.",
+        "Involve your friends and community to act on problematic content and combat online hate speech.",
       section_feature_3_follow_up:
         "This feature will invite people to support each other, share stories, initiate conversations around intermediary responsibility and interpersonal relationships and what it means to be online.",
       section_resources_label: "RESOURCES",
