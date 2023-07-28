@@ -8,12 +8,12 @@ const resources = {
   en: {
     translation: {
       app_name: "Uli",
-      section_hero_head: "Reclaiming your online space",
+      section_hero_head: "Reclaim your online space",
       section_hero_subhead:
         "Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence",
       section_hero_cta: "Add to Browser",
       section_hero_cta_subhead: "supported on Chrome, Brave and Firefox",
-      section_hero_cta_subhead: "If you are a Trust and Safety team interested in the slur lists or datasets, click here"
+
       section_feature_head: "Features",
       section_feature_1_label: "ARCHIVE Content",
       section_feature_1_head:

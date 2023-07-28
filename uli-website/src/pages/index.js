@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { Box, ResponsiveContext, Text } from "grommet";
+import { Anchor, Box, ResponsiveContext, Text } from "grommet";
 import {
   Colors,
   Theme,
@@ -61,7 +61,12 @@ const IndexPage = () => {
                   </a>
                 )}
               </CTALinkPlainPrimary>
-              <Text size={"small"}>{t("section_hero_cta_subhead")}</Text>
+              <Text>{t("section_hero_cta_subhead")}</Text>
+              <Box height={"0.6em"}></Box>
+              <Text size={"medium"}>
+                If you are a Trust and Safety team interested in the slur lists
+                or datasets. <Anchor href={"#"}>Click here</Anchor>
+              </Text>
             </Box>
           </Box>
           <Box width={"26em"}>
