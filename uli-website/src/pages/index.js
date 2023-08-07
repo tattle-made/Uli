@@ -64,8 +64,7 @@ const IndexPage = () => {
               <Text>{t("section_hero_cta_subhead")}</Text>
               <Box height={"0.6em"}></Box>
               <Text size={"medium"}>
-                If you are a Trust and Safety team interested in the slur lists
-                or datasets. <Anchor href={"#"}>Click here</Anchor>
+                If you are a Trust and Safety team interested in the Uli resources please <Anchor href={"https://uli.tattle.co.in/uli-for-ts/"}>Click here</Anchor>
               </Text>
             </Box>
           </Box>
