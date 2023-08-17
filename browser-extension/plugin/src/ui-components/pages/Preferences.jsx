@@ -8,10 +8,9 @@ import {
     Text,
     Button,
     Select,
-    CheckBox,
-    Anchor
+    CheckBox
 } from 'grommet';
-import { HelpCircle } from 'react-feather';
+// import { HelpCircle } from 'react-feather';
 import Api from '../pages/Api';
 import repository from '../../repository';
 import { useTranslation } from 'react-i18next';
@@ -68,21 +67,24 @@ export function Preferences() {
     }, [user]);
 
     async function clickSave(preference) {
-        console.log('-----');
-        console.log({ user, preference });
+        const preferenceInLS = await getPreferenceData();
+        // alert(JSON.stringify({preferenceInLS, preference}))
+
         try {
             const preferenceRemote = await savePreference(
                 user.accessToken,
                 preference
             );
-            // alert(JSON.stringify(preferenceRemote.data));
+
             await setPreferenceData({
                 ...preferenceRemote.data,
                 enable,
                 enableML,
                 storeLocally,
-                language
+                language,
+                uliEnableToggle: preferenceInLS.uliEnableToggle
             });
+
             showNotification({
                 type: 'message',
                 message: t('message_ok_saved')

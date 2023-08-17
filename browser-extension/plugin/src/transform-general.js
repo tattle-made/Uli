@@ -1,86 +1,69 @@
-import ReactDOM from 'react-dom';
-import { parseTweet } from './twitter/parser';
-import { hashCode } from './util';
 import { replaceSlur } from './slur-replace';
-import { TweetControl } from './twitter/tweet-controls';
 import { log } from './logger';
 
-let tweets = {};
-
-function debug(id) {
-    console.log(id, tweets[id]);
-    // unblur(id);
-}
-
-function setBlur(id, blurFlag) {
-    if (blurFlag === true) {
-        const tweetToUnBlur = tweets[id];
-        for (let i = 0; i < tweetToUnBlur.spans.length; i++) {
-            tweetToUnBlur.spans[i].innerText = tweetToUnBlur.original_text[i];
-        }
-    } else {
-        const tweetToBlur = tweets[id];
-        for (let i = 0; i < tweetToBlur.spans.length; i++) {
-            tweetToBlur.spans[i].innerText = replaceSlur(
-                tweetToBlur.spans[i].innerText
-            );
-        }
-    }
-}
-
-function addInlineMenu(id, item, hasSlur) {
-    // const id = `ogbv_tweet_${Math.floor(Math.random() * 999999)}`;
-    // const id = hashCode(item.innerHTML);
-
-    item.setAttribute('id', id);
-
-    let inlineButtonDiv = document.createElement('div');
-    inlineButtonDiv.id = id;
-    item.prepend(inlineButtonDiv);
-
-    ReactDOM.render(
-        <TweetControl
-            tweet={tweets[id]}
-            id={id}
-            debug={debug}
-            setBlur={setBlur}
-            hasSlur={hasSlur}
-        />,
-        inlineButtonDiv
-    );
-}
-
 // Traverse dom nodes to find leaf node that are text nodes and process
-function bft(nodes){
-    // console.log("inside bft");
-    if(nodes.childNodes.length===0 && nodes.nodeType === 3){ 
-        // console.log("found leaf text node", nodes);
-        // console.log(nodes.textContent);
-        const replacementText = replaceSlur(nodes.textContent);
-        nodes.textContent = nodes.textContent.replace(nodes.textContent, replacementText)
+function bft(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        const originalText = node.textContent;
+        // Get cursor position
+        const originalCursorPosition = getCaretCharacterOffsetWithin(node);
+        const replacementText = replaceSlur(originalText);
+
+        if (replacementText !== originalText) {
+            node.textContent = replacementText;
+            // Set cursor position
+            setCaretPosition(node, originalCursorPosition);
+        }
+    } else if (
+        node.nodeName !== 'STYLE' &&
+        node.nodeName !== 'SCRIPT' &&
+        node.nodeName !== 'NOSCRIPT'
+    ) {
+        node.childNodes.forEach(bft);
     }
-    else if(nodes.nodeName != "STYLE" && nodes.nodeName != "SCRIPT" && nodes.nodeName != "NOSCRIPT") {
-        // console.log(nodes.nodeName)
-        nodes.childNodes.forEach((nodes)=>bft(nodes))
+}
+
+// Function to get the cursor position within a node
+function getCaretCharacterOffsetWithin(element) {
+    let caretOffset = 0;
+    const sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+        const range = sel.getRangeAt(0);
+        const preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
     }
+    return caretOffset;
+}
+
+// Function to set the cursor position within a node
+function setCaretPosition(element, offset) {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    range.setStart(element, offset);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
 }
 
 const processNewlyAddedNodesGeneral = function (firstBody) {
     log('processing new nodes');
     const config = { attributes: true, childList: true, subtree: true };
-    
-    const callback = (mutationList, observer) => {
-        let elems = firstBody.children
+
+    const callback = () => {
+        let elems = firstBody.children;
         const nodes = Array.from(elems);
-        let relevant_elements = nodes.filter((element)=>["P","DIV"].includes(element.nodeName))
-        
+        let relevant_elements = nodes.filter((element) =>
+            ['P', 'DIV'].includes(element.nodeName)
+        );
+
         relevant_elements.map((element) => {
-            bft(element)
+            bft(element);
         });
-    }
+    };
     const observer = new MutationObserver(callback);
-    observer.observe(firstBody, config); 
-    
+    observer.observe(firstBody, config);
 };
 
 export default {

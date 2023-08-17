@@ -12,7 +12,9 @@ import { UserContext, NotificationContext } from '../atoms/AppContext';
 import Api from './Api';
 import repository from '../../repository';
 import { langNameMap } from '../atoms/language';
-const { getPreferenceData } = repository;
+const { getPreferenceData, setPreferenceData } = repository;
+import { ToggleSwitchCustom } from '../atoms/ToggleSwitchCustom';
+import { Off } from './Off';
 
 export function App() {
     const [user, setUser] = useState(undefined);
@@ -21,6 +23,8 @@ export function App() {
     const { registerNewUser } = Api;
     const { getUserData, setUserData } = repository;
     let navigate = useNavigate();
+    const [, setAccountActivated] = useState(false);
+    const [toggleSwitchOn, setToggleSwitchOn] = useState(true);
 
     function showNotification(notification) {
         setNotification(notification);
@@ -33,30 +37,102 @@ export function App() {
      * This loads an existing user into the UserContext at startup.
      */
     useEffect(async () => {
-        const userData = await getUserData();
-        const preferenceData = await getPreferenceData();
-        if (userData != undefined && Object.keys(userData).length != 0) {
-            setUser(userData);
-        }
-        if (preferenceData != undefined) {
-            const { language } = preferenceData;
-            i18n.changeLanguage(langNameMap[language]);
-        }
+        try {
+            const userData = await getUserData();
+            const preferenceData = await getPreferenceData();
 
-        navigate('/preferences');
+            if (userData != undefined && Object.keys(userData).length !== 0) {
+                setUser(userData);
+            }
+
+            if (preferenceData != undefined) {
+                const { language, uliEnableToggle } = preferenceData;
+
+                i18n.changeLanguage(langNameMap[language]);
+
+                if (uliEnableToggle) {
+                    navigate('/preferences');
+                } else {
+                    navigate('/off');
+                }
+                setToggleSwitchOn(uliEnableToggle);
+            }
+        } catch (error) {
+            console.error('Error in useEffect:', error);
+        }
         // if (userData != undefined && Object.keys(userData).length != 0) {
         //     setUser(userData);
         // }
         // alert(process.env.API_URL);
     }, []);
 
+    let userBrowser;
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    if (userAgent.includes('chrome')) {
+        userBrowser = 'chrome';
+    } else if (userAgent.includes('firefox')) {
+        userBrowser = 'firefox';
+    } else {
+        userBrowser = 'unsupported';
+    }
+    let userBrowserTabs;
+    if (userBrowser === 'firefox') {
+        userBrowserTabs = browser.tabs;
+    } else if (userBrowser === 'chrome') {
+        userBrowserTabs = chrome.tabs;
+    }
+
     async function clickActivateAccount() {
         const { data } = await registerNewUser();
         const user = data.user;
-        await setUserData(user);
-        setUser(user);
-        navigate('/preferences');
+        const confirmed = window.confirm(
+            'To start Uli, please refresh the page'
+        );
+        if (confirmed) {
+            await setUserData(user);
+            setUser(user);
+            setAccountActivated(true);
+            await setPreferenceData({
+                uliEnableToggle: true
+            });
+            userBrowserTabs.reload();
+            navigate('/preferences');
+        }
     }
+
+    const handleToggleSwitchChange = async () => {
+        try {
+            const tabsCurrent = await userBrowserTabs.query({
+                active: true,
+                currentWindow: true
+            });
+            const confirmed = window.confirm(
+                'Changing the toggle switch setting requires a page reload. Do you want to continue?'
+            );
+            if (confirmed) {
+                setToggleSwitchOn(!toggleSwitchOn);
+                const pref = await getPreferenceData();
+                await setPreferenceData({
+                    ...pref,
+                    uliEnableToggle: !toggleSwitchOn
+                });
+                if (!toggleSwitchOn) {
+                    navigate('/preferences');
+                } else {
+                    navigate('/off');
+                }
+
+                const tabId = tabsCurrent[0].id;
+                userBrowserTabs.sendMessage(tabId, {
+                    type: 'ULI_ENABLE_TOGGLE',
+                    payload: toggleSwitchOn
+                });
+                userBrowserTabs.reload(tabId);
+            }
+        } catch (error) {
+            console.error('Error navigating:', error);
+        }
+    };
 
     return (
         <Grommet theme={Theme}>
@@ -70,26 +146,37 @@ export function App() {
                         pad={'small'}
                     >
                         <Box direction={'row'} gap={'medium'} align={'center'}>
-                            <Box
-                                width={'3em'}
-                                hoverIndicator={false}
-                                focusIndicator={false}
-                                margin={{ bottom: 'medium' }}
-                            >
-                                <img
-                                    src={
-                                        'https://uli-media.tattle.co.in/assets/uli-logo.png'
-                                    }
-                                    alt={'Uli Logo'}
-                                />
+                            <Box direction={'row'} gap={'small'}>
+                                <Box
+                                    width={'3em'}
+                                    hoverIndicator={false}
+                                    focusIndicator={false}
+                                    margin={{ bottom: 'medium' }}
+                                >
+                                    <img
+                                        src={
+                                            'https://uli-media.tattle.co.in/assets/uli-logo.png'
+                                        }
+                                        alt={'Uli Logo'}
+                                    />
+                                </Box>
+                                <Text
+                                    id="app_label_environment"
+                                    size={'small'}
+                                    color={'dark-2'}
+                                >
+                                    {process.env.NODE_ENV}
+                                </Text>
                             </Box>
-                            <Text
-                                id="app_label_environment"
-                                size={'small'}
-                                color={'dark-2'}
-                            >
-                                {process.env.NODE_ENV}
-                            </Text>
+                            <Box flex={'grow'}></Box>
+                            {user ? (
+                                <ToggleSwitchCustom
+                                    checked={toggleSwitchOn}
+                                    onToggleChange={() =>
+                                        handleToggleSwitchChange()
+                                    }
+                                />
+                            ) : null}
                             {notification ? (
                                 <Box
                                     background="accent-1"
@@ -108,26 +195,33 @@ export function App() {
 
                         {user ? (
                             <div>
-                                <Box direction="row" gap={'medium'}>
-                                    <Link
-                                        id="app_nav_preference"
-                                        to="/preferences"
-                                    >
-                                        {t('navigation_preferences')}
-                                    </Link>
-                                    <Link id="app_nav_archive" to="/archive">
-                                        {t('navigation_archive')}
-                                    </Link>
-                                    <Link
-                                        id="app_nav_resources"
-                                        to="/resources"
-                                    >
-                                        {t('navigation_resources')}
-                                    </Link>
-                                    <Link to="/debug">
-                                        {t('navigation_debug')}
-                                    </Link>
-                                </Box>
+                                <>
+                                    {toggleSwitchOn && (
+                                        <Box direction="row" gap={'medium'}>
+                                            <Link
+                                                id="app_nav_preference"
+                                                to="/preferences"
+                                            >
+                                                {t('navigation_preferences')}
+                                            </Link>
+                                            <Link
+                                                id="app_nav_archive"
+                                                to="/archive"
+                                            >
+                                                {t('navigation_archive')}
+                                            </Link>
+                                            <Link
+                                                id="app_nav_resources"
+                                                to="/resources"
+                                            >
+                                                {t('navigation_resources')}
+                                            </Link>
+                                            <Link to="/debug">
+                                                {t('navigation_debug')}
+                                            </Link>
+                                        </Box>
+                                    )}
+                                </>
 
                                 <Box height={'2.0em'} />
 
@@ -147,6 +241,7 @@ export function App() {
                                         element={<Resources />}
                                     />
                                     <Route path="debug" element={<Debug />} />
+                                    <Route path="off" element={<Off />} />
                                 </Routes>
                             </div>
                         ) : (
