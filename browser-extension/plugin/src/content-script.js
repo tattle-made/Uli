@@ -8,15 +8,20 @@ const { getPreferenceData, setPreferenceData } = repository;
 import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 
-log('Content Script Loaded');
+log('Content Script Loaded Test 2');
+
+(async function test() {
+    console.log('Async Test');
+    const pref = await getPreferenceData();
+    console.log(pref);
+})();
+
+var mainLoadedChecker;
 
 function processPage(newUrl) {
-
-    const twitterUrl = 'twitter.com'
+    const twitterUrl = 'twitter.com';
     if (newUrl.includes(twitterUrl)) {
-
-        var mainLoadedChecker = setInterval(() => {
-            
+        mainLoadedChecker = setInterval(() => {
             if (newUrl.includes(twitterUrl)) {
                 console.log('tick');
                 const targetNode = document.getElementsByTagName('main')[0];
@@ -25,53 +30,43 @@ function processPage(newUrl) {
                     let currentPage = current(newUrl);
                     const { page } = currentPage;
                     const { getTimeline } = page;
-    
+
                     if (getTimeline === undefined) {
                         log('Unknown State. Could not find Timeline');
                     } else {
                         let timeline = getTimeline();
                         // log({ timeline });
-                        transform_v2.processNewlyAddedNodes_v2(timeline.children); //changed to v2 here
-                        setOnChangeListener(timeline, transform_v2.processNewlyAddedNodes_v2);
+                        transform_v2.processNewlyAddedNodes_v2(
+                            timeline.children
+                        ); //changed to v2 here
+                        setOnChangeListener(
+                            timeline,
+                            transform_v2.processNewlyAddedNodes_v2
+                        );
                     }
-                    
+
                     clearInterval(mainLoadedChecker);
                 } else {
                     console.log('main section loaded');
                 }
             }
-            
         }, 500);
-
-    }
-    else {
-
-
-        var mainLoadedChecker = setInterval(() => {
-
-            console.log('tick');            
-            let body = document.getElementsByTagName("body")
-            let first_body = body[0]
+    } else {
+        mainLoadedChecker = setInterval(() => {
+            console.log('tick');
+            let body = document.getElementsByTagName('body');
+            let first_body = body[0];
 
             if (first_body) {
                 console.log('tick 2');
-                
                 transformGeneral.processNewlyAddedNodesGeneral(first_body);
-
                 clearInterval(mainLoadedChecker);
                 console.log(mainLoadedChecker);
-            }
-            else {
+            } else {
                 console.log('main section loaded');
             }
-           
-        }, 500)
-    
-
+        }, 500);
     }
-    
-
-    
 }
 
 /**
@@ -79,7 +74,6 @@ function processPage(newUrl) {
  * eg : When a user clicks on a tweet on their home timeline, they
  * go from the home page to the user status page.
  */
-
 chrome.runtime.onMessage.addListener(async function (request) {
     if (request.type === 'updateData') {
         console.log('data changed. time to update slurs');
@@ -101,11 +95,13 @@ chrome.runtime.onMessage.addListener(async function (request) {
         const slur = request.slur;
         log('slur added from bg', slur);
         const pref = await getPreferenceData();
+        let slurList;
         if (!pref) {
             slurList = slur;
             await setPreferenceData({ ...pref, slurList });
         } else {
-            let { slurList } = pref;
+            // let { slurList } = pref;
+            slurList = pref.slurList;
             if (!slurList || slurList === '') {
                 slurList += slur;
             } else {
@@ -114,15 +110,26 @@ chrome.runtime.onMessage.addListener(async function (request) {
             await setPreferenceData({ ...pref, slurList });
         }
 
-        return true; 
+        return true;
+    }
+    if (request.type === 'ULI_ENABLE_TOGGLE') {
+        console.log('Toggle change event received', request.payload);
+        if (!request.payload) {
+            clearInterval(mainLoadedChecker);
+        }
     }
 });
 
 window.addEventListener(
     'load',
-    () => {
+    async () => {
         console.log('content loaded');
-        processPage(location.href);
+        const pref = await getPreferenceData();
+        console.log(pref);
+        const { uliEnableToggle } = pref;
+        if (uliEnableToggle) {
+            processPage(location.href);
+        }
     },
     false
 );
