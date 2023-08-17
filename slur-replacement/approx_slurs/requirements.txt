@@ -1,1 +1,2 @@
 indic-transliteration==2.3.48
+jellyfish==1.0.0

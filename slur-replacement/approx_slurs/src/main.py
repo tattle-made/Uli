@@ -1,4 +1,5 @@
 from indic_transliteration import sanscript
+import jellyfish
 import json
 
 slurs_devanagari = 'जिहादी|छक्का|छिनाल|रंडी|रण्डी|रांड|रंडीखाना|रण्डी ' \
@@ -88,8 +89,8 @@ def get_transliterations():
 
 
 # do NOT parallelize replacement when using this dict as longer terms need to be checked first in order
-devanagari_itrans_expansion_dict = {'A': 'aa', 'I': 'ee', 'MD': 'nd', '.D': 'd', 'U': 'oo', 'Mg': 'ng', 'Mh': 'h',
-                                    'Mt': 'nt', '.N': 'n', 'M': 'n'}
+devanagari_itrans_expansion_dict = {'A': 'aa', 'I': 'ee', 'MD': 'nd', 'ND': 'nd', '.D': 'd', 'U': 'oo', 'Mg': 'ng',
+                                    'Mh': 'h', 'Mt': 'nt', 'Ch': 'ch', 'T': 't', '.N': 'n', 'M': 'n'}
 
 # TODO: tamil_expansion_dict
 
@@ -145,45 +146,60 @@ def edits1(word, script):
     return set(deletes + transposes + replaces + inserts + list(replace_dollar_char) + list(replace_s_char))
 
 
+def refine_slur_list_phonetic(slur_dict):
+    slur_dict_refined = {}
+    for key in slur_dict:
+        key_phonetic = jellyfish.soundex(key)
+        refined_slur_list = []
+        for edit_slur in slur_dict[key]:
+            # 1. This does not work successfully - attempt reverse transliterate and save only if it matches key
+            #   reverse_transliteration_devanagari = get_roman_devanagari_transliteration(edit_slur)
+            #   no transliteration matches - need phonetic algo here
+            # 2. The libindic-soundex library has errors
+            # 3. The following algorithms in jellyfish package do not match any slur: metaphone, nysiis
+            #   The jellyfish.match_rating_codex algorithm crashes
+            slur_phonetic = jellyfish.soundex(edit_slur)
+            if slur_phonetic == key_phonetic:
+                print("phonetic match")
+                refined_slur_list.append(edit_slur)
+        slur_dict_refined[key] = refined_slur_list
+    return slur_dict_refined
+
+
 if __name__ == '__main__':
+    # get transliterations
     slurs_devanagari_transliterations, slurs_tamil_transliterations = get_transliterations()
     # print(slurs_devanagari_transliterations)
     # print(slurs_tamil_transliterations)
 
+    # create list of slurs 1-edit distance apart - Damerau–Levenshtein distance
     slurs_devanagari_transliterations_edit1 = {}
     for slur in slurs_devanagari_transliterations:
         slurs_devanagari_transliterations_edit1_list = [item for item in edits1(slur, "devanagari")]
         slurs_devanagari_transliterations_edit1[slur] = slurs_devanagari_transliterations_edit1_list
     # print(slurs_devanagari_transliterations_edit1)
-
-    '''
-    # This does not work successfully - no transliteration matches - need phonetic algo here
-    # attempt reverse transliterate and save only if it matches key
-    slurs_devanagari_transliterations_edit1_refined = {}
-    for key in slurs_devanagari_transliterations_edit1:
-        refined_slur_list = []
-        for edit_slur in slurs_devanagari_transliterations_edit1[key]:
-            reverse_transliteration_devanagari = get_roman_devanagari_transliteration(edit_slur)
-            if reverse_transliteration_devanagari == key:
-                print("reverse match")
-                refined_slur_list.append(edit_slur)
-        slurs_devanagari_transliterations_edit1_refined[key] = refined_slur_list
-    '''
+    # get refined list with phonetic algorithm matching
+    slurs_devanagari_transliterations_edit1_refined = refine_slur_list_phonetic(slurs_devanagari_transliterations_edit1)
     with open('../output/slurs_devanagiri_transliteration.json', 'w', encoding='utf-8') as f:
-        json.dump(slurs_devanagari_transliterations_edit1, f, ensure_ascii=False, indent=4)
+        json.dump(slurs_devanagari_transliterations_edit1_refined, f, ensure_ascii=False, indent=4)
 
+    # create list of slurs 1-edit distance apart - Damerau–Levenshtein distance
     slurs_tamil_transliterations_edit1 = {}
     for slur in slurs_tamil_transliterations:
         slurs_tamil_transliterations_edit1_list = [item for item in edits1(slur, "tamil")]
         slurs_tamil_transliterations_edit1[slur] = slurs_tamil_transliterations_edit1_list
     # print(slurs_tamil_transliterations_edit1)
+    # get refined list with phonetic algorithm matching
+    slurs_tamil_transliterations_edit1_refined = refine_slur_list_phonetic(slurs_tamil_transliterations_edit1)
     with open('../output/slurs_tamil_transliteration.json', 'w', encoding='utf-8') as f:
-        json.dump(slurs_tamil_transliterations_edit1, f, ensure_ascii=False, indent=4)
+        json.dump(slurs_tamil_transliterations_edit1_refined, f, ensure_ascii=False, indent=4)
 
     slurs_roman_transliterations_edit1 = {}
     for slur in slurs_roman:
         slurs_roman_transliterations_edit1_list = [item for item in edits1(slur, "roman")]
         slurs_roman_transliterations_edit1[slur] = slurs_roman_transliterations_edit1_list
     # print(slurs_roman_transliterations_edit1)
+    # get refined list with phonetic algorithm matching
+    slurs_roman_transliterations_edit1_refined = refine_slur_list_phonetic(slurs_roman_transliterations_edit1)
     with open('../output/slurs_roman_transliteration.json', 'w', encoding='utf-8') as f:
-        json.dump(slurs_roman_transliterations_edit1, f, ensure_ascii=False, indent=4)
+        json.dump(slurs_roman_transliterations_edit1_refined, f, ensure_ascii=False, indent=4)
