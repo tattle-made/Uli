@@ -66,11 +66,14 @@ slurs_tamil = slurs_tamil.split('|')
 def get_devanagari_roman_transliteration(phrase):
     return sanscript.transliterate(phrase, sanscript.DEVANAGARI, sanscript.ITRANS)
 
+
 def get_roman_devanagari_transliteration(phrase):
     return sanscript.transliterate(phrase, sanscript.ITRANS, sanscript.DEVANAGARI)
 
+
 def get_tamil_roman_transliteration(phrase):
     return sanscript.transliterate(phrase, sanscript.TAMIL, sanscript.ITRANS)
+
 
 def get_roman_tamil_transliteration(phrase):
     return sanscript.transliterate(phrase, sanscript.ITRANS, sanscript.TAMIL)
