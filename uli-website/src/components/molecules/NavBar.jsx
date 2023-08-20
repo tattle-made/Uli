@@ -31,6 +31,7 @@ const NavBarByLang = {
 export default function NavBar() {
   const [langOption, setLangOption] = useState(undefined);
   const location = useLocation();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     console.log(`pageLoad `);
@@ -49,11 +50,28 @@ export default function NavBar() {
         lang = "en";
     }
     setLangOption(lang);
-  }, []);
+  const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [location.pathname]);
+
+  const isSmallScreen = windowWidth <= 768;
 
   return (
     <Box align="center" pad={"medium"}>
-      <Box width={"large"} direction={"row-responsive"} gap={"small"}>
+      <Box width={"large"} direction={"row-responsive"} gap={"small"}
+      style={
+          isSmallScreen
+            ? {
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }
+            : {}
+        }>
         <Text>
           <NavLink to={"/"}>
             <Text size={"small"}>English</Text>
@@ -72,6 +90,15 @@ export default function NavBar() {
         direction={"row-responsive"}
         align={"center"}
         gap={"medium"}
+        style={
+          isSmallScreen
+            ? {
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }
+            : {}
+        }
       >
         <Box
           width={"4em"}
