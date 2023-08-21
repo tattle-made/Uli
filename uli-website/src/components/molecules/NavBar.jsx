@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box, Select, Text } from "grommet";
+import React, { useEffect, useState, useContext } from "react";
+import { Box, Select, Text, ResponsiveContext } from "grommet";
 import { NavLink } from "../atoms/UliCore";
 import { navigate } from "gatsby";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,7 @@ const NavBarByLang = {
 export default function NavBar() {
   const [langOption, setLangOption] = useState(undefined);
   const location = useLocation();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const size = useContext(ResponsiveContext);
 
   useEffect(() => {
     console.log(`pageLoad `);
@@ -50,28 +50,24 @@ export default function NavBar() {
         lang = "en";
     }
     setLangOption(lang);
-  const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, [location.pathname]);
-
-  const isSmallScreen = windowWidth <= 768;
 
   return (
     <Box align="center" pad={"medium"}>
-      <Box width={"large"} direction={"row-responsive"} gap={"small"}
-      style={
-          isSmallScreen
+      <Box
+        width={"large"}
+        direction={"row-responsive"}
+        gap={"small"}
+        style={
+          size === "small"
             ? {
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }
             : {}
-        }>
+        }
+      >
         <Text>
           <NavLink to={"/"}>
             <Text size={"small"}>English</Text>
@@ -91,12 +87,12 @@ export default function NavBar() {
         align={"center"}
         gap={"medium"}
         style={
-          isSmallScreen
+          size === "small"
             ? {
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }
             : {}
         }
       >

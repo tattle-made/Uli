@@ -1,22 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Box, Nav, Text } from "grommet";
+import React, { useState, useEffect, useContext } from "react";
+import { Box, Nav, Text, ResponsiveContext } from "grommet";
 import { NavLink } from "../atoms/UliCore";
 import { navigate } from "gatsby";
 
 export default function Footer() {
-
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const isSmallScreen = windowWidth <= 768;
-
+  const size = useContext(ResponsiveContext);
 
   return (
     <Box align="center">
@@ -26,22 +14,22 @@ export default function Footer() {
         direction={"row-responsive"}
         gap="small"
         style={
-          isSmallScreen
+          size === "small"
             ? {
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }
             : {}
         }
       >
-      <NavLink to="https://twitter.com/tattlemade">Twitter</NavLink>
-      <NavLink to="/privacy-policy">Privacy Policy</NavLink>
-      <NavLink to="/blog">Blog</NavLink>
-      <NavLink to="https://github.com/tattle-made/OGBV/tree/main/uli-website">
-        GitHub
-      </NavLink>
+        <NavLink to="https://twitter.com/tattlemade">Twitter</NavLink>
+        <NavLink to="/privacy-policy">Privacy Policy</NavLink>
+        <NavLink to="/blog">Blog</NavLink>
+        <NavLink to="https://github.com/tattle-made/OGBV/tree/main/uli-website">
+          GitHub
+        </NavLink>
+      </Box>
     </Box>
-    </Box >
   );
 }
