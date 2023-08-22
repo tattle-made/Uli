@@ -39,6 +39,9 @@ var upload = multer({
       cb(null, `${uuidv4()}`); //use Date.now() for unique file keys
     },
   }),
+  limits: {
+    fileSize: 8000000
+  }
 });
 
 module.exports = { uploadData, upload };
