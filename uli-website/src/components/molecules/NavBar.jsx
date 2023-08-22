@@ -31,7 +31,9 @@ const NavBarByLang = {
 export default function NavBar() {
   const [langOption, setLangOption] = useState(undefined);
   const location = useLocation();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
 
   useEffect(() => {
     console.log(`pageLoad `);
@@ -50,12 +52,14 @@ export default function NavBar() {
         lang = "en";
     }
     setLangOption(lang);
-  const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+   if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, [location.pathname]);
 
   const isSmallScreen = windowWidth <= 768;
