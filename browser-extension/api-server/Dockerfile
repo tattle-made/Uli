@@ -8,6 +8,7 @@ RUN npm install sequelize-cli
 RUN npm install -g nodemon
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
+USER node
 ENTRYPOINT ["/entrypoint.sh"]
 COPY . .
 
