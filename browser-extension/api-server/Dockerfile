@@ -3,9 +3,9 @@ WORKDIR /app
 
 COPY package.json /app/package.json
 RUN cd /app
-RUN npm install
-RUN npm install sequelize-cli
-RUN npm install -g nodemon
+RUN npm install --ignore-scripts
+RUN npm install sequelize-cli --ignore-scripts
+RUN npm install -g nodemon --ignore-scripts
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
