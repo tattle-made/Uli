@@ -8,13 +8,7 @@ module.exports = {
     "gatsby-plugin-react-helmet",
     {
       resolve: "gatsby-plugin-mdx",
-      options: {
-        defaultLayouts: {
-          default: require.resolve(
-            "./src/components/molecules/ContentPageShell.jsx"
-          ),
-        },
-      },
+      options: {},
     },
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
