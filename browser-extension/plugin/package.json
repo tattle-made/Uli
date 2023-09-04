@@ -5,7 +5,7 @@
     "scripts": {
         "prepare": "cd ../.. && husky install \"browser-extension/plugin/.husky\"",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start:options": "parcel src/options.html",
+        "start:options": "parcel src/options.jsx",
         "start:contentScript": "parcel src/content-script.js",
         "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist && cp src/background.js dist",
         "moveBuildArtefactsToFirefoxDistDir": "cp src/options.html dist && cp manifest.firefox.json dist/manifest.json && cp icon* dist && cp src/background.js dist",
