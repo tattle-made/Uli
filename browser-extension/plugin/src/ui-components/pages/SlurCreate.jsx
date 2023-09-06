@@ -45,7 +45,7 @@ export function SlurCreate() {
     return (
         <Box>
             <Anchor onClick={handleGoBack}>Go Back</Anchor>
-            <Heading level={3} weight={'bold'} alignSelf="center">
+            <Heading level={3} weight={900} alignSelf="center">
                 Add Slur
             </Heading>
             <Form
