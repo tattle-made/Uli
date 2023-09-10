@@ -270,6 +270,54 @@ app.post("/slur/create", async (req, res) => {
   }
 });
 
+// PUT request for slur and category
+// https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
+// https://sequelize.org/docs/v7/querying/update/
+app.put("/slur/:slurId", async (req, res) => {
+  const slurId = req.params.slurId;
+  const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+
+  try {
+    const existingSlur = await slur.findByPk(slurId);
+    if (!existingSlur) {
+      res.status(404).send({ error: "Slur not found" });
+      return;
+    }
+    // Update the slur record
+    existingSlur.label = label;
+    existingSlur.labelMeaning = labelMeaning;
+    existingSlur.appropriated = appropriated;
+    existingSlur.appropriationContext = appropriationContext;
+    await existingSlur.save();
+
+    // Delete existing categories for this slur
+    await category.destroy({
+      where: {
+        slurId: existingSlur.id,
+      },
+    });
+
+    // Create new categories
+    const categoryPromises = categories.map(async (categoryData) => {
+      const newCategory = await category.create({
+        slurId: existingSlur.id,
+        category: categoryData.category,
+      });
+      return newCategory;
+    });
+
+    const updatedCategories = await Promise.all(categoryPromises);
+
+    res.send({
+      slur: existingSlur,
+      categories: updatedCategories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
