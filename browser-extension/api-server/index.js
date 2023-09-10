@@ -273,8 +273,8 @@ app.post("/slur/create", async (req, res) => {
 // PUT request for slur and category
 // https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
 // https://sequelize.org/docs/v7/querying/update/
-app.put("/slur/:slurId", async (req, res) => {
-  const slurId = req.params.slurId;
+app.put("/slur/:id", async (req, res) => {
+  const slurId = req.params.id;
   const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
 
   try {
@@ -315,6 +315,30 @@ app.put("/slur/:slurId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Server error" });
+  }
+});
+
+// DELETE request for slur and category
+app.delete("/slur/:id", async (req, res) => {
+  const slurId = req.params.id;
+  try {
+    const slurToDelete = await slur.findByPk(slurId);
+    if (!slurToDelete) {
+      res.status(404).send({ error: "Slur not found" });
+      return;
+    }
+
+    await category.destroy({
+      where: {
+        slurId: slurToDelete.id,
+      },
+    });
+    await slurToDelete.destroy();
+
+    res.send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "server error" });
   }
 });
 
