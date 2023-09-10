@@ -202,20 +202,82 @@ app.post("/reset", async (req, res) => {
 // GET request for Slur and Category
 app.get("/slur", async (req, res) => {
   const user = req.user;
-  const result = await slur.findAll({
-    where: {
-      userId: user.id, 
-    },
-  })
-  if (result == null) {
-    res.status(404).send();
-  } else {
-    let plainResult = result.get({ plain: true });
-    res.send({
-      ...plainResult,
+
+  try {
+    const results = await slur.findAll({
+      where: {
+        userId: user.id,
+      },
+      include: [{ model: category, as: "categories" }],
     });
+
+    if (results.length === null) {
+      res.status(404).send();
+    } else {
+      const formattedResults = results.map((result) => {
+        const plainResult = result.get({ plain: true });
+        const categories = plainResult.categories.map((category) =>
+          category.get({ plain: true })
+        );
+        return {
+          ...plainResult,
+          categories,
+        };
+      });
+
+      res.send(formattedResults);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "server error" });
   }
-})
+});
+
+// POST request for slur and category
+app.post("/slur/create", async (req, res) => {
+  const { userId, label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+  // const t = await Op.transaction();
+
+  try {
+    const newSlur = await slur.create(
+      {
+        userId,
+        label,
+        labelMeaning,
+        appropriated,
+        appropriationContext,
+      },
+      // { transaction: t }
+    );
+
+    const categoryPromises = categories.map(async (categoryData) => {
+      const newCategory = await category.create(
+        {
+          slurId: newSlur.id,
+          category: categoryData.category,
+        },
+        // { transaction: t }
+      );
+      return newCategory;
+    });
+
+    // https://stackoverflow.com/questions/48376479/executing-multiple-sequelize-js-model-query-methods-with-promises-node
+    // https://stackoverflow.com/questions/28897708/sequelize-save-in-multiple-tables
+    const createdCategories = await Promise.all(categoryPromises);
+
+    // await t.commit();
+
+    res.send({
+      slur: newSlur,
+      categories: createdCategories,
+    });
+  } catch (error) {
+    // await t.rollback();
+    console.error(error);
+    res.status(500).send({ error: "server error" });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
