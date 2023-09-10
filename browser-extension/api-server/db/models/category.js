@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         foreignKey: true,
+        allowNull: false,
         },
       category : {
         type: DataTypes.ENUM(['gender', 'religion', 'caste']),

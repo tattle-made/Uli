@@ -45,6 +45,8 @@ async function createCategory() {
 //         console.log(error);
 //     }
 // }
+
+// Transactions
 async function createSlurAndCategory() {
     try {
         const newSlur = await slur.create({
@@ -88,6 +90,8 @@ async function updateCategory() {
         console.log(error);
     }
 }
+
+// make a delete category function as well
 
 // delete slur
 async function deleteSlurAndCategory() {

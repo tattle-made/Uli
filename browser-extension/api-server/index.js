@@ -1,13 +1,13 @@
 //console.log(`Environment : ${process.env.NODE_ENV}`);
 
-const express = require("express");  
+const express = require("express");
 const app = express();
 app.disable("x-powered-by");
 const port = 3000;
 const cors = require("cors");
 const { upload } = require("./s3");
 
-const { preference, post, feedback } = require("./db/models");
+const { preference, post, feedback, slur, category } = require("./db/models");
 const { Op } = require("sequelize");
 const { registerAnonymousUser, resetUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
@@ -66,18 +66,18 @@ app.post("/feedback", async (req, res) => {
   console.log("POST feedback");
   try {
     const data = req.body;
-    
+
 
     await feedback.create({
       userId: data.user_id,
       tweetText: data.tweet_text,
       sentiment: data.tweet_sentiment,
       confidence: data.tweet_confidence
-      
+
     });
-    
+
     res.send({ msg: "Feedback Sent" });
-  }  
+  }
   catch (err) {
     //console.log(err);
     res.status(501).send({ msg: "Error sending feedback" });
@@ -86,7 +86,6 @@ app.post("/feedback", async (req, res) => {
 
 
 // Feedback code ends here
-
 app.get("/preference/", async (req, res) => {
   const user = req.user;
   const result = await preference.findOne({
@@ -199,6 +198,24 @@ app.post("/reset", async (req, res) => {
     res.status(501).send("Could not reset account");
   }
 });
+
+// GET request for Slur and Category
+app.get("/slur", async (req, res) => {
+  const user = req.user;
+  const result = await slur.findAll({
+    where: {
+      userId: user.id, 
+    },
+  })
+  if (result == null) {
+    res.status(404).send();
+  } else {
+    let plainResult = result.get({ plain: true });
+    res.send({
+      ...plainResult,
+    });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
