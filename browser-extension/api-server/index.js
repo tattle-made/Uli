@@ -202,30 +202,22 @@ app.post("/reset", async (req, res) => {
 // GET request for Slur and Category
 app.get("/slur", async (req, res) => {
   const user = req.user;
-
   try {
     const results = await slur.findAll({
       where: {
         userId: user.id,
       },
-      include: [{ model: category, as: "categories" }],
+      include: [
+        {
+          model: category, as: "categories",
+        },
+      ],
     });
 
-    if (results.length === null) {
+    if (results.length === 0) {
       res.status(404).send();
     } else {
-      const formattedResults = results.map((result) => {
-        const plainResult = result.get({ plain: true });
-        const categories = plainResult.categories.map((category) =>
-          category.get({ plain: true })
-        );
-        return {
-          ...plainResult,
-          categories,
-        };
-      });
-
-      res.send(formattedResults);
+      res.send(results);
     }
   } catch (error) {
     console.error(error);
