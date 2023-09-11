@@ -99,11 +99,6 @@ async function resetAccount(accessToken) {
     );
 }
 
-//https://www.freecodecamp.org/news/axios-react-how-to-make-get-post-and-delete-api-requests/
-// const axiosInstance = axios.create({
-//     baseURL: API_URL,
-// });
-
 // GET request for slur and category
 async function getSlurAndCategory(accessToken) {
     const result = await axios.get(`${API_URL}/slur`, {

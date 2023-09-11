@@ -7,8 +7,9 @@ const port = 3000;
 const cors = require("cors");
 const { upload } = require("./s3");
 
-const { preference, post, feedback, slur, category } = require("./db/models");
-const { Op } = require("sequelize");
+const { preference, post, feedback, slur, category, sequelize } = require("./db/models");
+
+
 const { registerAnonymousUser, resetUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
 const {
@@ -229,6 +230,7 @@ app.get("/slur", async (req, res) => {
 app.post("/slur/create", async (req, res) => {
   const { userId, label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
   // const t = await Op.transaction();
+  const t = await sequelize.transaction()
 
   try {
     const newSlur = await slur.create(
@@ -239,7 +241,7 @@ app.post("/slur/create", async (req, res) => {
         appropriated,
         appropriationContext,
       },
-      // { transaction: t }
+      { transaction: t }
     );
 
     const categoryPromises = categories.map(async (categoryData) => {
@@ -248,7 +250,7 @@ app.post("/slur/create", async (req, res) => {
           slurId: newSlur.id,
           category: categoryData.category,
         },
-        // { transaction: t }
+        { transaction: t }
       );
       return newCategory;
     });
@@ -257,7 +259,7 @@ app.post("/slur/create", async (req, res) => {
     // https://stackoverflow.com/questions/28897708/sequelize-save-in-multiple-tables
     const createdCategories = await Promise.all(categoryPromises);
 
-    // await t.commit();
+    await t.commit();
 
     res.send({
       slur: newSlur,
