@@ -99,6 +99,51 @@ async function resetAccount(accessToken) {
     );
 }
 
+//https://www.freecodecamp.org/news/axios-react-how-to-make-get-post-and-delete-api-requests/
+// const axiosInstance = axios.create({
+//     baseURL: API_URL,
+// });
+
+// GET request for slur and category
+async function getSlurAndCategory(accessToken) {
+    const result = await axios.get(`${API_URL}/slur`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+    console.log('GET slur and category data', result.data);
+    return result.data;
+}
+
+// POST request for slur and category
+async function createSlurAndCategory(accessToken, slurData) {
+    return axios.post(`${API_URL}/slur/create`, slurData, {
+        headers: {
+            Authorization: `token ${accessToken}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
+
+// PUT request for slur and category
+async function updateSlurAndCategory(accessToken, slurId, updatedData) {
+    return axios.put(`${API_URL}/slur/${slurId}`, updatedData, {
+        headers: {
+            Authorization: `token ${accessToken}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
+
+// DELETE request for slur and category
+async function deleteSlurAndCategory(accessToken, slurId) {
+    return axios.delete(`${API_URL}/slur/${slurId}`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+}
+
 export default {
     login,
     getPreferenceForUser,
@@ -107,5 +152,9 @@ export default {
     invokeNetwork,
     registerNewUser,
     getArchive,
-    resetAccount
+    resetAccount,
+    getSlurAndCategory,
+    createSlurAndCategory,
+    updateSlurAndCategory,
+    deleteSlurAndCategory
 };
