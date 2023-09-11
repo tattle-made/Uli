@@ -62,7 +62,6 @@ app.post("/preference/", async (req, res) => {
 
 
 // Feedback code from here
-
 app.post("/feedback", async (req, res) => {
   console.log("POST feedback");
   try {
@@ -210,15 +209,16 @@ app.get("/slur", async (req, res) => {
       },
       include: [
         {
-          model: category, as: "categories",
+          model: category,
+          as: "categories",
         },
       ],
     });
 
-    if (results.length === 0) {
-      res.status(404).send();
+    if (results) {
+      res.status(500).send({ error: "error finding slurs" });
     } else {
-      res.send(results);
+      res.json(results);
     }
   } catch (error) {
     console.error(error);

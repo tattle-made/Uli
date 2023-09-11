@@ -13,18 +13,14 @@ import {
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
 
-const genderOptions = ['a', 'b', 'c'];
-const religionOptions = ['Option 1', 'Option 2', 'Option 3'];
-const sexualOrientationOptions = ['Option A', 'Option B', 'Option C'];
+const category = ['gender', 'religion', 'caste'];
 const appropriatedOptions = [true, false];
 
 export function SlurCreate() {
     const initialFormData = {
         label: '',
         labelMeaning: '',
-        gender: '',
-        religion: '',
-        sexualOrientation: '',
+        category: '',
         appropriated: false,
         appropriationContext: ''
     };
@@ -61,23 +57,8 @@ export function SlurCreate() {
                     <TextArea name="labelMeaning" />
                 </FormField>
 
-                <FormField name="gender" label="Gender" required>
-                    <RadioButtonGroup name="gender" options={genderOptions} />
-                </FormField>
-
-                <FormField name="religion" label="Religion" required>
-                    <Select name="religion" options={religionOptions} />
-                </FormField>
-
-                <FormField
-                    name="sexualOrientation"
-                    label="Sexual Orientation"
-                    required
-                >
-                    <Select
-                        name="sexualOrientation"
-                        options={sexualOrientationOptions}
-                    />
+                <FormField name="category" label="Category" required>
+                    <Select name="category" options={category} />
                 </FormField>
 
                 <FormField name="appropriated" label="Appropriated" required>
