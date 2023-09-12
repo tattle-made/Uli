@@ -1,0 +1,10 @@
+{
+  "name": "uli",
+  "private": true,
+  "workspaces": [
+    "browser-extension/*"
+  ],
+  "scripts": {
+    "build": "cd browser-extension && bun build.js development firefox"
+  }
+}

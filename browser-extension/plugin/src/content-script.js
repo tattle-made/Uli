@@ -8,7 +8,7 @@ const { getPreferenceData, setPreferenceData } = repository;
 import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 
-log('Content Script Loaded Test 2');
+log('Content Script Loaded Test 40');
 
 (async function test() {
     console.log('Async Test');
