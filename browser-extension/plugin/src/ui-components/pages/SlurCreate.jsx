@@ -124,12 +124,15 @@ export function SlurCreate() {
                     </Box>
                 </FormField>
 
-                <FormField name="appropriated" label="Appropriated" required>
+                <FormField
+                    name="appropriated"
+                    label="Appropriated"
+                    required={false}
+                >
                     <RadioButtonGroup
                         name="appropriated"
                         options={appropriatedOptions}
                         direction="row"
-                        value={formData.appropriated}
                     />
                 </FormField>
 
