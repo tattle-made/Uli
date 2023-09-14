@@ -106,7 +106,6 @@ async function getSlurAndCategory(accessToken) {
             Authorization: `token ${accessToken}`
         }
     });
-    console.log('GET slur and category data', result.data);
     return result.data;
 }
 
@@ -114,8 +113,7 @@ async function getSlurAndCategory(accessToken) {
 async function createSlurAndCategory(accessToken, slurData) {
     return axios.post(`${API_URL}/slur/create`, slurData, {
         headers: {
-            Authorization: `token ${accessToken}`,
-            'Content-Type': 'multipart/form-data'
+            Authorization: `token ${accessToken}`
         }
     });
 }
@@ -124,8 +122,7 @@ async function createSlurAndCategory(accessToken, slurData) {
 async function updateSlurAndCategory(accessToken, slurId, updatedData) {
     return axios.put(`${API_URL}/slur/${slurId}`, updatedData, {
         headers: {
-            Authorization: `token ${accessToken}`,
-            'Content-Type': 'multipart/form-data'
+            Authorization: `token ${accessToken}`
         }
     });
 }

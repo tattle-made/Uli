@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
     Box,
     Button,
@@ -11,30 +11,58 @@ import {
     TextInput,
     Anchor
 } from 'grommet';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Api from './Api';
 import { UserContext } from '../atoms/AppContext';
 
-const { createSlurAndCategory } = Api;
+const { getSlurAndCategory, updateSlurAndCategory } = Api;
 
 const categoryOptions = ['gender', 'religion', 'caste'];
 const appropriatedOptions = [true, false];
 
-export function SlurCreate() {
+export function SlurEdit() {
     const { user } = useContext(UserContext);
-    console.log('user id', user.id);
-    // console.log("user token", user.accessToken)
     // const { notification, showNotification } = useContext(NotificationContext);
-    const initialFormData = {
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
         label: '',
         labelMeaning: '',
         categories: [],
         appropriated: false,
         appropriationContext: ''
-    };
-    const [formData, setFormData] = useState(initialFormData);
+    });
+    const [, setSlurData] = useState(null);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        async function fetchSlurData() {
+            try {
+                const data = await getSlurAndCategory(user.accessToken);
+                setSlurData(data);
+                const editedSlur = data.find((slur) => slur.id === id);
+
+                if (editedSlur) {
+                    setFormData({
+                        label: editedSlur.label,
+                        labelMeaning: editedSlur.labelMeaning,
+                        categories: editedSlur.categories.map(
+                            (category) => category.category
+                        ),
+                        appropriated: editedSlur.appropriated,
+                        appropriationContext: editedSlur.appropriationContext
+                    });
+                } else {
+                    console.error('Slur not found');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchSlurData();
+    }, [user.accessToken, id]);
+
     const handleGoBack = () => {
         navigate('/slur');
     };
@@ -48,21 +76,12 @@ export function SlurCreate() {
                 ...formData,
                 categories
             };
-            console.log(requestData);
-            const response = await createSlurAndCategory(
-                user.accessToken,
-                requestData
-            );
-            await setFormData({
-                ...response.data
-            });
+
+            await updateSlurAndCategory(user.accessToken, id, requestData);
             navigate('/slur');
         } catch (error) {
-            console.error('Error creating slur:', error);
+            console.error('Error updating slur:', error);
         }
-    };
-    const handleReset = () => {
-        setFormData(initialFormData);
     };
     const handleCategoryChange = (category) => {
         const updatedCategories = formData.categories.includes(category)
@@ -78,14 +97,12 @@ export function SlurCreate() {
         <Box>
             <Anchor onClick={handleGoBack}>Go Back</Anchor>
             <Heading level={3} weight={900} alignSelf="center">
-                Add Slur
+                Edit Slur
             </Heading>
             <Form
                 value={formData}
                 onChange={(nextValue) => setFormData(nextValue)}
-                onSubmit={({ value }) => {
-                    handleSubmit(value);
-                }}
+                onSubmit={() => handleSubmit()}
             >
                 <FormField name="label" label="Label" required>
                     <TextInput
@@ -151,12 +168,11 @@ export function SlurCreate() {
                 </FormField>
 
                 <Box direction="row" gap="medium">
-                    <Button type="submit" primary label="Submit" />
-                    <Button type="reset" label="Reset" onClick={handleReset} />
+                    <Button type="submit" primary label="Save" />
                 </Box>
             </Form>
         </Box>
     );
 }
 
-export default SlurCreate;
+export default SlurEdit;

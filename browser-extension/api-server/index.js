@@ -33,6 +33,7 @@ app.get("/auth/register", async (req, res) => {
     const newUser = await registerAnonymousUser();
     res.send({ user: newUser });
   } catch (err) {
+    console.log(err)
     res.status(501).send();
   }
 });
@@ -214,12 +215,7 @@ app.get("/slur", async (req, res) => {
         },
       ],
     });
-
-    if (results) {
-      res.status(500).send({ error: "error finding slurs" });
-    } else {
-      res.json(results);
-    }
+    res.json(results);
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "server error" });
@@ -228,7 +224,10 @@ app.get("/slur", async (req, res) => {
 
 // POST request for slur and category
 app.post("/slur/create", async (req, res) => {
-  const { userId, label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+  const { user } = req
+  const userId = user.id
+  const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+  console.log(userId, label, labelMeaning, appropriated, appropriationContext, categories)
   // const t = await Op.transaction();
   const t = await sequelize.transaction()
 

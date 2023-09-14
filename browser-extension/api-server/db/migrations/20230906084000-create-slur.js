@@ -18,15 +18,12 @@ module.exports = {
       },
       label: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       labelMeaning: {
         type: Sequelize.TEXT,
-        allowNull: false,
       },
       appropriated: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
       },
       appropriationContext: {
         type: Sequelize.STRING,

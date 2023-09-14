@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       category : {
         type: DataTypes.ENUM(['gender', 'religion', 'caste']),
-        allowNull: false,
       },
     },
     {

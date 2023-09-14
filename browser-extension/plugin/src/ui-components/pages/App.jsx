@@ -17,6 +17,7 @@ import { ToggleSwitchCustom } from '../atoms/ToggleSwitchCustom';
 import { Off } from './Off';
 import { Slur } from './Slur';
 import SlurCreate from './SlurCreate';
+import SlurEdit from './SlurEdit';
 
 export function App() {
     const [user, setUser] = useState(undefined);
@@ -251,6 +252,10 @@ export function App() {
                                     <Route
                                         path="slur/create"
                                         element={<SlurCreate />}
+                                    />
+                                    <Route
+                                        path="slur/:id"
+                                        element={<SlurEdit />}
                                     />
                                 </Routes>
                             </div>

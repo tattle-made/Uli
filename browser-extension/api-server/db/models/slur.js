@@ -32,15 +32,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       label: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       labelMeaning: {
         type: DataTypes.TEXT,
-        allowNull: false,
       },
       appropriated: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
       },
       appropriationContext: {
         type: DataTypes.STRING,

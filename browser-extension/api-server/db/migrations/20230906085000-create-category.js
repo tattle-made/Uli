@@ -18,7 +18,6 @@ module.exports = {
       },
       category: {
         type: Sequelize.ENUM(['gender', 'religion', 'caste']),
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
