@@ -14,7 +14,7 @@ jobs:
       - name: "Checkout Development Branch"
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: actions
 
       - name: Get commit SHA
         shell: bash
