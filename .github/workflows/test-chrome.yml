@@ -9,7 +9,7 @@ jobs:
   chrome-publish:
     name: "Pre Release Extension"
     runs-on: "ubuntu-latest"
-    
+
     steps:
       - name: "Checkout Development Branch"
         uses: actions/checkout@v3
@@ -30,9 +30,9 @@ jobs:
           npm install
           npm run build
           zip extension.zip ./dist/ -r
-      
-        - name: "Upload extension.zip as artifact"
-          uses: actions/upload-artifact@v3
-          with:
-            name: extension
-            path: browser-extension/plugin/extension.zip
+
+      - name: "Upload extension.zip as artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension
+          path: browser-extension/plugin/extension.zip
