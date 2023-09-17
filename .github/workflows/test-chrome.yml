@@ -42,7 +42,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/runs/${{ github.run_id }}/artifacts/extension`;
+            const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/runs/${{ github.run_id }}/artifacts/extension.zip`;
             const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
             await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
