@@ -36,3 +36,12 @@ jobs:
         with:
           name: extension
           path: browser-extension/plugin/extension.zip
+
+      # - name: Create PR Comment with Artifact Link
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     artifact_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/extension"
+      #     comment_body="You can download the extension artifact [here](${artifact_url})."
+      #     curl -s -H "Authorization: token $GITHUB_TOKEN" -X POST -d "{\"body\":\"$comment_body\"}" "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+      
