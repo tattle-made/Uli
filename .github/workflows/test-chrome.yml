@@ -1,18 +1,15 @@
-name: "Publish on Chrome - TEST"
+name: "TEST"
 
 on:
   pull_request:
     branches:
-      - main
+      - actions
 
 jobs:
   chrome-publish:
     name: "Pre Release Extension"
     runs-on: "ubuntu-latest"
-    environment:
-      name: main
-      url: "https://github.com/tattle-made/Uli/releases"
-
+    
     steps:
       - name: "Checkout Development Branch"
         uses: actions/checkout@v3
