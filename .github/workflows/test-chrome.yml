@@ -49,7 +49,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const artifact_url = `${{ steps.download-artifact.outputs.download_url }}`;
+            const artifact_url = `${{ steps.download-artifact.outputs.download_url }}/extension.zip`;
             const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
             await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
