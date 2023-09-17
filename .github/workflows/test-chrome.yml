@@ -37,6 +37,27 @@ jobs:
           name: extension
           path: browser-extension/plugin/extension.zip
 
+      - name: Download and Comment Artifact Link
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          name: extension
+
+      - name: Create PR Comment with Artifact Link
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const artifact_url = `${{ steps.download-artifact.outputs.download_url }}`;
+            const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
+            await github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment_body
+            });
+
       # - name: Create PR Comment with Artifact Link
       #   uses: actions/github-script@v5
       #   with:
@@ -50,16 +71,3 @@ jobs:
       #         repo: context.repo.repo,
       #         body: comment_body
       #       });
-      - name: Create PR Comment with Artifact Link
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/actions/runs/${{ github.run_id }}`;
-            const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
-            await github.rest.issues.createComment({
-              issue_number: context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment_body
-            });
