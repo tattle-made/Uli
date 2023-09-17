@@ -44,9 +44,10 @@ jobs:
           script: |
             const artifact_url = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/actions/runs/${github.run_id}/artifacts/extension`;
             const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
-            github.issues.createComment({
-              issue_number: ${github.event.pull_request.number},
+            await github.issues.createComment({
+              issue_number: github.context.payload.pull_request.number,
               owner: github.context.repo.owner,
               repo: github.context.repo.repo,
               body: comment_body
             });
+
