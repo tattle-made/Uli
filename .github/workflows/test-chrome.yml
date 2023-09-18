@@ -43,11 +43,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             echo: "RUN ID - ${{github.run_id}} and ARTIFACT ID - "
-      #       const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/runs/${{ github.run_id }}/artifacts/extension`;
-      #       const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
-      #       await github.rest.issues.createComment({
-      #         issue_number: context.payload.pull_request.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: comment_body
-      #       });
+            const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/actions/runs/${{ github.run_id }}`;
+            const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
+            await github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment_body
+            });
