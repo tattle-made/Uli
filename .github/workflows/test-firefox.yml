@@ -1,4 +1,4 @@
-name: "PR Extensino for Chrome"
+name: "PR Extensino for Firefox"
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - actions
 
 jobs:
-  chrome-publish:
+  firefox-publish:
     name: "Pre Release Extension"
     runs-on: "ubuntu-latest"
 
@@ -28,8 +28,8 @@ jobs:
           ls
           pwd
           npm install
-          npm run build
-
+          npm run build:firefox
+      
       - name: "Upload extension.zip as artifact"
         uses: actions/upload-artifact@v3
         with:
@@ -42,7 +42,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const artifact_url = `https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }}`;
-            const comment_body = `🛠 Your build files for CHROME are available [here](${artifact_url}).`;
+            const comment_body = `🛠 Your build files for FIREFOX are available [here](${artifact_url}).`;
             await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
               owner: context.repo.owner,
