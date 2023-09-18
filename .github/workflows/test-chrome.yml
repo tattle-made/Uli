@@ -46,7 +46,7 @@ jobs:
             const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
             await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
-              owner: inputs.owner,
-              repo: inputs.repo,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: comment_body
             });
