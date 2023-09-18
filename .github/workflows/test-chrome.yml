@@ -50,24 +50,3 @@ jobs:
       #         repo: context.repo.repo,
       #         body: comment_body
       #       });
-      - name: Create PR Comment with Artifact Link
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: | 
-            const artifacts_url = `${{ github.event.workflow_run.artifacts_url }}`;
-            const response = await github.request(artifacts_url, {
-              headers: {
-                Accept: "application/vnd.github+json",
-                Authorization: `Bearer ${{ secrets.GITHUB_TOKEN }}`
-              }
-            });
-            const artifact = response.data.artifacts.find(a => a.name === "extension");
-            const artifact_url = artifact.archive_download_url;
-            const comment_body = `You can download the extension artifact here.`;
-            await github.rest.issues.createComment({
-              issue_number: context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment_body
-            });
