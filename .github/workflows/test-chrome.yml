@@ -29,13 +29,12 @@ jobs:
           pwd
           npm install
           npm run build
-          zip extension.zip ./dist/ -r
 
       - name: "Upload extension.zip as artifact"
         uses: actions/upload-artifact@v3
         with:
           name: extension
-          path: browser-extension/plugin/extension.zip
+          path: browser-extension/plugin/dist/
 
       - name: Create PR Comment with Artifact Link
         uses: actions/github-script@v5
