@@ -43,7 +43,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             echo: "RUN ID - ${{github.run_id}} and ARTIFACT ID - "
-            const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/actions/runs/${{ github.run_id }}`;
+            const artifact_url = `https://github.com/${{ context.repo.owner }}/${{ context.repo.repo }}/actions/runs/${{ github.run_id }}`;
             const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
             await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
