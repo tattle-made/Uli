@@ -41,10 +41,8 @@ jobs:
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
           script: |
-            const artifact_url = `https://github.com/${inputs.owner}/${inputs.repo}/actions/runs/${{ github.run_id }}`;
+            const artifact_url = `https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }}`;
             const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
             await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
