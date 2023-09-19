@@ -1,13 +1,13 @@
-name: "PR Extensino for Chrome"
+name: "Build For PR Review - Chrome"
 
 on:
   pull_request:
     branches:
-      - actions
+      - main
 
 jobs:
   chrome-publish:
-    name: "Pre Release Extension"
+    name: "Build For PR Review"
     runs-on: "ubuntu-latest"
 
     steps:

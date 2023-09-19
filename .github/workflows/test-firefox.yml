@@ -1,13 +1,13 @@
-name: "PR Extensino for Firefox"
+name: "Build For PR Review - Firefox"
 
 on:
   pull_request:
     branches:
-      - actions
+      - main
 
 jobs:
   firefox-publish:
-    name: "Pre Release Extension"
+    name: "Build For PR Review"
     runs-on: "ubuntu-latest"
 
     steps:
