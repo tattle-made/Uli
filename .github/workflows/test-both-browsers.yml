@@ -1,0 +1,75 @@
+name: "PR Extension for Browsers"
+
+on:
+  pull_request:
+    branches:
+      - actions
+
+jobs:
+  build-and-publish:
+    name: "Build and Publish Extensions"
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      matrix:
+        browser:
+          - chrome
+          - firefox
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Get commit SHA
+        shell: bash
+        run: |
+          echo "Setting variables"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          ls
+          pwd
+          npm install
+          npm run build:${{ matrix.browser }}
+
+      - name: "Upload extension.zip as artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.browser }}-extension
+          path: browser-extension/plugin/dist/
+
+  create-pr-comment:
+    name: "Create PR Comment with Artifact Links"
+    needs: build-and-publish
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Download Chrome and Firefox Artifacts"
+        uses: actions/download-artifact@v2
+        with:
+          name: chrome-extension
+          path: browser-extension/chrome
+
+      - name: "Download Firefox Artifacts"
+        uses: actions/download-artifact@v2
+        with:
+          name: firefox-extension
+          path: browser-extension/firefox
+
+      - name: Create PR Comment with Artifact Links
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const chromeArtifactUrl = `https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}/artifacts/chrome-extension`;
+            const firefoxArtifactUrl = `https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}/artifacts/firefox-extension`;
+            const commentBody = `🛠 Your build files for CHROME are available [here](${chromeArtifactUrl}).\n🛠 Your build files for FIREFOX are available [here](${firefoxArtifactUrl}).`;
+            await github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody,
+            });

@@ -33,7 +33,7 @@ jobs:
       - name: "Upload extension.zip as artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: extension
+          name: extension-firefox
           path: browser-extension/plugin/dist/
 
       - name: Create PR Comment with Artifact Link
