@@ -7,20 +7,17 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 
 
-# Configure the necessary command-line option
-options = webdriver.FirefoxOptions()
+driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
-driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options = options)
-# Note that you will need to run the web-ext command inside the dist folder
-# put the location to the xpi file here, it should end in /path/to/folder/web-ext-artifacts/[id].xpi
-driver.install_addon('path/to/xpi-file')
+# TODO: Add path to dist folder
+driver.install_addon('/path/to/extension/dist/', temporary=True)
 sleep(5)
+
 # add a hardcoded url leading to a particular tweet which you are using for testing 
 # a test url is already given
 driver.get('https://twitter.com/jackantonoff/status/1579311659742416896')
-
-
 sleep(5)
+
 # Check if the extension worked and log the result.
 try:
     # logic to check if the slur is replaced
