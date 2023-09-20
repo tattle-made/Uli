@@ -38,12 +38,16 @@ jobs:
           path: |
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
+            
+      - name: Echo GitHub Token
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo $GITHUB_TOKEN
 
-      - name: Create PR Comment with Artifact Link
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run: echo $GITHUB_TOKEN
+      # - name: Create PR Comment with Artifact Link
+      #   uses: actions/github-script@v5
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
           # script: |
           #   const artifact_url = `https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }}`;
           #   const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
