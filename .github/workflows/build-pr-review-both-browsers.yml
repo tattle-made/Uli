@@ -42,7 +42,7 @@ jobs:
       - name: "Upload dist folder as artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: extension-artifcats
+          name: extension-artifacts
           path: |
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
