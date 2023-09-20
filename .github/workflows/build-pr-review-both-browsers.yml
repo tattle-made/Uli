@@ -36,6 +36,7 @@ jobs:
           mv dist/ extension-chrome/
           npm run build:firefox
           mv dist/ extension-firefox/
+
       - name: "Upload dist folder as artifact"
         uses: actions/upload-artifact@v3
         with:
@@ -43,6 +44,9 @@ jobs:
           path: |
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
+
+      - name: Debug GitHub Token Permissions
+        run: echo ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create PR Comment with Artifact Link
         uses: actions/github-script@v5
