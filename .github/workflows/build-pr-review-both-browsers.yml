@@ -5,6 +5,13 @@ on:
     branches:
       - main
 
+permissions:
+  actions: write
+  issues: write
+  pull-requests: write
+  contents: write
+  repository-projects: write
+
 jobs:
   chrome-publish:
     name: "Build For PR Review"
@@ -31,24 +38,28 @@ jobs:
           mv dist/ extension-chrome/
           npm run build:firefox
           mv dist/ extension-firefox/
+
       - name: "Upload dist folder as artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: extension-artifcats
+          name: extension-artifacts
           path: |
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
 
-      - name: Create PR Comment with Artifact Link
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const artifact_url = `https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }}`;
-            const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
-            await github.rest.issues.createComment({
-              issue_number: context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment_body
-            });
+      # - name: Debug GitHub Token Permissions
+      #   run: echo ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Create PR Comment with Artifact Link
+      #   uses: actions/github-script@v5
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const artifact_url = `https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }}`;
+      #       const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
+      #       await github.rest.issues.createComment({
+      #         issue_number: context.payload.pull_request.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: comment_body
+      #       });
