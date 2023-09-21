@@ -1,14 +1,15 @@
 //console.log(`Environment : ${process.env.NODE_ENV}`);
 
-const express = require("express");  
+const express = require("express");
 const app = express();
 app.disable("x-powered-by");
 const port = 3000;
 const cors = require("cors");
 const { upload } = require("./s3");
 
-const { preference, post, feedback } = require("./db/models");
-const { Op } = require("sequelize");
+const { preference, post, feedback, slur, category, sequelize } = require("./db/models");
+
+
 const { registerAnonymousUser, resetUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
 const {
@@ -32,6 +33,7 @@ app.get("/auth/register", async (req, res) => {
     const newUser = await registerAnonymousUser();
     res.send({ user: newUser });
   } catch (err) {
+    console.log(err)
     res.status(501).send();
   }
 });
@@ -61,23 +63,22 @@ app.post("/preference/", async (req, res) => {
 
 
 // Feedback code from here
-
 app.post("/feedback", async (req, res) => {
   console.log("POST feedback");
   try {
     const data = req.body;
-    
+
 
     await feedback.create({
       userId: data.user_id,
       tweetText: data.tweet_text,
       sentiment: data.tweet_sentiment,
       confidence: data.tweet_confidence
-      
+
     });
-    
+
     res.send({ msg: "Feedback Sent" });
-  }  
+  }
   catch (err) {
     //console.log(err);
     res.status(501).send({ msg: "Error sending feedback" });
@@ -86,7 +87,6 @@ app.post("/feedback", async (req, res) => {
 
 
 // Feedback code ends here
-
 app.get("/preference/", async (req, res) => {
   const user = req.user;
   const result = await preference.findOne({
@@ -197,6 +197,149 @@ app.post("/reset", async (req, res) => {
     console.log(`Error : unable to reset account`);
     console.log(err);
     res.status(501).send("Could not reset account");
+  }
+});
+
+// GET request for Slur and Category
+app.get("/slur", async (req, res) => {
+  const user = req.user;
+  try {
+    const results = await slur.findAll({
+      where: {
+        userId: user.id,
+      },
+      include: [
+        {
+          model: category,
+          as: "categories",
+        },
+      ],
+    });
+    res.json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "server error" });
+  }
+});
+
+// POST request for slur and category
+app.post("/slur/create", async (req, res) => {
+  const { user } = req
+  const userId = user.id
+  const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+  console.log(userId, label, labelMeaning, appropriated, appropriationContext, categories)
+  // const t = await Op.transaction();
+  const t = await sequelize.transaction()
+
+  try {
+    const newSlur = await slur.create(
+      {
+        userId,
+        label,
+        labelMeaning,
+        appropriated,
+        appropriationContext,
+      },
+      { transaction: t }
+    );
+
+    const categoryPromises = categories.map(async (categoryData) => {
+      const newCategory = await category.create(
+        {
+          slurId: newSlur.id,
+          category: categoryData.category,
+        },
+        { transaction: t }
+      );
+      return newCategory;
+    });
+
+    // https://stackoverflow.com/questions/48376479/executing-multiple-sequelize-js-model-query-methods-with-promises-node
+    // https://stackoverflow.com/questions/28897708/sequelize-save-in-multiple-tables
+    const createdCategories = await Promise.all(categoryPromises);
+
+    await t.commit();
+
+    res.send({
+      slur: newSlur,
+      categories: createdCategories,
+    });
+  } catch (error) {
+    // await t.rollback();
+    console.error(error);
+    res.status(500).send({ error: "server error" });
+  }
+});
+
+// PUT request for slur and category
+// https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
+// https://sequelize.org/docs/v7/querying/update/
+app.put("/slur/:id", async (req, res) => {
+  const slurId = req.params.id;
+  const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+
+  try {
+    const existingSlur = await slur.findByPk(slurId);
+    if (!existingSlur) {
+      res.status(404).send({ error: "Slur not found" });
+      return;
+    }
+    // Update the slur record
+    existingSlur.label = label;
+    existingSlur.labelMeaning = labelMeaning;
+    existingSlur.appropriated = appropriated;
+    existingSlur.appropriationContext = appropriationContext;
+    await existingSlur.save();
+
+    // Delete existing categories for this slur
+    await category.destroy({
+      where: {
+        slurId: existingSlur.id,
+      },
+    });
+
+    // Create new categories
+    const categoryPromises = categories.map(async (categoryData) => {
+      const newCategory = await category.create({
+        slurId: existingSlur.id,
+        category: categoryData.category,
+      });
+      return newCategory;
+    });
+
+    const updatedCategories = await Promise.all(categoryPromises);
+
+    res.send({
+      slur: existingSlur,
+      categories: updatedCategories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
+  }
+});
+
+// DELETE request for slur and category
+app.delete("/slur/:id", async (req, res) => {
+  const slurId = req.params.id;
+  try {
+    const slurToDelete = await slur.findByPk(slurId);
+    if (!slurToDelete) {
+      res.status(404).send({ error: "Slur not found" });
+      return;
+    }
+
+    await category.destroy({
+      where: {
+        slurId: slurToDelete.id,
+      },
+    });
+    await slurToDelete.destroy();
+
+    res.send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "server error" });
   }
 });
 

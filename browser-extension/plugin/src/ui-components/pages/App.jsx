@@ -15,6 +15,9 @@ import { langNameMap } from '../atoms/language';
 const { getPreferenceData, setPreferenceData } = repository;
 import { ToggleSwitchCustom } from '../atoms/ToggleSwitchCustom';
 import { Off } from './Off';
+import { Slur } from './Slur';
+import SlurCreate from './SlurCreate';
+import SlurEdit from './SlurEdit';
 
 export function App() {
     const [user, setUser] = useState(undefined);
@@ -219,6 +222,9 @@ export function App() {
                                             <Link to="/debug">
                                                 {t('navigation_debug')}
                                             </Link>
+                                            <Link to="/slur">
+                                                {t('navigation_slur_list')}
+                                            </Link>
                                         </Box>
                                     )}
                                 </>
@@ -242,6 +248,15 @@ export function App() {
                                     />
                                     <Route path="debug" element={<Debug />} />
                                     <Route path="off" element={<Off />} />
+                                    <Route path="slur" element={<Slur />} />
+                                    <Route
+                                        path="slur/create"
+                                        element={<SlurCreate />}
+                                    />
+                                    <Route
+                                        path="slur/:id"
+                                        element={<SlurEdit />}
+                                    />
                                 </Routes>
                             </div>
                         ) : (
