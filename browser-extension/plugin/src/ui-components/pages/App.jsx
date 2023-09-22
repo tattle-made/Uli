@@ -222,7 +222,7 @@ export function App() {
                                             <Link to="/debug">
                                                 {t('navigation_debug')}
                                             </Link>
-                                            <Link to="/slur">
+                                            <Link id="slur-link" to="/slur">
                                                 {t('navigation_slur_list')}
                                             </Link>
                                         </Box>

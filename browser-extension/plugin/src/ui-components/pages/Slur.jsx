@@ -42,6 +42,7 @@ export function Slur() {
         <Box fill gap={'medium'}>
             <Box direction="row" gap={'small'} justify="start">
                 <Button
+                    id="add-slur-button"
                     icon={<Add size="small" />}
                     fill={false}
                     label="Add Slur"

@@ -89,6 +89,7 @@ export function SlurCreate() {
             >
                 <FormField name="label" label="Label" required>
                     <TextInput
+                        id="slur-form-label"
                         name="label"
                         value={formData.label}
                         onChange={(e) =>
@@ -99,6 +100,7 @@ export function SlurCreate() {
 
                 <FormField name="labelMeaning" label="Label Meaning" required>
                     <TextArea
+                        id="slur-form-label-meaning"
                         name="labelMeaning"
                         value={formData.labelMeaning}
                         onChange={(e) =>
@@ -110,7 +112,12 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                <FormField name="categories" label="Categories" required>
+                <FormField
+                    id="slur-form-categories"
+                    name="categories"
+                    label="Categories"
+                    required
+                >
                     <Box direction="row" margin="small">
                         {categoryOptions.map((category) => (
                             <CheckBox
