@@ -117,6 +117,7 @@ export function SlurEdit() {
 
                 <FormField name="labelMeaning" label="Label Meaning" required>
                     <TextArea
+                        id="slur-form-label-meaning"
                         name="labelMeaning"
                         value={formData.labelMeaning}
                         onChange={(e) =>
@@ -132,6 +133,7 @@ export function SlurEdit() {
                     <Box direction="row" margin="small">
                         {categoryOptions.map((category) => (
                             <CheckBox
+                                id={`slur-${category}`}
                                 key={category}
                                 label={category}
                                 name="categories"
@@ -142,7 +144,11 @@ export function SlurEdit() {
                     </Box>
                 </FormField>
 
-                <FormField name="appropriated" label="Appropriated" required>
+                <FormField
+                    name="appropriated"
+                    label="Appropriated"
+                    required={false}
+                >
                     <RadioButtonGroup
                         name="appropriated"
                         options={appropriatedOptions}
@@ -157,6 +163,7 @@ export function SlurEdit() {
                     required
                 >
                     <TextInput
+                        id="slur-form-appropriation-context"
                         name="appropriationContext"
                         value={formData.appropriationContext}
                         onChange={(e) =>
@@ -169,7 +176,12 @@ export function SlurEdit() {
                 </FormField>
 
                 <Box direction="row" gap="medium">
-                    <Button type="submit" primary label="Save" />
+                    <Button
+                        type="submit"
+                        primary
+                        label="Save"
+                        id="slur-form-save-button"
+                    />
                 </Box>
             </Form>
         </Box>
