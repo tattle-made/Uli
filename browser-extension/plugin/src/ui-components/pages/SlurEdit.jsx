@@ -106,6 +106,7 @@ export function SlurEdit() {
             >
                 <FormField name="label" label="Label" required>
                     <TextInput
+                        id="slur-form-label"
                         name="label"
                         value={formData.label}
                         onChange={(e) =>

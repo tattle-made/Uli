@@ -79,5 +79,14 @@ slur_form_appropriation_context.send_keys("test1")
 slur_form_submit_btn = driver.find_element('id', 'slur-form-submit-button')
 slur_form_submit_btn.click()
 
+sleep(3)
+# Click on the Edit button
+slur_edit_button = driver.find_element('id', 'slur-edit-button')
+slur_edit_button.click()
+sleep(2)
+# Now edit the form
+edit_slur_form_label = driver.find_element('id', 'slur-form-label')
+edit_slur_form_label.send_keys("test1-edit")
+
 input("Press Enter to close the browser...")
 driver.quit()

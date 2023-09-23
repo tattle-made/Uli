@@ -64,10 +64,12 @@ export function Slur() {
                     >
                         <Box direction="row" justify="end">
                             <Button
+                                id="slur-edit-button"
                                 label="Edit"
                                 onClick={() => navigate(`/slur/${slur.id}`)}
                             />
                             <Button
+                                id="slur-delete-button"
                                 label="Delete"
                                 onClick={() => handleDeleteSlur(slur.id)}
                             />
