@@ -121,6 +121,7 @@ export function SlurCreate() {
                     <Box direction="row" margin="small">
                         {categoryOptions.map((category) => (
                             <CheckBox
+                                id={`slur-${category}`}
                                 key={category}
                                 label={category}
                                 name="categories"
@@ -149,6 +150,7 @@ export function SlurCreate() {
                     required
                 >
                     <TextInput
+                        id="slur-form-appropriation-context"
                         name="appropriationContext"
                         value={formData.appropriationContext}
                         onChange={(e) =>
@@ -161,7 +163,12 @@ export function SlurCreate() {
                 </FormField>
 
                 <Box direction="row" gap="medium">
-                    <Button type="submit" primary label="Submit" />
+                    <Button
+                        type="submit"
+                        primary
+                        label="Submit"
+                        id="slur-form-submit-button"
+                    />
                     <Button type="reset" label="Reset" onClick={handleReset} />
                 </Box>
             </Form>
