@@ -1,0 +1,91 @@
+1695465507178	geckodriver	INFO	Listening on 127.0.0.1:58641
+1695465507690	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "44057" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileAELmUV"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: libva-drm.so.2 is missing.
+
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695465508672	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695465508802	Marionette	INFO	Listening on port 33375
+WebDriver BiDi listening on ws://127.0.0.1:44057
+Read port: 33375
+1695465509052	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:44057/devtools/browser/eb0c3716-bdb2-4d5e-9b07-7d9b4c1d8693
+1695465533300	Marionette	INFO	Stopped listening on port 33375
+[29881] Sandbox: Unexpected EOF, op 0 flags 00 path /proc/cpuinfo
+1695465629224	geckodriver	INFO	Listening on 127.0.0.1:56977
+1695465629736	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "56253" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile91fniI"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: libva-drm.so.2 is missing.
+
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695465630563	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695465630659	Marionette	INFO	Listening on port 42763
+WebDriver BiDi listening on ws://127.0.0.1:56253
+Read port: 42763
+1695465630863	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:56253/devtools/browser/5525ff5b-4f55-4a1a-b398-a210e918c1f7
+1695465650885	Marionette	INFO	Stopped listening on port 42763
+[31065] Sandbox: Unexpected EOF, op 0 flags 00 path /proc/cpuinfo
+1695465805930	geckodriver	INFO	Listening on 127.0.0.1:54239
+1695465806441	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "51799" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile0QYfIc"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: libva-drm.so.2 is missing.
+
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695465807307	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695465807405	Marionette	INFO	Listening on port 35247
+WebDriver BiDi listening on ws://127.0.0.1:51799
+Read port: 35247
+1695465807593	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:51799/devtools/browser/aa319252-f81c-4445-bee5-f92c56914616
+1695465828141	Marionette	INFO	Stopped listening on port 35247
+console.error: (new AbortError("IndexedDB: main/url-classifier-skip-urls list() IndexedDB:  execute() A request was aborted, for example through a call to IDBTransaction.abort.", "resource://services-settings/IDBHelpers.sys.mjs", 16))
+[32063] Sandbox: Unexpected EOF, op 0 flags 00 path /proc/cpuinfo
+1695466057517	geckodriver	INFO	Listening on 127.0.0.1:58881
+1695466058028	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "57387" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebsiyiB"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: libva-drm.so.2 is missing.
+
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695466058876	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695466058972	Marionette	INFO	Listening on port 42791
+WebDriver BiDi listening on ws://127.0.0.1:57387
+Read port: 42791
+1695466059166	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:57387/devtools/browser/ceda1e9b-4598-4604-8bec-f2c86260ba1a
+1695466064854	Marionette	INFO	Stopped listening on port 42791
+1695466149983	geckodriver	INFO	Listening on 127.0.0.1:43785
+1695466150496	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "49853" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile2K8TiX"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: libva-drm.so.2 is missing.
+
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695466151359	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1695466151454	Marionette	INFO	Listening on port 35439
+WebDriver BiDi listening on ws://127.0.0.1:49853
+Read port: 35439
+1695466151641	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:49853/devtools/browser/84569819-a7b1-4f89-ac28-0713fcbcfc3e
+console.error: "update.locale" " file doesn't exist in either the application or GRE directories"
+1695466186521	Marionette	INFO	Stopped listening on port 35439
+[34157] Sandbox: Unexpected EOF, op 0 flags 00 path /proc/cpuinfo
