@@ -254,8 +254,6 @@ app.post("/slur/create", async (req, res) => {
       return newCategory;
     });
 
-    // https://stackoverflow.com/questions/48376479/executing-multiple-sequelize-js-model-query-methods-with-promises-node
-    // https://stackoverflow.com/questions/28897708/sequelize-save-in-multiple-tables
     const createdCategories = await Promise.all(categoryPromises);
 
     await t.commit();
@@ -272,8 +270,6 @@ app.post("/slur/create", async (req, res) => {
 });
 
 // PUT request for slur and category
-// https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
-// https://sequelize.org/docs/v7/querying/update/
 app.put("/slur/:id", async (req, res) => {
   const slurId = req.params.id;
   const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
