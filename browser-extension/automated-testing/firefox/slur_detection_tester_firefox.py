@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
 # TODO: Add path to dist folder without trailing separator ('/')
-driver.install_addon('path/to/dist', temporary=True)
+driver.install_addon('path/to/extension/dist', temporary=True)
 sleep(5)
 
 # workflow
@@ -28,8 +28,11 @@ internal_UUID = str(ids[2].text)
 sleep(2)
 print(internal_UUID)
 
+moz_extension_url_prefix = "moz-extension://"
+options_url = "/options.html"
+
 # going to the options page
-url = "moz-extension://" + internal_UUID + "/options.html"
+url = moz_extension_url_prefix + internal_UUID + options_url
 driver.get(url)
 sleep(5)
 
@@ -41,10 +44,12 @@ activate_button.click()
 WebDriverWait(driver, 10).until(EC.alert_is_present())
 driver.switch_to.alert.accept()
 
+### TODO: this is a testing workaround for a randomly appearing bug ###
 # Reload page manually for automated handling - '/preferences' page load fails
-url = "moz-extension://" + internal_UUID + "/options.html"
+url = moz_extension_url_prefix + internal_UUID + options_url
 driver.get(url)
 sleep(5)
+### END workaround ###
 
 # Save settings
 save_button = driver.find_element('id', 'app_btn_save') #saving the settings
@@ -52,7 +57,7 @@ save_button.click()
 ### TODO: this is a testing workaround for a randomly appearing bug ###
 # Reload page manually for automated handling - '/preferences' page load fails
 # this workaround also fails but rarely
-url = "moz-extension://" + internal_UUID + "/options.html"
+url = moz_extension_url_prefix + internal_UUID + options_url
 driver.get(url)
 ### END workaround ###
 
