@@ -59,13 +59,21 @@ driver.switch_to.alert.accept()
 save_button = driver.find_element('id', 'app_btn_save') #saving the settings
 save_button.click()
 
-# add a hardcoded url leading to a particular tweet which you are using for testing 
-driver.get('https://twitter.com/jackantonoff/status/1579311659742416896')
-sleep(20)
+# add a hardcoded url which you are using for testing 
+driver.get('https://en.wikipedia.org/wiki/Bitch_(slang)')
+### TODO: this is a testing workaround for a randomly appearing bug ### 
+# Scroll page to get Uli to redact everytime successfully
+driver.execute_script("window.scrollTo(0, 100)")
+sleep(2)
+driver.execute_script("window.scrollTo(0, 200)")
+sleep(2)
+driver.execute_script("window.scrollTo(0, 0)")
+### END workaround ###
+sleep(10)
 # Check if the extension worked and log the result. 
 try:
     # logic to check if the slur is replaced
-    ele = driver.find_element('xpath','//div[contains(text(),"▓")]')
+    ele = driver.find_element('xpath','/html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[2]/i[1]/b[contains(text(),"▓")]')
     print('Success! :-)')
     # if no such span is present where the character - ▓ - is not present then the Failure message will show up
     # Note that this will return success if the tweet by default contains the replacement character 
