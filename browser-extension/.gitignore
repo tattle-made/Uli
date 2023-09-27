@@ -1,2 +1,4 @@
 node_modules/
 .scannerwork
+automated-testing/venv*
+automated-testing/firefox/geckodriver.log
