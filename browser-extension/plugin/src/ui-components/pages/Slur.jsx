@@ -40,68 +40,114 @@ export function Slur() {
 
     return (
         <Box fill gap={'medium'}>
-            <Box direction="row" gap={'small'} justify="start">
-                <Button
-                    id="add-slur-button"
-                    icon={<Add size="small" />}
-                    fill={false}
-                    label="Add Slur"
-                    onClick={navigateToAddSlur}
-                />
-            </Box>
-            <Box alignContent="center">
-                <Text textAlign="center">Your Crowdsourced Slur List</Text>
-            </Box>
             <Box gap="medium" alignContent="center" wrap>
-                {getSlurs.map((slur, index) => (
-                    <Box
-                        key={index}
-                        background="light-2"
-                        pad="medium"
-                        round="small"
-                        width="medium"
-                        elevation="small"
-                    >
-                        <Box direction="row" justify="end">
-                            <Button
-                                id="slur-edit-button"
-                                label="Edit"
-                                onClick={() => navigate(`/slur/${slur.id}`)}
-                            />
-                            <Button
-                                id="slur-delete-button"
-                                label="Delete"
-                                onClick={() => handleDeleteSlur(slur.id)}
-                            />
+                {getSlurs.length === 0 ? (
+                    <>
+                        <Box alignContent="center">
+                            <Text textAlign="center">
+                                <strong>Your Crowdsourced Slur List</strong>
+                            </Text>
                         </Box>
-                        <Text>
-                            <strong>Label:</strong> {slur.label}
-                        </Text>
-                        <Text>
-                            <strong>Label Meaning:</strong> {slur.labelMeaning}
-                        </Text>
-                        <Text>
-                            <strong>Appropriated:</strong>{' '}
-                            {slur.appropriated ? 'Yes' : 'No'}
-                        </Text>
-                        <Text>
-                            <strong>Appropriation Context:</strong>{' '}
-                            {slur.appropriationContext}
-                        </Text>
-                        <Text>
-                            <strong>Categories:</strong>
-                            <ul>
-                                {slur.categories.map(
-                                    (category, categoryIndex) => (
-                                        <li key={categoryIndex}>
-                                            {category.category}
-                                        </li>
-                                    )
-                                )}
-                            </ul>
-                        </Text>
-                    </Box>
-                ))}
+                        <Box
+                            direction="column"
+                            gap={'small'}
+                            justify="center"
+                            margin="xlarge"
+                            align="center"
+                        >
+                            <Box width={'fit-content'}>
+                                <Button
+                                    id="add-slur-button"
+                                    icon={<Add size="small" />}
+                                    fill={false}
+                                    label="Add Slur"
+                                    onClick={navigateToAddSlur}
+                                />
+                            </Box>
+                            <Box>
+                                <Text size="small">
+                                    No Slurs have been added, click to add slurs
+                                </Text>
+                            </Box>
+                        </Box>
+                    </>
+                ) : (
+                    getSlurs.map((slur, index) => (
+                        <>
+                            <Box
+                                direction="row"
+                                gap={'small'}
+                                justify="center"
+                                align="center"
+                            >
+                                <Button
+                                    id="add-slur-button"
+                                    icon={<Add size="small" />}
+                                    fill={false}
+                                    label="Add Slur"
+                                    onClick={navigateToAddSlur}
+                                />
+                            </Box>
+                            <Box alignContent="center" margin="medium">
+                                <Text textAlign="center" margin={'small'}>
+                                    <strong>Your Crowdsourced Slur List</strong>
+                                </Text>
+                            </Box>
+                            <Box
+                                key={index}
+                                background="light-2"
+                                pad="medium"
+                                round="small"
+                                width="medium"
+                                elevation="small"
+                            >
+                                <Box direction="row" justify="end">
+                                    <Button
+                                        id="slur-edit-button"
+                                        label="Edit"
+                                        onClick={() =>
+                                            navigate(`/slur/${slur.id}`)
+                                        }
+                                    />
+                                    <Button
+                                        id="slur-delete-button"
+                                        label="Delete"
+                                        onClick={() =>
+                                            handleDeleteSlur(slur.id)
+                                        }
+                                    />
+                                </Box>
+                                <Text>
+                                    <strong>Label:</strong> {slur.label}
+                                </Text>
+                                <Text>
+                                    <strong>Label Meaning:</strong>{' '}
+                                    {slur.labelMeaning}
+                                </Text>
+                                <Text>
+                                    <strong>Appropriated:</strong>{' '}
+                                    {slur.appropriated ? 'Yes' : 'No'}
+                                </Text>
+                                <Text>
+                                    <strong>Appropriation Context:</strong>{' '}
+                                    {slur.appropriationContext}
+                                </Text>
+                                <Text>
+                                    <strong>Categories:</strong>
+                                    <ul>
+                                        {slur.categories.map(
+                                            (category, categoryIndex) => (
+                                                <li key={categoryIndex}>
+                                                    {category.category}
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                </Text>
+                            </Box>
+                        </>
+                    ))
+                )}
             </Box>
         </Box>
     );
