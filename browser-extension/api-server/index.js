@@ -264,7 +264,7 @@ app.post("/slur/create", async (req, res) => {
       categories: createdCategories,
     });
   } catch (error) {
-    // await t.rollback();
+    await t.rollback();
     console.error(error);
     res.status(500).send({ error: "server error" });
   }
@@ -274,11 +274,13 @@ app.post("/slur/create", async (req, res) => {
 app.put("/slur/:id", async (req, res) => {
   const slurId = req.params.id;
   const { label, level_of_severity, casual, appropriated, appropriationContext,labelMeaning, categories } = req.body;
+  const t = await sequelize.transaction();
 
   try {
-    const existingSlur = await slur.findByPk(slurId);
+    const existingSlur = await slur.findByPk(slurId, { transaction: t });
     if (!existingSlur) {
       res.status(404).send({ error: "Slur not found" });
+      await t.rollback();
       return;
     }
     // Update the slur record
@@ -288,13 +290,14 @@ app.put("/slur/:id", async (req, res) => {
     existingSlur.appropriated = appropriated;
     existingSlur.appropriationContext = appropriationContext;
     existingSlur.labelMeaning = labelMeaning;
-    await existingSlur.save();
+    await existingSlur.save({ transaction: t });
 
     // Delete existing categories for this slur
     await category.destroy({
       where: {
         slurId: existingSlur.id,
       },
+      transaction: t,
     });
 
     // Create new categories
@@ -302,11 +305,12 @@ app.put("/slur/:id", async (req, res) => {
       const newCategory = await category.create({
         slurId: existingSlur.id,
         category: categoryData.category,
-      });
+      }, { transaction: t });
       return newCategory;
     });
 
     const updatedCategories = await Promise.all(categoryPromises);
+    await t.commit();
 
     res.send({
       slur: existingSlur,
@@ -314,6 +318,7 @@ app.put("/slur/:id", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    await t.rollback();
     res.status(500).send({ error: "Server error" });
   }
 });
@@ -321,10 +326,12 @@ app.put("/slur/:id", async (req, res) => {
 // DELETE request for slur and category
 app.delete("/slur/:id", async (req, res) => {
   const slurId = req.params.id;
+  const t = await sequelize.transaction();
   try {
-    const slurToDelete = await slur.findByPk(slurId);
+    const slurToDelete = await slur.findByPk(slurId, { transaction: t });
     if (!slurToDelete) {
       res.status(404).send({ error: "Slur not found" });
+      await t.rollback();
       return;
     }
 
@@ -332,12 +339,16 @@ app.delete("/slur/:id", async (req, res) => {
       where: {
         slurId: slurToDelete.id,
       },
+      transaction: t,
     });
-    await slurToDelete.destroy();
+    await slurToDelete.destroy({ transaction: t });
+
+    await t.commit();
 
     res.send();
   } catch (error) {
     console.error(error);
+    await t.rollback();
     res.status(500).send({ error: "server error" });
   }
 });
