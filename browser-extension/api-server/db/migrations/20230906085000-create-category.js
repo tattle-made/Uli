@@ -17,7 +17,7 @@ module.exports = {
         },
       },
       category: {
-        type: DataTypes.ENUM([
+        type: Sequelize.ENUM([
           "gendered",
           "sexualized",
           "religion",
