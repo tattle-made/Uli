@@ -226,9 +226,8 @@ app.get("/slur", async (req, res) => {
 app.post("/slur/create", async (req, res) => {
   const { user } = req
   const userId = user.id
-  const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+  const { label, level_of_severity, casual, appropriated, appropriationContext,labelMeaning, categories } = req.body;
   console.log(userId, label, labelMeaning, appropriated, appropriationContext, categories)
-  // const t = await Op.transaction();
   const t = await sequelize.transaction()
 
   try {
@@ -236,9 +235,11 @@ app.post("/slur/create", async (req, res) => {
       {
         userId,
         label,
-        labelMeaning,
+        level_of_severity,
+        casual,
         appropriated,
         appropriationContext,
+        labelMeaning,
       },
       { transaction: t }
     );
@@ -272,7 +273,7 @@ app.post("/slur/create", async (req, res) => {
 // PUT request for slur and category
 app.put("/slur/:id", async (req, res) => {
   const slurId = req.params.id;
-  const { label, labelMeaning, appropriated, appropriationContext, categories } = req.body;
+  const { label, level_of_severity, casual, appropriated, appropriationContext,labelMeaning, categories } = req.body;
 
   try {
     const existingSlur = await slur.findByPk(slurId);
@@ -282,9 +283,11 @@ app.put("/slur/:id", async (req, res) => {
     }
     // Update the slur record
     existingSlur.label = label;
-    existingSlur.labelMeaning = labelMeaning;
+    existingSlur.level_of_severity = level_of_severity;
+    existingSlur.casual = casual;
     existingSlur.appropriated = appropriated;
     existingSlur.appropriationContext = appropriationContext;
+    existingSlur.labelMeaning = labelMeaning;
     await existingSlur.save();
 
     // Delete existing categories for this slur
