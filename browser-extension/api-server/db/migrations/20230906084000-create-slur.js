@@ -17,16 +17,22 @@ module.exports = {
         }
       },
       label: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
-      labelMeaning: {
-        type: Sequelize.TEXT,
+      level_of_severity : {
+        type: DataTypes.ENUM(['low', 'medium', 'high']),
+      },
+      casual : {
+        type: DataTypes.BOOLEAN,
       },
       appropriated: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
       },
       appropriationContext: {
-        type: Sequelize.STRING,
+        type: DataTypes.BOOLEAN,
+      },
+      labelMeaning: {
+        type: DataTypes.TEXT,
       },
       createdAt: {
         allowNull: false,

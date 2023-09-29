@@ -17,7 +17,19 @@ module.exports = {
         },
       },
       category: {
-        type: Sequelize.ENUM(['gender', 'religion', 'caste']),
+        type: DataTypes.ENUM([
+          "gendered",
+          "sexualized",
+          "religion",
+          "ethnicity",
+          "political affiliation",
+          "caste",
+          "class",
+          "body shaming",
+          "ableist",
+          "sexual identity",
+          "other",
+        ]),
       },
       createdAt: {
         allowNull: false,

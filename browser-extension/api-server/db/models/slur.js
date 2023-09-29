@@ -33,14 +33,20 @@ module.exports = (sequelize, DataTypes) => {
       label: {
         type: DataTypes.STRING,
       },
-      labelMeaning: {
-        type: DataTypes.TEXT,
+      level_of_severity : {
+        type: DataTypes.ENUM(['low', 'medium', 'high']),
+      },
+      casual : {
+        type: DataTypes.BOOLEAN,
       },
       appropriated: {
         type: DataTypes.BOOLEAN,
       },
       appropriationContext: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
+      },
+      labelMeaning: {
+        type: DataTypes.TEXT,
       },
     },
     {

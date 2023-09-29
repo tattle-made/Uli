@@ -15,14 +15,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-        slurId: {
+      slurId: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         foreignKey: true,
         allowNull: false,
-        },
-      category : {
-        type: DataTypes.ENUM(['gender', 'religion', 'caste']),
+      },
+      category: {
+        type: DataTypes.ENUM([
+          "gendered",
+          "sexualized",
+          "religion",
+          "ethnicity",
+          "political affiliation",
+          "caste",
+          "class",
+          "body shaming",
+          "ableist",
+          "sexual identity",
+          "other",
+        ]),
       },
     },
     {
