@@ -12,6 +12,20 @@ The plugin installation link and the user-guide can be found here: [https://uli.
 
 ![Uli September posts](https://user-images.githubusercontent.com/13188366/224235833-e6493aab-9706-4b05-ac5a-fb1c0cc97f03.gif)
 
+## Hacktoberfest 2023
+
+Here to contribute for Hacktoberfest? Welcome!
+Before you contribute, we recommend you do the following:
+1. Understand what we do- Go through our Quick Guide below
+2. Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki): It will help you navigate our repository, and adhere to our standards for contributions.
+
+## General Guidelines:
+
+Identifying issues: We've labelled issues with 'hacktoberfest', 'good first issue', and 'help wanted'. Target and contribute to these issues. There are both code and no-code issues that you can contribute to.
+
+
+   
+
 ## Quick Guide
 1. [Motivation](#motivation-)
 2. [Approach](#approach-)
