@@ -19,12 +19,18 @@ Before you contribute, we recommend you do the following:
 1. Understand what we do- Go through our Quick Guide below
 2. Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki): It will help you navigate our repository, and adhere to our standards for contributions.
 
-## General Guidelines:
+### Contribution Guidelines to Hacktoberfest:
 
-Identifying issues: We've labelled issues with 'hacktoberfest', 'good first issue', and 'help wanted'. Target and contribute to these issues. There are both code and no-code issues that you can contribute to.
+1. **Identifying issues**: We've labeled issues with bot [hacktoberfest](https://github.com/tattle-made/Uli/labels/hacktoberfest) and [good first issue](https://github.com/tattle-made/Uli/labels/good%20first%20issue) tags. You can target and contribute to these issues as are a great starting point. There are both code and no-code issues that you can contribute to.
+2. **Set up Uli Locally for Development**: 
+For setting up browser extension: Follow relevant instructions under `Setup Guides` on the Uli Wiki - https://github.com/tattle-made/Uli/wiki#setup-guides 
+3. **Make a Pull Request**: After making changes to the code, create a pull request. The maintainers will review it, provide feedback if necessary, and then merge it.
 
+You have made your first hacktoberfest contribution to Uli
 
-   
+Join the our Slack for communitcation - [Link](https://join.slack.com/t/tattle-workspace/shared_invite/zt-24g9vngdc-VEGSv4y1OnLZ~nrvBXl6hQ).
+<br>
+Introduce yourself in the `#introductions` channel and feel free to discuss any Hacktoberfest-related questions in the `#issue_uli_hacktoberfest` channel.   
 
 ## Quick Guide
 1. [Motivation](#motivation-)
