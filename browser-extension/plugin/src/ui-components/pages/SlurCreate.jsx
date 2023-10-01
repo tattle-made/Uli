@@ -38,9 +38,9 @@ export function SlurCreate() {
     const initialFormData = {
         label: '',
         levelOfSeverity: '',
-        casual: '',
-        appropriated: '',
-        appropriationContext: '',
+        casual: false,
+        appropriated: false,
+        appropriationContext: false,
         categories: [],
         labelMeaning: ''
     };
@@ -122,10 +122,11 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                <FormField name="casual" label="Casual" required>
+                <FormField name="casual" label="Casual" required={false}>
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
+                        direction="row"
                         options={['Yes', 'No']}
                         value={formData.casual ? 'Yes' : 'No'}
                         onChange={(e) =>
@@ -137,10 +138,15 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                <FormField name="appropriated" label="Appropriated" required>
+                <FormField
+                    name="appropriated"
+                    label="Appropriated"
+                    required={false}
+                >
                     <RadioButtonGroup
                         id="slur-form-appropriated"
                         name="appropriated"
+                        direction="row"
                         options={['Yes', 'No']}
                         value={formData.appropriated ? 'Yes' : 'No'}
                         onChange={(e) =>
@@ -155,11 +161,12 @@ export function SlurCreate() {
                 <FormField
                     name="appropriationContext"
                     label="Appropriation Context"
-                    required
+                    required={false}
                 >
                     <RadioButtonGroup
                         id="slur-form-appropriationContext"
                         name="appropriationContext"
+                        direction="row"
                         options={['Community', 'Others']}
                         value={
                             formData.appropriationContext
