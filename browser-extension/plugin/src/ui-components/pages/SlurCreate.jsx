@@ -30,7 +30,6 @@ const categoryOptions = [
     'sexual identity',
     'other'
 ];
-const levelOfSeverityOptions = ['low', 'medium', 'high'];
 
 export function SlurCreate() {
     const { user } = useContext(UserContext);
@@ -111,7 +110,7 @@ export function SlurCreate() {
                     <RadioButtonGroup
                         name="level_of_severity"
                         direction="row"
-                        options={levelOfSeverityOptions}
+                        options={['low', 'medium', 'high']}
                         value={formData.level_of_severity}
                         onChange={(event) =>
                             setFormData({
@@ -160,7 +159,7 @@ export function SlurCreate() {
 
                 <FormField
                     name="appropriationContext"
-                    label="Appropriation Context"
+                    label="If, Appropriated, Is it by Community or Others?"
                     required={false}
                 >
                     <RadioButtonGroup

@@ -121,16 +121,30 @@ export function Slur() {
                                     <strong>Label:</strong> {slur.label}
                                 </Text>
                                 <Text>
-                                    <strong>Label Meaning:</strong>{' '}
-                                    {slur.labelMeaning}
+                                    <strong>Level of Severity:</strong>{' '}
+                                    {slur.level_of_severity}
                                 </Text>
+                                <Text>
+                                    <strong>Casual:</strong>{' '}
+                                    {slur.casual ? 'Yes' : 'No'}
+                                </Text>
+
                                 <Text>
                                     <strong>Appropriated:</strong>{' '}
                                     {slur.appropriated ? 'Yes' : 'No'}
                                 </Text>
                                 <Text>
-                                    <strong>Appropriation Context:</strong>{' '}
-                                    {slur.appropriationContext}
+                                    <strong>
+                                        If, Appropriated, Is it by Community or
+                                        Others?:
+                                    </strong>{' '}
+                                    {slur.appropriationContext
+                                        ? 'Community'
+                                        : 'Others'}
+                                </Text>
+                                <Text>
+                                    <strong>What Makes it Problematic?:</strong>{' '}
+                                    {slur.labelMeaning}
                                 </Text>
                                 <Text>
                                     <strong>Categories:</strong>

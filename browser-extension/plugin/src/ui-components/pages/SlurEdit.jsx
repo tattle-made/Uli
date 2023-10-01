@@ -6,7 +6,7 @@ import {
     FormField,
     Heading,
     RadioButtonGroup,
-    CheckBox,
+    Select,
     TextArea,
     TextInput,
     Anchor
@@ -17,8 +17,19 @@ import { UserContext } from '../atoms/AppContext';
 
 const { getSlurAndCategory, updateSlurAndCategory } = Api;
 
-const categoryOptions = ['gender', 'religion', 'caste'];
-const appropriatedOptions = [true, false];
+const categoryOptions = [
+    'gendered',
+    'sexualized',
+    'religion',
+    'ethnicity',
+    'political affiliation',
+    'caste',
+    'class',
+    'body shaming',
+    'ableist',
+    'sexual identity',
+    'other'
+];
 
 export function SlurEdit() {
     const { user } = useContext(UserContext);
@@ -28,10 +39,12 @@ export function SlurEdit() {
 
     const [formData, setFormData] = useState({
         label: '',
-        labelMeaning: '',
-        categories: [],
+        level_of_severity: '',
+        casual: false,
         appropriated: false,
-        appropriationContext: ''
+        appropriationContext: false,
+        categories: [],
+        labelMeaning: ''
     });
     const [, setSlurData] = useState(null);
 
@@ -45,12 +58,14 @@ export function SlurEdit() {
                 if (editedSlur) {
                     setFormData({
                         label: editedSlur.label,
+                        level_of_severity: editedSlur.level_of_severity,
+                        casual: editedSlur.casual,
+                        appropriated: editedSlur.appropriated,
+                        appropriationContext: editedSlur.appropriationContext,
                         labelMeaning: editedSlur.labelMeaning,
                         categories: editedSlur.categories.map(
                             (category) => category.category
-                        ),
-                        appropriated: editedSlur.appropriated,
-                        appropriationContext: editedSlur.appropriationContext
+                        )
                     });
                 } else {
                     console.error('Slur not found');
@@ -83,15 +98,6 @@ export function SlurEdit() {
             console.error('Error updating slur:', error);
         }
     };
-    const handleCategoryChange = (category) => {
-        const updatedCategories = formData.categories.includes(category)
-            ? formData.categories.filter((c) => c !== category)
-            : [...formData.categories, category];
-        setFormData({
-            ...formData,
-            categories: updatedCategories
-        });
-    };
 
     return (
         <Box>
@@ -115,7 +121,91 @@ export function SlurEdit() {
                     />
                 </FormField>
 
-                <FormField name="labelMeaning" label="Label Meaning" required>
+                <FormField
+                    name="level_of_severity"
+                    label="Level of Severity"
+                    required
+                >
+                    <RadioButtonGroup
+                        name="level_of_severity"
+                        direction="row"
+                        options={['low', 'medium', 'high']}
+                        value={formData.level_of_severity}
+                        onChange={(event) =>
+                            setFormData({
+                                ...formData,
+                                level_of_severity: event.target.value
+                            })
+                        }
+                    />
+                </FormField>
+
+                <FormField name="casual" label="Casual" required={false}>
+                    <RadioButtonGroup
+                        id="slur-form-casual"
+                        name="casual"
+                        direction="row"
+                        options={['Yes', 'No']}
+                        value={formData.casual ? 'Yes' : 'No'}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                casual: e.target.value === 'Yes'
+                            })
+                        }
+                    />
+                </FormField>
+
+                <FormField
+                    name="appropriated"
+                    label="Appropriated"
+                    required={false}
+                >
+                    <RadioButtonGroup
+                        id="slur-form-appropriated"
+                        name="appropriated"
+                        direction="row"
+                        options={['Yes', 'No']}
+                        value={formData.appropriated ? 'Yes' : 'No'}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                appropriated: e.target.value === 'Yes'
+                            })
+                        }
+                    />
+                </FormField>
+
+                <FormField
+                    name="appropriationContext"
+                    label="If, Appropriated, Is it by Community or Others?"
+                    required={false}
+                >
+                    <RadioButtonGroup
+                        id="slur-form-appropriationContext"
+                        name="appropriationContext"
+                        direction="row"
+                        options={['Community', 'Others']}
+                        value={
+                            formData.appropriationContext
+                                ? 'Community'
+                                : 'Others'
+                        }
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                appropriationContext:
+                                    e.target.value === 'Community'
+                            })
+                        }
+                    />
+                </FormField>
+
+                <FormField
+                    name="labelMeaning"
+                    label="What Makes it Problematic?"
+                    required
+                >
                     <TextArea
                         id="slur-form-label-meaning"
                         name="labelMeaning"
@@ -129,49 +219,21 @@ export function SlurEdit() {
                     />
                 </FormField>
 
-                <FormField name="categories" label="Categories" required>
-                    <Box direction="row" margin="small">
-                        {categoryOptions.map((category) => (
-                            <CheckBox
-                                id={`slur-${category}`}
-                                key={category}
-                                label={category}
-                                name="categories"
-                                checked={formData.categories.includes(category)}
-                                onChange={() => handleCategoryChange(category)}
-                            />
-                        ))}
-                    </Box>
-                </FormField>
-
                 <FormField
-                    name="appropriated"
-                    label="Appropriated"
-                    required={false}
-                >
-                    <RadioButtonGroup
-                        name="appropriated"
-                        options={appropriatedOptions}
-                        direction="row"
-                        value={formData.appropriated}
-                    />
-                </FormField>
-
-                <FormField
-                    name="appropriationContext"
-                    label="Appropriation Context"
+                    id="slur-form-categories"
+                    name="categories"
+                    label="Categories"
                     required
                 >
-                    <TextInput
-                        id="slur-form-appropriation-context"
-                        name="appropriationContext"
-                        value={formData.appropriationContext}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                appropriationContext: e.target.value
-                            })
+                    <Select
+                        id="slur-form-categories-select"
+                        name="categories"
+                        options={categoryOptions}
+                        value={formData.categories}
+                        onChange={({ value }) =>
+                            setFormData({ ...formData, categories: value })
                         }
+                        multiple
                     />
                 </FormField>
 
