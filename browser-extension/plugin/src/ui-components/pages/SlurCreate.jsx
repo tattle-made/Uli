@@ -37,7 +37,7 @@ export function SlurCreate() {
     // const { notification, showNotification } = useContext(NotificationContext);
     const initialFormData = {
         label: '',
-        levelOfSeverity: '',
+        level_of_severity: '',
         casual: false,
         appropriated: false,
         appropriationContext: false,
@@ -104,19 +104,19 @@ export function SlurCreate() {
                 </FormField>
 
                 <FormField
-                    name="levelOfSeverity"
+                    name="level_of_severity"
                     label="Level of Severity"
                     required
                 >
                     <RadioButtonGroup
-                        name="levelOfSeverity"
+                        name="level_of_severity"
                         direction="row"
                         options={levelOfSeverityOptions}
-                        value={formData.levelOfSeverity}
+                        value={formData.level_of_severity}
                         onChange={(event) =>
                             setFormData({
                                 ...formData,
-                                levelOfSeverity: event.target.value
+                                level_of_severity: event.target.value
                             })
                         }
                     />
