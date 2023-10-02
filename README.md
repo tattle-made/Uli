@@ -17,27 +17,17 @@ Uli is a browser plugin that :
 
 It is an attempt to invert the top-down logics of platform moderation and center the experiences of those subject to online gender-based violence. 
 
-The plugin installation link and the user-guide can be found here: [https://uli.tattle.co.in/](https://uli.tattle.co.in/)
+The plugin installation link and the user-guide can be found on our [website](https://uli.tattle.co.in/) 
 
 
 <h1 align="center">🎉 We're participating in Hacktoberfest 2023! 🎉</h1>
+We cherish diversity of experiences and perspectives. It adds value to our work. To this end, we strongly encourage candidates who find alignment with the project and are driven to learn, to contribute to Uli. There are both code and no-code issues that you can contribute to.
 
-Here to contribute for Hacktoberfest? Welcome!
-Before you contribute, we recommend you do the following:
-1. Go through our Quick Guide below
-2. Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki): It will help you navigate our repository, and adhere to our standards for contributions.
-
-### Contribution Guidelines to Hacktoberfest:
-
-1. **Identifying issues**: We've labeled issues with bot [hacktoberfest](https://github.com/tattle-made/Uli/labels/hacktoberfest) and [good first issue](https://github.com/tattle-made/Uli/labels/good%20first%20issue) tags. You can target and contribute to these issues as are a great starting point. There are both code and no-code issues that you can contribute to.
-2. **Set up Uli Locally for Development**: 
-For setting up browser extension: Follow relevant instructions under `Setup Guides` on the Uli Wiki - https://github.com/tattle-made/Uli/wiki#setup-guides 
-3. **Make a Pull Request**: After making changes to the code, create a pull request. The maintainers will review it, provide feedback if necessary, and then merge it.
-
-You have made your first hacktoberfest contribution to Uli
-
-Join the our Slack for communitcation - [Link](https://join.slack.com/t/tattle-workspace/shared_invite/zt-24g9vngdc-VEGSv4y1OnLZ~nrvBXl6hQ).
-<br>
+To contribute effectively, we recommend doing some of these:
+- Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki). It will help you navigate our repository, and adhere to our standards for contributions.
+- We've labeled beginner frienly issues with [hacktoberfest](https://github.com/tattle-made/Uli/labels/hacktoberfest) and [good first issue](https://github.com/tattle-made/Uli/labels/good%20first%20issue). 
+- Follow relevant instructions under `Setup Guides` on the [Uli Wiki](https://github.com/tattle-made/Uli/wiki#setup-guides) 
+- Join the our [Slack](https://join.slack.com/t/tattle-workspace/shared_invite/zt-24g9vngdc-VEGSv4y1OnLZ~nrvBXl6hQ) to interact with the team and get any clarificatios.
 Introduce yourself in the `#introductions` channel and feel free to discuss any Hacktoberfest-related questions in the `#issue_uli_hacktoberfest` channel.   
 
 ## Quick Guide
@@ -88,18 +78,6 @@ The ML model is based on needs articulated by communities, rather than the prior
 | [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets                                                                 |
 | [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques 
 
-### Features supported by versions
-
-| Feature         | Chrome Production Version     | Firefox Production Version |
-|--------------|-----------|------------|
-| Slur Replacement on Twitter | :heavy_check_mark:      | :heavy_check_mark:       |
-| Machine Learning based OGBV filter    | :heavy_check_mark:  | :heavy_check_mark:       |
-| Feedback for the ML feature    | :heavy_check_mark:  | :heavy_multiplication_x:       |
-| Addition of Slurs Via Right Click    | :heavy_check_mark:  | :heavy_check_mark:       |
-| New Parsing system    | :heavy_check_mark:  | :heavy_multiplication_x:       |
-| Slur Replacement on Web | :heavy_check_mark:      | :heavy_multiplication_x:       |
-
-Some of the features in Firefox are broken/missing because of the following issue: https://github.com/tattle-made/OGBV/issues/233
 
 # Contributing <a name="Contribute"></a>
 
