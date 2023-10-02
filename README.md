@@ -1,22 +1,30 @@
-## About
+<div align="center">
+  <h1>Uli : Reclaim your Online Space</h1>
+</div>
 
-![Uli Logo-Header-03](https://user-images.githubusercontent.com/13188366/224236305-6a3b3f26-f5b3-4256-b0dc-5d2b4b8d5e27.png)
+<div align="center">
+  <a href="https://uli.tattle.co.in" target="_blank">
+  <picture>
+    <img src="https://uli.tattle.co.in/HeroIllustration.gif" width="360px" alt="Logo"/>
+  </picture>
+  </a>
+</div>
 
-Uli is a browser plugin that:
-* De-normalizes the everyday violence that people of marginalized genders experience online in India, and
-* Provides tools for relief and collective response.
+Uli is a browser plugin that :
+- De-normalizes the everyday violence that people of marginalized genders experience online in India
+- Provides tools for relief and collective response.
+
 
 It is an attempt to invert the top-down logics of platform moderation and center the experiences of those subject to online gender-based violence. 
 
 The plugin installation link and the user-guide can be found here: [https://uli.tattle.co.in/](https://uli.tattle.co.in/)
 
-![Uli September posts](https://user-images.githubusercontent.com/13188366/224235833-e6493aab-9706-4b05-ac5a-fb1c0cc97f03.gif)
 
-## Hacktoberfest 2023
+<h1 align="center">🎉 We're participating in Hacktoberfest 2023! 🎉</h1>
 
 Here to contribute for Hacktoberfest? Welcome!
 Before you contribute, we recommend you do the following:
-1. Understand what we do- Go through our Quick Guide below
+1. Go through our Quick Guide below
 2. Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki): It will help you navigate our repository, and adhere to our standards for contributions.
 
 ### Contribution Guidelines to Hacktoberfest:
