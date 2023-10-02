@@ -44,6 +44,7 @@ export function SlurCreate() {
         labelMeaning: ''
     };
     const [formData, setFormData] = useState(initialFormData);
+    const [showWarning, setShowWarning] = useState(false);
 
     const navigate = useNavigate();
     const handleGoBack = () => {
@@ -72,8 +73,21 @@ export function SlurCreate() {
             console.error('Error creating slur:', error);
         }
     };
+    const handleCategoryChange = ({ value }) => {
+        if (value.length === 0) {
+            setShowWarning(true);
+            return;
+        }
+        if (value.length <= 4) {
+            setShowWarning(false);
+            setFormData({ ...formData, categories: value });
+        } else {
+            setShowWarning(true);
+        }
+    };
     const handleReset = () => {
         setFormData(initialFormData);
+        setShowWarning(false);
     };
 
     return (
@@ -91,7 +105,18 @@ export function SlurCreate() {
                     handleSubmit(value);
                 }}
             >
-                <FormField name="label" label="Label" required>
+                <FormField
+                    name="label"
+                    label={
+                        <div>
+                            Label{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
+                    required
+                >
                     <TextInput
                         id="slur-form-label"
                         name="label"
@@ -104,7 +129,14 @@ export function SlurCreate() {
 
                 <FormField
                     name="level_of_severity"
-                    label="Level of Severity"
+                    label={
+                        <div>
+                            Level of Severity{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
                     required
                 >
                     <RadioButtonGroup
@@ -121,7 +153,18 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                <FormField name="casual" label="Casual" required={false}>
+                <FormField
+                    name="casual"
+                    label={
+                        <div>
+                            Casual{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
+                    required={false}
+                >
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -139,7 +182,14 @@ export function SlurCreate() {
 
                 <FormField
                     name="appropriated"
-                    label="Appropriated"
+                    label={
+                        <div>
+                            Appropriated{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
                     required={false}
                 >
                     <RadioButtonGroup
@@ -160,7 +210,7 @@ export function SlurCreate() {
                 <FormField
                     name="appropriationContext"
                     label="If, Appropriated, Is it by Community or Others?"
-                    required={false}
+                    // required={false}
                 >
                     <RadioButtonGroup
                         id="slur-form-appropriationContext"
@@ -185,7 +235,7 @@ export function SlurCreate() {
                 <FormField
                     name="labelMeaning"
                     label="What Makes it Problematic?"
-                    required
+                    // required
                 >
                     <TextArea
                         id="slur-form-label-meaning"
@@ -203,7 +253,21 @@ export function SlurCreate() {
                 <FormField
                     id="slur-form-categories"
                     name="categories"
-                    label="Categories"
+                    label={
+                        <div>
+                            Categories{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
+                    help={
+                        <>
+                            <Text size="small" color="#808080">
+                                Select at least one and atmost four categories
+                            </Text>
+                        </>
+                    }
                     required
                 >
                     <Select
@@ -211,12 +275,15 @@ export function SlurCreate() {
                         name="categories"
                         options={categoryOptions}
                         value={formData.categories}
-                        onChange={({ value }) =>
-                            setFormData({ ...formData, categories: value })
-                        }
+                        onChange={handleCategoryChange}
                         multiple
                     />
                 </FormField>
+                {showWarning && (
+                    <Box pad="small" background="status-warning" margin="small">
+                        Please select at least one and at most four categories.
+                    </Box>
+                )}
 
                 <Box direction="row" gap="medium">
                     <Button
@@ -224,6 +291,7 @@ export function SlurCreate() {
                         primary
                         label="Submit"
                         id="slur-form-submit-button"
+                        disabled={showWarning}
                     />
                     <Button type="reset" label="Reset" onClick={handleReset} />
                 </Box>

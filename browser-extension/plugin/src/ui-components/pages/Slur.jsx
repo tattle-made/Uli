@@ -133,19 +133,26 @@ export function Slur() {
                                     <strong>Appropriated:</strong>{' '}
                                     {slur.appropriated ? 'Yes' : 'No'}
                                 </Text>
-                                <Text>
-                                    <strong>
-                                        If, Appropriated, Is it by Community or
-                                        Others?:
-                                    </strong>{' '}
-                                    {slur.appropriationContext
-                                        ? 'Community'
-                                        : 'Others'}
-                                </Text>
-                                <Text>
-                                    <strong>What Makes it Problematic?:</strong>{' '}
-                                    {slur.labelMeaning}
-                                </Text>
+                                {slur.appropriationContext && (
+                                    <Text>
+                                        <strong>
+                                            If, Appropriated, Is it by Community
+                                            or Others?:
+                                        </strong>{' '}
+                                        {slur.appropriationContext ===
+                                        'Community'
+                                            ? 'Community'
+                                            : 'Others'}
+                                    </Text>
+                                )}
+                                {slur.labelMeaning && (
+                                    <Text>
+                                        <strong>
+                                            What Makes it Problematic?:
+                                        </strong>{' '}
+                                        {slur.labelMeaning}
+                                    </Text>
+                                )}
                                 <Text>
                                     <strong>Categories:</strong>
                                     <ul>

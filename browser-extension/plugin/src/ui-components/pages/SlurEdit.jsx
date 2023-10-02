@@ -9,7 +9,8 @@ import {
     Select,
     TextArea,
     TextInput,
-    Anchor
+    Anchor,
+    Text
 } from 'grommet';
 import { useNavigate, useParams } from 'react-router-dom';
 import Api from './Api';
@@ -47,6 +48,7 @@ export function SlurEdit() {
         labelMeaning: ''
     });
     const [, setSlurData] = useState(null);
+    const [showWarning, setShowWarning] = useState(false);
 
     useEffect(() => {
         async function fetchSlurData() {
@@ -77,7 +79,18 @@ export function SlurEdit() {
 
         fetchSlurData();
     }, [user.accessToken, id]);
-
+    const handleCategoryChange = ({ value }) => {
+        if (value.length === 0) {
+            setShowWarning(true);
+            return;
+        }
+        if (value.length <= 4) {
+            setShowWarning(false);
+            setFormData({ ...formData, categories: value });
+        } else {
+            setShowWarning(true);
+        }
+    };
     const handleGoBack = () => {
         navigate('/slur');
     };
@@ -110,7 +123,18 @@ export function SlurEdit() {
                 onChange={(nextValue) => setFormData(nextValue)}
                 onSubmit={() => handleSubmit()}
             >
-                <FormField name="label" label="Label" required>
+                <FormField
+                    name="label"
+                    label={
+                        <div>
+                            Label{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
+                    required
+                >
                     <TextInput
                         id="slur-form-label"
                         name="label"
@@ -123,7 +147,14 @@ export function SlurEdit() {
 
                 <FormField
                     name="level_of_severity"
-                    label="Level of Severity"
+                    label={
+                        <div>
+                            Level of Severity{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
                     required
                 >
                     <RadioButtonGroup
@@ -140,7 +171,18 @@ export function SlurEdit() {
                     />
                 </FormField>
 
-                <FormField name="casual" label="Casual" required={false}>
+                <FormField
+                    name="casual"
+                    label={
+                        <div>
+                            Casual{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
+                    required={false}
+                >
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -158,7 +200,14 @@ export function SlurEdit() {
 
                 <FormField
                     name="appropriated"
-                    label="Appropriated"
+                    label={
+                        <div>
+                            Appropriated{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
                     required={false}
                 >
                     <RadioButtonGroup
@@ -179,7 +228,7 @@ export function SlurEdit() {
                 <FormField
                     name="appropriationContext"
                     label="If, Appropriated, Is it by Community or Others?"
-                    required={false}
+                    // required={false}
                 >
                     <RadioButtonGroup
                         id="slur-form-appropriationContext"
@@ -204,7 +253,7 @@ export function SlurEdit() {
                 <FormField
                     name="labelMeaning"
                     label="What Makes it Problematic?"
-                    required
+                    // required
                 >
                     <TextArea
                         id="slur-form-label-meaning"
@@ -222,7 +271,21 @@ export function SlurEdit() {
                 <FormField
                     id="slur-form-categories"
                     name="categories"
-                    label="Categories"
+                    label={
+                        <div>
+                            Categories{' '}
+                            <Text size="xsmall" color="status-critical">
+                                *
+                            </Text>
+                        </div>
+                    }
+                    help={
+                        <>
+                            <Text size="small" color="#808080">
+                                Select at least one and atmost four categories
+                            </Text>
+                        </>
+                    }
                     required
                 >
                     <Select
@@ -230,12 +293,15 @@ export function SlurEdit() {
                         name="categories"
                         options={categoryOptions}
                         value={formData.categories}
-                        onChange={({ value }) =>
-                            setFormData({ ...formData, categories: value })
-                        }
+                        onChange={handleCategoryChange}
                         multiple
                     />
                 </FormField>
+                {showWarning && (
+                    <Box pad="small" background="status-warning" margin="small">
+                        Please select at least one and at most four categories.
+                    </Box>
+                )}
 
                 <Box direction="row" gap="medium">
                     <Button
@@ -243,6 +309,7 @@ export function SlurEdit() {
                         primary
                         label="Save"
                         id="slur-form-save-button"
+                        disabled={showWarning}
                     />
                 </Box>
             </Form>
