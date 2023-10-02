@@ -4,6 +4,7 @@ import { Add } from 'grommet-icons';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext } from '../atoms/AppContext';
+import SlurCard from '../atoms/SlurCard';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
 
@@ -95,13 +96,17 @@ export function Slur() {
                             </Box>
                             <Box
                                 key={index}
-                                background="light-2"
+                                background="#FAE6C9"
                                 pad="medium"
-                                round="small"
+                                round="medium"
                                 width="medium"
                                 elevation="small"
                             >
-                                <Box direction="row" justify="end">
+                                <Box direction="row" justify="between" gap="small" align='center'>
+                                    <Text size='large'>
+                                        <strong>{slur.label}</strong>
+                                    </Text>
+                                    <Box direction='row' gap='medium'>
                                     <Button
                                         id="slur-edit-button"
                                         label="Edit"
@@ -112,47 +117,17 @@ export function Slur() {
                                     <Button
                                         id="slur-delete-button"
                                         label="Delete"
+                                        // color="#FFDBD0"
                                         onClick={() =>
                                             handleDeleteSlur(slur.id)
                                         }
                                     />
+                                    </Box>
                                 </Box>
-                                <Text>
-                                    <strong>Label:</strong> {slur.label}
-                                </Text>
-                                <Text>
-                                    <strong>Level of Severity:</strong>{' '}
-                                    {slur.level_of_severity}
-                                </Text>
-                                <Text>
-                                    <strong>Casual:</strong>{' '}
-                                    {slur.casual ? 'Yes' : 'No'}
-                                </Text>
-
-                                <Text>
-                                    <strong>Appropriated:</strong>{' '}
-                                    {slur.appropriated ? 'Yes' : 'No'}
-                                </Text>
-                                {slur.appropriationContext && (
-                                    <Text>
-                                        <strong>
-                                            If, Appropriated, Is it by Community
-                                            or Others?:
-                                        </strong>{' '}
-                                        {slur.appropriationContext ===
-                                        'Community'
-                                            ? 'Community'
-                                            : 'Others'}
-                                    </Text>
-                                )}
-                                {slur.labelMeaning && (
-                                    <Text>
-                                        <strong>
-                                            What Makes it Problematic?:
-                                        </strong>{' '}
-                                        {slur.labelMeaning}
-                                    </Text>
-                                )}
+                                <Box margin={{ top: 'large' }}>
+                                    <SlurCard data={slur}/>
+                                </Box>
+                                {/* <Text>
                                 <Text>
                                     <strong>Categories:</strong>
                                     <ul>
@@ -164,7 +139,7 @@ export function Slur() {
                                             )
                                         )}
                                     </ul>
-                                </Text>
+                                </Text> */}
                             </Box>
                         </>
                     ))
