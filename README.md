@@ -26,7 +26,7 @@ We cherish diversity of experiences and perspectives. It adds value to our work.
 To contribute effectively, we recommend doing some of these:
 - Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki). It will help you navigate our repository, and adhere to our standards for contributions.
 - We've labeled beginner frienly issues with [hacktoberfest](https://github.com/tattle-made/Uli/labels/hacktoberfest) and [good first issue](https://github.com/tattle-made/Uli/labels/good%20first%20issue). 
-- Follow relevant instructions under `Setup Guides` on the [Uli Wiki](https://github.com/tattle-made/Uli/wiki#setup-guides) 
+- Read our `Setup Guides` on the [Uli Wiki](https://github.com/tattle-made/Uli/wiki#setup-guides) or watch a [video tutorial](https://www.youtube.com/watch?v=ya2NvjtUlVI) 
 - Join the our [Slack](https://join.slack.com/t/tattle-workspace/shared_invite/zt-24g9vngdc-VEGSv4y1OnLZ~nrvBXl6hQ) to interact with the team and get any clarificatios.
 Introduce yourself in the `#introductions` channel and feel free to discuss any Hacktoberfest-related questions in the `#issue_uli_hacktoberfest` channel.   
 
