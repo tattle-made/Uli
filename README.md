@@ -28,7 +28,25 @@ To contribute effectively, we recommend doing some of these:
 - We've labeled beginner frienly issues with [hacktoberfest](https://github.com/tattle-made/Uli/labels/hacktoberfest) and [good first issue](https://github.com/tattle-made/Uli/labels/good%20first%20issue). 
 - Read our `Setup Guides` on the [Uli Wiki](https://github.com/tattle-made/Uli/wiki#setup-guides) or watch a [video tutorial](https://www.youtube.com/watch?v=ya2NvjtUlVI) 
 - Join the our [Slack](https://join.slack.com/t/tattle-workspace/shared_invite/zt-24g9vngdc-VEGSv4y1OnLZ~nrvBXl6hQ) to interact with the team and get any clarificatios.
-Introduce yourself in the `#introductions` channel and feel free to discuss any Hacktoberfest-related questions in the `#issue_uli_hacktoberfest` channel.   
+Introduce yourself in the `#introductions` channel and feel free to discuss any Hacktoberfest-related questions in the `#issue_uli_hacktoberfest` channel.
+
+### Technologies we use
+- Client : React, [Grommet](https://v2.grommet.io/), [styled components](https://styled-components.com/), [Parcel](https://parceljs.org/)
+- Server : NodeJS, [Express](https://expressjs.com/), [Sequelize](https://sequelize.org/)
+- Storage : SQL, AWS S3
+- DevOps : Github Actions, Docker, Kubernetes
+
+If you are new to any of these, we've created a [learning guide](https://github.com/tattle-made/Uli/wiki/Uli-Learning-Guide) for you.
+
+### Repository Structure
+
+| Directory         | Description                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------- |
+| [browser extension](https://github.com/tattle-made/OGBV/tree/main/annotators) | a browser extension that helps moderate and mitigate online gender based violence on twitter |
+| [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets                                                                 |
+| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques 
+
+
 
 ## Quick Guide
 1. [Motivation](#motivation-)
@@ -70,21 +88,9 @@ Machine learning tools can also be designed to reflect the values of those at th
 
 The ML model is based on needs articulated by communities, rather than the priorities of powerful institutions. We are working to publish our methodology, annotation guidelines, datasets, and the limitations in the dataset. Our goal remains to make the models interpretable to the users of the plugi. We believe this will help to raise awareness about content moderation systems as well as gender-based violence online.
 
-### Repository Structure
-
-| Directory         | Description                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------- |
-| [browser extension](https://github.com/tattle-made/OGBV/tree/main/annotators) | a browser extension that helps moderate and mitigate online gender based violence on twitter |
-| [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets                                                                 |
-| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques 
-
-
-# Contributing <a name="Contribute"></a>
-
-You can track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
-Find an issue or domain that interests you and reach out to us.
-
-There's also a list of [good first issues](https://github.com/tattle-made/OGBV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started on.
+## Contributing <a name="Contribute"></a>
+We've made a list of [good first issues](https://github.com/tattle-made/OGBV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started on. You can also track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
+Find an issue or domain that interests you and reach out to us. [Learn More](https://github.com/tattle-made/Uli/blob/main/CONTRIBUTING.md)
 
 ## Contact <a name="Contact"></a>
 
