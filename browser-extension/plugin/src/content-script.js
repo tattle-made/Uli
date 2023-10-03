@@ -96,20 +96,17 @@ chrome.runtime.onMessage.addListener(async function (request) {
         log('slur added from bg', slur);
         const pref = await getPreferenceData();
         let slurList;
-        if (!pref) {
+        if (!pref || !pref.slurList) {
             slurList = slur;
-            await setPreferenceData({ ...pref, slurList });
         } else {
-            // let { slurList } = pref;
             slurList = pref.slurList;
             if (!slurList || slurList === '') {
-                slurList += slur;
+                slurList = slur;
             } else {
                 slurList += `,${slur}`;
             }
-            await setPreferenceData({ ...pref, slurList });
         }
-
+        await setPreferenceData({ ...pref, slurList });
         return true;
     }
     if (request.type === 'ULI_ENABLE_TOGGLE') {
