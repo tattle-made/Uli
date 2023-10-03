@@ -14,7 +14,7 @@ import {
 } from 'grommet';
 import { useNavigate, useParams } from 'react-router-dom';
 import Api from './Api';
-import { UserContext } from '../atoms/AppContext';
+import { UserContext, NotificationContext } from '../atoms/AppContext';
 
 const { getSlurAndCategory, updateSlurAndCategory } = Api;
 
@@ -34,7 +34,7 @@ const categoryOptions = [
 
 export function SlurEdit() {
     const { user } = useContext(UserContext);
-    // const { notification, showNotification } = useContext(NotificationContext);
+    const { showNotification } = useContext(NotificationContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -107,8 +107,16 @@ export function SlurEdit() {
 
             await updateSlurAndCategory(user.accessToken, id, requestData);
             navigate('/slur');
+            showNotification({
+                type: 'message',
+                message: 'Slur Edited'
+            });
         } catch (error) {
             console.error('Error updating slur:', error);
+            showNotification({
+                type: 'error',
+                message: 'Error - Failed to Edit Slur'
+            });
         }
     };
 

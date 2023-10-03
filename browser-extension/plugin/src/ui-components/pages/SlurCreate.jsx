@@ -13,7 +13,7 @@ import {
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
-import { UserContext } from '../atoms/AppContext';
+import { UserContext, NotificationContext } from '../atoms/AppContext';
 
 const { createSlurAndCategory } = Api;
 
@@ -33,7 +33,7 @@ const categoryOptions = [
 
 export function SlurCreate() {
     const { user } = useContext(UserContext);
-    // const { notification, showNotification } = useContext(NotificationContext);
+    const { showNotification } = useContext(NotificationContext);
     const initialFormData = {
         label: '',
         level_of_severity: '',
@@ -69,8 +69,16 @@ export function SlurCreate() {
                 ...response.data
             });
             navigate('/slur');
+            showNotification({
+                type: 'message',
+                message: 'Slur Created'
+            });
         } catch (error) {
             console.error('Error creating slur:', error);
+            showNotification({
+                type: 'error',
+                message: 'Error - Could not create Slur'
+            });
         }
     };
     const handleCategoryChange = ({ value }) => {

@@ -3,7 +3,7 @@ import { Box, Text, Button } from 'grommet';
 import { Add } from 'grommet-icons';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
-import { UserContext } from '../atoms/AppContext';
+import { UserContext, NotificationContext } from '../atoms/AppContext';
 import SlurCard from '../atoms/SlurCard';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
@@ -12,7 +12,7 @@ export function Slur() {
     let navigate = useNavigate();
     const [getSlurs, setGetSlurs] = useState([]);
     const { user } = useContext(UserContext);
-    // const { notification, showNotification } = useContext(NotificationContext);
+    const { showNotification } = useContext(NotificationContext);
 
     const navigateToAddSlur = () => {
         navigate('/slur/create');
@@ -30,8 +30,16 @@ export function Slur() {
         try {
             await deleteSlurAndCategory(user.accessToken, slurId);
             fetchSlurs();
+            showNotification({
+                type: 'message',
+                message: 'Slur Deleted'
+            });
         } catch (err) {
             console.error('could not delete slur', err);
+            showNotification({
+                type: 'error',
+                message: 'Error - Could not delete Slur'
+            });
         }
     }
 
@@ -102,30 +110,35 @@ export function Slur() {
                                 width="medium"
                                 elevation="small"
                             >
-                                <Box direction="row" justify="between" gap="small" align='center'>
-                                    <Text size='large'>
+                                <Box
+                                    direction="row"
+                                    justify="between"
+                                    gap="small"
+                                    align="center"
+                                >
+                                    <Text size="large">
                                         <strong>{slur.label}</strong>
                                     </Text>
-                                    <Box direction='row' gap='medium'>
-                                    <Button
-                                        id="slur-edit-button"
-                                        label="Edit"
-                                        onClick={() =>
-                                            navigate(`/slur/${slur.id}`)
-                                        }
-                                    />
-                                    <Button
-                                        id="slur-delete-button"
-                                        label="Delete"
-                                        // color="#FFDBD0"
-                                        onClick={() =>
-                                            handleDeleteSlur(slur.id)
-                                        }
-                                    />
+                                    <Box direction="row" gap="medium">
+                                        <Button
+                                            id="slur-edit-button"
+                                            label="Edit"
+                                            onClick={() =>
+                                                navigate(`/slur/${slur.id}`)
+                                            }
+                                        />
+                                        <Button
+                                            id="slur-delete-button"
+                                            label="Delete"
+                                            // color="#FFDBD0"
+                                            onClick={() =>
+                                                handleDeleteSlur(slur.id)
+                                            }
+                                        />
                                     </Box>
                                 </Box>
                                 <Box margin={{ top: 'large' }}>
-                                    <SlurCard data={slur}/>
+                                    <SlurCard data={slur} />
                                 </Box>
                                 {/* <Text>
                                 <Text>
