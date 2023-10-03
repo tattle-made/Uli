@@ -81,27 +81,27 @@ export function Slur() {
                         </Box>
                     </>
                 ) : (
-                    getSlurs.map((slur, index) => (
-                        <>
-                            <Box
-                                direction="row"
-                                gap={'small'}
-                                justify="center"
-                                align="center"
-                            >
-                                <Button
-                                    id="add-slur-button"
-                                    icon={<Add size="small" />}
-                                    fill={false}
-                                    label="Add Slur"
-                                    onClick={navigateToAddSlur}
-                                />
-                            </Box>
-                            <Box alignContent="center" margin="medium">
-                                <Text textAlign="center" margin={'small'}>
-                                    <strong>Your Crowdsourced Slur List</strong>
-                                </Text>
-                            </Box>
+                    <>
+                        <Box
+                            direction="row"
+                            gap={'small'}
+                            justify="center"
+                            align="center"
+                        >
+                            <Button
+                                id="add-slur-button"
+                                icon={<Add size="small" />}
+                                fill={false}
+                                label="Add Slur"
+                                onClick={navigateToAddSlur}
+                            />
+                        </Box>
+                        <Box alignContent="center" margin="medium">
+                            <Text textAlign="center" margin={'small'}>
+                                <strong>Your Crowdsourced Slur List</strong>
+                            </Text>
+                        </Box>
+                        {getSlurs.map((slur, index) => (
                             <Box
                                 key={index}
                                 background="#FAE6C9"
@@ -109,6 +109,7 @@ export function Slur() {
                                 round="medium"
                                 width="medium"
                                 elevation="small"
+                                margin={{ top: 'medium' }}
                             >
                                 <Box
                                     direction="row"
@@ -130,7 +131,6 @@ export function Slur() {
                                         <Button
                                             id="slur-delete-button"
                                             label="Delete"
-                                            // color="#FFDBD0"
                                             onClick={() =>
                                                 handleDeleteSlur(slur.id)
                                             }
@@ -140,22 +140,9 @@ export function Slur() {
                                 <Box margin={{ top: 'large' }}>
                                     <SlurCard data={slur} />
                                 </Box>
-                                {/* <Text>
-                                <Text>
-                                    <strong>Categories:</strong>
-                                    <ul>
-                                        {slur.categories.map(
-                                            (category, categoryIndex) => (
-                                                <li key={categoryIndex}>
-                                                    {category.category}
-                                                </li>
-                                            )
-                                        )}
-                                    </ul>
-                                </Text> */}
                             </Box>
-                        </>
-                    ))
+                        ))}
+                    </>
                 )}
             </Box>
         </Box>

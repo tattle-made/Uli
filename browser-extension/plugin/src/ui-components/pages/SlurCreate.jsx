@@ -9,7 +9,8 @@ import {
     TextArea,
     TextInput,
     Anchor,
-    Select
+    Select,
+    SelectMultiple
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
@@ -60,7 +61,7 @@ export function SlurCreate() {
                 ...formData,
                 categories
             };
-            console.log('Data for backend', requestData);
+            // console.log('Data for backend', requestData);
             const response = await createSlurAndCategory(
                 user.accessToken,
                 requestData
@@ -115,15 +116,8 @@ export function SlurCreate() {
             >
                 <FormField
                     name="label"
-                    label={
-                        <div>
-                            Label{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
-                    required
+                    label={'Label'}
+                    required={{ indicator: true }}
                 >
                     <TextInput
                         id="slur-form-label"
@@ -137,15 +131,8 @@ export function SlurCreate() {
 
                 <FormField
                     name="level_of_severity"
-                    label={
-                        <div>
-                            Level of Severity{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
-                    required
+                    label={'Level of Severity'}
+                    required={{ indicator: true }}
                 >
                     <RadioButtonGroup
                         name="level_of_severity"
@@ -161,18 +148,33 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                <FormField
+                {/* <FormField
                     name="casual"
-                    label={
-                        <div>
-                            Casual{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
-                    required={false}
+                    label={'Casual'}
+                    required={{ indicator: true }}
                 >
+                    <RadioButtonGroup
+                        id="slur-form-casual"
+                        name="casual"
+                        direction="row"
+                        options={[
+                            { label: 'Yes', value: true },
+                            { label: 'No', value: false }
+                        ]}
+                        value={formData.casual}
+                        onChange={(e) => {
+                            console.log('Clicked:', e.target.value);
+                            setFormData({
+                                ...formData,
+                                casual: e.target.value
+                            });
+                            console.log(formData.casual);
+                        }}
+                        
+                    />
+                </FormField> */}
+
+                <FormField name="casual" label={'Casual'} required>
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -188,18 +190,7 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                <FormField
-                    name="appropriated"
-                    label={
-                        <div>
-                            Appropriated{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
-                    required={false}
-                >
+                <FormField name="appropriated" label="Appropriated" required>
                     <RadioButtonGroup
                         id="slur-form-appropriated"
                         name="appropriated"
@@ -261,14 +252,7 @@ export function SlurCreate() {
                 <FormField
                     id="slur-form-categories"
                     name="categories"
-                    label={
-                        <div>
-                            Categories{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
+                    label={'Categories'}
                     help={
                         <>
                             <Text size="small" color="#808080">
@@ -278,13 +262,12 @@ export function SlurCreate() {
                     }
                     required
                 >
-                    <Select
+                    <SelectMultiple
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
                         value={formData.categories}
                         onChange={handleCategoryChange}
-                        multiple
                     />
                 </FormField>
                 {showWarning && (
