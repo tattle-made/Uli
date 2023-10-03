@@ -8,10 +8,23 @@ const SlurCard = ({ data }) => {
                 primaryKey="name"
                 secondaryKey="value"
                 data={[
-                    { name: 'Level of Severity', value: data.level_of_severity },
+                    {
+                        name: 'Level of Severity',
+                        value: data.level_of_severity
+                    },
                     { name: 'Casual', value: data.casual ? 'Yes' : 'No' },
-                    { name: 'If, Appropriated, Is it by Community or Others?', value: data.appropriated ? 'Community' : 'Others' },
-                    { name: 'What Makes it Problematic?', value: data.labelMeaning }
+                    {
+                        name: 'Appropriated',
+                        value: data.appropriated ? 'Yes' : 'No'
+                    },
+                    {
+                        name: 'If, Appropriated, Is it by Community or Others?',
+                        value: data.appropriated ? 'Community' : 'Others'
+                    },
+                    {
+                        name: 'What Makes it Problematic?',
+                        value: data.labelMeaning
+                    }
                 ]}
             />
 
