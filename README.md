@@ -42,9 +42,10 @@ If you are new to any of these, we've created a [learning guide](https://github.
 
 | Directory         | Description                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------- |
-| [browser extension](https://github.com/tattle-made/OGBV/tree/main/annotators) | a browser extension that helps moderate and mitigate online gender based violence on twitter |
-| [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets                                                                 |
-| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques 
+| [browser extension](https://github.com/tattle-made/Uli/tree/main/browser-extension) | Uli browser extension that helps moderate and mitigate online gender based violence on twitter. All hacktoberfest work is limited to this directory |
+| [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets, unmaintained                                                                 |
+| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques |
+| [ogbv-ml-rest](https://github.com/tattle-made/Uli/tree/main/ogbv-ml-rest) | Hosted access for our machine learning model |
 
 
 
