@@ -6,9 +6,9 @@ By contributing to Uli, you are agreeing to our [community guidelines](https://g
 
 Contributing to Uli takes 4 easy steps
 
-👋 Say Hi
-🔨 Do your thing
-📞 Tell us
+👋 Say Hi  
+🔨 Do your thing  
+📞 Tell us  
 🎉 Celebrate
 
 ---
