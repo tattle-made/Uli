@@ -4,16 +4,18 @@ const { setOnChangeListener } = dom;
 import transform_v2 from './transform-v2';
 import { log } from './logger';
 import repository from './repository';
-const { getPreferenceData, setPreferenceData } = repository;
+const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
+import Api from './ui-components/pages/Api';
+
+const { createSlurAndCategory } = Api;
 
 log('Content Script Loaded Test 2');
 
+// test function to log variables in console
 (async function test() {
     console.log('Async Test');
-    const pref = await getPreferenceData();
-    console.log(pref);
 })();
 
 var mainLoadedChecker;
@@ -108,6 +110,16 @@ chrome.runtime.onMessage.addListener(async function (request) {
         }
         await setPreferenceData({ ...pref, slurList });
         return true;
+    }
+    if (request.type === 'CROWDSOURCE_SLUR_WORD') {
+        const crowdsource_slur = request.crowdsourcedSlur;
+        console.log('crowdsourced slur from bg = ', crowdsource_slur);
+        const user = await getUserData();
+        const crowdsourceData = {
+            label: crowdsource_slur,
+            categories: []
+        };
+        await createSlurAndCategory(user.accessToken, crowdsourceData);
     }
     if (request.type === 'ULI_ENABLE_TOGGLE') {
         console.log('Toggle change event received', request.payload);

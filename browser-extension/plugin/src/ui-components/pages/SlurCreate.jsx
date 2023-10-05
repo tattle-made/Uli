@@ -9,7 +9,6 @@ import {
     TextArea,
     TextInput,
     Anchor,
-    Select,
     SelectMultiple
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +37,7 @@ export function SlurCreate() {
     const initialFormData = {
         label: '',
         level_of_severity: '',
-        casual: false,
+        casual: undefined,
         appropriated: false,
         appropriationContext: false,
         categories: [],
@@ -109,7 +108,10 @@ export function SlurCreate() {
             </Text>
             <Form
                 value={formData}
-                onChange={(nextValue) => setFormData(nextValue)}
+                onChange={(nextValue) => {
+                    console.log({ nextValue });
+                    setFormData(nextValue);
+                }}
                 onSubmit={({ value }) => {
                     handleSubmit(value);
                 }}
@@ -151,7 +153,7 @@ export function SlurCreate() {
                 {/* <FormField
                     name="casual"
                     label={'Casual'}
-                    required={{ indicator: true }}
+                    required
                 >
                     <RadioButtonGroup
                         id="slur-form-casual"
@@ -161,16 +163,6 @@ export function SlurCreate() {
                             { label: 'Yes', value: true },
                             { label: 'No', value: false }
                         ]}
-                        value={formData.casual}
-                        onChange={(e) => {
-                            console.log('Clicked:', e.target.value);
-                            setFormData({
-                                ...formData,
-                                casual: e.target.value
-                            });
-                            console.log(formData.casual);
-                        }}
-                        
                     />
                 </FormField> */}
 
