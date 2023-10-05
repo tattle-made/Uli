@@ -117,12 +117,16 @@ export function Slur() {
                                     gap="small"
                                     align="center"
                                 >
-                                    <Box>
-                                        <Text size="large">
+                                    <Box width="40%" margin={'small'}>
+                                        <Text size="large" truncate>
                                             <strong>{slur.label}</strong>
                                         </Text>
                                     </Box>
-                                    <Box direction="row" gap="medium">
+                                    <Box
+                                        direction="row"
+                                        gap="medium"
+                                        width="60%"
+                                    >
                                         <Button
                                             id="slur-edit-button"
                                             label="Edit"
