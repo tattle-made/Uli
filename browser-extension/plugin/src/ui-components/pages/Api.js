@@ -69,7 +69,7 @@ async function registerNewUser() {
 async function getArchive(accessToken) {
     const result = await axios.get(`${API_URL}/archive`, {
         headers: {
-            Authorization: `token ${accessToken}`
+            Authorization: `token ${accessToken}`,
         }
     });
     return result.data.archive;

@@ -9,7 +9,7 @@
         "storage",
         "webRequest",
         "contextMenus",
-        "http://localhost:3000/"
+        "http://localhost:3000/*"
     ],
     "background": {
         "scripts": ["background.js"]

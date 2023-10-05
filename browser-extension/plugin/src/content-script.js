@@ -119,7 +119,12 @@ chrome.runtime.onMessage.addListener(async function (request) {
             label: crowdsource_slur,
             categories: []
         };
-        await createSlurAndCategory(user.accessToken, crowdsourceData);
+        try {
+            await createSlurAndCategory(user.accessToken, crowdsourceData);
+            console.log('finsihed POST req');
+        } catch (error) {
+            console.log(error);
+        }
     }
     if (request.type === 'ULI_ENABLE_TOGGLE') {
         console.log('Toggle change event received', request.payload);

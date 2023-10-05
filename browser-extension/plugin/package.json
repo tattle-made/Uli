@@ -43,7 +43,7 @@
         "env-cmd": "10.1.0",
         "file-saver": "2.0.5",
         "grommet": "^2.33.2",
-        "grommet-icons": "4.7.0",
+        "grommet-icons": "^4.7.0",
         "i18next": "21.6.9",
         "lmdb": "2.7.3",
         "prop-types": "15.8.1",

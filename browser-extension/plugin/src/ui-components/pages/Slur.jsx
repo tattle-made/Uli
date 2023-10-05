@@ -117,9 +117,11 @@ export function Slur() {
                                     gap="small"
                                     align="center"
                                 >
-                                    <Text size="large">
-                                        <strong>{slur.label}</strong>
-                                    </Text>
+                                    <Box>
+                                        <Text size="large">
+                                            <strong>{slur.label}</strong>
+                                        </Text>
+                                    </Box>
                                     <Box direction="row" gap="medium">
                                         <Button
                                             id="slur-edit-button"
