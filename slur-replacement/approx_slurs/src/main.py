@@ -16,20 +16,20 @@ slurs_devanagari = 'जिहादी|छक्का|छिनाल|रंड
                    'खायेगी|बुरखे वाली|काली कलूटी|काले तवे|मोटी भैंस|देहातन|देहाती औरत|गणिका|हबशी|ओला हु ' \
                    'उबर|रनडwa|नाचने वाली|हलाला'
 slurs_roman = 'ma ki chui|naachne waali|Katwa|ABLANARI|AblaNari|ablanari|chakka|jihidis|jihadis|jihadi|Jihidis' \
-              '|Jihadis|jihadi|zehadi|jehadan|jihadinon|Chakko|chakki|chaka|Chinal|Randi|ramdi|Randie|randya' \
+              '|Jihadis|jihadi|zehadi|jehadan|jihadinon|Chakko|chakki|chaka|Chinal|Randi|ramdi|Randie|randya|randi' \
               '|randikhana|r&d-khana|randi ke beej|Lulli|Gasti|Meetha|Halwa|Gud|Gaandu|Gaand|Gandiaal|Dheela ' \
               'Lun@|lodu|kutiya|kutti|Chudail|Badchalan|Battameez|kulta|haramjadi|dyan|saali|sali|chod|chodu ' \
               'bhagat|chudai|chooda|chuda|Bhdsk|2BHK|Bhosi ke|bsdk|bhonsdi ke|bhosad|bhosdiwale|maa ka ' \
-              'bhosra|Lodu|bhenchod|Madarchod|Maderchod|mcp|mc|Lanti|choo$iya|chutiye|chutiya|Chut|hutiye|chutie' \
+              'bhosra|Maa ka bhosda|Lodu|bhenchod|Madarchod|Maderchod|mcp|mc|Lanti|choo$iya|chutiye|chutiya|Chut|hutiye|chutie' \
               '|chutia|chut ke dhakkan|chut marli|chutan|<3da|Lavde|Gandu|Rakhail|librandu|chal phut|nangi ' \
               'poongi|pagal aurat|bazaru|bazari aurat|ola hi uber hai|balatkar|Ugly|Mujra|mujra|jaahil ' \
-              'aurat|Mulli|hilana|hilaogi|Mlechcha|Suar|suar ki ' \
+              'aurat|Mulli|hilana|hilaogi|Mlechcha|Suar|suar ki|gaand phatti ka bhadwa|chutmaarika|chutmaariki ' \
               'aulad|doghli|Panauti|panooti|harami|gadhi|🅱️ulli|kalmuhi|pichwada|jhadu|bai|kaam wali bai|pair ki ' \
               'jutti|naali|hagna|tukde tukde gang|Sulli|Tawaif|sau taka tunch maal|Skirt waali bai|Dhimmi ' \
               'hood|Dhimmihood|izzlam|gaddar|chamcha|chamchi|aatankwadi|Mulliya|Uncut|chatukar|Bahan Ke ' \
               'loudi|Kachra|Chuslim|chuslami|Chusalmans|chus|Bhimta|bheem-meem walas|bail budhi|Budhdhi|bhadi ' \
               'aurat|bhanndh aurat|bhadi ka tattu|2 Kaudi ki aurat|Gatiya|Ghatiya aurat|behuda aurat|chalu ' \
-              'aurat|jhuti aurat|Kaali aurat|Kaali bhaand|marr kyun nahi jaati|nalli|dimaag se paidal|bhootni|bhootni ' \
+              'aurat|jhuti aurat|Kaali aurat|Kaali bhaand|kaali raand|marr kyun nahi jaati|nalli|dimaag se paidal|bhootni|bhootni ' \
               'ke|choot ke baal|madarjaat|bhadva|bhadvi|bhandve|chuchi|tatti|maa ka boba chusu|mooh|munh mein ' \
               'le|mutth|najayaz paidaish|najayaz aulaad|Gutter ki paidaish|kata Lund|kala tent|joota khayegi|burkhe ' \
               'waali|ladki kahin ka|victim card|Aurat card|kali kalutti|Kale tawe|naali saaf kar|moti bhains|sukkhi ' \
