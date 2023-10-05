@@ -3,7 +3,7 @@ import AppShell from "./AppShell";
 import { Box, Text } from "grommet";
 import { MDXProvider } from "@mdx-js/react";
 import styled from "styled-components";
-import CodeSnippet from "./codeSnippet";
+import CustomCodeBlock from "./codeSnippet";
 
 const HeadingOne = styled(Text)`
   font-size: 2em;
@@ -28,7 +28,7 @@ const ContentPageShell = ({ children }) => {
             h1: HeadingOne,
             h2: HeadingTwo,
             h3: HeadingThree,
-            CodeSnippet: CodeSnippet,
+            code: (props) => <CustomCodeBlock {...props} />,
           }}
         >
           <Box width={"large"}>{children}</Box>
