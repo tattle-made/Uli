@@ -6,7 +6,7 @@ import {
     FormField,
     Heading,
     RadioButtonGroup,
-    Select,
+    SelectMultiple,
     TextArea,
     TextInput,
     Anchor,
@@ -296,13 +296,12 @@ export function SlurEdit() {
                     }
                     required
                 >
-                    <Select
+                    <SelectMultiple
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
                         value={formData.categories}
                         onChange={handleCategoryChange}
-                        multiple
                     />
                 </FormField>
                 {showWarning && (

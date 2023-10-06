@@ -97,6 +97,10 @@ export function SlurCreate() {
         setFormData(initialFormData);
         setShowWarning(false);
     };
+    const handleCasualChange = (value) => {
+        const casualValue = value ? 'Yes' : 'No';
+        setFormData({ ...formData, casual: casualValue });
+    };
 
     return (
         <Box>
@@ -109,7 +113,6 @@ export function SlurCreate() {
             <Form
                 value={formData}
                 onChange={(nextValue) => {
-                    console.log({ nextValue });
                     setFormData(nextValue);
                 }}
                 onSubmit={({ value }) => {
@@ -150,11 +153,7 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                {/* <FormField
-                    name="casual"
-                    label={'Casual'}
-                    required
-                >
+                {/* <FormField name="casual" label={'Casual'} required>
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -163,6 +162,10 @@ export function SlurCreate() {
                             { label: 'Yes', value: true },
                             { label: 'No', value: false }
                         ]}
+                        value={formData.casual}
+                        onChange={(event) =>
+                            handleCasualChange(event.target.value)
+                        }
                     />
                 </FormField> */}
 

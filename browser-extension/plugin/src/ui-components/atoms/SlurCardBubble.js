@@ -1,19 +1,19 @@
 import { Box, Text } from 'grommet';
 
 const SlurCardBubble = ({ data }) => {
-    return(
+    return (
         <Box>
-        {" "}
-        <Box
-          round={"small"}
-          background="#E7A85F"
-          pad={"xsmall"}
-          width={"fit-content"}
-        >
-          <Text size={"xsmall"}>{data.category}</Text>{" "}
+            {' '}
+            <Box
+                round={'small'}
+                background="#FADA5E"
+                pad={'small'}
+                width={'fit-content'}
+            >
+                <Text size={'small'}>{data.category}</Text>{' '}
+            </Box>
         </Box>
-      </Box>
-    )
-}
+    );
+};
 
 export default SlurCardBubble;

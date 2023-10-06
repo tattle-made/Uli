@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Box, Text, Button } from 'grommet';
-import { Add } from 'grommet-icons';
+import { Add, Edit, Trash } from 'grommet-icons';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
@@ -104,7 +104,8 @@ export function Slur() {
                         {getSlurs.map((slur, index) => (
                             <Box
                                 key={index}
-                                background="#FAE6C9"
+                                // background="#fbeeac"
+                                background={"#FFE5B4"}
                                 pad="medium"
                                 round="medium"
                                 width="medium"
@@ -117,7 +118,7 @@ export function Slur() {
                                     gap="small"
                                     align="center"
                                 >
-                                    <Box width="40%" margin={'small'}>
+                                    <Box width="60%" margin={'small'}>
                                         <Text size="large" truncate>
                                             <strong>{slur.label}</strong>
                                         </Text>
@@ -125,22 +126,37 @@ export function Slur() {
                                     <Box
                                         direction="row"
                                         gap="medium"
-                                        width="60%"
+                                        width="40%"
                                     >
-                                        <Button
-                                            id="slur-edit-button"
-                                            label="Edit"
-                                            onClick={() =>
-                                                navigate(`/slur/${slur.id}`)
-                                            }
-                                        />
-                                        <Button
-                                            id="slur-delete-button"
-                                            label="Delete"
-                                            onClick={() =>
-                                                handleDeleteSlur(slur.id)
-                                            }
-                                        />
+                                        <Box
+                                            width={'fit-content'}
+                                            round="medium"
+                                            border={{ color: 'brand' }}
+                                        >
+                                            <Button
+                                                id="slur-edit-button"
+                                                // label="Edit"
+                                                icon={<Edit size="medium"/>}
+                                                onClick={() =>
+                                                    navigate(`/slur/${slur.id}`)
+                                                }
+                                            />
+                                        </Box>
+                                        <Box
+                                            width={'fit-content'}
+                                            round="medium"
+                                            border={{ color: 'brand' }}
+                                            // background={"#FFB199"}
+                                        >
+                                            <Button
+                                                id="slur-delete-button"
+                                                // label="Delete"
+                                                icon={<Trash size='medium' color='#C60000'/>}
+                                                onClick={() =>
+                                                    handleDeleteSlur(slur.id)
+                                                }
+                                            />
+                                        </Box>
                                     </Box>
                                 </Box>
                                 <Box margin={{ top: 'large' }}>
