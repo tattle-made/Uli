@@ -32,6 +32,7 @@
     "grommet": "^2.23.0",
     "i18next": "^21.8.14",
     "react": "^17.0.1",
+    "react-code-blocks": "^0.1.4",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.18.1",
