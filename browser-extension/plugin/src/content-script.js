@@ -16,6 +16,8 @@ log('Content Script Loaded Test 2');
 // test function to log variables in console
 (async function test() {
     console.log('Async Test');
+    // const data = await axios.get("http://localhost:3000/");
+    // console.log("api test data", data);
 })();
 
 var mainLoadedChecker;
@@ -115,6 +117,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
         const crowdsource_slur = request.crowdsourcedSlur;
         console.log('crowdsourced slur from bg = ', crowdsource_slur);
         const user = await getUserData();
+        console.log('USER in cotnent', user);
         const crowdsourceData = {
             label: crowdsource_slur,
             categories: []

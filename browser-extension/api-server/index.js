@@ -229,7 +229,7 @@ app.post("/slur/create", async (req, res) => {
   const { label, level_of_severity, casual, appropriated, appropriationContext,labelMeaning, categories } = req.body;
   console.log(userId, label, labelMeaning, appropriated, appropriationContext, categories)
   const t = await sequelize.transaction()
-
+  
   try {
     const newSlur = await slur.create(
       {
