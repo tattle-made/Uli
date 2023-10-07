@@ -131,18 +131,7 @@ export function SlurEdit() {
                 onChange={(nextValue) => setFormData(nextValue)}
                 onSubmit={() => handleSubmit()}
             >
-                <FormField
-                    name="label"
-                    label={
-                        <div>
-                            Label{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
-                    required
-                >
+                <FormField name="label" label={'Label'} required>
                     <TextInput
                         id="slur-form-label"
                         name="label"
@@ -155,14 +144,7 @@ export function SlurEdit() {
 
                 <FormField
                     name="level_of_severity"
-                    label={
-                        <div>
-                            Level of Severity{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
+                    label={'Level of Severity'}
                     required
                 >
                     <RadioButtonGroup
@@ -179,18 +161,7 @@ export function SlurEdit() {
                     />
                 </FormField>
 
-                <FormField
-                    name="casual"
-                    label={
-                        <div>
-                            Casual{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
-                    required={false}
-                >
+                <FormField name="casual" label={'Casual'} required={false}>
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -208,14 +179,7 @@ export function SlurEdit() {
 
                 <FormField
                     name="appropriated"
-                    label={
-                        <div>
-                            Appropriated{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
+                    label={'Appropriated'}
                     required={false}
                 >
                     <RadioButtonGroup
@@ -279,14 +243,7 @@ export function SlurEdit() {
                 <FormField
                     id="slur-form-categories"
                     name="categories"
-                    label={
-                        <div>
-                            Categories{' '}
-                            <Text size="xsmall" color="status-critical">
-                                *
-                            </Text>
-                        </div>
-                    }
+                    label={'Categories'}
                     help={
                         <>
                             <Text size="small" color="#808080">

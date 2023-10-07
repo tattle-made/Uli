@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     List,
     Text,
@@ -7,9 +7,11 @@ import {
     TableHeader,
     TableRow,
     TableCell,
-    TableBody
+    TableBody,
+    Button,
+    Anchor,
 } from 'grommet';
-import { Alert } from 'grommet-icons';
+import { Alert, FormUp, FormDown } from 'grommet-icons';
 import SlurCardBubble from './SlurCardBubble';
 
 const SlurCard = ({ data }) => {
@@ -18,6 +20,13 @@ const SlurCard = ({ data }) => {
         data.casual === undefined ||
         data.appropriated === undefined ||
         data.categories.length === 0;
+
+    const [showMore, setShowMore] = useState(false);
+    const toggleShowMore = () => {
+        setShowMore(!showMore);
+    };
+    const buttonLabel = showMore ? 'See Less' : 'See More';
+    const buttonIcon = showMore ? <FormUp /> : <FormDown />;
 
     return (
         <Box align="center">
@@ -150,69 +159,96 @@ const SlurCard = ({ data }) => {
                                             : ''}
                                     </TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell scope="row">
-                                        <Text color="#646464">
-                                            If, Appropriated, Is it by Community
-                                            or Others?
-                                        </Text>
-                                    </TableCell>
-                                    <TableCell>
-                                        {data.appropriated === true
-                                            ? 'Community'
-                                            : data.appropriated === false
-                                            ? 'Others'
-                                            : ''}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell scope="row">
-                                        <Text color="#646464">
-                                            What Makes it Problematic?
-                                        </Text>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Box>
-                                            <Text
-                                                truncate
-                                                style={{
-                                                    maxWidth: '100px',
-                                                    overflow: 'hidden',
-                                                    textOverflow: 'ellipsis',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                {data.labelMeaning}
-                                            </Text>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell scope="row">
-                                        <Text color="#646464">Categories</Text>
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            <Box direction="row" gap="medium" wrap={true}>
-                                                {data.categories.map(
-                                                    (
-                                                        category,
-                                                        categoryIndex
-                                                    ) => (
-                                                        <Box margin={"xsmall"}>
-                                                        <SlurCardBubble
-                                                            key={categoryIndex}
-                                                            data={category}
-                                                        />
-                                                        </Box>
-                                                    )
-                                                )}
-                                            </Box>
-                                        }
-                                    </TableCell>
-                                </TableRow>
+                                {showMore && (
+                                    <>
+                                        <TableRow>
+                                            <TableCell scope="row">
+                                                <Text color="#646464">
+                                                    If, Appropriated, Is it by
+                                                    Community or Others?
+                                                </Text>
+                                            </TableCell>
+                                            <TableCell>
+                                                {data.appropriated === true
+                                                    ? 'Community'
+                                                    : data.appropriated ===
+                                                      false
+                                                    ? 'Others'
+                                                    : ''}
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell scope="row">
+                                                <Text color="#646464">
+                                                    What Makes it Problematic?
+                                                </Text>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Box>
+                                                    <Text
+                                                        truncate
+                                                        style={{
+                                                            maxWidth: '100px',
+                                                            overflow: 'hidden',
+                                                            textOverflow:
+                                                                'ellipsis',
+                                                            whiteSpace: 'nowrap'
+                                                        }}
+                                                    >
+                                                        {data.labelMeaning}
+                                                    </Text>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell scope="row">
+                                                <Text color="#646464">
+                                                    Categories
+                                                </Text>
+                                            </TableCell>
+                                            <TableCell>
+                                                {
+                                                    <Box
+                                                        direction="row"
+                                                        gap="medium"
+                                                        wrap={true}
+                                                    >
+                                                        {data.categories.map(
+                                                            (
+                                                                category,
+                                                                categoryIndex
+                                                            ) => (
+                                                                <Box
+                                                                    margin={
+                                                                        'xsmall'
+                                                                    }
+                                                                >
+                                                                    <SlurCardBubble
+                                                                        key={
+                                                                            categoryIndex
+                                                                        }
+                                                                        data={
+                                                                            category
+                                                                        }
+                                                                    />
+                                                                </Box>
+                                                            )
+                                                        )}
+                                                    </Box>
+                                                }
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
+                                )}
                             </TableBody>
                         </Table>
+                        <Box align='center' margin={{top: "small"}}>
+                        <Anchor
+                            label={buttonLabel}
+                            icon={buttonIcon}
+                            onClick={toggleShowMore}
+                        />
+                        </Box>
                     </Box>
                 </>
             )}
