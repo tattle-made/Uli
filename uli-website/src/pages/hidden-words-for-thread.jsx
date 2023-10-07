@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Heading,
@@ -37,6 +37,7 @@ const HiddenWordsForThread = () => {
   const defaultOptions = selectOptions.map((option) => option.value);
   const [choices, setChoices] = useState(defaultOptions);
   const [text, setText] = useState("");
+  const textAreaRef = useRef(null);
 
   useEffect(() => {
     // Compute the text value based on choices and update the state
@@ -48,16 +49,11 @@ const HiddenWordsForThread = () => {
 
   function handleTextAreaChange(event) {
     const currentValue = event.target.value;
-
-    if (event.nativeEvent.inputType === "deleteContentBackward") {
-      setText((prevText) => prevText.slice(0, -1));
-    } else {
-      setText(currentValue);
-    }
+    setText(currentValue);
   }
 
   function clickCopyToClipboard() {
-    navigator.clipboard.writeText(text); // Use the computed text
+    navigator.clipboard.writeText(text);
   }
 
   return (
@@ -93,10 +89,12 @@ const HiddenWordsForThread = () => {
           </Box>
           <Box height={"1.2em"} />
           <Box height={"50vh"}>
-            <TextArea 
-              fill 
+            <TextArea
+              ref={textAreaRef}
+              fill
               value={text}
-              onChange={handleTextAreaChange}/>
+              onChange={handleTextAreaChange}
+            />
           </Box>
           <Heading level={2}>Contribute</Heading>
           <Paragraph fill>
