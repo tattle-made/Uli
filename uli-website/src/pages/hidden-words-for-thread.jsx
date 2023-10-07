@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -36,11 +36,28 @@ const HiddenWordsForThread = () => {
   });
   const defaultOptions = selectOptions.map((option) => option.value);
   const [choices, setChoices] = useState(defaultOptions);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    // Compute the text value based on choices and update the state
+    const computedText = choices
+      .map((choice) => options[choice].slurs.join(", "))
+      .join(", ");
+    setText(computedText);
+  }, [choices]);
+
+  function handleTextAreaChange(event) {
+    const currentValue = event.target.value;
+
+    if (event.nativeEvent.inputType === "deleteContentBackward") {
+      setText((prevText) => prevText.slice(0, -1));
+    } else {
+      setText(currentValue);
+    }
+  }
 
   function clickCopyToClipboard() {
-    navigator.clipboard.writeText(
-      choices.map((choice) => options[choice].slurs.join(", ")).join(", ")
-    );
+    navigator.clipboard.writeText(text); // Use the computed text
   }
 
   return (
@@ -51,7 +68,7 @@ const HiddenWordsForThread = () => {
           <Paragraph fill>
             Meta's Thread now allows you to filter out words that you don't want
             to see on your feed. Uli's slur list can assist you in adding a list
-            of slurs in Indian languages. If you are being targetted or abused
+            of slurs in Indian languages. If you are being targeted or abused
             on social media in Indian languages, consider adding these words to
             your list of "hidden words" on Thread
           </Paragraph>
@@ -76,12 +93,10 @@ const HiddenWordsForThread = () => {
           </Box>
           <Box height={"1.2em"} />
           <Box height={"50vh"}>
-            <TextArea
-              fill
-              value={choices
-                .map((choice) => options[choice].slurs.join(", "))
-                .join(", ")}
-            />
+            <TextArea 
+              fill 
+              value={text}
+              onChange={handleTextAreaChange}/>
           </Box>
           <Heading level={2}>Contribute</Heading>
           <Paragraph fill>
