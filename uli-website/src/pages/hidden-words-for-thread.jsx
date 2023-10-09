@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Heading,
@@ -36,11 +36,24 @@ const HiddenWordsForThread = () => {
   });
   const defaultOptions = selectOptions.map((option) => option.value);
   const [choices, setChoices] = useState(defaultOptions);
+  const [text, setText] = useState("");
+  const textAreaRef = useRef(null);
+
+  useEffect(() => {
+    // Compute the text value based on choices and update the state
+    const computedText = choices
+      .map((choice) => options[choice].slurs.join(", "))
+      .join(", ");
+    setText(computedText);
+  }, [choices]);
+
+  function handleTextAreaChange(event) {
+    const currentValue = event.target.value;
+    setText(currentValue);
+  }
 
   function clickCopyToClipboard() {
-    navigator.clipboard.writeText(
-      choices.map((choice) => options[choice].slurs.join(", ")).join(", ")
-    );
+    navigator.clipboard.writeText(text);
   }
 
   return (
@@ -51,7 +64,7 @@ const HiddenWordsForThread = () => {
           <Paragraph fill>
             Meta's Thread now allows you to filter out words that you don't want
             to see on your feed. Uli's slur list can assist you in adding a list
-            of slurs in Indian languages. If you are being targetted or abused
+            of slurs in Indian languages. If you are being targeted or abused
             on social media in Indian languages, consider adding these words to
             your list of "hidden words" on Thread
           </Paragraph>
@@ -77,10 +90,10 @@ const HiddenWordsForThread = () => {
           <Box height={"1.2em"} />
           <Box height={"50vh"}>
             <TextArea
+              ref={textAreaRef}
               fill
-              value={choices
-                .map((choice) => options[choice].slurs.join(", "))
-                .join(", ")}
+              value={text}
+              onChange={handleTextAreaChange}
             />
           </Box>
           <Heading level={2}>Contribute</Heading>
