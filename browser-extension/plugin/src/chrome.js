@@ -8,9 +8,9 @@
  * values to be whatever it is that you need it for the feature you are working on. This also lets you take
  * advantage of the dev tools you are familiar with for developing React Apps.
  */
-import config from './config';
-
-const ENVIRONMENT = config.ENVIRONMENT;
+// import config from './config';
+import { userBrowserTabs, userBrowserStorage } from './browser-compat';
+// const ENVIRONMENT = config.ENVIRONMENT;
 
 /*
 const storageMock = {
@@ -41,24 +41,6 @@ const storageMock = {
 };
 */
 
-let userBrowser;
-const userAgent = navigator.userAgent.toString();
-if (userAgent.indexOf('Mozilla')) {
-    userBrowser = 'firefox';
-} else if (userAgent.indexOf('Chrome')) {
-    userBrowser = 'chrome';
-} else {
-    userBrowser = 'unsupported';
-}
-
-let storage;
-console.log(userBrowser);
-if (userBrowser === 'firefox') {
-    storage = browser.storage;
-} else if (userBrowser === 'chrome') {
-    storage = chrome.storage;
-}
-
 // const storage = ENVIRONMENT === "production" ? chrome.storage : storageMock;
 
 /**
@@ -67,7 +49,7 @@ if (userBrowser === 'firefox') {
 const get = async (key) => {
     return new Promise((resolve, reject) => {
         try {
-            storage.local.get([key], (result) => {
+            userBrowserStorage.local.get([key], (result) => {
                 resolve(result[key]);
             });
         } catch (err) {
@@ -79,7 +61,7 @@ const get = async (key) => {
 const set = (key, value) => {
     return new Promise((resolve, reject) => {
         try {
-            storage.local.set({ [key]: value }, () => {
+            userBrowserStorage.local.set({ [key]: value }, () => {
                 resolve();
             });
         } catch (err) {
@@ -90,10 +72,10 @@ const set = (key, value) => {
 
 function sendMessage(type) {
     if (type == 'updateData') {
-        chrome.tabs.query(
+        userBrowserTabs.query(
             { active: true, currentWindow: true },
             function (tabs) {
-                chrome.tabs.sendMessage(
+                userBrowserTabs.sendMessage(
                     tabs[0].id,
                     { type: 'updateData' },
                     function (response) {

@@ -17,6 +17,7 @@ import { Off } from './Off';
 import { Slur } from './Slur';
 import SlurCreate from './SlurCreate';
 import SlurEdit from './SlurEdit';
+import { userBrowserTabs } from '../../browser-compat';
 
 export function App() {
     const [user, setUser] = useState(undefined);
@@ -65,22 +66,6 @@ export function App() {
             ignore = true;
         };
     }, []);
-
-    let userBrowser;
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    if (userAgent.includes('chrome')) {
-        userBrowser = 'chrome';
-    } else if (userAgent.includes('firefox')) {
-        userBrowser = 'firefox';
-    } else {
-        userBrowser = 'unsupported';
-    }
-    let userBrowserTabs;
-    if (userBrowser === 'firefox') {
-        userBrowserTabs = browser.tabs;
-    } else if (userBrowser === 'chrome') {
-        userBrowserTabs = chrome.tabs;
-    }
 
     async function clickActivateAccount() {
         const { data } = await registerNewUser();

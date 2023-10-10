@@ -14,7 +14,7 @@ import {
 import Api from '../pages/Api';
 import repository from '../../repository';
 import { useTranslation } from 'react-i18next';
-import chrome from '../../chrome';
+import browserUtils from '../../chrome';
 import { langNameMap } from '../atoms/language';
 
 const { savePreference } = Api;
@@ -151,7 +151,7 @@ export function Preferences() {
                 type: 'message',
                 message: t('message_ok_saved')
             });
-            chrome.sendMessage('updateData', undefined);
+            browserUtils.sendMessage('updateData', undefined);
         } catch (err) {
             // alert(err);
             showNotification({
