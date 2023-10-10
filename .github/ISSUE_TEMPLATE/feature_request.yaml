@@ -31,7 +31,7 @@ body:
       label: Describe alternatives you've considered
       description: A clear and concise description of any alternative solutions or features you have considered.
     validations:
-      required: true
+      required: false
   - type: textarea
     id: additional_context
     attributes:

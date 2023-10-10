@@ -19,7 +19,8 @@ body:
         - Firefox
         - Chrome
         - Brave
-
+        - Microsoft Edge
+        - Other
   - type: checkboxes
     id: features
     attributes:
@@ -30,4 +31,12 @@ body:
         - label: Users are able to hide tweets with OGBV on their feed
         - label: Users are able to update their Preference 
         - label: Uli is able to hide slurs on user's feed
-          required: true
+          required: false
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Something other than a feature?
+      description: QA testing for something else than a feature.
+      placeholder: Example, problem in viewing the image logo
+    validations:
+      required: false
