@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 import SlurCard from '../atoms/SlurCard';
+import SlurCardComponent from '../atoms/SlurCardComponent';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
 
@@ -102,6 +103,9 @@ export function Slur() {
                             </Text>
                         </Box>
                         {getSlurs.map((slur, index) => (
+                            // <Box key={index} margin={{top: "medium"}} align='center'>
+                            //     <SlurCardComponent data={slur} />
+                            // </Box>
                             <Box
                                 key={index}
                                 // background="#fbeeac"

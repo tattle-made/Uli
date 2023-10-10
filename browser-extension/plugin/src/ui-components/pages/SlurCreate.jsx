@@ -9,7 +9,8 @@ import {
     TextArea,
     TextInput,
     Anchor,
-    SelectMultiple
+    SelectMultiple,
+    RadioButton
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
@@ -38,8 +39,8 @@ export function SlurCreate() {
         label: '',
         level_of_severity: '',
         casual: undefined,
-        appropriated: false,
-        appropriationContext: false,
+        appropriated: undefined,
+        appropriationContext: undefined,
         categories: [],
         labelMeaning: ''
     };
@@ -97,19 +98,16 @@ export function SlurCreate() {
         setFormData(initialFormData);
         setShowWarning(false);
     };
-    const handleCasualChange = (value) => {
-        const casualValue = value ? 'Yes' : 'No';
-        setFormData({ ...formData, casual: casualValue });
-    };
 
     return (
-        <Box>
-            <Anchor onClick={handleGoBack}>Go Back</Anchor>
+        <Box gap="medium">
+            {/* <Anchor onClick={handleGoBack}>Go Back</Anchor> */}
             <Text size="large" alignSelf="center">
                 <strong>
                     <u>Add Slur</u>
                 </strong>
             </Text>
+
             <Form
                 value={formData}
                 onChange={(nextValue) => {
@@ -153,7 +151,7 @@ export function SlurCreate() {
                     />
                 </FormField>
 
-                {/* <FormField name="casual" label={'Casual'} required>
+                <FormField name="casual" label={'Casual'} required>
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -163,73 +161,43 @@ export function SlurCreate() {
                             { label: 'No', value: false }
                         ]}
                         value={formData.casual}
-                        onChange={(event) =>
-                            handleCasualChange(event.target.value)
-                        }
-                    />
-                </FormField> */}
-
-                <FormField name="casual" label={'Casual'} required>
-                    <RadioButtonGroup
-                        id="slur-form-casual"
-                        name="casual"
-                        direction="row"
-                        options={['Yes', 'No']}
-                        value={formData.casual ? 'Yes' : 'No'}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                casual: e.target.value === 'Yes'
-                            })
-                        }
                     />
                 </FormField>
 
-                <FormField name="appropriated" label="Appropriated" required>
+                <FormField name="appropriated" label="Appropriated" required={false}>
                     <RadioButtonGroup
                         id="slur-form-appropriated"
                         name="appropriated"
                         direction="row"
-                        options={['Yes', 'No']}
-                        value={formData.appropriated ? 'Yes' : 'No'}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                appropriated: e.target.value === 'Yes'
-                            })
-                        }
+                        options={[
+                            { label: 'Yes', value: true },
+                            { label: 'No', value: false }
+                        ]}
+                        value={formData.appropriated}
                     />
                 </FormField>
 
                 <FormField
                     name="appropriationContext"
                     label="If, Appropriated, Is it by Community or Others?"
-                    // required={false}
+                // required={false}
                 >
                     <RadioButtonGroup
                         id="slur-form-appropriationContext"
                         name="appropriationContext"
                         direction="row"
-                        options={['Community', 'Others']}
-                        value={
-                            formData.appropriationContext
-                                ? 'Community'
-                                : 'Others'
-                        }
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                appropriationContext:
-                                    e.target.value === 'Community'
-                            })
-                        }
+                        options={[
+                            { label: 'Community', value: true },
+                            { label: 'Others', value: false }
+                        ]}
+                        value={formData.appropriationContext}
                     />
                 </FormField>
 
                 <FormField
                     name="labelMeaning"
                     label="What Makes it Problematic?"
-                    // required
+                // required
                 >
                     <TextArea
                         id="slur-form-label-meaning"
