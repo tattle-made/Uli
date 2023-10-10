@@ -1,0 +1,33 @@
+name: QA Test Checklist
+description: Use this as a guide for manual QA
+title: "[QA]: "
+labels: ["qa"]
+projects: ["tattle-made/uli"]
+assignees:
+  - 'dennyabrain'
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this QA Test Checklist report!
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browsers
+      description: Which browsers did you test?
+      multiple: true
+      options:
+        - Chrome
+        - Brave
+        - Firefox
+  - type: checkboxes
+    id: features
+    attributes:
+      description: Features to check
+      options:
+        - Users are able to archive a tweet on their device
+        - Users are able to send an archived tweet to their email
+        - Users are able to hide tweets with OGBV on their feed
+        - Users are able to update their Preference 
+        - Uli is able to hide slurs on user's feed

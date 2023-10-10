@@ -1,0 +1,68 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
+projects: ["tattle-made/uli"]
+assignees:
+  - ''
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: Write A clear and concise description of what the bug is.
+      placeholder: "A bug happended!"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior
+      placeholder: "1. Go to '...' \n2. Click on '....' \n3. Scroll down to '....' \n4. See error"
+      value: ""
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: "I expected..."
+    validations:
+      required: true
+  - type: image
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: input
+    id: desktop
+    attributes:
+      label: Desktop
+      description: Please complete the following information:
+      placeholder: "OS: [e.g. iOS] \nBrowser [e.g. chrome, safari] \nVersion [e.g. 22]"
+    validations:
+      required: false
+  -type: input
+    id: smartphone
+    attributes:
+      label: Smartphone
+      description: Please complete the following information:
+      placeholder: "Device: [e.g. iPhone6] \nOS: [e.g. iOS8.1] \nBrowser [e.g. stock browser, safari] \nVersion [e.g. 22]"
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
