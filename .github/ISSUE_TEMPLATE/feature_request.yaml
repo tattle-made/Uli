@@ -6,10 +6,6 @@ projects: ["tattle-made/uli"]
 assignees:
   - dennybrain
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
   - type: textarea
     id: problem
     attributes:
