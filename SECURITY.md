@@ -31,7 +31,7 @@ Tattle will disclose vulnerabilities on a 90-day disclosure deadline with the fo
 - Tattle products are open-source. You are encouraged to install standalone products locally for researching vulnerabilities.
 - If you want to conduct penetration testing on any of Tattle's domains or subdomains, you will need an explicit written permission. During the process, you should coordinate with the Tattle team more closely to avoid escalation.
 - Do not publicly post a proof-of-concept until the report is disclosed.
-- You are required to follow Tattle's [Code of Conduct](https://github.com/tattle-made/Uli/blob/main/CODE_OF_CONDUCT.md) and [POSH Policy] (https://drive.google.com/file/d/1AVr-xi85le6g-OY2DgEwa26aeMMs_d5o/view) when communicating with any team member.
+- You are required to follow Tattle's [Code of Conduct](https://github.com/tattle-made/Uli/blob/main/CODE_OF_CONDUCT.md) and [POSH Policy](https://drive.google.com/file/d/1AVr-xi85le6g-OY2DgEwa26aeMMs_d5o/view) when communicating with any team member.
 
 
 ### Out of scope
