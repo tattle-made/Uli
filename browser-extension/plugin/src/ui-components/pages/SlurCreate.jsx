@@ -8,77 +8,44 @@ import {
     RadioButtonGroup,
     TextArea,
     TextInput,
-    Anchor,
-    SelectMultiple,
-    RadioButton
+    SelectMultiple
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
+import { slurCreatePluginToApi } from '../../slur-crowdsource/adapters';
+import {
+    categoryOptions,
+    defaultMetadata
+} from '../../slur-crowdsource/values';
 
 const { createSlurAndCategory } = Api;
-
-const categoryOptions = [
-    'gendered',
-    'sexualized',
-    'religion',
-    'ethnicity',
-    'political affiliation',
-    'caste',
-    'class',
-    'body shaming',
-    'ableist',
-    'sexual identity',
-    'other'
-];
 
 export function SlurCreate() {
     const { user } = useContext(UserContext);
     const { showNotification } = useContext(NotificationContext);
-    const initialFormData = {
-        label: '',
-        level_of_severity: '',
-        casual: undefined,
-        appropriated: undefined,
-        appropriationContext: undefined,
-        categories: [],
-        labelMeaning: ''
-    };
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState(defaultMetadata);
     const [showWarning, setShowWarning] = useState(false);
 
     const navigate = useNavigate();
-    const handleGoBack = () => {
-        navigate('/slur');
-    };
+    // const handleGoBack = () => {
+    //     navigate('/slur');
+    // };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async ({ value }) => {
+        let newValue = slurCreatePluginToApi(value);
         try {
-            const categories = formData.categories.map((category) => ({
-                category
-            }));
-            const requestData = {
-                ...formData,
-                categories
-            };
-            // console.log('Data for backend', requestData);
-            const response = await createSlurAndCategory(
-                user.accessToken,
-                requestData
-            );
-            await setFormData({
-                ...response.data
-            });
+            await createSlurAndCategory(user.accessToken, newValue);
             navigate('/slur');
             showNotification({
                 type: 'message',
                 message: 'Slur Created'
             });
-        } catch (error) {
-            console.error('Error creating slur:', error);
+        } catch (err) {
+            console.error('Error creating slur', err);
             showNotification({
                 type: 'error',
-                message: 'Error - Could not create Slur'
+                message: 'Could not create Slur'
             });
         }
     };
@@ -95,7 +62,7 @@ export function SlurCreate() {
         }
     };
     const handleReset = () => {
-        setFormData(initialFormData);
+        setFormData(defaultMetadata);
         setShowWarning(false);
     };
 
@@ -111,25 +78,17 @@ export function SlurCreate() {
             <Form
                 value={formData}
                 onChange={(nextValue) => {
+                    // console.log(nextValue);
                     setFormData(nextValue);
                 }}
-                onSubmit={({ value }) => {
-                    handleSubmit(value);
-                }}
+                onSubmit={handleSubmit}
             >
                 <FormField
                     name="label"
                     label={'Label'}
                     required={{ indicator: true }}
                 >
-                    <TextInput
-                        id="slur-form-label"
-                        name="label"
-                        value={formData.label}
-                        onChange={(e) =>
-                            setFormData({ ...formData, label: e.target.value })
-                        }
-                    />
+                    <TextInput id="slur-form-label" name="label" />
                 </FormField>
 
                 <FormField
@@ -141,13 +100,6 @@ export function SlurCreate() {
                         name="level_of_severity"
                         direction="row"
                         options={['low', 'medium', 'high']}
-                        value={formData.level_of_severity}
-                        onChange={(event) =>
-                            setFormData({
-                                ...formData,
-                                level_of_severity: event.target.value
-                            })
-                        }
                     />
                 </FormField>
 
@@ -157,58 +109,52 @@ export function SlurCreate() {
                         name="casual"
                         direction="row"
                         options={[
-                            { label: 'Yes', value: true },
-                            { label: 'No', value: false }
+                            { label: 'Yes', value: 1 },
+                            { label: 'No', value: 2 }
                         ]}
-                        value={formData.casual}
                     />
                 </FormField>
 
-                <FormField name="appropriated" label="Appropriated" required={false}>
+                <FormField
+                    name="appropriated"
+                    label="Appropriated"
+                    required={false}
+                >
                     <RadioButtonGroup
                         id="slur-form-appropriated"
                         name="appropriated"
                         direction="row"
                         options={[
-                            { label: 'Yes', value: true },
-                            { label: 'No', value: false }
+                            { label: 'Yes', value: 1 },
+                            { label: 'No', value: 2 }
                         ]}
-                        value={formData.appropriated}
                     />
                 </FormField>
 
                 <FormField
                     name="appropriationContext"
                     label="If, Appropriated, Is it by Community or Others?"
-                // required={false}
+                    // required={false}
                 >
                     <RadioButtonGroup
                         id="slur-form-appropriationContext"
                         name="appropriationContext"
                         direction="row"
                         options={[
-                            { label: 'Community', value: true },
-                            { label: 'Others', value: false }
+                            { label: 'Community', value: 1 },
+                            { label: 'Others', value: 2 }
                         ]}
-                        value={formData.appropriationContext}
                     />
                 </FormField>
 
                 <FormField
                     name="labelMeaning"
                     label="What Makes it Problematic?"
-                // required
+                    // required
                 >
                     <TextArea
                         id="slur-form-label-meaning"
                         name="labelMeaning"
-                        value={formData.labelMeaning}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                labelMeaning: e.target.value
-                            })
-                        }
                     />
                 </FormField>
 
@@ -229,7 +175,6 @@ export function SlurCreate() {
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
-                        value={formData.categories}
                         onChange={handleCategoryChange}
                     />
                 </FormField>

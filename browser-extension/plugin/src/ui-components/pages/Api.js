@@ -69,7 +69,7 @@ async function registerNewUser() {
 async function getArchive(accessToken) {
     const result = await axios.get(`${API_URL}/archive`, {
         headers: {
-            Authorization: `token ${accessToken}`,
+            Authorization: `token ${accessToken}`
         }
     });
     return result.data.archive;
@@ -102,6 +102,15 @@ async function resetAccount(accessToken) {
 // GET request for slur and category
 async function getSlurAndCategory(accessToken) {
     const result = await axios.get(`${API_URL}/slur`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+    return result.data;
+}
+
+async function getSlurAndCategoryById(accessToken, id) {
+    const result = await axios.get(`${API_URL}/slur/${id}`, {
         headers: {
             Authorization: `token ${accessToken}`
         }
@@ -146,6 +155,7 @@ export default {
     getArchive,
     resetAccount,
     getSlurAndCategory,
+    getSlurAndCategoryById,
     createSlurAndCategory,
     updateSlurAndCategory,
     deleteSlurAndCategory

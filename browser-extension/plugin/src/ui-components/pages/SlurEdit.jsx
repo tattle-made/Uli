@@ -16,21 +16,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 
-const { getSlurAndCategory, updateSlurAndCategory } = Api;
+const { getSlurAndCategoryById, updateSlurAndCategory } = Api;
 
-const categoryOptions = [
-    'gendered',
-    'sexualized',
-    'religion',
-    'ethnicity',
-    'political affiliation',
-    'caste',
-    'class',
-    'body shaming',
-    'ableist',
-    'sexual identity',
-    'other'
-];
+import {
+    categoryOptions,
+    defaultMetadata
+} from '../../slur-crowdsource/values';
+import {
+    slurCreateApiToPlugin,
+    slurCreatePluginToApi
+} from '../../slur-crowdsource/adapters';
 
 export function SlurEdit() {
     const { user } = useContext(UserContext);
@@ -38,40 +33,16 @@ export function SlurEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        label: '',
-        level_of_severity: '',
-        casual: false,
-        appropriated: false,
-        appropriationContext: false,
-        categories: [],
-        labelMeaning: ''
-    });
-    const [, setSlurData] = useState(null);
+    const [formData, setFormData] = useState(defaultMetadata);
     const [showWarning, setShowWarning] = useState(false);
 
     useEffect(() => {
         async function fetchSlurData() {
             try {
-                const data = await getSlurAndCategory(user.accessToken);
-                setSlurData(data);
-                const editedSlur = data.find((slur) => slur.id === id);
-
-                if (editedSlur) {
-                    setFormData({
-                        label: editedSlur.label,
-                        level_of_severity: editedSlur.level_of_severity,
-                        casual: editedSlur.casual,
-                        appropriated: editedSlur.appropriated,
-                        appropriationContext: editedSlur.appropriationContext,
-                        labelMeaning: editedSlur.labelMeaning,
-                        categories: editedSlur.categories.map(
-                            (category) => category.category
-                        )
-                    });
-                } else {
-                    console.error('Slur not found');
-                }
+                const data = await getSlurAndCategoryById(user.accessToken, id);
+                console.log(data);
+                const modifiedData = slurCreateApiToPlugin(data);
+                setFormData(modifiedData);
             } catch (error) {
                 console.error(error);
             }
@@ -79,6 +50,7 @@ export function SlurEdit() {
 
         fetchSlurData();
     }, [user.accessToken, id]);
+
     const handleCategoryChange = ({ value }) => {
         if (value.length === 0) {
             setShowWarning(true);
@@ -95,17 +67,10 @@ export function SlurEdit() {
         navigate('/slur');
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async ({ value }) => {
+        let newValue = slurCreatePluginToApi(value);
         try {
-            const categories = formData.categories.map((category) => ({
-                category
-            }));
-            const requestData = {
-                ...formData,
-                categories
-            };
-
-            await updateSlurAndCategory(user.accessToken, id, requestData);
+            await updateSlurAndCategory(user.accessToken, id, newValue);
             navigate('/slur');
             showNotification({
                 type: 'message',
@@ -129,17 +94,10 @@ export function SlurEdit() {
             <Form
                 value={formData}
                 onChange={(nextValue) => setFormData(nextValue)}
-                onSubmit={() => handleSubmit()}
+                onSubmit={handleSubmit}
             >
                 <FormField name="label" label={'Label'} required>
-                    <TextInput
-                        id="slur-form-label"
-                        name="label"
-                        value={formData.label}
-                        onChange={(e) =>
-                            setFormData({ ...formData, label: e.target.value })
-                        }
-                    />
+                    <TextInput id="slur-form-label" name="label" />
                 </FormField>
 
                 <FormField
@@ -151,13 +109,6 @@ export function SlurEdit() {
                         name="level_of_severity"
                         direction="row"
                         options={['low', 'medium', 'high']}
-                        value={formData.level_of_severity}
-                        onChange={(event) =>
-                            setFormData({
-                                ...formData,
-                                level_of_severity: event.target.value
-                            })
-                        }
                     />
                 </FormField>
 
@@ -166,14 +117,10 @@ export function SlurEdit() {
                         id="slur-form-casual"
                         name="casual"
                         direction="row"
-                        options={['Yes', 'No']}
-                        value={formData.casual ? 'Yes' : 'No'}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                casual: e.target.value === 'Yes'
-                            })
-                        }
+                        options={[
+                            { label: 'Yes', value: 1 },
+                            { label: 'No', value: 2 }
+                        ]}
                     />
                 </FormField>
 
@@ -186,14 +133,10 @@ export function SlurEdit() {
                         id="slur-form-appropriated"
                         name="appropriated"
                         direction="row"
-                        options={['Yes', 'No']}
-                        value={formData.appropriated ? 'Yes' : 'No'}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                appropriated: e.target.value === 'Yes'
-                            })
-                        }
+                        options={[
+                            { label: 'Yes', value: 1 },
+                            { label: 'No', value: 2 }
+                        ]}
                     />
                 </FormField>
 
@@ -206,19 +149,10 @@ export function SlurEdit() {
                         id="slur-form-appropriationContext"
                         name="appropriationContext"
                         direction="row"
-                        options={['Community', 'Others']}
-                        value={
-                            formData.appropriationContext
-                                ? 'Community'
-                                : 'Others'
-                        }
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                appropriationContext:
-                                    e.target.value === 'Community'
-                            })
-                        }
+                        options={[
+                            { label: 'Community', value: 1 },
+                            { label: 'Others', value: 2 }
+                        ]}
                     />
                 </FormField>
 
@@ -230,13 +164,6 @@ export function SlurEdit() {
                     <TextArea
                         id="slur-form-label-meaning"
                         name="labelMeaning"
-                        value={formData.labelMeaning}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                labelMeaning: e.target.value
-                            })
-                        }
                     />
                 </FormField>
 
@@ -257,7 +184,7 @@ export function SlurEdit() {
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
-                        value={formData.categories}
+                        // value={formData.categories}
                         onChange={handleCategoryChange}
                     />
                 </FormField>

@@ -7,8 +7,14 @@ const port = 3000;
 const cors = require("cors");
 const { upload } = require("./s3");
 
-const { preference, post, feedback, slur, category, sequelize } = require("./db/models");
-
+const {
+  preference,
+  post,
+  feedback,
+  slur,
+  category,
+  sequelize,
+} = require("./db/models");
 
 const { registerAnonymousUser, resetUser } = require("./controller-auth");
 const { sendEmail } = require("./email");
@@ -33,7 +39,7 @@ app.get("/auth/register", async (req, res) => {
     const newUser = await registerAnonymousUser();
     res.send({ user: newUser });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(501).send();
   }
 });
@@ -61,30 +67,25 @@ app.post("/preference/", async (req, res) => {
   // res.send({ ...result[0].get({ plain: true }) });
 });
 
-
 // Feedback code from here
 app.post("/feedback", async (req, res) => {
   console.log("POST feedback");
   try {
     const data = req.body;
 
-
     await feedback.create({
       userId: data.user_id,
       tweetText: data.tweet_text,
       sentiment: data.tweet_sentiment,
-      confidence: data.tweet_confidence
-
+      confidence: data.tweet_confidence,
     });
 
     res.send({ msg: "Feedback Sent" });
-  }
-  catch (err) {
+  } catch (err) {
     //console.log(err);
     res.status(501).send({ msg: "Error sending feedback" });
   }
 });
-
 
 // Feedback code ends here
 app.get("/preference/", async (req, res) => {
@@ -222,14 +223,47 @@ app.get("/slur", async (req, res) => {
   }
 });
 
+app.get("/slur/:id", async (req, res) => {
+  const slurId = req.params.id;
+  try {
+    const slurMetadata = await slur.findByPk(slurId, {
+      include: [
+        {
+          model: category,
+          as: "categories",
+        },
+      ],
+    });
+    res.json(slurMetadata);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "server error" });
+  }
+});
+
 // POST request for slur and category
 app.post("/slur/create", async (req, res) => {
-  const { user } = req
-  const userId = user.id
-  const { label, level_of_severity, casual, appropriated, appropriationContext,labelMeaning, categories } = req.body;
-  console.log(userId, label, labelMeaning, appropriated, appropriationContext, categories)
-  const t = await sequelize.transaction()
-  
+  const { user } = req;
+  const userId = user.id;
+  const {
+    label,
+    level_of_severity,
+    casual,
+    appropriated,
+    appropriationContext,
+    labelMeaning,
+    categories,
+  } = req.body;
+  console.log(
+    userId,
+    label,
+    labelMeaning,
+    appropriated,
+    appropriationContext,
+    categories
+  );
+  const t = await sequelize.transaction();
+
   try {
     const newSlur = await slur.create(
       {
@@ -248,7 +282,7 @@ app.post("/slur/create", async (req, res) => {
       const newCategory = await category.create(
         {
           slurId: newSlur.id,
-          category: categoryData.category,
+          category: categoryData,
         },
         { transaction: t }
       );
@@ -273,7 +307,15 @@ app.post("/slur/create", async (req, res) => {
 // PUT request for slur and category
 app.put("/slur/:id", async (req, res) => {
   const slurId = req.params.id;
-  const { label, level_of_severity, casual, appropriated, appropriationContext,labelMeaning, categories } = req.body;
+  const {
+    label,
+    level_of_severity,
+    casual,
+    appropriated,
+    appropriationContext,
+    labelMeaning,
+    categories,
+  } = req.body;
   const t = await sequelize.transaction();
 
   try {
@@ -302,10 +344,13 @@ app.put("/slur/:id", async (req, res) => {
 
     // Create new categories
     const categoryPromises = categories.map(async (categoryData) => {
-      const newCategory = await category.create({
-        slurId: existingSlur.id,
-        category: categoryData.category,
-      }, { transaction: t });
+      const newCategory = await category.create(
+        {
+          slurId: existingSlur.id,
+          category: categoryData.category,
+        },
+        { transaction: t }
+      );
       return newCategory;
     });
 
