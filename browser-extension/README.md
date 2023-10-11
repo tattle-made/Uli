@@ -25,8 +25,8 @@
 
 Requirements :
 
-- npm : v9.6.7^
-- nodejs : v18.17.1^
+- npm : v9.8.1
+- nodejs : v18.18.0
 
 When you run `docker-compose up`, ensure to have a `development.env` file with the following variables in the `api-server` directory.
 
