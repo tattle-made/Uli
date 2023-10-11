@@ -52,19 +52,21 @@ body:
         - Safari
         - Microsoft Edge
         - Other
-  - type: textarea
-    id: desktop
+  - type: dropdown
+    id: os
     attributes:
-      label: Desktop
-      description: Please complete the following information
-      placeholder: "OS: [e.g. iOS]\n Browser [e.g. chrome, safari]\n Version [e.g. 22]"
-    validations:
-      required: false
+      label: Which operating system are you on?
+      multiple: false
+      options:
+        - Windows
+        - MacOS
+        - Linux
+        - Android
+        - iOS
   - type: textarea
-    id: smartphone
+    id: system
     attributes:
-      label: Smartphone
-      description: Please complete the following information
-      placeholder: "OS: [e.g. iOS]\n Browser [e.g. chrome, safari]\n Version [e.g. 22]"
+      label: System Description
+      description: More information about your setup
     validations:
       required: false
