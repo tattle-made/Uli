@@ -247,7 +247,7 @@ app.post("/slur/create", async (req, res) => {
   const userId = user.id;
   const {
     label,
-    level_of_severity,
+    levelOfSeverity,
     casual,
     appropriated,
     appropriationContext,
@@ -269,7 +269,7 @@ app.post("/slur/create", async (req, res) => {
       {
         userId,
         label,
-        level_of_severity,
+        levelOfSeverity,
         casual,
         appropriated,
         appropriationContext,
@@ -309,7 +309,7 @@ app.put("/slur/:id", async (req, res) => {
   const slurId = req.params.id;
   const {
     label,
-    level_of_severity,
+    levelOfSeverity,
     casual,
     appropriated,
     appropriationContext,
@@ -327,7 +327,7 @@ app.put("/slur/:id", async (req, res) => {
     }
     // Update the slur record
     existingSlur.label = label;
-    existingSlur.level_of_severity = level_of_severity;
+    existingSlur.levelOfSeverity = levelOfSeverity;
     existingSlur.casual = casual;
     existingSlur.appropriated = appropriated;
     existingSlur.appropriationContext = appropriationContext;

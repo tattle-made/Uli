@@ -19,7 +19,7 @@ module.exports = {
       label: {
         type: Sequelize.STRING,
       },
-      level_of_severity : {
+      levelOfSeverity : {
         type: Sequelize.ENUM(['low', 'medium', 'high']),
       },
       casual : {

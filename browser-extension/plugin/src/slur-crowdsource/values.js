@@ -1,6 +1,6 @@
 const defaultMetadata = {
     label: '',
-    level_of_severity: '',
+    levelOfSeverity: '',
     casual: undefined,
     appropriated: undefined,
     appropriationContext: undefined,

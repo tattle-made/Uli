@@ -3,17 +3,17 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class slur extends Model {
-     /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    /**
+    * Helper method for defining associations.
+    * This method is not a part of Sequelize lifecycle.
+    * The `models/index` file will call this method automatically.
+    */
     static associate(models) {
       // Define associations here if needed
       slur.hasMany(models.category, {
         foreignKey: "slurId",
         as: "categories",
-        });
+      });
     }
   }
 
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      userId:{
+      userId: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         foreignKey: true,
@@ -33,10 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       label: {
         type: DataTypes.STRING,
       },
-      level_of_severity : {
+      levelOfSeverity: {
         type: DataTypes.ENUM(['low', 'medium', 'high']),
       },
-      casual : {
+      casual: {
         type: DataTypes.BOOLEAN,
       },
       appropriated: {

@@ -16,7 +16,7 @@ import SlurCardBubble from './SlurCardBubble';
 
 const SlurCard = ({ data }) => {
     const isDataEmpty =
-        !data.level_of_severity ||
+        !data.levelOfSeverity ||
         data.casual === undefined ||
         data.appropriated === undefined ||
         data.categories.length === 0;
@@ -52,7 +52,7 @@ const SlurCard = ({ data }) => {
                             data={[
                                 {
                                     name: 'Level of Severity',
-                                    value: data.level_of_severity
+                                    value: data.levelOfSeverity
                                 },
                                 {
                                     name: 'Casual',
@@ -130,7 +130,7 @@ const SlurCard = ({ data }) => {
                                         </Text>
                                     </TableCell>
                                     <TableCell>
-                                        {data.level_of_severity}
+                                        {data.levelOfSeverity}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>

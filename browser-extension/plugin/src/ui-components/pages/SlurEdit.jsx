@@ -87,7 +87,7 @@ export function SlurEdit() {
 
     return (
         <Box>
-            <Anchor onClick={handleGoBack}>Go Back</Anchor>
+            {/* <Anchor onClick={handleGoBack}>Go Back</Anchor> */}
             <Heading level={3} weight={900} alignSelf="center">
                 Edit Slur
             </Heading>
@@ -101,12 +101,12 @@ export function SlurEdit() {
                 </FormField>
 
                 <FormField
-                    name="level_of_severity"
+                    name="levelOfSeverity"
                     label={'Level of Severity'}
                     required
                 >
                     <RadioButtonGroup
-                        name="level_of_severity"
+                        name="levelOfSeverity"
                         direction="row"
                         options={['low', 'medium', 'high']}
                     />
@@ -127,7 +127,7 @@ export function SlurEdit() {
                 <FormField
                     name="appropriated"
                     label={'Appropriated'}
-                    required={false}
+                    required
                 >
                     <RadioButtonGroup
                         id="slur-form-appropriated"
