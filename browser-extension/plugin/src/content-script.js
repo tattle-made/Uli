@@ -125,7 +125,9 @@ chrome.runtime.onMessage.addListener(async function (request) {
         try {
             await createSlurAndCategory(user.accessToken, crowdsourceData);
             console.log('finsihed POST req');
-            window.alert('Crowdsourced Slur added to Uli');
+            window.alert(
+                `Crowdsourced Slur "${crowdsource_slur}" added to Uli`
+            );
         } catch (error) {
             console.log(error);
         }
