@@ -169,9 +169,9 @@ const SlurCard = ({ data }) => {
                                                 </Text>
                                             </TableCell>
                                             <TableCell>
-                                                {data.appropriated === true
+                                                {data.appropriationContext === true
                                                     ? 'Community'
-                                                    : data.appropriated ===
+                                                    : data.appropriationContext ===
                                                       false
                                                     ? 'Others'
                                                     : ''}

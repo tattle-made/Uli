@@ -29,6 +29,7 @@ export function Preferences() {
     const { showNotification } = useContext(NotificationContext);
     const [enable, setEnable] = useState(true);
     const [enableML, setEnableMLOption] = useState(false);
+    const [enableSlurReplacement, setEnableSlurReplacement] = useState(true);
     const [storeLocally, setStoreLocally] = useState(true);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
@@ -43,7 +44,7 @@ export function Preferences() {
                 preference != undefined &&
                 Object.keys(preference).length != 0
             ) {
-                const { enable, enableML, storeLocally, language } = preference;
+                const { enable, enableML, storeLocally, language, enableSlurReplacement } = preference;
                 if (enable != undefined) {
                     setEnable(enable);
                 }
@@ -55,6 +56,9 @@ export function Preferences() {
                 }
                 if (language != undefined) {
                     setLanguage(language);
+                }
+                if (enableSlurReplacement != undefined) {
+                    setEnableSlurReplacement(enableSlurReplacement)
                 }
             }
         } catch (err) {
@@ -82,6 +86,7 @@ export function Preferences() {
                 enableML,
                 storeLocally,
                 language,
+                enableSlurReplacement,
                 uliEnableToggle: preferenceInLS.uliEnableToggle
             });
 
@@ -97,6 +102,15 @@ export function Preferences() {
                 message: t('message_error_preference_data_save')
             });
         }
+
+        const enableSlurReplacementChanged = enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
+        try {
+            if(enableSlurReplacementChanged){
+                console.log("enable val changed", enableSlurReplacementChanged);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async function changeLanguage(option) {
@@ -110,6 +124,11 @@ export function Preferences() {
 
     async function changeEnableMLOption(checked) {
         setEnableMLOption(checked);
+    }
+
+    async function changeEnableSlurReplacementOption(checked) {
+        console.log(checked);
+        setEnableSlurReplacement(checked);
     }
 
     return (
@@ -151,6 +170,13 @@ export function Preferences() {
                     checked={enableML}
                     label={t('enable_ml')}
                     onChange={(e) => changeEnableMLOption(e.target.checked)}
+                />
+            </Box>
+            <Box direction="row" gap={'large'} align="center">
+                <CheckBox
+                    checked={enableSlurReplacement}
+                    label="Enable Slur Replacement"
+                    onChange={(e) => changeEnableSlurReplacementOption(e.target.checked)}
                 />
             </Box>
 

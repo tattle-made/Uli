@@ -34,7 +34,7 @@ export function SlurCreate() {
 
     const handleSubmit = async ({ value }) => {
         let newValue = slurCreatePluginToApi(value);
-        console.log(newValue);
+        // console.log(newValue);
         try {
             await createSlurAndCategory(user.accessToken, newValue);
             navigate('/slur');
