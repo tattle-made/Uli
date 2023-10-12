@@ -347,7 +347,7 @@ app.put("/slur/:id", async (req, res) => {
       const newCategory = await category.create(
         {
           slurId: existingSlur.id,
-          category: categoryData.category,
+          category: categoryData,
         },
         { transaction: t }
       );

@@ -21,6 +21,7 @@ export function Slur() {
     async function fetchSlurs() {
         try {
             const slur = await getSlurAndCategory(user.accessToken);
+            slur.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setGetSlurs(slur);
             console.log(slur);
         } catch (error) {

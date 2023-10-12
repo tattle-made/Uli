@@ -9,6 +9,7 @@ const SlurCardBubble = ({ data }) => {
                 background="#FADA5E"
                 pad={'small'}
                 width={'fit-content'}
+                wrap={true}
             >
                 <Text size={'small'}>{data.category}</Text>{' '}
             </Box>

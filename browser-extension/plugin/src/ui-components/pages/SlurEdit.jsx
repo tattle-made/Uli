@@ -69,6 +69,7 @@ export function SlurEdit() {
 
     const handleSubmit = async ({ value }) => {
         let newValue = slurCreatePluginToApi(value);
+        console.log(newValue);
         try {
             await updateSlurAndCategory(user.accessToken, id, newValue);
             navigate('/slur');
@@ -93,17 +94,24 @@ export function SlurEdit() {
             </Heading>
             <Form
                 value={formData}
-                onChange={(nextValue) => setFormData(nextValue)}
+                onChange={(nextValue) => {
+                    // console.log(nextValue);
+                    setFormData(nextValue);
+                }}
                 onSubmit={handleSubmit}
             >
-                <FormField name="label" label={'Label'} required>
+                <FormField
+                    name="label"
+                    label={'Label'}
+                    required={{ indicator: true }}
+                >
                     <TextInput id="slur-form-label" name="label" />
                 </FormField>
 
                 <FormField
                     name="levelOfSeverity"
                     label={'Level of Severity'}
-                    required
+                    required={{ indicator: true }}
                 >
                     <RadioButtonGroup
                         name="levelOfSeverity"
@@ -112,7 +120,7 @@ export function SlurEdit() {
                     />
                 </FormField>
 
-                <FormField name="casual" label={'Casual'} required={false}>
+                <FormField name="casual" label={'Casual'} required>
                     <RadioButtonGroup
                         id="slur-form-casual"
                         name="casual"
@@ -126,7 +134,7 @@ export function SlurEdit() {
 
                 <FormField
                     name="appropriated"
-                    label={'Appropriated'}
+                    label="Appropriated"
                     required
                 >
                     <RadioButtonGroup
@@ -184,7 +192,6 @@ export function SlurEdit() {
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
-                        // value={formData.categories}
                         onChange={handleCategoryChange}
                     />
                 </FormField>
