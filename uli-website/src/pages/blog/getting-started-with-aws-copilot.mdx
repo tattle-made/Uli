@@ -17,8 +17,7 @@ Next, you will need to open your AWS console and create a user since as the root
 For using co-pilot, it would be ideal (in my knowledge so far) to include policies that allow full access to EC2, CloudFormation, and AWS Fargate to the user, however co-pilot does use a wider array of resources than that and more policies can be attached later as and when needed (for the sake of learning, you can also just attach the policy named "AdministratorAccess" to the user, which should give it authority over all resources).
 
 Next, after your role is created, you will be given Access Keys for the user, please make sure to note them down since they will be useful shortly. As soon as the role is created, you can configure it in your command line using the following command:
-
-```shell
+```
 $ aws configure
 ```
 
@@ -64,7 +63,7 @@ Next, I want to talk about a topic that I personally briefly touched upon in my 
 
 Next, I tackled the other few components that are a part of the full deployment of an application. First of which is jobs, which, simply put, are tasks running as a part of the CloudFormation structure. These are usually much more automated and are useful for debugging purposes since you can track their logs and find exact points of failure and resolve them accordingly. Use the following command if needed for the same:
 
-```shell
+```
 $ copilot job logs
 ```
 
@@ -99,25 +98,24 @@ In this section, I'll be quickly going over various commands you might want to r
 
 With homebrew
 
-```shell
+```
 $ brew install aws/tap/copilot-cli
 ```
 
 On Linux x86 (64-bit)
-
-```shell
+```
 $ curl -Lo copilot https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux && chmod +x copilot && sudo mv copilot /usr/local/bin/copilot && copilot --help
 ```
 
 On Windows (preferrably run this on the Windows terminal, running it as an administrator)
 
-```shell
+```
 $ Invoke-WebRequest -OutFile 'C:\Program Files\copilot.exe' https://github.com/aws/copilot-cli/releases/latest/download/copilot-windows.exe
 ```
 
 ### Configuring AWS:
 
-```shell
+```
 $ aws configure
 ```
 
@@ -131,25 +129,25 @@ Add your access key and secret access key to the prompts, add the region whose V
 
 The most basic command to get started with copilot is the following:
 
-```shell
+```
 $ copilot init
 ```
 
 That command initiates an app with a service inside it, both of which it prompts you to name and after you do that it will also ask you to deploy a test environment to deploy the app to. This is a great method to test new applications however the better command to start an app is the following:
 
-```shell
+```
 $ copilot app init --domain example.com
 ```
 
 Note that the domain name is optional and you can add only if you have a specific domain name for your app in that VPC. Running this command will give you a prompt asking you the name of your application, ideally this should be the name of the parent application you are creating. All other services will be tagged with this name. You can use the following command to delete the app and clean all the relevant files, this is recommended for all apps that you run in order to test out copilot
 
-```shell
+```
 $ copilot app delete
 ```
 
 ### Building an environment:
 
-```shell
+```
 $ copilot env init --app [appname] --name [env name]
 ```
 
@@ -157,7 +155,7 @@ Run the above code to build an environment. There is a caveat to this where the 
 
 Use the following to delete environments (this sample command is useful for jobs and services as well as we go forward, just replace env with the relevant characters):
 
-```shell
+```
 $ copilot env delete --name [env name]
 ```
 
@@ -165,23 +163,23 @@ $ copilot env delete --name [env name]
 
 To build a service which is a load balanced web service, run the following command:
 
-```shell
+```
 $ copilot svc init --name frontend --svc-type "Load Balanced Web Service" --dockerfile ./frontend/Dockerfile
 ```
 
 The above command specified all the flags, creates the service frontend, with the specified type that can be changed and with the specified dockerfile. Note that the path to the dockerfile starts from the directory where you initialized you app which is considered as root for all intents and purposes of the app, and there cannot be more than one app running in a directory. To get details of the service, run the following command:
 
-```shell
+```
 $ copilot svc show -n frontend
 ```
 
 This will give you details of the service, everything from what you need for service discovery within particular environments. It will give you strings that your other services can use within environments to discover this service without having to go through the web. Follow this link for more details related to service discovery: [How-To: Implement Service Discovery - Copilot.rocks 🤘](https://www.copilot.rocks/implementing-architectural-patterns/10-service-discovery/ "How-To: Implement Service Discovery - Copilot.rocks 🤘🏻"). Run the following two commands to log and delete the service respectively:
 
-```shell
+```
 $ copilot svc logs -n frontend -e test
 ```
 
-```shell
+```
 $ copilot svc delete --name frontend
 ```
 
@@ -190,12 +188,10 @@ Similar commands can be followed for jobs are well by replacing svc with job.
 ### Storage
 
 For an S3 bucket:
-
-```shell
-# For a guided experience.
+```
+# For a guided experience:
 $ copilot storage init -t S3
-
-# To create a bucket named "my-bucket" accessible by the "api" service.
+# To create a bucket named "my-bucket" accessible by the "api" service:
 $ copilot storage init -n my-bucket -t S3 -w frontend
 ```
 

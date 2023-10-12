@@ -1,0 +1,42 @@
+name: QA Test Checklist
+description: Use this as a guide for manual QA
+title: "[QA]"
+labels: ["qa"]
+projects: ["tattle-made/uli"]
+assignees:
+  - dennybrain
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Brave
+        - Microsoft Edge
+        - Other
+  - type: checkboxes
+    id: features
+    attributes:
+      label: Features to check
+      options:
+        - label: Users are able to archive a tweet on their device
+        - label: Users are able to send an archived tweet to their email
+        - label: Users are able to hide tweets with OGBV on their feed
+        - label: Users are able to update their Preference 
+        - label: Uli is able to hide slurs on user's feed
+          required: false
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Something other than a feature?
+      description: QA testing for something else than a feature.
+      placeholder: Example, problem in viewing the image logo
+    validations:
+      required: false

@@ -1,16 +1,59 @@
-## About
+<div align="center">
+  <h1>Uli : Reclaim your Online Space</h1>
+</div>
+<div align="center">
+  <a href="https://uli.tattle.co.in" target="_blank">
+  <picture>
+    <img src="https://uli.tattle.co.in/HeroIllustration.gif" width="360px" alt="Logo"/>
+  </picture>
+  </a>
+</div>
+<h4 align="center">
+    <a href="https://admin417477.typeform.com/to/nVuNyG">Slack</a> |
+    <a href="https://twitter.com/tattlemade/">Twitter</a> |
+    <a href="mailto:uli_support@tattle.co.in">Email</a><br/><br/>
+    <a href="https://uli.tattle.co.in/">Website</a> |
+    <a href="https://uli.tattle.co.in/user-guide">User Guide</a> |
+    <a href="https://godoc.org/github.com/ory/hydra">Blog</a><br/><br/>
+    <a href="https://github.com/tattle-made/Uli/blob/main/browser-extension/plugin/scripts/slur-list.txt">Uli Slur List licensed under ODBL</a><br/><br/>
+</h4>
 
-![Uli Logo-Header-03](https://user-images.githubusercontent.com/13188366/224236305-6a3b3f26-f5b3-4256-b0dc-5d2b4b8d5e27.png)
+Uli is a browser plugin that :
+- De-normalizes the everyday violence that people of marginalized genders experience online in India
+- Provides tools for relief and collective response.
 
-Uli is a browser plugin that:
-* De-normalizes the everyday violence that people of marginalized genders experience online in India, and
-* Provides tools for relief and collective response.
 
 It is an attempt to invert the top-down logics of platform moderation and center the experiences of those subject to online gender-based violence. 
 
-The plugin installation link and the user-guide can be found here: [https://uli.tattle.co.in/](https://uli.tattle.co.in/)
 
-![Uli September posts](https://user-images.githubusercontent.com/13188366/224235833-e6493aab-9706-4b05-ac5a-fb1c0cc97f03.gif)
+<h1 align="center">🎉 We're participating in Hacktoberfest 2023! 🎉</h1>
+We cherish diversity of experiences and perspectives. It adds value to our work. To this end, we strongly encourage candidates who find alignment with the project and are driven to learn, to contribute to Uli. There are both code and no-code issues that you can contribute to.
+
+To contribute effectively, we recommend doing some of these:
+- Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki). It will help you navigate our repository, and adhere to our standards for contributions.
+- We've labeled beginner frienly issues with [hacktoberfest](https://github.com/tattle-made/Uli/labels/hacktoberfest) and [good first issue](https://github.com/tattle-made/Uli/labels/good%20first%20issue). 
+- Read our `Setup Guides` on the [Uli Wiki](https://github.com/tattle-made/Uli/wiki#setup-guides) or watch a [video tutorial](https://www.youtube.com/watch?v=ya2NvjtUlVI) 
+- Join the our [Slack](https://join.slack.com/t/tattle-workspace/shared_invite/zt-24g9vngdc-VEGSv4y1OnLZ~nrvBXl6hQ) to interact with the team and get any clarificatios.
+Introduce yourself in the `#introductions` channel and feel free to discuss any Hacktoberfest-related questions in the `#issue_uli_hacktoberfest` channel.
+
+### Technologies we use
+- Client : React, [Grommet](https://v2.grommet.io/), [styled components](https://styled-components.com/), [Parcel](https://parceljs.org/)
+- Server : NodeJS, [Express](https://expressjs.com/), [Sequelize](https://sequelize.org/)
+- Storage : SQL, AWS S3
+- DevOps : Github Actions, Docker, Kubernetes
+
+If you are new to any of these, we've created a [learning guide](https://github.com/tattle-made/Uli/wiki/Uli-Learning-Guide) for you.
+
+### Repository Structure
+
+| Directory         | Description                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------- |
+| [browser extension](https://github.com/tattle-made/Uli/tree/main/browser-extension) | Uli browser extension that helps moderate and mitigate online gender based violence on twitter. All hacktoberfest work is limited to this directory |
+| [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets, unmaintained                                                                 |
+| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques |
+| [ogbv-ml-rest](https://github.com/tattle-made/Uli/tree/main/ogbv-ml-rest) | Hosted access for our machine learning model |
+
+
 
 ## Quick Guide
 1. [Motivation](#motivation-)
@@ -52,33 +95,9 @@ Machine learning tools can also be designed to reflect the values of those at th
 
 The ML model is based on needs articulated by communities, rather than the priorities of powerful institutions. We are working to publish our methodology, annotation guidelines, datasets, and the limitations in the dataset. Our goal remains to make the models interpretable to the users of the plugi. We believe this will help to raise awareness about content moderation systems as well as gender-based violence online.
 
-### Repository Structure
-
-| Directory         | Description                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------- |
-| [browser extension](https://github.com/tattle-made/OGBV/tree/main/annotators) | a browser extension that helps moderate and mitigate online gender based violence on twitter |
-| [annotators](https://github.com/tattle-made/OGBV/tree/main/annotators)       | a web app to annotate tweets                                                                 |
-| [slur-replacement](https://github.com/tattle-made/OGBV/tree/main/slur-replacement)  | Python notebook that documents our exact and approximate slur replacement techniques 
-
-### Features supported by versions
-
-| Feature         | Chrome Production Version     | Firefox Production Version |
-|--------------|-----------|------------|
-| Slur Replacement on Twitter | :heavy_check_mark:      | :heavy_check_mark:       |
-| Machine Learning based OGBV filter    | :heavy_check_mark:  | :heavy_check_mark:       |
-| Feedback for the ML feature    | :heavy_check_mark:  | :heavy_multiplication_x:       |
-| Addition of Slurs Via Right Click    | :heavy_check_mark:  | :heavy_check_mark:       |
-| New Parsing system    | :heavy_check_mark:  | :heavy_multiplication_x:       |
-| Slur Replacement on Web | :heavy_check_mark:      | :heavy_multiplication_x:       |
-
-Some of the features in Firefox are broken/missing because of the following issue: https://github.com/tattle-made/OGBV/issues/233
-
-# Contributing <a name="Contribute"></a>
-
-You can track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
-Find an issue or domain that interests you and reach out to us.
-
-There's also a list of [good first issues](https://github.com/tattle-made/OGBV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started on.
+## Contributing <a name="Contribute"></a>
+We've made a list of [good first issues](https://github.com/tattle-made/OGBV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started on. You can also track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
+Find an issue or domain that interests you and reach out to us. [Learn More](https://github.com/tattle-made/Uli/blob/main/CONTRIBUTING.md)
 
 ## Contact <a name="Contact"></a>
 

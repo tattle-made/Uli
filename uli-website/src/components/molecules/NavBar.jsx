@@ -10,6 +10,7 @@ const NavBarByLang = {
     <Box direction="row" gap={"medium"}>
       <NavLink to={"/user-guide"}>User Guide</NavLink>
       <NavLink to={"/about"}>About</NavLink>
+      <NavLink to={"/blog"}>Blog</NavLink>
       <NavLink to={"/faq"}>FAQ</NavLink>
       <NavLink to={"/research"}>Research</NavLink>
     </Box>
