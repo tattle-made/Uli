@@ -1,7 +1,6 @@
 <div align="center">
   <h1>Uli : Reclaim your Online Space</h1>
 </div>
-
 <div align="center">
   <a href="https://uli.tattle.co.in" target="_blank">
   <picture>
@@ -9,6 +8,15 @@
   </picture>
   </a>
 </div>
+<h4 align="center">
+    <a href="https://admin417477.typeform.com/to/nVuNyG">Slack</a> |
+    <a href="https://twitter.com/tattlemade/">Twitter</a> |
+    <a href="mailto:uli_pin@tattle.co.in">Email</a><br/><br/>
+    <a href="https://uli.tattle.co.in/">Website</a> |
+    <a href="https://uli.tattle.co.in/user-guide">User Guide</a> |
+    <a href="https://godoc.org/github.com/ory/hydra">Blog</a><br/><br/>
+    <a href="https://github.com/tattle-made/Uli/blob/main/browser-extension/plugin/scripts/slur-list.txt">Uli Slur List licensed under ODBL</a><br/><br/>
+</h4>
 
 Uli is a browser plugin that :
 - De-normalizes the everyday violence that people of marginalized genders experience online in India
@@ -16,8 +24,6 @@ Uli is a browser plugin that :
 
 
 It is an attempt to invert the top-down logics of platform moderation and center the experiences of those subject to online gender-based violence. 
-
-The plugin installation link and the user-guide can be found on our [website](https://uli.tattle.co.in/) 
 
 
 <h1 align="center">🎉 We're participating in Hacktoberfest 2023! 🎉</h1>
