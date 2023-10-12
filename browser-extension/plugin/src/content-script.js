@@ -132,7 +132,8 @@ chrome.runtime.onMessage.addListener(async function (request) {
             console.log(error);
         }
     }
-    if (request.type === 'ULI_ENABLE_TOGGLE') {
+
+    if (request.type === 'ULI_ENABLE_SLUR_REPLACEMENT') {
         console.log('Toggle change event received', request.payload);
         if (!request.payload) {
             clearInterval(mainLoadedChecker);
@@ -146,8 +147,8 @@ window.addEventListener(
         console.log('content loaded');
         const pref = await getPreferenceData();
         console.log(pref);
-        const { uliEnableToggle } = pref;
-        if (uliEnableToggle) {
+        const { enableSlurReplacement } = pref;
+        if (enableSlurReplacement) {
             processPage(location.href);
         }
     },

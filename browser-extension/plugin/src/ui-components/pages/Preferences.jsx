@@ -44,7 +44,13 @@ export function Preferences() {
                 preference != undefined &&
                 Object.keys(preference).length != 0
             ) {
-                const { enable, enableML, storeLocally, language, enableSlurReplacement } = preference;
+                const {
+                    enable,
+                    enableML,
+                    storeLocally,
+                    language,
+                    enableSlurReplacement
+                } = preference;
                 if (enable != undefined) {
                     setEnable(enable);
                 }
@@ -58,7 +64,7 @@ export function Preferences() {
                     setLanguage(language);
                 }
                 if (enableSlurReplacement != undefined) {
-                    setEnableSlurReplacement(enableSlurReplacement)
+                    setEnableSlurReplacement(enableSlurReplacement);
                 }
             }
         } catch (err) {
@@ -69,6 +75,22 @@ export function Preferences() {
             // alert(err);
         }
     }, [user]);
+
+    let userBrowser;
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    if (userAgent.includes('chrome')) {
+        userBrowser = 'chrome';
+    } else if (userAgent.includes('firefox')) {
+        userBrowser = 'firefox';
+    } else {
+        userBrowser = 'unsupported';
+    }
+    let userBrowserTabs;
+    if (userBrowser === 'firefox') {
+        userBrowserTabs = browser.tabs;
+    } else if (userBrowser === 'chrome') {
+        userBrowserTabs = chrome.tabs;
+    }
 
     async function clickSave(preference) {
         const preferenceInLS = await getPreferenceData();
@@ -85,10 +107,34 @@ export function Preferences() {
                 enable,
                 enableML,
                 storeLocally,
-                language,
-                enableSlurReplacement,
-                uliEnableToggle: preferenceInLS.uliEnableToggle
+                language
             });
+
+            const enableSlurReplacementChanged =
+                enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
+            if (enableSlurReplacementChanged) {
+                console.log('enable val changed', enableSlurReplacementChanged);
+                const confirmed = window.confirm(
+                    'This action requires a page reload. Do you want to continue?'
+                );
+                if (confirmed) {
+                    const tabsCurrent = await userBrowserTabs.query({
+                        active: true,
+                        currentWindow: true
+                    });
+                    setEnableSlurReplacement(enableSlurReplacement);
+                    await setPreferenceData({
+                        ...preferenceRemote.data,
+                        enableSlurReplacement: enableSlurReplacement
+                    });
+                    const tabId = tabsCurrent[0].id;
+                    userBrowserTabs.sendMessage(tabId, {
+                        type: 'ULI_ENABLE_SLUR_REPLACEMENT',
+                        payload: enableSlurReplacement
+                    });
+                    userBrowserTabs.reload(tabId);
+                }
+            }
 
             showNotification({
                 type: 'message',
@@ -101,15 +147,6 @@ export function Preferences() {
                 type: 'error',
                 message: t('message_error_preference_data_save')
             });
-        }
-
-        const enableSlurReplacementChanged = enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
-        try {
-            if(enableSlurReplacementChanged){
-                console.log("enable val changed", enableSlurReplacementChanged);
-            }
-        } catch (error) {
-            console.log(error);
         }
     }
 
@@ -176,7 +213,9 @@ export function Preferences() {
                 <CheckBox
                     checked={enableSlurReplacement}
                     label="Enable Slur Replacement"
-                    onChange={(e) => changeEnableSlurReplacementOption(e.target.checked)}
+                    onChange={(e) =>
+                        changeEnableSlurReplacementOption(e.target.checked)
+                    }
                 />
             </Box>
 
