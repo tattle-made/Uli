@@ -11,7 +11,7 @@
 <h4 align="center">
     <a href="https://admin417477.typeform.com/to/nVuNyG">Slack</a> |
     <a href="https://twitter.com/tattlemade/">Twitter</a> |
-    <a href="mailto:uli_pin@tattle.co.in">Email</a><br/><br/>
+    <a href="mailto:uli_support@tattle.co.in">Email</a><br/><br/>
     <a href="https://uli.tattle.co.in/">Website</a> |
     <a href="https://uli.tattle.co.in/user-guide">User Guide</a> |
     <a href="https://godoc.org/github.com/ory/hydra">Blog</a><br/><br/>
