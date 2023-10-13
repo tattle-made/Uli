@@ -1,0 +1,33 @@
+name: "Build Extension Manually"
+
+on: workflow_dispatch
+
+jobs:
+  chrome-publish:
+    name: "Build For Manual Testing"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          ls
+          pwd
+          npm install
+          npm run build
+          mv dist/ extension-chrome/
+          npm run build:firefox
+          mv dist/ extension-firefox/
+
+      - name: "Upload dist folder as artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension-artifacts
+          path: |
+            browser-extension/plugin/extension-firefox/
+            browser-extension/plugin/extension-chrome/
