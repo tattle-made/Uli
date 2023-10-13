@@ -1,3 +1,4 @@
+import { Text } from 'grommet';
 const Theme = {
     global: {
         button: {
@@ -61,6 +62,15 @@ const Theme = {
     },
     heading: {
         weight: 200
+    },
+    formField: {
+        label: {
+            requiredIndicator: (
+                <Text a11yTitle="required" size="small" color="status-critical">
+                    {' '}*
+                </Text>
+            )
+        }
     }
 };
 

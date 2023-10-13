@@ -99,6 +99,52 @@ async function resetAccount(accessToken) {
     );
 }
 
+// GET request for slur and category
+async function getSlurAndCategory(accessToken) {
+    const result = await axios.get(`${API_URL}/slur`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+    return result.data;
+}
+
+async function getSlurAndCategoryById(accessToken, id) {
+    const result = await axios.get(`${API_URL}/slur/${id}`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+    return result.data;
+}
+
+// POST request for slur and category
+async function createSlurAndCategory(accessToken, slurData) {
+    return axios.post(`${API_URL}/slur/create`, slurData, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+}
+
+// PUT request for slur and category
+async function updateSlurAndCategory(accessToken, slurId, updatedData) {
+    return axios.put(`${API_URL}/slur/${slurId}`, updatedData, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+}
+
+// DELETE request for slur and category
+async function deleteSlurAndCategory(accessToken, slurId) {
+    return axios.delete(`${API_URL}/slur/${slurId}`, {
+        headers: {
+            Authorization: `token ${accessToken}`
+        }
+    });
+}
+
 export default {
     login,
     getPreferenceForUser,
@@ -107,5 +153,10 @@ export default {
     invokeNetwork,
     registerNewUser,
     getArchive,
-    resetAccount
+    resetAccount,
+    getSlurAndCategory,
+    getSlurAndCategoryById,
+    createSlurAndCategory,
+    updateSlurAndCategory,
+    deleteSlurAndCategory
 };

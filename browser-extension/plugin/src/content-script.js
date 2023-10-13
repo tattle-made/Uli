@@ -4,16 +4,20 @@ const { setOnChangeListener } = dom;
 import transform_v2 from './transform-v2';
 import { log } from './logger';
 import repository from './repository';
-const { getPreferenceData, setPreferenceData } = repository;
+const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
+import Api from './ui-components/pages/Api';
+
+const { createSlurAndCategory } = Api;
 
 log('Content Script Loaded Test 2');
 
+// test function to log variables in console
 (async function test() {
     console.log('Async Test');
-    const pref = await getPreferenceData();
-    console.log(pref);
+    // const data = await axios.get("http://localhost:3000/");
+    // console.log("api test data", data);
 })();
 
 var mainLoadedChecker;
@@ -109,7 +113,27 @@ chrome.runtime.onMessage.addListener(async function (request) {
         await setPreferenceData({ ...pref, slurList });
         return true;
     }
-    if (request.type === 'ULI_ENABLE_TOGGLE') {
+    if (request.type === 'CROWDSOURCE_SLUR_WORD') {
+        const crowdsource_slur = request.crowdsourcedSlur;
+        console.log('crowdsourced slur from bg = ', crowdsource_slur);
+        const user = await getUserData();
+        console.log('USER in cotnent', user);
+        const crowdsourceData = {
+            label: crowdsource_slur,
+            categories: []
+        };
+        try {
+            await createSlurAndCategory(user.accessToken, crowdsourceData);
+            console.log('finsihed POST req');
+            window.alert(
+                `Crowdsourced Slur "${crowdsource_slur}" added to Uli`
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    if (request.type === 'ULI_ENABLE_SLUR_REPLACEMENT') {
         console.log('Toggle change event received', request.payload);
         if (!request.payload) {
             clearInterval(mainLoadedChecker);
@@ -123,8 +147,8 @@ window.addEventListener(
         console.log('content loaded');
         const pref = await getPreferenceData();
         console.log(pref);
-        const { uliEnableToggle } = pref;
-        if (uliEnableToggle) {
+        const { enableSlurReplacement } = pref;
+        if (enableSlurReplacement) {
             processPage(location.href);
         }
     },
