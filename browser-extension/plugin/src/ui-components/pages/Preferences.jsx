@@ -29,6 +29,7 @@ export function Preferences() {
     const { showNotification } = useContext(NotificationContext);
     const [enable, setEnable] = useState(true);
     const [enableML, setEnableMLOption] = useState(false);
+    const [enableSlurReplacement, setEnableSlurReplacement] = useState(true);
     const [storeLocally, setStoreLocally] = useState(true);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
@@ -43,7 +44,13 @@ export function Preferences() {
                 preference != undefined &&
                 Object.keys(preference).length != 0
             ) {
-                const { enable, enableML, storeLocally, language } = preference;
+                const {
+                    enable,
+                    enableML,
+                    storeLocally,
+                    language,
+                    enableSlurReplacement
+                } = preference;
                 if (enable != undefined) {
                     setEnable(enable);
                 }
@@ -56,6 +63,9 @@ export function Preferences() {
                 if (language != undefined) {
                     setLanguage(language);
                 }
+                if (enableSlurReplacement != undefined) {
+                    setEnableSlurReplacement(enableSlurReplacement);
+                }
             }
         } catch (err) {
             showNotification({
@@ -65,6 +75,22 @@ export function Preferences() {
             // alert(err);
         }
     }, [user]);
+
+    let userBrowser;
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    if (userAgent.includes('chrome')) {
+        userBrowser = 'chrome';
+    } else if (userAgent.includes('firefox')) {
+        userBrowser = 'firefox';
+    } else {
+        userBrowser = 'unsupported';
+    }
+    let userBrowserTabs;
+    if (userBrowser === 'firefox') {
+        userBrowserTabs = browser.tabs;
+    } else if (userBrowser === 'chrome') {
+        userBrowserTabs = chrome.tabs;
+    }
 
     async function clickSave(preference) {
         const preferenceInLS = await getPreferenceData();
@@ -81,9 +107,34 @@ export function Preferences() {
                 enable,
                 enableML,
                 storeLocally,
-                language,
-                uliEnableToggle: preferenceInLS.uliEnableToggle
+                language
             });
+
+            const enableSlurReplacementChanged =
+                enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
+            if (enableSlurReplacementChanged) {
+                console.log('enable val changed', enableSlurReplacementChanged);
+                const confirmed = window.confirm(
+                    'This action requires a page reload. Do you want to continue?'
+                );
+                if (confirmed) {
+                    const tabsCurrent = await userBrowserTabs.query({
+                        active: true,
+                        currentWindow: true
+                    });
+                    setEnableSlurReplacement(enableSlurReplacement);
+                    await setPreferenceData({
+                        ...preferenceRemote.data,
+                        enableSlurReplacement: enableSlurReplacement
+                    });
+                    const tabId = tabsCurrent[0].id;
+                    userBrowserTabs.sendMessage(tabId, {
+                        type: 'ULI_ENABLE_SLUR_REPLACEMENT',
+                        payload: enableSlurReplacement
+                    });
+                    userBrowserTabs.reload(tabId);
+                }
+            }
 
             showNotification({
                 type: 'message',
@@ -110,6 +161,11 @@ export function Preferences() {
 
     async function changeEnableMLOption(checked) {
         setEnableMLOption(checked);
+    }
+
+    async function changeEnableSlurReplacementOption(checked) {
+        console.log(checked);
+        setEnableSlurReplacement(checked);
     }
 
     return (
@@ -151,6 +207,15 @@ export function Preferences() {
                     checked={enableML}
                     label={t('enable_ml')}
                     onChange={(e) => changeEnableMLOption(e.target.checked)}
+                />
+            </Box>
+            <Box direction="row" gap={'large'} align="center">
+                <CheckBox
+                    checked={enableSlurReplacement}
+                    label="Enable Slur Replacement"
+                    onChange={(e) =>
+                        changeEnableSlurReplacementOption(e.target.checked)
+                    }
                 />
             </Box>
 

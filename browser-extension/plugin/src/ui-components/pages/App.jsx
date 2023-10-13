@@ -13,8 +13,10 @@ import Api from './Api';
 import repository from '../../repository';
 import { langNameMap } from '../atoms/language';
 const { getPreferenceData, setPreferenceData } = repository;
-import { ToggleSwitchCustom } from '../atoms/ToggleSwitchCustom';
 import { Off } from './Off';
+import { Slur } from './Slur';
+import SlurCreate from './SlurCreate';
+import SlurEdit from './SlurEdit';
 
 export function App() {
     const [user, setUser] = useState(undefined);
@@ -24,7 +26,6 @@ export function App() {
     const { getUserData, setUserData } = repository;
     let navigate = useNavigate();
     const [, setAccountActivated] = useState(false);
-    const [toggleSwitchOn, setToggleSwitchOn] = useState(true);
 
     function showNotification(notification) {
         setNotification(notification);
@@ -46,16 +47,10 @@ export function App() {
             }
 
             if (preferenceData != undefined) {
-                const { language, uliEnableToggle } = preferenceData;
-
+                const { language } = preferenceData;
                 i18n.changeLanguage(langNameMap[language]);
 
-                if (uliEnableToggle) {
-                    navigate('/preferences');
-                } else {
-                    navigate('/off');
-                }
-                setToggleSwitchOn(uliEnableToggle);
+                navigate('/preferences');
             }
         } catch (error) {
             console.error('Error in useEffect:', error);
@@ -93,46 +88,12 @@ export function App() {
             setUser(user);
             setAccountActivated(true);
             await setPreferenceData({
-                uliEnableToggle: true
+                enableSlurReplacement: true
             });
             userBrowserTabs.reload();
             navigate('/preferences');
         }
     }
-
-    const handleToggleSwitchChange = async () => {
-        try {
-            const tabsCurrent = await userBrowserTabs.query({
-                active: true,
-                currentWindow: true
-            });
-            const confirmed = window.confirm(
-                'Changing the toggle switch setting requires a page reload. Do you want to continue?'
-            );
-            if (confirmed) {
-                setToggleSwitchOn(!toggleSwitchOn);
-                const pref = await getPreferenceData();
-                await setPreferenceData({
-                    ...pref,
-                    uliEnableToggle: !toggleSwitchOn
-                });
-                if (!toggleSwitchOn) {
-                    navigate('/preferences');
-                } else {
-                    navigate('/off');
-                }
-
-                const tabId = tabsCurrent[0].id;
-                userBrowserTabs.sendMessage(tabId, {
-                    type: 'ULI_ENABLE_TOGGLE',
-                    payload: toggleSwitchOn
-                });
-                userBrowserTabs.reload(tabId);
-            }
-        } catch (error) {
-            console.error('Error navigating:', error);
-        }
-    };
 
     return (
         <Grommet theme={Theme}>
@@ -169,14 +130,6 @@ export function App() {
                                 </Text>
                             </Box>
                             <Box flex={'grow'}></Box>
-                            {user ? (
-                                <ToggleSwitchCustom
-                                    checked={toggleSwitchOn}
-                                    onToggleChange={() =>
-                                        handleToggleSwitchChange()
-                                    }
-                                />
-                            ) : null}
                             {notification ? (
                                 <Box
                                     background="accent-1"
@@ -195,33 +148,29 @@ export function App() {
 
                         {user ? (
                             <div>
-                                <>
-                                    {toggleSwitchOn && (
-                                        <Box direction="row" gap={'medium'}>
-                                            <Link
-                                                id="app_nav_preference"
-                                                to="/preferences"
-                                            >
-                                                {t('navigation_preferences')}
-                                            </Link>
-                                            <Link
-                                                id="app_nav_archive"
-                                                to="/archive"
-                                            >
-                                                {t('navigation_archive')}
-                                            </Link>
-                                            <Link
-                                                id="app_nav_resources"
-                                                to="/resources"
-                                            >
-                                                {t('navigation_resources')}
-                                            </Link>
-                                            <Link to="/debug">
-                                                {t('navigation_debug')}
-                                            </Link>
-                                        </Box>
-                                    )}
-                                </>
+                                <Box direction="row" gap={'medium'}>
+                                    <Link
+                                        id="app_nav_preference"
+                                        to="/preferences"
+                                    >
+                                        {t('navigation_preferences')}
+                                    </Link>
+                                    <Link id="app_nav_archive" to="/archive">
+                                        {t('navigation_archive')}
+                                    </Link>
+                                    <Link
+                                        id="app_nav_resources"
+                                        to="/resources"
+                                    >
+                                        {t('navigation_resources')}
+                                    </Link>
+                                    <Link to="/debug">
+                                        {t('navigation_debug')}
+                                    </Link>
+                                    <Link id="slur-link" to="/slur">
+                                        {t('navigation_slur_list')}
+                                    </Link>
+                                </Box>
 
                                 <Box height={'2.0em'} />
 
@@ -242,6 +191,15 @@ export function App() {
                                     />
                                     <Route path="debug" element={<Debug />} />
                                     <Route path="off" element={<Off />} />
+                                    <Route path="slur" element={<Slur />} />
+                                    <Route
+                                        path="slur/create"
+                                        element={<SlurCreate />}
+                                    />
+                                    <Route
+                                        path="slur/:id"
+                                        element={<SlurEdit />}
+                                    />
                                 </Routes>
                             </div>
                         ) : (
