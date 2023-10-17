@@ -24,7 +24,7 @@ def expand_shadow_element(element):
 options = webdriver.ChromeOptions()
 
 # TODO: Note that you will need to download the build of the extension and put the path to the dist folder 
-options.add_argument(r'--load-extension=/home/aatman/Aatman/Tattle/Uli/browser-extension/plugin/dist/')
+options.add_argument(r'--load-extension=/path/to/extension/dist/')
 
 # installing chromedriver 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()), options = options)
