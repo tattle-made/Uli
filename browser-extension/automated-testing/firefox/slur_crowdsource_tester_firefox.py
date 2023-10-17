@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
 # TODO: Add path to dist folder without trailing separator ('/')
-driver.install_addon('/home/aatman/Aatman/Tattle/Uli/browser-extension/plugin/dist', temporary=True)
+driver.install_addon('/path/to/extension/dist', temporary=True)
 sleep(5)
 
 # workflow
