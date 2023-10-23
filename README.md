@@ -65,14 +65,14 @@ If you are new to any of these, we've created a [learning guide](https://github.
 
 ## Motivation <a name="Motivation"></a>
 
-The graphic narrative titled ‘Personal (Cyber) Space’ published in 2016 by Parthasarthy and Malhotra narrates an experience of a young internet user. The animated short comic hosted by Kadak, a South Asian women collective, asks: ‘If one says something, there’s the fear of hateful response. But if one doesn’t say something, isn’t that silence counterproductive?’ only to end with the question, ‘so what does one say?’
+The graphic narrative titled ‘Personal (Cyber) Space’ published in 2016 by Parthasarthy and Malhotra, narrates the experience of a young internet user. The animated short comic hosted by Kadak, a South Asian women collective, asks: ‘If one says something, there’s the fear of hateful response. But if one doesn’t say something, isn’t that silence counterproductive?’ only to end with the question, ‘so what does one say?’
 
 Violence, abuse, and hate speech on the web has become pervasive to one’s experience of social media and the existing scholarship suggests that it is those situated at the margins who are worst affected. People of marginalized genders in India are disproportionately affected. Simultaneously, the business models of social media platforms skew the incentives against protecting users who use social media in non-dominant languages. Uli is an attempt to build tools to protect and enable collective response for social media users of marginalizd genders. 
 
 
 ## Approach <a name="Approach"></a>
 
-The problem of online violence encompasses within itself legal, political, social, cultural and technological complexities that make any easy solution impossible. This overdetermined nature mandates that we seek solutions from multiple avenues. As with all Tattle projects, we don't expect technology to provide all the answers, but for it to be intertwined in human action. 
+The problem of online violence encompasses within itself legal, political, social, cultural and technological complexities that make any easy solution impossible. The complex-nature of this issue  mandates that we seek solutions from multiple avenues. As with all Tattle projects, we don't expect technology to provide all the answers, but for it to be intertwined in human action. 
 
 Specifically around redaction, the project borrows from feminist approaches to Machine Learning technology and aims to intervene into the ongoing debate around content moderation. The existing algorithmic approaches to automated content moderation strategies are generally biased towards English-language content paying very limited attention to social, cultural and linguistic diversity elsewhere. Moreover, the existing approaches understand moderation through a binary logic of: leave content up or remove it. With multiple political and legal implications emerging from these biases, the existing approaches threaten to pose more problems rather than solving them. With this tool, the project aims to redress these problems and find creative ways in which moderation can empower multiple users, especially the ones that are most affected.
 
@@ -84,7 +84,7 @@ We started the projeect through a period of qualitative data collection methods 
 
 Based on feedback from the beta on potential misuse of the feature, it has been removed from the current version till more checks and balances can be built in. 
 
-The ultimate aim of the project is to envision creative and collective responses to the structural problem of violence experienced online and help build solidarity and shared understanding while empowering users to take back control of their digital experience.
+The ultimate aim of the project is to envision creative and collective responses to the structural issue of online voilence and help build solidarity and shared understanding and empowering users to regain control of their digital experience.
 
 ### Situating machine learning:
 
@@ -93,7 +93,7 @@ Machine learning based approaches are a commonly used technique to automate deci
 The moderation decisions of social media platforms often make international news. Some decisions can be attributed to error. Machine learning system, like every prediction system, makes errors. But some decisions reflect the social values in the data and algorithms behind the model. So, what many communities find harmful may not be harmful as per the guidelines set by social media platforms.
 Machine learning tools can also be designed to reflect the values of those at the forefront of tackling violence, to protect those who will be at the receiving end of the violence. This is precisely the goal of our project. 
 
-The ML model is based on needs articulated by communities, rather than the priorities of powerful institutions. We are working to publish our methodology, annotation guidelines, datasets, and the limitations in the dataset. Our goal remains to make the models interpretable to the users of the plugi. We believe this will help to raise awareness about content moderation systems as well as gender-based violence online.
+The ML model is based on needs articulated by communities, rather than the priorities of powerful institutions. We are working to publish our methodology, annotation guidelines, datasets, and the limitations in the dataset. Our goal remains to make the models interpretable to the users of the plugin. We believe this will help to raise awareness about content moderation systems as well as gender-based violence online.
 
 ## Contributing <a name="Contribute"></a>
 We've made a list of [good first issues](https://github.com/tattle-made/OGBV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started on. You can also track the project [here](https://github.com/orgs/tattle-made/projects/20/views/3)
