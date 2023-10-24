@@ -44,7 +44,6 @@
         "grommet": "2.33.2",
         "grommet-icons": "4.11.0",
         "i18next": "21.6.9",
-        "lmdb": "2.8.5",
         "prop-types": "15.8.1",
         "react": "17.0.2",
         "react-dom": "17.0.2",
