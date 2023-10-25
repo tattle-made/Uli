@@ -7,7 +7,7 @@ RUN cd /app
 RUN npm install --ignore-scripts
 RUN npm install sequelize-cli --ignore-scripts
 RUN npm install -g nodemon --ignore-scripts
-COPY . .
+COPY --chown=node:node . .
 COPY --chown=node:node ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 USER node
