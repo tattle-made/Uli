@@ -9,6 +9,8 @@ permissions:
   actions: write
   issues: write
   pull-requests: write
+  contents: write
+  repository-projects: write
 
 jobs:
   chrome-publish:
