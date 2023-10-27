@@ -32,53 +32,90 @@ if (userBrowser === 'firefox') {
 }
 console.log(contextMenus);
 
+// contextMenus.create(
+//     {
+//         id: 'add-slur',
+//         title: 'Add Slur to Uli',
+//         contexts: ['selection']
+//     },
+//     () => {
+//         console.log('context menu created');
+//     }
+// );
+// contextMenus.create(
+//     {
+//         id: 'add-crowdsource-slur',
+//         title: 'Crowdsource Slur Word',
+//         contexts: ['selection']
+//     },
+//     () => {
+//         console.log('crowdsource context menu created');
+//     }
+// );
+
+// contextMenus.onClicked.addListener(async (info, tab) => {
+//     switch (info.menuItemId) {
+//         case 'add-slur':
+//             console.log('slur added');
+//             tabs.sendMessage(
+//                 tab.id,
+//                 { type: 'SLUR_ADDED', slur: info.selectionText },
+//                 function (response) {
+//                     console.log(response);
+//                 }
+//             );
+//             break;
+//         case 'add-crowdsource-slur':
+//             console.log('Crowdsource slur word added');
+//             tabs.sendMessage(
+//                 tab.id,
+//                 {
+//                     type: 'CROWDSOURCE_SLUR_WORD',
+//                     crowdsourcedSlur: info.selectionText
+//                 },
+//                 function (response) {
+//                     console.log(response);
+//                 }
+//             );
+//             break;
+//         default:
+//             console('unexpected action');
+//     }
+// });
 contextMenus.create(
     {
-        id: 'add-slur',
-        title: 'Add Slur to Uli',
+        id: 'add-slur-crowdsource',
+        title: 'Add Slur to Uli and Crowdsource',
         contexts: ['selection']
     },
     () => {
-        console.log('context menu created');
-    }
-);
-contextMenus.create(
-    {
-        id: 'add-crowdsource-slur',
-        title: 'Crowdsource Slur Word',
-        contexts: ['selection']
-    },
-    () => {
-        console.log('crowdsource context menu created');
+        console.log('Unified context menu created');
     }
 );
 
 contextMenus.onClicked.addListener(async (info, tab) => {
-    switch (info.menuItemId) {
-        case 'add-slur':
-            console.log('slur added');
-            tabs.sendMessage(
-                tab.id,
-                { type: 'SLUR_ADDED', slur: info.selectionText },
-                function (response) {
-                    console.log(response);
-                }
-            );
-            break;
-        case 'add-crowdsource-slur':
-            console.log('Crowdsource slur word added');
-            tabs.sendMessage(
-                tab.id,
-                {
-                    type: 'CROWDSOURCE_SLUR_WORD',
-                    crowdsourcedSlur: info.selectionText
-                },
-                function (response) {
-                    console.log(response);
-                }
-            );
-            break;
-        default:
-            console('unexpected action');
+    if (info.menuItemId === 'add-slur-crowdsource') {
+        console.log('Slur added and Crowdsourced');
+        tabs.sendMessage(
+            tab.id,
+            { type: 'SLUR_ADDED', slur: info.selectionText },
+            function (response) {
+                console.log(response);
+            }
+        );
+
+        tabs.sendMessage(
+            tab.id,
+            {
+                type: 'CROWDSOURCE_SLUR_WORD',
+                crowdsourcedSlur: info.selectionText
+            },
+            function (response) {
+                console.log(response);
+            }
+        );
+    } else {
+        console('unexpected action');
     }
 });
+
