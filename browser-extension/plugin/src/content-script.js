@@ -95,42 +95,78 @@ chrome.runtime.onMessage.addListener(async function (request) {
         processPage(location.href);
         return true;
     }
-    if (request.type === 'SLUR_ADDED') {
+    // if (request.type === 'SLUR_ADDED') {
+    //     const slur = request.slur;
+    //     log('slur added from bg', slur);
+    //     const pref = await getPreferenceData();
+    //     let slurList;
+    //     if (!pref || !pref.slurList) {
+    //         slurList = slur;
+    //     } else {
+    //         slurList = pref.slurList;
+    //         if (!slurList || slurList === '') {
+    //             slurList = slur;
+    //         } else {
+    //             slurList += `,${slur}`;
+    //         }
+    //     }
+    //     await setPreferenceData({ ...pref, slurList });
+    //     return true;
+    // }
+    // if (request.type === 'CROWDSOURCE_SLUR_WORD') {
+    //     const crowdsource_slur = request.crowdsourcedSlur;
+    //     console.log('crowdsourced slur from bg = ', crowdsource_slur);
+    //     const user = await getUserData();
+    //     console.log('USER in cotnent', user);
+    //     const crowdsourceData = {
+    //         label: crowdsource_slur,
+    //         categories: []
+    //     };
+    //     try {
+    //         await createSlurAndCategory(user.accessToken, crowdsourceData);
+    //         console.log('finsihed POST req');
+    //         window.alert(
+    //             `Crowdsourced Slur "${crowdsource_slur}" added to Uli`
+    //         );
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+    if (request.type === 'SLUR_ADDED' || request.type === 'CROWDSOURCE_SLUR_WORD') {
         const slur = request.slur;
-        log('slur added from bg', slur);
-        const pref = await getPreferenceData();
-        let slurList;
-        if (!pref || !pref.slurList) {
-            slurList = slur;
-        } else {
-            slurList = pref.slurList;
-            if (!slurList || slurList === '') {
-                slurList = slur;
-            } else {
-                slurList += `,${slur}`;
-            }
-        }
-        await setPreferenceData({ ...pref, slurList });
-        return true;
+log('slur added from bg', slur);
+const pref = await getPreferenceData();
+let slurList;
+if (!pref || !pref.slurList) {
+    slurList = slur;
+} else {
+    slurList = pref.slurList;
+    if (!slurList || slurList === '') {
+        slurList = slur;
+    } else {
+        slurList += `,${slur}`;
     }
-    if (request.type === 'CROWDSOURCE_SLUR_WORD') {
-        const crowdsource_slur = request.crowdsourcedSlur;
-        console.log('crowdsourced slur from bg = ', crowdsource_slur);
-        const user = await getUserData();
-        console.log('USER in cotnent', user);
-        const crowdsourceData = {
-            label: crowdsource_slur,
-            categories: []
-        };
-        try {
-            await createSlurAndCategory(user.accessToken, crowdsourceData);
-            console.log('finsihed POST req');
-            window.alert(
-                `Crowdsourced Slur "${crowdsource_slur}" added to Uli`
-            );
-        } catch (error) {
-            console.log(error);
-        }
+}
+await setPreferenceData({ ...pref, slurList });
+
+const crowdsource_slur = request.crowdsourcedSlur;
+console.log('crowdsourced slur from bg = ', crowdsource_slur);
+const user = await getUserData();
+console.log('USER in content', user);
+const crowdsourceData = {
+    label: crowdsource_slur,
+    categories: []
+};
+try {
+    await createSlurAndCategory(user.accessToken, crowdsourceData);
+    console.log('finished POST req');
+    window.alert(
+        `Crowdsourced Slur "${crowdsource_slur}" added to Uli`
+    );
+} catch (error) {
+    console.log(error);
+}
+
     }
 
     if (request.type === 'ULI_ENABLE_SLUR_REPLACEMENT') {
