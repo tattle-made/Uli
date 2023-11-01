@@ -50,7 +50,7 @@
         "react-feather": "2.0.10",
         "react-i18next": "13.3.1",
         "react-router-dom": "6.17.0",
-        "styled-components": "5.3.3"
+        "styled-components": "5.3.11"
     },
     "engines": {
         "browsers": "> 0.25%",
