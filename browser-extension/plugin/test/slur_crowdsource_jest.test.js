@@ -16,10 +16,12 @@ describe('Slur Crowdsource', () => {
 
         const slurData = {
             label: 'test1-jest',
-            labelMeaning: 'test1-jest',
+            levelOfSeverity: 'high',
+            casual: true,
             appropriated: true,
-            appropriationContext: 'test1-jest',
-            categories: [{ category: 'gender' }, { category: 'religion' }]
+            appropriationContext: false,
+            labelMeaning: 'test1-jest',
+            categories: ["gendered", "ethnicity"]
         };
 
         const responseSlurPost = await createSlurAndCategory(
@@ -32,10 +34,12 @@ describe('Slur Crowdsource', () => {
 
         const updatedSlurData = {
             label: 'test1-jest-update',
+            levelOfSeverity: 'low',
+            casual: true,
+            appropriated: false,
+            appropriationContext: true,
             labelMeaning: 'test1-jest-update',
-            appropriated: true,
-            appropriationContext: 'test1-jest-update',
-            categories: [{ category: 'caste' }]
+            categories: ["caste"]
         };
 
         const updateSlurResponse = await updateSlurAndCategory(
