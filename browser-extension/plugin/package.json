@@ -22,6 +22,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "buffer": "6.0.3",
         "eslint": "8.52.0",
         "eslint-config-prettier": "9.0.0",
         "eslint-plugin-jsx-a11y": "6.7.1",
@@ -35,7 +36,7 @@
         "puppeteer": "21.4.1"
     },
     "dependencies": {
-        "axios": "0.25.0",
+        "axios": "1.6.0",
         "concurrently": "8.2.2",
         "dom-to-image": "2.6.0",
         "dom-to-image-improved": "2.8.0",
