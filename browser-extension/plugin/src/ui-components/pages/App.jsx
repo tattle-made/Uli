@@ -37,28 +37,33 @@ export function App() {
     /**
      * This loads an existing user into the UserContext at startup.
      */
-    useEffect(async () => {
-        try {
-            const userData = await getUserData();
-            const preferenceData = await getPreferenceData();
-
-            if (userData != undefined && Object.keys(userData).length !== 0) {
-                setUser(userData);
+    useEffect(() => {
+        async function navigatePreferences() {
+            try {
+                const userData = await getUserData();
+                const preferenceData = await getPreferenceData();
+    
+                if(!ignore) {
+                    if (userData != undefined && Object.keys(userData).length !== 0) {
+                        setUser(userData);
+                    }
+        
+                    if (preferenceData != undefined) {
+                        const { language } = preferenceData;
+                        i18n.changeLanguage(langNameMap[language]);
+        
+                        navigate('/preferences');
+                    }    
+                }
+            } catch (error) {
+                console.error('Error in useEffect:', error);
             }
-
-            if (preferenceData != undefined) {
-                const { language } = preferenceData;
-                i18n.changeLanguage(langNameMap[language]);
-
-                navigate('/preferences');
-            }
-        } catch (error) {
-            console.error('Error in useEffect:', error);
-        }
-        // if (userData != undefined && Object.keys(userData).length != 0) {
-        //     setUser(userData);
-        // }
-        // alert(process.env.API_URL);
+        } 
+        let ignore = false;
+        navigatePreferences();
+        return () => {
+            ignore = true;
+        };
     }, []);
 
     let userBrowser;

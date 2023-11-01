@@ -15,10 +15,20 @@ export function Debug() {
     const [localStorageData, setLocalStorageData] = useState(undefined);
     const { t, i18n } = useTranslation();
 
-    useEffect(async () => {
-        const userData = await getUserData();
-        const preferenceData = await getPreferenceData();
-        setLocalStorageData({ user: userData, preference: preferenceData });
+    useEffect(() => {
+        async function localStorage() {
+            const userData = await getUserData();
+            const preferenceData = await getPreferenceData();
+            if(!ignore) {
+                setLocalStorageData({ user: userData, preference: preferenceData });
+            }
+    
+        }
+        let ignore = false;
+        localStorage();
+        return () => {
+            ignore = true;
+        }
     }, []);
 
     async function clickReset() {

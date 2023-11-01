@@ -71,8 +71,15 @@ export function TweetControl({ tweet, id, setBlur, hasSlur, enableML }) {
     //     debug(id);
     // }
 
-    useEffect(async () => {
-        await updateData();
+    useEffect(() => {
+        async function update() {
+            await updateData();
+        } 
+        let ignore = false;
+        update();
+        return () => {
+            ignore = true;
+        };
     }, []);
 
     async function updateData() {
