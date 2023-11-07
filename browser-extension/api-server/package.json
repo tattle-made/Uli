@@ -24,7 +24,7 @@
     "password-generator": "2.3.2",
     "sequelize": "6.34.0",
     "sequelize-cli": "6.6.2",
-    "uuid": "8.3.2"
+    "uuid": "9.0.1"
   },
   "engines": {
     "node": "20.9.0",
