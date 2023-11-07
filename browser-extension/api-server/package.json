@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "2.1479.0",
+    "aws-sdk": "2.1489.0",
     "axios": "0.27.2",
     "cors": "2.8.5",
     "cryptr": "6.3.0",
@@ -22,8 +22,8 @@
     "multer-s3": "2.10.0",
     "mysql2": "3.6.2",
     "password-generator": "2.3.2",
-    "sequelize": "6.33.0",
-    "sequelize-cli": "6.6.1",
+    "sequelize": "6.34.0",
+    "sequelize-cli": "6.6.2",
     "uuid": "8.3.2"
   },
   "engines": {
