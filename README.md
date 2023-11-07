@@ -14,7 +14,7 @@
     <a href="mailto:uli_support@tattle.co.in">Email</a><br/><br/>
     <a href="https://uli.tattle.co.in/">Website</a> |
     <a href="https://uli.tattle.co.in/user-guide">User Guide</a> |
-    <a href="https://godoc.org/github.com/ory/hydra">Blog</a><br/><br/>
+    <a href="https://uli.tattle.co.in/blog">Blog</a><br/><br/>
     <a href="https://github.com/tattle-made/Uli/blob/main/browser-extension/plugin/scripts/slur-list.txt">Uli Slur List licensed under ODBL</a><br/><br/>
 </h4>
 
