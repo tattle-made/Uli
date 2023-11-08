@@ -18,7 +18,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "babel-plugin-styled-components": "^2.0.7",
+    "babel-plugin-styled-components": "2.1.4",
     "gatsby": "^4.13.1",
     "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-manifest": "^4.19.0",
@@ -29,7 +29,7 @@
     "gatsby-plugin-styled-components": "^5.13.0",
     "gatsby-source-filesystem": "^4.13.0",
     "gatsby-transformer-sharp": "^4.13.0",
-    "grommet": "^2.23.0",
+    "grommet": "2.34.0",
     "i18next": "^21.8.14",
     "react": "^17.0.1",
     "react-code-blocks": "^0.1.4",
