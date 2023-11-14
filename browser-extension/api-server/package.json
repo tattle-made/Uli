@@ -14,15 +14,15 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "2.1489.0",
-    "axios": "1.6.0",
+    "axios": "1.6.1",
     "cors": "2.8.5",
     "cryptr": "6.3.0",
     "express": "4.18.2",
     "multer": "1.4.5-lts.1",
     "multer-s3": "2.10.0",
-    "mysql2": "3.6.2",
+    "mysql2": "3.6.3",
     "password-generator": "2.3.2",
-    "sequelize": "6.34.0",
+    "sequelize": "6.35.0",
     "sequelize-cli": "6.6.2",
     "uuid": "9.0.1"
   },
