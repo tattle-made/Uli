@@ -42,16 +42,6 @@ contextMenus.create(
         console.log('context menu created');
     }
 );
-contextMenus.create(
-    {
-        id: 'add-crowdsource-slur',
-        title: 'Crowdsource Slur Word',
-        contexts: ['selection']
-    },
-    () => {
-        console.log('crowdsource context menu created');
-    }
-);
 
 contextMenus.onClicked.addListener(async (info, tab) => {
     switch (info.menuItemId) {
@@ -60,19 +50,6 @@ contextMenus.onClicked.addListener(async (info, tab) => {
             tabs.sendMessage(
                 tab.id,
                 { type: 'SLUR_ADDED', slur: info.selectionText },
-                function (response) {
-                    console.log(response);
-                }
-            );
-            break;
-        case 'add-crowdsource-slur':
-            console.log('Crowdsource slur word added');
-            tabs.sendMessage(
-                tab.id,
-                {
-                    type: 'CROWDSOURCE_SLUR_WORD',
-                    crowdsourcedSlur: info.selectionText
-                },
                 function (response) {
                     console.log(response);
                 }
