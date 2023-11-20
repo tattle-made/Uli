@@ -100,6 +100,15 @@ chrome.runtime.onMessage.addListener(async function (request) {
         log('slur added from bg', slur);
         const pref = await getPreferenceData();
         let slurList;
+
+        const user = await getUserData();
+        // console.log('USER in content-script', user);
+        const crowdsourceData = {
+            label: slur,
+            categories: []
+        };
+
+        // Adding Slur to Prefrences
         if (!pref || !pref.slurList) {
             slurList = slur;
         } else {
@@ -110,27 +119,22 @@ chrome.runtime.onMessage.addListener(async function (request) {
                 slurList += `,${slur}`;
             }
         }
-        await setPreferenceData({ ...pref, slurList });
-        return true;
-    }
-    if (request.type === 'CROWDSOURCE_SLUR_WORD') {
-        const crowdsource_slur = request.crowdsourcedSlur;
-        console.log('crowdsourced slur from bg = ', crowdsource_slur);
-        const user = await getUserData();
-        console.log('USER in cotnent', user);
-        const crowdsourceData = {
-            label: crowdsource_slur,
-            categories: []
-        };
+        try {
+            await setPreferenceData({ ...pref, slurList });
+        } catch (error) {
+            console.error('error updating pref data', error);
+        }
+
+        //Crowdsourcing Slur
         try {
             await createSlurAndCategory(user.accessToken, crowdsourceData);
             console.log('finsihed POST req');
-            window.alert(
-                `Crowdsourced Slur "${crowdsource_slur}" added to Uli`
-            );
+            window.alert(`Slur word "${slur}" added to Uli`);
         } catch (error) {
             console.log(error);
         }
+
+        return true;
     }
 
     if (request.type === 'ULI_ENABLE_SLUR_REPLACEMENT') {
