@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
-import { Box, Text, Button } from 'grommet';
+import { Box, Text, Button, Spinner } from 'grommet';
 import { Add, Edit, Trash } from 'grommet-icons';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 import SlurCard from '../atoms/SlurCard';
-import SlurCardComponent from '../atoms/SlurCardComponent';
+// import SlurCardComponent from '../atoms/SlurCardComponent';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
 
@@ -14,18 +14,24 @@ export function Slur() {
     const [getSlurs, setGetSlurs] = useState([]);
     const { user } = useContext(UserContext);
     const { showNotification } = useContext(NotificationContext);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigateToAddSlur = () => {
         navigate('/slur/create');
     };
     async function fetchSlurs() {
+        setIsLoading(true);
         try {
+            // adding delay for development server testing
+            // await new Promise(resolve => setTimeout(resolve, 500));
             const slur = await getSlurAndCategory(user.accessToken);
             slur.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setGetSlurs(slur);
             console.log(slur);
         } catch (error) {
             console.error('error fetching slurs', error);
+        } finally {
+            setIsLoading(false);
         }
     }
     async function handleDeleteSlur(slurId) {
@@ -52,7 +58,11 @@ export function Slur() {
     return (
         <Box fill gap={'medium'}>
             <Box gap="medium" alignContent="center" wrap>
-                {getSlurs.length === 0 ? (
+                {isLoading ? (
+                    <Box alignContent="center">
+                        <Spinner margin="xlarge" size="medium" />
+                    </Box>
+                ) : getSlurs.length === 0 ? (
                     <>
                         <Box alignContent="center">
                             <Text textAlign="center">
@@ -110,7 +120,7 @@ export function Slur() {
                             <Box
                                 key={index}
                                 // background="#fbeeac"
-                                background={"#FFE5B4"}
+                                background={'#FFE5B4'}
                                 pad="medium"
                                 round="medium"
                                 width="medium"
@@ -141,7 +151,7 @@ export function Slur() {
                                             <Button
                                                 id="slur-edit-button"
                                                 // label="Edit"
-                                                icon={<Edit size="medium"/>}
+                                                icon={<Edit size="medium" />}
                                                 onClick={() =>
                                                     navigate(`/slur/${slur.id}`)
                                                 }
@@ -156,7 +166,12 @@ export function Slur() {
                                             <Button
                                                 id="slur-delete-button"
                                                 // label="Delete"
-                                                icon={<Trash size='medium' color='#C60000'/>}
+                                                icon={
+                                                    <Trash
+                                                        size="medium"
+                                                        color="#C60000"
+                                                    />
+                                                }
                                                 onClick={() =>
                                                     handleDeleteSlur(slur.id)
                                                 }
