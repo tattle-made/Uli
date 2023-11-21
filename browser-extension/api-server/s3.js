@@ -1,4 +1,4 @@
-const AWS = require("aws-sdk");
+const { S3Client } = require("@aws-sdk/client-s3");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const { v4: uuidv4 } = require("uuid");
@@ -9,25 +9,26 @@ const credentials = {
 };
 const bucketName = process.env.AWS_BUCKET_NAME;
 
-const s3client = new AWS.S3({
+const s3client = new S3Client({
   credentials,
 });
 
 const uploadData = async (data, fileName) => {
   // console.log("uploading data", bucketName);
-  return new Promise((resolve) => {
-    s3client.upload(
-      {
-        Bucket: bucketName,
-        Key: fileName,
-        Body: data,
-      },
-      (err, response) => {
-        if (err) throw err;
-        resolve(response);
-      }
-    );
+  const uploadS3 = await s3client.upload({
+    Bucket: bucketName,
+    Key: fileName,
+    Body: data,
   });
+
+  try {
+    const response = uploadS3();
+    resolve(response);
+  } catch (err) {
+    if (err) {
+      throw err;      
+    }
+  }
 };
 
 var upload = multer({
