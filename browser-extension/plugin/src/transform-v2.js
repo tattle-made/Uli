@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 //import { parseTweet } from './twitter/parser';
 import { parseTweet_v2 } from './twitter/parser-v2';
 import { hashCode } from './util';
@@ -38,16 +38,16 @@ function addInlineMenu(id, item, hasSlur) {
     let inlineButtonDiv = document.createElement('div');
     inlineButtonDiv.id = id;
     item.prepend(inlineButtonDiv);
+    let root = createRoot(inlineButtonDiv);
 
-    ReactDOM.render(
+    root.render(
         <TweetControl
             tweet={tweets[id]}
             id={id}
             debug={debug}
             setBlur={setBlur}
             hasSlur={hasSlur}
-        />,
-        inlineButtonDiv
+        />
     );
 }
 

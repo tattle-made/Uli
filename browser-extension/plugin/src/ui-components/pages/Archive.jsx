@@ -46,10 +46,19 @@ export function Archive() {
     const { user, setUser } = useContext(UserContext);
     const { notification, showNotification } = useContext(NotificationContext);
 
-    useEffect(async () => {
-        const archive = await getArchive(user.accessToken);
-        console.log(archive);
-        setArchive(archive);
+    useEffect(() => {
+        async function archive() {
+            const archive = await getArchive(user.accessToken);
+            if(!ignore) {
+                console.log(archive);
+                setArchive(archive);    
+            }
+        }
+        let ignore = false;
+        archive();
+        return () => {
+            ignore = true;
+        }
     }, [user]);
 
     return (

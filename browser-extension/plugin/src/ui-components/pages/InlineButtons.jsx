@@ -68,8 +68,15 @@ export function InlineButtons() {
         setPreferenceLS(preferenceData);
     }
 
-    useEffect(async () => {
-        updateData();
+    useEffect(() => {
+        async function update() {
+            await updateData();
+        } 
+        let ignore = false;
+        update();
+        return () => {
+            ignore = true;
+        };
     }, []);
 
     useEffect(() => {
@@ -82,19 +89,26 @@ export function InlineButtons() {
         }
     }, [preferenceLS]);
 
-    useEffect(async () => {
-        chrome.runtime.onMessage.addListener(async function (
-            message,
-            sender,
-            sendResponse
-        ) {
-            switch (message.type) {
-                case 'updateData':
-                    await updateData();
-                    sendResponse('date updated');
-                    break;
-            }
-        });
+    useEffect(() => {
+        async function messageListener() {
+            chrome.runtime.onMessage.addListener(async function (
+                message,
+                sender,
+                sendResponse
+            ) {
+                switch (message.type) {
+                    case 'updateData':
+                        await updateData();
+                        sendResponse('date updated');
+                        break;
+                }
+            });    
+        }
+        let ignore = false;
+        messageListener();
+        return () => {
+            ignore = true;
+        }
     });
 
     async function clickArchive() {

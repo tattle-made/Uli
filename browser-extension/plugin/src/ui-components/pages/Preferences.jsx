@@ -16,9 +16,9 @@ import repository from '../../repository';
 import { useTranslation } from 'react-i18next';
 import browserUtils from '../../chrome';
 import { langNameMap } from '../atoms/language';
-
 const { savePreference } = Api;
 import { UserContext, NotificationContext } from '../atoms/AppContext';
+import { userBrowser, userBrowserTabs } from '../../browser-compat';
 const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};
@@ -35,62 +35,59 @@ export function Preferences() {
     const { t, i18n } = useTranslation();
 
     // GET PREFERENCE FOR THIS USER FROM LS
-    useEffect(async () => {
-        try {
-            const preference = await getPreferenceData();
-            // console.log({ preference });
-            setLocalPreferences(preference);
-            if (
-                preference != undefined &&
-                Object.keys(preference).length != 0
-            ) {
-                const {
-                    enable,
-                    enableML,
-                    storeLocally,
-                    language,
-                    enableSlurReplacement
-                } = preference;
-                if (enable != undefined) {
-                    setEnable(enable);
+    useEffect(() => {
+        async function getPrefsLocalStorage() {
+            try {
+                const preference = await getPreferenceData();
+                if (!ignore) {
+                    // console.log({ preference });
+                    setLocalPreferences(preference);
+                    if (
+                        preference != undefined &&
+                        Object.keys(preference).length != 0
+                    ) {
+                        const {
+                            enable,
+                            enableML,
+                            storeLocally,
+                            language,
+                            enableSlurReplacement
+                        } = preference;
+                        if (enable != undefined) {
+                            setEnable(enable);
+                        }
+                        if (enableML != undefined) {
+                            setEnableMLOption(enableML);
+                        }
+                        if (storeLocally != undefined) {
+                            setStoreLocally(storeLocally);
+                        }
+                        if (language != undefined) {
+                            setLanguage(language);
+                        }
+                        if (enableSlurReplacement != undefined) {
+                            setEnableSlurReplacement(enableSlurReplacement);
+                        }
+                    }
                 }
-                if (enableML != undefined) {
-                    setEnableMLOption(enableML);
-                }
-                if (storeLocally != undefined) {
-                    setStoreLocally(storeLocally);
-                }
-                if (language != undefined) {
-                    setLanguage(language);
-                }
-                if (enableSlurReplacement != undefined) {
-                    setEnableSlurReplacement(enableSlurReplacement);
-                }
+            } catch (err) {
+                showNotification({
+                    type: 'error',
+                    message: t('message_error_preference_data_load')
+                });
+                // alert(err);
             }
-        } catch (err) {
-            showNotification({
-                type: 'error',
-                message: t('message_error_preference_data_load')
-            });
-            // alert(err);
         }
+
+        let ignore = false;
+        getPrefsLocalStorage();
+        return () => {
+            ignore = true;
+        };
     }, [user]);
 
-    let userBrowser;
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    if (userAgent.includes('chrome')) {
-        userBrowser = 'chrome';
-    } else if (userAgent.includes('firefox')) {
-        userBrowser = 'firefox';
-    } else {
-        userBrowser = 'unsupported';
-    }
-    let userBrowserTabs;
-    if (userBrowser === 'firefox') {
-        userBrowserTabs = browser.tabs;
-    } else if (userBrowser === 'chrome') {
-        userBrowserTabs = chrome.tabs;
-    }
+    console.log('User Browser - ', userBrowser);
+    // console.log('User Browser Tab - ', userBrowserTabs);
 
     async function clickSave(preference) {
         const preferenceInLS = await getPreferenceData();

@@ -4,7 +4,7 @@
  * 2. Registering event handlers
  */
 
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { InlineButtons } from '../ui-components/pages/InlineButtons';
 import { pages, getPageType } from './pages';
 
@@ -32,9 +32,9 @@ function createTopBannerElement() {
         var inlineButtonDiv = document.createElement('div');
         inlineButtonDiv.id = 'ogbv-inline-button';
         main.prepend(inlineButtonDiv);
-        ReactDOM.render(
-            <InlineButtons style={{ position: 'sticky', top: 0 }} />,
-            inlineButtonDiv
+        var root = createRoot(inlineButtonDiv);
+        root.render(
+            <InlineButtons style={{ position: 'sticky', top: 0 }} />
         );
     } catch (err) {
         console.log('TEST : Error Creating Top Banner', err);

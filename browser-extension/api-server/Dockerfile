@@ -1,4 +1,4 @@
-FROM node:18.18-alpine3.18@sha256:a315556d82ef54561e54fca7d8ee333382de183d4e56841dcefcd05b55310f46
+FROM node:20.9.0-alpine3.18@sha256:8e015de364a2eb2ed7c52a558e9f716dcb615560ffd132234087c10ccc1f2c63
 ENV NODE_ENV production
 WORKDIR /app
 
@@ -7,7 +7,7 @@ RUN cd /app
 RUN npm install --ignore-scripts
 RUN npm install sequelize-cli --ignore-scripts
 RUN npm install -g nodemon --ignore-scripts
-COPY . .
+COPY --chown=node:node . .
 COPY --chown=node:node ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 USER node
