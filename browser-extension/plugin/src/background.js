@@ -1,38 +1,45 @@
+// import { userBrowserTabs, userBrowserContextMenus } from './browser-compat';
 console.log('bg script 7');
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+const BROWSER_CHROME = 'chrome';
+const BROWSER_FIREFOX = 'firefox';
+const BROWSER_UNSUPPORTED = 'unsupported';
+
+let userBrowser;
+
+const userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.includes('chrome')) {
+    userBrowser = BROWSER_CHROME;
+} else if (userAgent.includes('firefox')) {
+    userBrowser = BROWSER_FIREFOX;
+} else {
+    userBrowser = BROWSER_UNSUPPORTED;
+}
+
+let userBrowserTabs;
+let userBrowserContextMenus;
+
+if (userBrowser === BROWSER_FIREFOX) {
+    userBrowserTabs = browser.tabs;
+    userBrowserContextMenus = browser.contextMenus;
+} else if (userBrowser === BROWSER_CHROME) {
+    userBrowserTabs = chrome.tabs;
+    userBrowserContextMenus = chrome.contextMenus;
+} else {
+    // TODO: Indicate to user that browser is unsupported
+}
+
+userBrowserTabs.onUpdated.addListener(function (tabId, changeInfo) {
     if (changeInfo.url) {
         console.log('url changed');
-        chrome.tabs.sendMessage(tabId, {
+        userBrowserTabs.sendMessage(tabId, {
             message: 'URL_CHANGED',
             url: changeInfo.url
         });
     }
 });
 
-let userBrowser;
-const userAgent = navigator.userAgent.toString();
-if (userAgent.indexOf('Mozilla')) {
-    userBrowser = 'firefox';
-} else if (userAgent.indexOf('Chrome')) {
-    userBrowser = 'chrome';
-} else {
-    userBrowser = 'unsupported';
-}
-
-let contextMenus;
-let tabs;
-console.log(userBrowser);
-if (userBrowser === 'firefox') {
-    contextMenus = browser.contextMenus;
-    tabs = browser.tabs;
-} else if (userBrowser === 'chrome') {
-    contextMenus = chrome.contextMenus;
-    tabs = chrome.tabs;
-}
-console.log(contextMenus);
-
-contextMenus.create(
+userBrowserContextMenus.create(
     {
         id: 'add-slur',
         title: 'Add Slur to Uli',
@@ -43,11 +50,11 @@ contextMenus.create(
     }
 );
 
-contextMenus.onClicked.addListener(async (info, tab) => {
+userBrowserContextMenus.onClicked.addListener((info, tab) => {
     switch (info.menuItemId) {
         case 'add-slur':
             console.log('slur added');
-            tabs.sendMessage(
+            userBrowserTabs.sendMessage(
                 tab.id,
                 { type: 'SLUR_ADDED', slur: info.selectionText },
                 function (response) {

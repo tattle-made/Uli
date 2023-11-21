@@ -14,11 +14,11 @@ import {
 import Api from '../pages/Api';
 import repository from '../../repository';
 import { useTranslation } from 'react-i18next';
-import chrome from '../../chrome';
+import browserUtils from '../../chrome';
 import { langNameMap } from '../atoms/language';
-
 const { savePreference } = Api;
 import { UserContext, NotificationContext } from '../atoms/AppContext';
+import { userBrowser, userBrowserTabs } from '../../browser-compat';
 const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};
@@ -39,7 +39,7 @@ export function Preferences() {
         async function getPrefsLocalStorage() {
             try {
                 const preference = await getPreferenceData();
-                if(!ignore) {
+                if (!ignore) {
                     // console.log({ preference });
                     setLocalPreferences(preference);
                     if (
@@ -77,31 +77,17 @@ export function Preferences() {
                 });
                 // alert(err);
             }
-    
         }
 
         let ignore = false;
         getPrefsLocalStorage();
         return () => {
             ignore = true;
-        }
+        };
     }, [user]);
 
-    let userBrowser;
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    if (userAgent.includes('chrome')) {
-        userBrowser = 'chrome';
-    } else if (userAgent.includes('firefox')) {
-        userBrowser = 'firefox';
-    } else {
-        userBrowser = 'unsupported';
-    }
-    let userBrowserTabs;
-    if (userBrowser === 'firefox') {
-        userBrowserTabs = browser.tabs;
-    } else if (userBrowser === 'chrome') {
-        userBrowserTabs = chrome.tabs;
-    }
+    console.log('User Browser - ', userBrowser);
+    // console.log('User Browser Tab - ', userBrowserTabs);
 
     async function clickSave(preference) {
         const preferenceInLS = await getPreferenceData();
@@ -151,7 +137,7 @@ export function Preferences() {
                 type: 'message',
                 message: t('message_ok_saved')
             });
-            chrome.sendMessage('updateData', undefined);
+            browserUtils.sendMessage('updateData', undefined);
         } catch (err) {
             // alert(err);
             showNotification({
