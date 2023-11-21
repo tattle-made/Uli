@@ -1,3 +1,0 @@
-#!/bin/bash
-
-http POST http://127.0.0.1:8000/predict text="The food in this restaurant is disgusting"

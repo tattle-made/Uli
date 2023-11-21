@@ -1,3 +1,0 @@
-# Annotation Guidelines
-
-Under Construction

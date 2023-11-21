@@ -1,5 +1,0 @@
-.flake8
-.isort.cfg
-.python-version
-Pipfile
-Pipfile.lock
