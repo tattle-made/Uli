@@ -6,16 +6,7 @@ module.exports = {
     "gatsby-plugin-styled-components",
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
-    {
-      resolve: "gatsby-plugin-mdx",
-      options: {
-        defaultLayouts: {
-          default: require.resolve(
-            "./src/components/molecules/ContentPageShell.jsx"
-          ),
-        },
-      },
-    },
+    "gatsby-plugin-mdx",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {
