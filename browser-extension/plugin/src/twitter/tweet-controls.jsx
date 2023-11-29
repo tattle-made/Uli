@@ -26,7 +26,7 @@ import Api from '../ui-components/pages/Api';
 import Theme from '../ui-components/atoms/Theme';
 const { getUserData, getPreferenceData } = repository;
 const { invokeNetwork } = Api;
-const axios = require('axios');
+import axios from 'axios';
 
 function UnfocussedButton({ onClick, children }) {
     return (
