@@ -27,6 +27,11 @@ const NavBarByLang = {
       <NavLink to={"/ta/faq"}>FAQ</NavLink>
     </Box>
   ),
+  ma: (
+    <Box direction="row" gap={"medium"}>
+      <NavLink to={"/ma/about"}>About</NavLink>
+    </Box>
+  ),
 };
 
 export default function NavBar() {
@@ -46,6 +51,9 @@ export default function NavBar() {
         break;
       case "/ta":
         lang = "ta";
+        break;
+      case "/ma":
+        lang = "ma";
         break;
       default:
         lang = "en";
@@ -78,6 +86,9 @@ export default function NavBar() {
           </NavLink>{" "}
           <NavLink to={"/hi/"}>
             <Text size={"small"}>Hindi</Text>
+          </NavLink>{" "}
+          <NavLink to={"/ma/"}>
+            <Text size={"small"}>Malayalam</Text>
           </NavLink>
         </Text>
       </Box>
