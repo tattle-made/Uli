@@ -6,7 +6,6 @@ import { NavLink } from "../../components/atoms/UliCore";
 
 const BlogIndex = ({ data }) => {
   const blogs = data.allMdx.nodes;
-  console.log(blogs);
   return (
     <AppShell>
       <Box align="center" margin={"large"}>
