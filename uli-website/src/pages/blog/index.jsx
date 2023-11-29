@@ -6,6 +6,7 @@ import { NavLink } from "../../components/atoms/UliCore";
 
 const BlogIndex = ({ data }) => {
   const blogs = data.allMdx.nodes;
+  console.log(blogs);
   return (
     <AppShell>
       <Box align="center" margin={"large"}>
@@ -15,7 +16,7 @@ const BlogIndex = ({ data }) => {
             {blogs.map((blog) => {
               return (
                 <Box>
-                  <NavLink to={`/${blog.slug}`}>
+                  <NavLink to={`${blog.fields.slug}`}>
                     <Paragraph fill>
                       <Text size={"xlarge"}>{blog.frontmatter.name}</Text>,
                       <Text>{" " + blog.frontmatter.author}</Text>
@@ -31,23 +32,25 @@ const BlogIndex = ({ data }) => {
   );
 };
 
-export const query = graphql`
-  query BlogIndexQuery {
-    allMdx(
-      filter: { fileAbsolutePath: { regex: "/.*/src/pages/blog/" } }
-      sort: { fields: frontmatter___date, order: DESC }
-    ) {
-      nodes {
+export const query = graphql`query BlogIndexQuery {
+  allMdx(
+    filter: {internal: {contentFilePath: {regex: "/.*/src/pages/blog/"}}}
+    sort: {frontmatter: {date: DESC}}
+  ) {
+    nodes {
+      fields {
         slug
-        frontmatter {
-          name
-          author
-          date
-        }
-        fileAbsolutePath
+      }
+      frontmatter {
+        name
+        author
+        date
+      }
+      internal {
+        contentFilePath
       }
     }
   }
-`;
+}`;
 
 export default BlogIndex;
