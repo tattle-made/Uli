@@ -6,6 +6,7 @@ import { NavLink } from "../../components/atoms/UliCore";
 
 const BlogIndex = ({ data }) => {
   const blogs = data.allMdx.nodes;
+  console.log(blogs);
   return (
     <AppShell>
       <Box align="center" margin={"large"}>
@@ -15,7 +16,7 @@ const BlogIndex = ({ data }) => {
             {blogs.map((blog) => {
               return (
                 <Box>
-                  <NavLink to={`/${blog.fields.slug}`}>
+                  <NavLink to={`${blog.fields.slug}`}>
                     <Paragraph fill>
                       <Text size={"xlarge"}>{blog.frontmatter.name}</Text>,
                       <Text>{" " + blog.frontmatter.author}</Text>
