@@ -13,6 +13,11 @@ jobs:
         with:
           ref: main
 
+      - name: "Setup Node version"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.9.0
+
       - name: "Build and Test"
         run: |
           cd browser-extension/plugin
