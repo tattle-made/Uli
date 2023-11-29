@@ -1,5 +1,7 @@
 import { replaceSlur } from './slur-replace';
 import { log } from './logger';
+import repository from './repository';
+const { getPreferenceData } = repository;
 
 // Traverse dom nodes to find leaf node that are text nodes and process
 function bft(node) {
@@ -51,16 +53,20 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
     log('processing new nodes');
     const config = { attributes: true, childList: true, subtree: true };
 
-    const callback = () => {
-        let elems = firstBody.children;
-        const nodes = Array.from(elems);
-        let relevant_elements = nodes.filter((element) =>
-            ['P', 'DIV'].includes(element.nodeName)
-        );
+    const callback = async () => {
+        const pref = await getPreferenceData();
+        const { enableSlurReplacement } = pref;
+        if (enableSlurReplacement) {
+            let elems = firstBody.children;
+            const nodes = Array.from(elems);
+            let relevant_elements = nodes.filter((element) =>
+                ['P', 'DIV'].includes(element.nodeName)
+            );
 
-        relevant_elements.map((element) => {
-            bft(element);
-        });
+            relevant_elements.map((element) => {
+                bft(element);
+            });
+        }
     };
     const observer = new MutationObserver(callback);
     observer.observe(firstBody, config);
