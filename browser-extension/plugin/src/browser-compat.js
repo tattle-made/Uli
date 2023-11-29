@@ -12,7 +12,7 @@ const BROWSER_UNSUPPORTED = 'unsupported';
 
 let userBrowser;
 
-const userAgent = window.navigator.userAgent.toLowerCase();
+const userAgent = navigator.userAgent.toLowerCase();
 if (userAgent.includes('chrome')) {
     userBrowser = BROWSER_CHROME;
 } else if (userAgent.includes('firefox')) {
