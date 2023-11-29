@@ -18,7 +18,7 @@ import browserUtils from '../../chrome';
 import { langNameMap } from '../atoms/language';
 const { savePreference } = Api;
 import { UserContext, NotificationContext } from '../atoms/AppContext';
-import { userBrowser, userBrowserTabs } from '../../browser-compat';
+import { userBrowserTabs } from '../../browser-compat';
 const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};
@@ -86,8 +86,38 @@ export function Preferences() {
         };
     }, [user]);
 
-    console.log('User Browser - ', userBrowser);
-    // console.log('User Browser Tab - ', userBrowserTabs);
+    async function handleSlurReplacement(enableSlurReplacement) {
+        try {
+            const confirmed = window.confirm(
+                'This action requires a page reload. Do you want to continue?'
+            );
+            if (confirmed) {
+                const tabsCurrent = await userBrowserTabs.query({
+                    active: true,
+                    currentWindow: true
+                });
+                const tabId = tabsCurrent[0].id;
+
+                await setPreferenceData({
+                    ...localPreferences,
+                    enableSlurReplacement
+                });
+
+                userBrowserTabs.sendMessage(tabId, {
+                    type: 'ULI_ENABLE_SLUR_REPLACEMENT',
+                    payload: enableSlurReplacement
+                });
+                userBrowserTabs.reload(tabId);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function changeEnableSlurReplacementOption(checked) {
+        console.log(checked);
+        setEnableSlurReplacement(checked);
+    }
 
     async function clickSave(preference) {
         const preferenceInLS = await getPreferenceData();
@@ -104,33 +134,16 @@ export function Preferences() {
                 enable,
                 enableML,
                 storeLocally,
-                language
+                language,
+                enableSlurReplacement
             });
 
             const enableSlurReplacementChanged =
                 enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
+
             if (enableSlurReplacementChanged) {
                 console.log('enable val changed', enableSlurReplacementChanged);
-                const confirmed = window.confirm(
-                    'This action requires a page reload. Do you want to continue?'
-                );
-                if (confirmed) {
-                    const tabsCurrent = await userBrowserTabs.query({
-                        active: true,
-                        currentWindow: true
-                    });
-                    setEnableSlurReplacement(enableSlurReplacement);
-                    await setPreferenceData({
-                        ...preferenceRemote.data,
-                        enableSlurReplacement: enableSlurReplacement
-                    });
-                    const tabId = tabsCurrent[0].id;
-                    userBrowserTabs.sendMessage(tabId, {
-                        type: 'ULI_ENABLE_SLUR_REPLACEMENT',
-                        payload: enableSlurReplacement
-                    });
-                    userBrowserTabs.reload(tabId);
-                }
+                await handleSlurReplacement(enableSlurReplacement);
             }
 
             showNotification({
@@ -139,11 +152,11 @@ export function Preferences() {
             });
             browserUtils.sendMessage('updateData', undefined);
         } catch (err) {
-            // alert(err);
             showNotification({
                 type: 'error',
                 message: t('message_error_preference_data_save')
             });
+            console.log(err);
         }
     }
 
@@ -156,14 +169,9 @@ export function Preferences() {
         setStoreLocally(checked);
     }
 
-    async function changeEnableMLOption(checked) {
-        setEnableMLOption(checked);
-    }
-
-    async function changeEnableSlurReplacementOption(checked) {
-        console.log(checked);
-        setEnableSlurReplacement(checked);
-    }
+    // async function changeEnableMLOption(checked) {
+    //     setEnableMLOption(checked);
+    // }
 
     return (
         <Box fill gap={'medium'}>
@@ -199,13 +207,13 @@ export function Preferences() {
                     onChange={(e) => changeLocalStorageOption(e.target.checked)}
                 />
             </Box>
-            <Box direction="row" gap={'large'} align="center">
+            {/* <Box direction="row" gap={'large'} align="center">
                 <CheckBox
                     checked={enableML}
                     label={t('enable_ml')}
                     onChange={(e) => changeEnableMLOption(e.target.checked)}
                 />
-            </Box>
+            </Box> */}
             <Box direction="row" gap={'large'} align="center">
                 <CheckBox
                     checked={enableSlurReplacement}
