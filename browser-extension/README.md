@@ -25,8 +25,8 @@
 
 Requirements :
 
-- npm : v10.1.0
-- nodejs : v20.8.1
+- npm : v10.2.3
+- nodejs : v20.10.0
 
 When you run `docker-compose up`, ensure to have a `development.env` file with the following variables in the `api-server` directory.
 
@@ -66,6 +66,16 @@ You should now see database migration in the logs. The `api-server` will be runn
 For local plugin development, add the following two entries to the `connect-src` in the manifest's `content_security_policy`:
 ```
 http://localhost:3000 ws://localhost
+```
+
+Add the following entry to the `permissions` in the firefox manifest
+```
+"http://localhost/*"
+```
+
+Add the following entry to the `host_permissions` in the (chrome) manifest
+```
+"http://localhost:3000/*"
 ```
 
 To run the plugin development server, run `cd plugin` and then the following :

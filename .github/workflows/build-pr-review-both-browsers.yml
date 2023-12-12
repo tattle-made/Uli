@@ -26,7 +26,7 @@ jobs:
       - name: "Setup Node version"
         uses: actions/setup-node@v3
         with:
-          node-version: 20.9.0
+          node-version: 20.10.0
 
       - name: Get commit SHA
         shell: bash
