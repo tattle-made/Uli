@@ -55,8 +55,8 @@
     },
     "engines": {
         "browsers": "> 0.25%",
-        "node": "20.9.0",
-        "npm": "10.1.0"
+        "node": "20.10.0",
+        "npm": "10.2.3"
     },
     "lint-staged": {
         "*.(js|jsx)": [
