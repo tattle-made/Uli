@@ -1,7 +1,7 @@
 ## Metadata Annotations for Slur List
 
-All the metadata annotations and a few new slur contributions are present in the `data.csv` file.
-These are the columns of the `data.csv` file.
+All the metadata annotations and a few new slur contributions are present in the `slur_list.csv` file.
+These are the columns of the `slur_list.csv` file.
 
 ```
 Slur Word   
