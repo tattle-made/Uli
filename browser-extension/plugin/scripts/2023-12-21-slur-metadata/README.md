@@ -17,4 +17,4 @@ Category 3
 Category 4
 ```
 
-The `Slur Word` column contains all the slur words. The `Annotator ID` contains the id for the contributor who annotated that slur, this ID is annynomized. All the other columns are metadata fields for the slur, a detailed explanation about them can be found in the `annotations guideline`.
+The `Slur Word` column contains all the slur words. The `Annotator ID` contains the id for the contributor who annotated that slur, this ID is annynomized. All the other columns are metadata fields for the slur, a detailed explanation about them can be found in the [`annotations guideline`](https://docs.google.com/document/d/18H4TlLFB2GXK054oMj1uXVJ2OCFW08Gi/edit).
