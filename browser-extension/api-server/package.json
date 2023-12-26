@@ -13,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.476.0",
-    "@aws-sdk/client-sesv2": "3.476.0",
+    "@aws-sdk/client-s3": "3.478.0",
+    "@aws-sdk/client-sesv2": "3.478.0",
     "axios": "1.6.2",
     "cors": "2.8.5",
     "cryptr": "6.3.0",

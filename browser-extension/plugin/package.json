@@ -49,8 +49,8 @@
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-feather": "2.0.10",
-        "react-i18next": "13.5.0",
-        "react-router-dom": "6.21.0",
+        "react-i18next": "14.0.0",
+        "react-router-dom": "6.21.1",
         "styled-components": "5.3.11"
     },
     "engines": {
