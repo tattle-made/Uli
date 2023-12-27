@@ -49,7 +49,7 @@ function setCaretPosition(element, offset) {
     sel.addRange(range);
 }
 
-const processNewlyAddedNodesGeneral = function (firstBody) {
+const processNewlyAddedNodesGeneral = async function (firstBody) {
     log('processing new nodes');
     const config = { attributes: true, childList: true, subtree: true };
 
@@ -68,6 +68,10 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
             });
         }
     };
+
+    // call on initial page load
+    await callback();
+
     const observer = new MutationObserver(callback);
     observer.observe(firstBody, config);
 };
