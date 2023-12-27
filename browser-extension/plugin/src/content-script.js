@@ -56,14 +56,14 @@ function processPage(newUrl) {
             }
         }, 500);
     } else {
-        mainLoadedChecker = setInterval(() => {
+        mainLoadedChecker = setInterval(async () => {
             console.log('tick');
             let body = document.getElementsByTagName('body');
             let first_body = body[0];
 
             if (first_body) {
                 console.log('tick 2');
-                transformGeneral.processNewlyAddedNodesGeneral(first_body);
+                await transformGeneral.processNewlyAddedNodesGeneral(first_body);
                 clearInterval(mainLoadedChecker);
                 console.log(mainLoadedChecker);
             } else {
