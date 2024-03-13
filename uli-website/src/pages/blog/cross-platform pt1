@@ -1,0 +1,58 @@
+---
+name: "A Side of Whack-A-Mole (Part 1)"
+excerpt: " "
+author: "Kaustubha"
+project: " "
+date: 13-03-2024
+---
+import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
+
+<ContentPageShell>
+
+Online abuse persists either through posts across online platforms, or through circumvented attempts to create newer accounts and reposting previously reported content. 
+Cross-platform harassment, characterised by coordinated and deliberate attempts to harass an individual across multiple platforms1, takes advantage of platforms only moderating their content; while one platform may have taken down content after finding it violates their policies/after it was reported (thereby fulfilling their legal mandates), the issue still persists. 
+Individuals are left playing what is a game of whack-a-mole across different accounts and platforms- going through different reporting mechanisms, policies, and instructions to take down abusive content about them (PEN America has a page with all of the relevant reporting links of prominent platforms: [Reporting Online Harassment] (https://onlineharassmentfieldmanual.pen.org/reporting-online-harassment-to-platforms/)). 
+While accounts may be de-platformed permanently, the contents of the post itself may resurface. 
+Perpetrators may subside for a given period, but content may be picked up in the next viral cycle, or even some months later by another person/account, restarting this process all over again (note: large social media platforms do use signals to detect and prevent recidivism [^1).
+
+Journalists have pointed to this issue as well. 
+Companies’ policies do not account for cross-platform online abuse faced by women journalists [^2]. Abuse floods them on multiple platforms for long periods, and it is exhausting for them to monitor all of these spaces where they are the topic of discussion or target of abuse [^3]. 
+Focus on predominant social media platforms also overlooks abuse on other online spaces, such as comments on individuals’ newsletters or blogs [^4]. Cross-platform brigading has been highlighted as a key issue that needs to be addressed [^5]- brigading refers to online tactics that involve coordinated abusive engagement online [^6], and journalists have urged platforms to be more proactive and exchange data about abuse in the hopes that this would lead to shared best practices to tackle single and cross-platform abuse [^7]. 
+
+### Tech Responses
+Several tools were built in the past decade to respond to online abuse, such as Opt Out, Hatebase,  Block Together, and Project Hatemeter (of these, two are not active anymore). 
+Generally the efforts of a concerned individual or group of people,  the tools helped users handle online abuse and provided insights outside of options available traditionally on social media platforms. Block Together and Hatebase shut down in 2021 and 2022 respectively; in a statement, the former pointed out that ultimately the work done through the project was the platforms' duty, not theirs, and only platforms could handle the scale of abuse that existed on them. 
+
+While platforms have their policies and improve on their moderation systems, they are largely done in siloes and not developed in coordination with other platforms to provide a cross-platform solution to a user. 
+Instead, they focus on meeting compliance requirements set through law- the Intermediary Rules in India for instance, set out the nature of content that a platform must not host. 
+Given the evolving nature of online expression and instances of abuse, it is up to platforms to ensure that in cases where there is no explicit legal compliance requirement but users require features to better protect them online, they are developed and effected. 
+Therefore whether a platform goes over and above minimum legal compliance is up to them.
+
+### Platform Initiatives
+
+Platforms have taken steps to participate in industry partnerships and programs for tackling patently illegal content such as CSAM and terrorism. 
+In 2018, Medium introduced a policy stating the accounts or posts that engage in ‘on-platform’, ‘off-platform’ or ‘cross-platform’ harassment, hate speech, disinformation, violence will not be allowed- thus deplatforming them from their platform. 
+In November of last year, tech companies came together to form the Lantern Program with Tech Coalition, which seeks to combat the issue of cross-platform CSAM by sharing signals, consisting of information such as email addresses, usernames, and keywords which could work as clues for investigating content on other platforms as well. 
+On 31 January 2024, Linda Yaccarino stated before the Senate Judiciary Committee that X (formerly Twitter) is applying to this program as well, and that they are opening up their algorithms for increased transparency. 
+Meta also supported the Take it Down portal, which protects intimate images of teens from being shared online without their consent by assigning a unique hash value to the image. Participating companies can then use this hash value to detect posts containing this content and remove it from their platform. 
+Members of the Global Internet Forum to Counter Terrorism (GIFCT) ‘hash’ images and videos relating to terrorism to share them as signals to other platforms and are developing a method to hash PDFs and URLs as well to include more diverse types of signals that platforms can share [^8].
+
+With CSAM and terrorism, the process for reporting and takedown is relatively straightforward. 
+However, the larger issue of online abuse consists of many grey areas, where aspects such as humor, satire, or words reclaimed within marginalised communities influence the categorisation of an instance as abuse/OGBV, and platforms' moderation systems may not effectively be able to interpret them. 
+In this context, the need for cross-platform information sharing and takedown mechanisms become all the more pertinent.
+
+### Some thoughts on moving forward
+Implementation of cross-platform protocols that enable expedient redressal of online abuse is the need of the hour.  
+While it is currently implemented for more widely accepted and extreme instances of abuse such as dissemination of CSAM and terrorism-related material, extending such protocols to combat instances of OGBV and broader online harms faced by the community should be explored. 
+It would be useful to evaluate similar technical response tools and their effectiveness at various stages of redressal to understand the landscape and develop broader protocols which could handle this issue of persistant abuse.
+
+[^1]: https://onlineharassmentfieldmanual.pen.org/reporting-online-harassment-to-platforms/
+[^2]:Julie Posetti, Kalina Bontcheva and Nabeelah Shabbir, ‘The Chilling: Assessing Big Tech’s Response to Online Violence Against Women Journalists’ (May 2022, UNESCO)
+[^3]: Ibid
+[^4]: Ibid
+[^5]: https://rebootingsocialmedia.org/2022/12/01/from-emergency-to-prevention-protecting-journalists-from-online-abuse/
+[^6]: https://www.institute.global/insights/tech-and-digitalisation/social-media-futures-what-brigading
+[^7]: https://rebootingsocialmedia.org/2022/12/01/from-emergency-to-prevention-protecting-journalists-from-online-abuse/
+[^8]: https://www.orfonline.org/expert-speak/identifying-and-removing-terrorist-content-online
+
+</ContentPageShell>
