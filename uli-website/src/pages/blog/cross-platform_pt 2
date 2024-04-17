@@ -11,7 +11,7 @@ import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 <ContentPageShell>
 
 We're continuing by taking a look at how cross-platform abuse operates on federated and centralised platforms, and the kind of solutions they must test and implement to tackle cross-platform abuse. 
-The most popular decentralised/federated social media platform is Mastadon; Threads and Bluesky have also followed suit into adopting federation protocols for social media platforms. 
+The most popular decentralised/federated social media platform is Mastodon; Threads and Bluesky have also followed suit into adopting federation protocols for social media platforms. 
 The platforms, built on the Activity Pub Protocol and the AT Protocol, do not have a centralised authority that oversees activity on the platform. 
 Instead, users join different 'instances', and each instance has its own set of rules, block lists and moderators. The instances interact with one another through 'federation'.
 
