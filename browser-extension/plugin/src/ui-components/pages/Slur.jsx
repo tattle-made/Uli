@@ -4,8 +4,8 @@ import { Add, Edit, Trash } from 'grommet-icons';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
-import SlurCard from '../atoms/SlurCard';
-// import SlurCardComponent from '../atoms/SlurCardComponent';
+// import SlurCard from '../atoms/SlurCard';
+import SlurCard from '../atoms/SlurCardComponent';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
 
@@ -56,7 +56,7 @@ export function Slur() {
     }, []);
 
     return (
-        <Box fill gap={'medium'}>
+        <Box fill gap={'medium'} pad={{bottom: 'medium'}}>
             <Box gap="medium" alignContent="center" wrap>
                 {isLoading ? (
                     <Box alignContent="center">
