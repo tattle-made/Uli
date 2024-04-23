@@ -32,19 +32,15 @@ const SlurCardComponent = ({ data }) => {
             property: 'value',
             header: false,
             render: data => {
-                if (data.name === 'Categories') {
-                    return (
-                        <Box direction="row" gap="medium" wrap={true}>
-                            {data.value.map((category, categoryIndex) => (
-                                <Box margin={'xsmall'} key={categoryIndex}>
-                                    <SlurCardBubble data={category} />
-                                </Box>
-                            ))}
-                        </Box>
-                    );
-                } else {
-                    return data.value;
-                }
+                return data.name === 'Categories' ? (
+                    <Box direction="row" gap="medium" wrap={true}>
+                        {data.value.map((category, categoryIndex) => (
+                            <Box margin={'xsmall'} key={categoryIndex}>
+                                <SlurCardBubble data={category} />
+                            </Box>
+                        ))}
+                    </Box>
+                ) : data.value;
             },
         },
     ];
