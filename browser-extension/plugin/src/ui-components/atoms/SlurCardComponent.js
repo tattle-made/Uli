@@ -4,9 +4,7 @@ import {
     Card, CardBody, CardFooter,
     Box,
     Anchor,
-    Table,
-    TableRow,
-    TableCell,
+    DataTable,
     Text,
 } from 'grommet';
 import { Alert, FormUp, FormDown } from 'grommet-icons';
@@ -25,6 +23,46 @@ const SlurCardComponent = ({ data }) => {
     const buttonLabel = showMore ? 'See Less' : 'See More';
     const buttonIcon = showMore ? <FormUp /> : <FormDown />;
 
+    const columns = [
+        {
+            property: 'name',
+            header: false,
+        },
+        {
+            property: 'value',
+            header: false,
+            render: data => {
+                if (data.name === 'Categories') {
+                    return (
+                        <Box direction="row" gap="medium" wrap={true}>
+                            {data.value.map((category, categoryIndex) => (
+                                <Box margin={'xsmall'} key={categoryIndex}>
+                                    <SlurCardBubble data={category} />
+                                </Box>
+                            ))}
+                        </Box>
+                    );
+                } else {
+                    return data.value;
+                }
+            },
+        },
+    ];
+
+    const dataToShow = [
+        { name: 'Level of Severity', value: data.levelOfSeverity },
+        { name: 'Casual', value: data.casual ? 'Yes' : 'No' },
+        { name: 'Appropriated', value: data.appropriated ? 'Yes' : 'No' },
+    ];
+
+    if (showMore) {
+        dataToShow.push(
+            { name: 'If, Appropriated, Is it by Community or Others?', value: data.appropriationContext ? 'Community' : 'Others' },
+            { name: 'What Makes it Problematic?', value: data.labelMeaning },
+            { name: 'Categories', value: data.categories },
+        );
+    }
+
     return (
         <Card flex={true} background="#FFE5B4">
             <CardBody pad="medium">
@@ -42,127 +80,11 @@ const SlurCardComponent = ({ data }) => {
                         <Text margin="small">Add metadata for the slur</Text>
                     </Box>
                 ) : (
-                    <Table>
-                        <tbody>
-                            <TableRow>
-                                <TableCell scope="row">
-                                    <Text color="#646464">
-                                        Level of Severity
-                                    </Text>
-                                </TableCell>
-                                <TableCell>
-                                    {data.levelOfSeverity}
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell scope="row">
-                                    <Text color="#646464">Casual</Text>
-                                </TableCell>
-                                <TableCell>
-                                    {data.casual === true
-                                        ? 'Yes'
-                                        : data.casual === false
-                                        ? 'No'
-                                        : ''}
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell scope="row">
-                                    <Text color="#646464">
-                                        Appropriated
-                                    </Text>
-                                </TableCell>
-                                <TableCell>
-                                    {data.appropriated === true
-                                        ? 'Yes'
-                                        : data.appropriated === false
-                                        ? 'No'
-                                        : ''}
-                                </TableCell>
-                            </TableRow>
-                            {showMore && (
-                                <>
-                                    <TableRow>
-                                        <TableCell scope="row">
-                                            <Text color="#646464">
-                                                If, Appropriated, Is it by
-                                                Community or Others?
-                                            </Text>
-                                        </TableCell>
-                                        <TableCell>
-                                            {data.appropriationContext === true
-                                                ? 'Community'
-                                                : data.appropriationContext ===
-                                                  false
-                                                ? 'Others'
-                                                : ''}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell scope="row">
-                                            <Text color="#646464">
-                                                What Makes it Problematic?
-                                            </Text>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Box>
-                                                <Text
-                                                    truncate
-                                                    style={{
-                                                        maxWidth: '100px',
-                                                        overflow: 'hidden',
-                                                        textOverflow:
-                                                            'ellipsis',
-                                                        whiteSpace: 'nowrap'
-                                                    }}
-                                                >
-                                                    {data.labelMeaning}
-                                                </Text>
-                                            </Box>
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell scope="row">
-                                            <Text color="#646464">
-                                                Categories
-                                            </Text>
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                <Box
-                                                    direction="row"
-                                                    gap="medium"
-                                                    wrap={true}
-                                                >
-                                                    {data.categories.map(
-                                                        (
-                                                            category,
-                                                            categoryIndex
-                                                        ) => (
-                                                            <Box
-                                                                margin={
-                                                                    'xsmall'
-                                                                }
-                                                            >
-                                                                <SlurCardBubble
-                                                                    key={
-                                                                        categoryIndex
-                                                                    }
-                                                                    data={
-                                                                        category
-                                                                    }
-                                                                />
-                                                            </Box>
-                                                        )
-                                                    )}
-                                                </Box>
-                                            }
-                                        </TableCell>
-                                    </TableRow>
-                                </>
-                            )}
-                        </tbody>
-                    </Table>
+                    <DataTable
+                        columns={columns}
+                        data={dataToShow}
+                        border={false}
+                    />
                 )}
             </CardBody>
             <CardFooter pad={{horizontal: "medium"}}>
