@@ -84,13 +84,15 @@ const SlurCardComponent = ({ data }) => {
                     />
                 )}
             </CardBody>
-            <CardFooter pad={{horizontal: "medium"}}>
+            {!isDataEmpty && (
+            <CardFooter justify="center" pad={{horizontal: "medium"}}>
                 <Anchor
                     label={buttonLabel}
                     icon={buttonIcon}
                     onClick={toggleShowMore}
                 />
             </CardFooter>
+        )}
         </Card>
     );
 }
