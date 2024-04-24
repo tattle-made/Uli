@@ -27,6 +27,7 @@ const SlurCardComponent = ({ data }) => {
         {
             property: 'name',
             header: false,
+            render: data => <Text color="#646464">{data.name}</Text>,
         },
         {
             property: 'value',
