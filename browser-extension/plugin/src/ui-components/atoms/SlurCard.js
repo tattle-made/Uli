@@ -141,8 +141,8 @@ const SlurCard = ({ data }) => {
                                         {data.casual === true
                                             ? 'Yes'
                                             : data.casual === false
-                                            ? 'No'
-                                            : ''}
+                                                ? 'No'
+                                                : ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -155,8 +155,8 @@ const SlurCard = ({ data }) => {
                                         {data.appropriated === true
                                             ? 'Yes'
                                             : data.appropriated === false
-                                            ? 'No'
-                                            : ''}
+                                                ? 'No'
+                                                : ''}
                                     </TableCell>
                                 </TableRow>
                                 {showMore && (
@@ -172,9 +172,9 @@ const SlurCard = ({ data }) => {
                                                 {data.appropriationContext === true
                                                     ? 'Community'
                                                     : data.appropriationContext ===
-                                                      false
-                                                    ? 'Others'
-                                                    : ''}
+                                                        false
+                                                        ? 'Others'
+                                                        : ''}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -242,12 +242,12 @@ const SlurCard = ({ data }) => {
                                 )}
                             </TableBody>
                         </Table>
-                        <Box align='center' margin={{top: "small"}}>
-                        <Anchor
-                            label={buttonLabel}
-                            icon={buttonIcon}
-                            onClick={toggleShowMore}
-                        />
+                        <Box align='center' margin={{ top: "small" }}>
+                            <Anchor
+                                label={buttonLabel}
+                                icon={buttonIcon}
+                                onClick={toggleShowMore}
+                            />
                         </Box>
                     </Box>
                 </>
