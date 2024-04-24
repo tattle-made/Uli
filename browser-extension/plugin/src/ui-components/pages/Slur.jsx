@@ -4,8 +4,7 @@ import { Add, Edit, Trash } from 'grommet-icons';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
-// import SlurCard from '../atoms/SlurCard';
-import SlurCard from '../atoms/SlurCardComponent';
+import SlurCard from '../atoms/SlurCard';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
 
