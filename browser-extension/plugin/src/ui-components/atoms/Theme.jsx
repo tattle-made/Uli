@@ -71,7 +71,14 @@ const Theme = {
                 </Text>
             )
         }
-    }
+    },
+    dataTable: {
+        header: {
+            border: {
+                color: 'transparent',
+            },
+        },
+    },
 };
 
 export default Theme;
