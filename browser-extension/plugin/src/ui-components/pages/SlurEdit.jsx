@@ -172,6 +172,8 @@ export function SlurEdit() {
                     <TextArea
                         id="slur-form-label-meaning"
                         name="labelMeaning"
+                        focusIndicator="true"
+                        resize="vertical"
                     />
                 </FormField>
 
