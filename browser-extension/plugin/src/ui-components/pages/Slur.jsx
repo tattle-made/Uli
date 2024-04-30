@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Api from './Api';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 import SlurCard from '../atoms/SlurCard';
-import SlurCardComponent from '../atoms/SlurCardComponent';
+// import SlurCardComponent from '../atoms/SlurCardComponent';
 
 const { getSlurAndCategory, deleteSlurAndCategory } = Api;
 
@@ -85,8 +85,8 @@ export function Slur() {
                                     onClick={navigateToAddSlur}
                                 />
                             </Box>
-                            <Box margin={{ top  : "medium"}}>
-                                <Text size="medium">
+                            <Box>
+                                <Text size="small">
                                     No Slurs have been added, click to add slurs
                                 </Text>
                             </Box>
@@ -124,21 +124,19 @@ export function Slur() {
                                 pad="medium"
                                 round="medium"
                                 width="medium"
-                                elevation="medium"
-                                margin={{ top: 'medium' , bottom: 'medium' }}
+                                elevation="small"
+                                margin={{ top: 'medium' }}
                             >
                                 <Box
                                     direction="row"
                                     justify="between"
-                                    gap="large"
+                                    gap="small"
                                     align="center"
                                 >
                                     <Box width="60%" margin={'small'}>
                                         <Text size="large" truncate>
                                             <strong>{slur.label}</strong>
                                         </Text>
-                                        
-                                        
                                     </Box>
                                     <Box
                                         direction="row"
@@ -148,15 +146,12 @@ export function Slur() {
                                         <Box
                                             width={'fit-content'}
                                             round="medium"
-                                            pad={"none"}
-                                            // border={{ color: 'brand' }}
-                                            
+                                            border={{ color: 'brand' }}
                                         >
                                             <Button
                                                 id="slur-edit-button"
                                                 // label="Edit"
                                                 icon={<Edit size="medium" />}
-
                                                 onClick={() =>
                                                     navigate(`/slur/${slur.id}`)
                                                 }
@@ -165,6 +160,8 @@ export function Slur() {
                                         <Box
                                             width={'fit-content'}
                                             round="medium"
+                                            border={{ color: 'brand' }}
+                                            // background={"#FFB199"}
                                         >
                                             <Button
                                                 id="slur-delete-button"
@@ -178,20 +175,15 @@ export function Slur() {
                                                 onClick={() =>
                                                     handleDeleteSlur(slur.id)
                                                 }
-
                                             />
                                         </Box>
                                     </Box>
                                 </Box>
-                                <Box margin={{ top: 'large'}}>
-                                    <SlurCardComponent data={slur} />
+                                <Box margin={{ top: 'large' }}>
+                                    <SlurCard data={slur} />
                                 </Box>
-                                
                             </Box>
-                           
-                           
                         ))}
-                        
                     </>
                 )}
             </Box>

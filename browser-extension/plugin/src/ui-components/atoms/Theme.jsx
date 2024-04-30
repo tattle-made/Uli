@@ -71,16 +71,6 @@ const Theme = {
                 </Text>
             )
         }
-    },
-    dataTable: {
-        header: {
-            border: {
-                color: 'transparent',
-            },
-        },
-    },
-    card : {
-        elevation : "none"
     }
 };
 
