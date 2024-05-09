@@ -55,7 +55,7 @@ export function Slur() {
     }, []);
 
     return (
-        <Box fill gap={'medium'} pad={{ bottom: 'medium' }}>
+        <Box fill gap={'medium'} pad={{bottom: 'medium'}}>
             <Box gap="medium" alignContent="center" wrap>
                 {isLoading ? (
                     <Box alignContent="center">
@@ -143,14 +143,13 @@ export function Slur() {
                                         width="40%"
                                     >
                                         <Box
-                                            border={{color : 'brand'}}
                                             width={'fit-content'}
                                             round="medium"
+                                            border={{ color: 'brand' }}
                                         >
                                             <Button
                                                 id="slur-edit-button"
                                                 // label="Edit"
-                                                // plain={false}
                                                 icon={<Edit size="medium" />}
                                                 onClick={() =>
                                                     navigate(`/slur/${slur.id}`)
@@ -158,14 +157,14 @@ export function Slur() {
                                             />
                                         </Box>
                                         <Box
-                                            border={{color : 'brand'}}
                                             width={'fit-content'}
                                             round="medium"
+                                            border={{ color: 'brand' }}
+                                            // background={"#FFB199"}
                                         >
                                             <Button
                                                 id="slur-delete-button"
                                                 // label="Delete"
-                                                // plain={false}
                                                 icon={
                                                     <Trash
                                                         size="medium"
