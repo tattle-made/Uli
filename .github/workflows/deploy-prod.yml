@@ -47,14 +47,14 @@ jobs:
           npm run build
           npm run deploy
 
-      - name: Notify on Slack
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: "Deployed uli-website to production environment"
-          SLACK_TITLE: "deploy-production workflow complete"
-          SLACK_COLOR: "#020637"
-          SLACK_ICON: https://tattle-media.s3.amazonaws.com/monogram-dark.svg
+      # - name: Notify on Slack
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #     SLACK_MESSAGE: "Deployed uli-website to production environment"
+      #     SLACK_TITLE: "deploy-production workflow complete"
+      #     SLACK_COLOR: "#020637"
+      #     SLACK_ICON: https://tattle-media.s3.amazonaws.com/monogram-dark.svg
 
   uli-server:
     runs-on: ubuntu-latest
