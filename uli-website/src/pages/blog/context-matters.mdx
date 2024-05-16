@@ -1,0 +1,34 @@
+---
+name: Context Matters-The Nuance of Words
+excerpt: "The meaning of a word, and whether it is abusive, can change according to context. How can MachineLearning tools incorporate this nuance?"
+author: "Tattle"
+project: 
+date: 2024-05-16
+tags: 
+---
+
+import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
+
+<ContentPageShell>
+  
+![](/Illustration with Blog 4 - Context matters.png)
+  
+The same word or set of words can be interpreted very differently based on a person’s lived experience, their sense of safety, the political context at that time, or even just their personality. A word when reclaimed by a marginalized community should also be distinguished from its usage in demeaning and stereotyping a group. For instance, the word ‘slut’ which is broadly considered demeaning and misogynistic in its use has also been [reclaimed by some feminists](https://feminisminindia.com/2020/02/04/feel-liberated-reclaiming-slut-shaming-slang-words/) and the famous ‘slut walk’ event is an example of this. 
+So, how do you define what is hate speech, what is abusive, or what is considered a slur? Moreover, who defines it? 
+This was one of the fundamental conflicts while developing Uli. Machine learning works by finding patterns in existing data, and makes future decisions based on that pattern. For the algorithm, something either is or is not a slur. If every instance is different, it cannot pick up that pattern. We were trying to set a standard template for a highly nuanced issue. If we go back to one of the examples we used in the first blog of this series, not all ‘good morning’ messages can be categorised as cyberstalking, but neither are they all innocuous. 
+
+Tattle tried to address this in both the design process, and the user experience of the Uli plug-in. 
+The initial consultations and annotation process were held with a broad cross-section of people. This included researchers, activists, writers, and most importantly those of marginalised genders who were at the receiving end of this abuse. 
+Annotators were given a [simple methodology](https://docs.google.com/document/d/18H4TlLFB2GXK054oMj1uXVJ2OCFW08Gi/edit) to follow. Over 24,000 tweets have been annotated across the four languages. 
+It wasn’t just the words themselves. There were other considerations that came up during the process of annotating. 
+For example, what if a tweet was actually directed at a man, but still used derogatory language of a woman’s anatomy to demean him? As detailed in a subsequent paper on the [annotation experience](https://arxiv.org/abs/2311.09086), all identifying information of the receiver, sender or replier of the tweet had been removed, but annotators still assumed from the context. So, a specific question was then added to account for this - Is the post gendered abuse when not directed at a person of marginalised gender?
+
+Dharini Priscilla, one of the annotators for the Tamil list, also reflected on how important it is for annotators in South Asia to understand not just the language, but the specific political and religious undertones, and even popular culture of that particular area: “In Tamil, there are so many slurs that change even from one city to another. You don’t see that so much in English. It is broader.” 
+
+Uli’s plug-in also incorporates ways to contextualise. Users can create their own list of words that they want to see redacted in their feeds. Additionally, since the slur lists are open source, they can be used and contextualised depending on the need. Tattle has also kept an open line of communication, allowing users to write in if they feel a word needs to be removed from the list, and have a compelling reason for the request. 
+
+Illustration: Mitali Panganti
+
+</ContentPageShell>
+
+
