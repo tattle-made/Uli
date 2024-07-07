@@ -1,6 +1,6 @@
 const iconSrc = './info.svg';
 const iconAlt = 'Icon description'; 
-const targetWords = ['crazy', 'stupid', 'mad']; // Replace with your list of target words
+const targetWords = ['crazy', 'stupid']; // Replace with your list of target words
 
 document.querySelectorAll('*').forEach(element => {
     targetWords.forEach(targetWord => {
@@ -36,7 +36,7 @@ document.querySelectorAll('*').forEach(element => {
                     document.body.appendChild(popup);
                     // container.appendChild(popup);
 
-                    
+
                     // Remove popup when mouseout
                     icon.addEventListener('mouseout', () => {
                         popup.remove();
