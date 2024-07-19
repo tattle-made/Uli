@@ -151,7 +151,7 @@ function findPositions(word, text) {
 }
 
 
-function locateSlur(uliStore){
+function locateSlur(uliStore, targetWords){
     let n = uliStore.length ;
 
     for(let i = 0 ; i < n ; i++){
