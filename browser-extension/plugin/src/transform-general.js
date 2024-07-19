@@ -75,12 +75,8 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
 
 // Code inserted below is for uliStore
 
-let uliStore = []
-let body = document.querySelector("body");
-const targetWords = ['crazy', 'stupid', 'mad', 'insane']; // Replace with your list of target words
 
-
-/*           indexTree()/getAllTextNodes()  STARTS HERE        */
+/*           getAllTextNodes()  STARTS HERE        */
 
 function checkFalseTextNode(text, actualLengthOfText) {
     let n = text.length;
@@ -107,6 +103,7 @@ function checkFalseTextNode(text, actualLengthOfText) {
 
 
 function getAllTextNodes(node) {
+    let uliStore = []
     if (node.nodeType === 3) {
         //If node.data contains just whitespaces and \n, then its a false text node
 
@@ -123,21 +120,16 @@ function getAllTextNodes(node) {
     for (let i = 0; i < children.length; i++) {
         getAllTextNodes(children[i]);
     }
+
+    return uliStore ; 
 }
 
 
-/*           indexTree()/getAllTextNodes()  ENDS HERE        */
-// getAllTextNodes(body); 
+/*                getAllTextNodes()  ENDS HERE                */
 
 
+/*                 locateSlur()  STARTS HERE                  */
 
-
-
-
-
-/*                    locateSlur()  STARTS HERE               */
-
-// locateSlur(uliStore)
 function findPositions(word, text) {
     let positions = {};
     
@@ -178,13 +170,12 @@ function locateSlur(uliStore){
         })
         uliStore[i].slurs = slurs ; 
     }
+    return uliStore ; //This will return the final uliStore (after appending slurs)
 }
 
 
 /*                    locateSlur()  ENDS HERE               */
 
-
-// console.log("uliStore" , uliStore)
 
 
 export default {
