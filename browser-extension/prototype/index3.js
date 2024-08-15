@@ -76,11 +76,16 @@ function locateSlur(uliStore, targetWords) {
         uliStore[i].slurs = slurs;
 
 
-        parentNode.childNodes.forEach((node) => {
-            if (node === textnode) {
-                parentNode.replaceChild(tempParent, node)
-            }
-        });
+        //Additional O(N) complexity
+        // parentNode.childNodes.forEach((node) => {
+        //     if (node === textnode) {
+        //         parentNode.replaceChild(tempParent, node)
+        //     }
+        // });
+
+        //O(1) complexity
+        parentNode.replaceChild(tempParent, node)
+
     }
     return uliStore; //This will return the final uliStore (after appending slurs)
 }
@@ -146,8 +151,7 @@ function addMetaData(targetWords) {
     })
 }
 
-// let imgSrc = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
-// let imgAlt = "slur word desc"
+
 let targetWords = ["stupid", "crazy", "Crazy", "mad" ,  "Mad" , "MAD"]
 let uliStore = []
 getAllTextNodes(document.body, uliStore)
