@@ -48,11 +48,11 @@ function locateSlur(uliStore, targetWords) {
     for (let i = 0; i < n; i++) {
         let store = uliStore[i];  //This will contain the textNode 
         let parentNode = store.parent
-        let textnode = store.node 
+        let textnode = store.node
         let text = store.node.textContent
         let tempParent = document.createElement("span");  //I chose span over p because span is an inline element and p is a block element, injecting block
         //element would cause a lot of change in the stylings and can damage the overall webpage to a greater extent
-        tempParent.textContent = text ; 
+        tempParent.textContent = text;
         //We have to look into this store for all the slurWords 
         let slurs = [];
 
@@ -66,37 +66,21 @@ function locateSlur(uliStore, targetWords) {
             if (tempParent.innerHTML.includes(targetWord)) {
                 const className = `icon-container-${targetWord}`;
                 const parts = tempParent.innerHTML.split(targetWord);
-                const replacedHTML = parts.join(`${targetWord}<span class="${className}">*</span>`);
+                const replacedHTML = parts.join(`${targetWord}<span class="${className}"></span>`);
                 tempParent.innerHTML = replacedHTML
             }
         })
-
-
-
         // for(let i = 0 ; i < )
         // console.log("tempParent " , tempParent)
         uliStore[i].nodeToParent = tempParent
         uliStore[i].slurs = slurs;
 
 
-
         parentNode.childNodes.forEach((node) => {
-            // Check if the node is a text node
-            // if (node.nodeType === Node.TEXT_NODE) {
-            //   // Check if the text node contains the target text
-            //   if (node.textContent.trim() === "Replace this text node") {
-            //     // Create a new element to replace the text node
-            //     let newElement = document.createElement('span');
-            //     newElement.textContent = "This is the new element";
-          
-            //     // Replace the text node with the new element
-            //     container.replaceChild(newElement, node);
-            //   }
-            // }
-            if(node === textnode){
-                parentNode.replaceChild(tempParent , node)
+            if (node === textnode) {
+                parentNode.replaceChild(tempParent, node)
             }
-          });
+        });
     }
     return uliStore; //This will return the final uliStore (after appending slurs)
 }
@@ -111,11 +95,11 @@ function addMetaData(targetWords) {
             let sup = document.createElement("sup");
 
             let img = document.createElement("img");
-            img.style.height = "2%"
-            img.style.width = "2%"
+            img.style.height = "3%"
+            img.style.width = "3%"
             img.style.cursor = "pointer"
-            // img.src = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
-            img.src = "./info.png"
+            img.src = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
+            // img.src = "./info.png"
             img.alt = "altText"
 
             let span = document.createElement("span")
@@ -162,10 +146,11 @@ function addMetaData(targetWords) {
     })
 }
 
-
-let targetWords = ["stupid", "crazy", "Crazy", "mad"]
+// let imgSrc = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
+// let imgAlt = "slur word desc"
+let targetWords = ["stupid", "crazy", "Crazy", "mad" ,  "Mad" , "MAD"]
 let uliStore = []
 getAllTextNodes(document.body, uliStore)
 abc = locateSlur(uliStore, targetWords)
 console.log("uliStore", abc)
-// addMetaData(targetWords)
+addMetaData(targetWords)
