@@ -148,12 +148,18 @@ chrome.runtime.onMessage.addListener(async function (request) {
 window.addEventListener(
     'load',
     async () => {
-        console.log('content loaded');
+        // console.log('content loaded');
+        // console.log("wowowow")
         const pref = await getPreferenceData();
-        console.log(pref);
+        // console.log(pref);
         const { enableSlurReplacement } = pref;
         if (enableSlurReplacement) {
             processPage(location.href);
+        }
+        else{
+            let body = document.getElementsByTagName('body');
+            let first_body = body[0];
+            transformGeneral.processNewlyAddedNodesGeneral2(first_body);
         }
     },
     false

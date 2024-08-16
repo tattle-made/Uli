@@ -1,3 +1,6 @@
+// Created on Aug, 15
+// Author : Hardik PS
+
 function checkFalseTextNode(text, actualLengthOfText) {
     let totalNewlineAndWhitespaces = 0;
     for (let i = 0; i < text.length; i++) {
@@ -84,7 +87,7 @@ function locateSlur(uliStore, targetWords) {
         // });
 
         //O(1) complexity
-        parentNode.replaceChild(tempParent, textnode)
+        parentNode.replaceChild(tempParent, node)
 
     }
     return uliStore; //This will return the final uliStore (after appending slurs)
