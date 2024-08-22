@@ -52,16 +52,26 @@ function setCaretPosition(element, offset) {
 
 const processNewlyAddedNodesGeneral2 = function (firstBody) {
 
-            console.log("HEY THERE !!!")
-            let targetWords = ["stupid", "crazy", "Crazy", "mad", "Mad", "MAD"]
-            let uliStore = []
-            // getAllTextNodes(document.body, uliStore)
-            getAllTextNodes(firstBody, uliStore)
-            console.log(uliStore)
-            abc = locateSlur(uliStore, targetWords)
-            console.log("uliStore", abc)
-            addMetaData(targetWords)
-            
+    // const config = { attributes: true, childList: true, subtree: true };
+    const callback = () => {
+        console.log("HEY THERE !!!")
+        let targetWords = ["bad", "BAD" , "Bad" , "Stupid" , "STUPID" , "stupid", "crazy", "Crazy", "mad", "Mad", "MAD" , "CRAZY"]
+        let uliStore = []
+        // getAllTextNodes(document.body, uliStore)
+        getAllTextNodes(firstBody, uliStore)
+        console.log(uliStore)
+        abc = locateSlur(uliStore, targetWords)
+        console.log("uliStore", abc)
+        addMetaData(targetWords)
+    }
+
+    callback() ; 
+
+
+    // const observer = new MutationObserver(callback);
+    // observer.observe(firstBody , config);
+
+
 }
 
 
@@ -160,7 +170,7 @@ function locateSlur(uliStore, targetWords) {
         tempParent.textContent = text;
 
         let slurs = [];
-
+        let slurPresentInTempParent = false;
         targetWords.forEach(targetWord => {
             let slurWord = targetWord;
             let pos = findPositions(slurWord, text);
@@ -173,6 +183,7 @@ function locateSlur(uliStore, targetWords) {
                 const parts = tempParent.innerHTML.split(targetWord);
                 const replacedHTML = parts.join(`${targetWord}<span class="${className}"></span>`);
                 tempParent.innerHTML = replacedHTML
+                slurPresentInTempParent = true;
             }
         })
         // for(let i = 0 ; i < )
@@ -181,10 +192,15 @@ function locateSlur(uliStore, targetWords) {
         uliStore[i].slurs = slurs;
 
         //O(1) complexity
-        parentNode.replaceChild(tempParent, textnode)
+        if (slurPresentInTempParent) {
+            // parentNode.replaceChild(tempParent, textnode)
+            textnode.replaceWith(tempParent)
+            // textnode.replaceWith(createTextNode(tempParent.innerHTML))
+
+        }
 
     }
-    return uliStore; 
+    return uliStore;
 }
 
 
@@ -204,14 +220,15 @@ function addMetaData(targetWords) {
             let sup = document.createElement("sup");
 
             let img = document.createElement("img");
-            img.style.height = "3%"
-            img.style.width = "3%"
+            img.style.height = "2%"
+            img.style.width = "2%"
             img.style.cursor = "pointer"
             img.src = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
             // img.src = "./info.png"
             img.alt = "altText"
 
             let span = document.createElement("span")
+            // span.style.all = "unset"
             span.style.display = "none"
             span.style.position = "absolute"
             span.style.backgroundColor = "antiquewhite"
@@ -220,20 +237,39 @@ function addMetaData(targetWords) {
             span.style.padding = "2px 6px"
             span.style.width = "12rem"
             span.style.textAlign = "justify"
+            span.style.fontWeight = "lighter"
+            span.style.color = "black"
+            span.style.zIndex = "1000000000"; // This ensures it appears above other elements
+            span.style.fontSize = "14px"
+            span.style.textDecoration = "none"
+            span.style.fontStyle = "normal"
+            // span.style.height = "fit-content"
             span.innerHTML = `This is ${targetWord}`
 
+            // span.style.display = "none";
+            // span.style.position = "absolute";
+            // span.style.backgroundColor = "antiquewhite !important";
+            // span.style.border = "1px solid black !important";
+            // span.style.borderRadius = "12px !important";
+            // span.style.padding = "2px 6px !important";
+            // span.style.width = "12rem !important";
+            // span.style.textAlign = "justify !important";
+            // span.innerHTML = `This is ${targetWord}`;
 
-            if (targetWord === "crazy") {
-                span.innerHTML = `Referring to behaviors or situations as "crazy" can perpetuate stereotypes about mental health and may be hurtful to those with mental health conditions.`
+
+
+
+            if (targetWord.toLowerCase() === "crazy") {
+                span.innerHTML = `It can perpetuate stereotypes about mental health and may be hurtful to those with mental health conditions.`
             }
-            else if (targetWord === "mad") {
-                span.innerHTML = `Using "mad" to describe someone negatively can be insensitive, as it historically stigmatizes mental health issues and can imply irrationality or instability.`
+            else if (targetWord.toLowerCase() === "mad") {
+                span.innerHTML = `Using "mad" to describe someone negatively can be insensitive.`
             }
-            else if (targetWord === 'stupid') {
-                span.innerHTML = `Describing actions or decisions as "stupid" can be demeaning and hurtful, as it implies lack of intelligence or judgment, which can be offensive to individuals or groups.`
+            else if (targetWord.toLowerCase() === 'stupid') {
+                span.innerHTML = `Describing actions or decisions as "stupid" can be demeaning and hurtful.`
             }
             else {
-                span.innerHTML = `This word is considered offensive or derogatory due to its association with negative stereotypes about people with disabilities. Using such terms can perpetuate discrimination and harm individuals by devaluing their worth and capabilities.`
+                span.innerHTML = `This word is considered offensive.`
             }
 
 
@@ -246,6 +282,7 @@ function addMetaData(targetWords) {
             const svgs = element.children[0].children[0];
             svgs.addEventListener('mouseover', function () {
                 sups.children[1].style.display = "inline-block"
+                // sups.children[1].style.display = "block"
             });
 
             svgs.addEventListener('mouseout', function () {
@@ -262,7 +299,7 @@ function addMetaData(targetWords) {
 
 
 export default {
-    processNewlyAddedNodesGeneral , 
+    processNewlyAddedNodesGeneral,
     processNewlyAddedNodesGeneral2
 };
 
