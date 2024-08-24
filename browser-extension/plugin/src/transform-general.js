@@ -55,7 +55,7 @@ const processNewlyAddedNodesGeneral2 = function (firstBody) {
     // const config = { attributes: true, childList: true, subtree: true };
     const callback = () => {
         console.log("HEY THERE !!!")
-        let targetWords = ["bad", "BAD" , "Bad" , "Stupid" , "STUPID" , "stupid", "crazy", "Crazy", "mad", "Mad", "MAD" , "CRAZY"]
+        let targetWords = ["Blog" , "BLOG", "Choose" , "domain", "bad", "BAD" , "Bad" , "Stupid" , "STUPID" , "stupid", "crazy", "Crazy", "mad", "Mad", "MAD" , "CRAZY"]
         let uliStore = []
         // getAllTextNodes(document.body, uliStore)
         getAllTextNodes(firstBody, uliStore)
@@ -235,7 +235,7 @@ function addMetaData(targetWords) {
             span.style.border = "1px solid black"
             span.style.borderRadius = "12px"
             span.style.padding = "2px 6px"
-            span.style.width = "12rem"
+            // span.style.width = "12rem"
             span.style.textAlign = "justify"
             span.style.fontWeight = "lighter"
             span.style.color = "black"

@@ -152,11 +152,11 @@ window.addEventListener(
         // console.log("wowowow")
         const pref = await getPreferenceData();
         // console.log(pref);
-        const { enableSlurReplacement } = pref;
+        const { enableSlurReplacement , enableSlurMetadata } = pref;
         if (enableSlurReplacement) {
             processPage(location.href);
         }
-        else{
+        else if (enableSlurMetadata) {
             let body = document.getElementsByTagName('body');
             let first_body = body[0];
             transformGeneral.processNewlyAddedNodesGeneral2(first_body);
