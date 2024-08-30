@@ -7,32 +7,20 @@
     "content_security_policy": {
         "extension_pages": "default-src 'none'; connect-src https://ogbv-plugin.tattle.co.in/ https://uli-media.tattle.co.in/; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; img-src https://uli-media.tattle.co.in/; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';"
     },
-    "permissions": [
-        "storage",
-        "contextMenus"
-    ],
-    "host_permissions": [
-        "https://ogbv-plugin.tattle.co.in/*"
-    ],
+    "permissions": ["storage", "contextMenus"],
+    "host_permissions": ["https://ogbv-plugin.tattle.co.in/*"],
     "background": {
         "service_worker": "background.js"
     },
     "content_scripts": [
         {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "content-script.js"
-            ],
+            "matches": ["<all_urls>"],
+            "js": ["content-script.js"],
             "run_at": "document_end"
         }
     ],
     "action": {
         "default_popup": "options.html"
     },
-    "icons": {
-        "16": "icon16.png",
-        "48": "icon32.png"
-    }
+    "icons": { "16": "icon16.png", "48": "icon32.png" }
 }
