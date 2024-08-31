@@ -40,6 +40,7 @@ export function Preferences() {
         async function getPrefsLocalStorage() {
             try {
                 const preference = await getPreferenceData();
+                console.log("preference " , preference)
                 if (!ignore) {
                     // console.log({ preference });
                     setLocalPreferences(preference);
@@ -93,6 +94,8 @@ export function Preferences() {
 
     async function handleSlurReplacement(enableSlurReplacement) {
         try {
+            setEnableSlurMetadata(false);
+            
             const confirmed = window.confirm(
                 'This action requires a page reload. Do you want to continue?'
             );
@@ -121,6 +124,8 @@ export function Preferences() {
 
     async function handleSlurMetadata(enableSlurMetadata) {
         try {
+            setEnableSlurReplacement(false)
+            
             const confirmed = window.confirm(
                 'This action requires a page reload. Do you want to continue?'
             );
@@ -181,7 +186,7 @@ export function Preferences() {
                 enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
 
             const enableSlurMetadataChanged =
-            enableSlurMetadata !== preferenceInLS.enableSlurMetadata;
+                enableSlurMetadata !== preferenceInLS.enableSlurMetadata;
 
             if (enableSlurReplacementChanged) {
                 console.log('enable val changed', enableSlurReplacementChanged);

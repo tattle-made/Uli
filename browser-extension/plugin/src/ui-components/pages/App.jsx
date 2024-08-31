@@ -78,7 +78,8 @@ export function App() {
             setUser(user);
             setAccountActivated(true);
             await setPreferenceData({
-                enableSlurReplacement: true
+                enableSlurReplacement: true,
+                enableSlurMetadata: false
             });
             userBrowserTabs.reload();
             navigate('/preferences');
