@@ -53,31 +53,18 @@ function setCaretPosition(element, offset) {
 const processNewlyAddedNodesGeneral2 = function (firstBody) {
 
     // const config = { attributes: true, childList: true, subtree: true };
-
     console.log("HEY THERE !!!")
-    let targetWords = ["Blog", "BLOG", "Choose", "domain", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "mad", "Mad", "MAD", "CRAZY" , "ABLANARI", "AblaNari", "ablanari", "chakka",
-    "jihidis", "Jihadi", "Jihidi", "zehadi", "jehadan",
-    "Chakko", "chakki", "chaka", "Chinal", "Randi", "ramdi", "Randie", "randya", "randikhana",
-    "Lulli", "Gasti", "Meetha", "Halwa", "Gud", "Gandu", "Gaand", "Gandiaal", "lodu", "kutiya"
-
-    ]
-
-    // "जिहादी", "छक्का", "छिनाल", "रंडी", "रण्डी", "रांड", "रंडीखाना", "लुल्ली", "गांड", "कुतिया", "कुत्ती", "बत्तमीज़", "कुल्टा", "हरामजादी", "साली", "चुदाई", "भोस्डीके", "लोड़ू", "मादरचोद", "लानती", "छुतीये", "चूत", "लौड़ा", "लौड़े", "लिब्राण्डू", "पुंगी", "पागल", "बाज़ारू", "बलात्कार", "बदसूरत", "मुजरा", "औरत-ए-जाहिल", "भोसड़ीwala", "म्लेच्छा", "सूअर", "दोगली", "🏹🏹", "पनौती", "हरामी", "गधी", "पिछवाड़ा", "हगना", "सुल्ली", "हिज़रापंती", "तवाइफ़", "किन्नर", "गद्दार", "चमचा", "चमची", "आतंकवादी", "मुलिया", "Katwa", "चाटुकार", "चुस्लिम", "चुस्लामि", "चुसल्मान", "चूस", "भीमटा", "भीमटी", "बैल", "भद्दी", "भांड", "भाड़े", "नल्ली", "मादरजात", "भड़वा", "चूची", "टट्टी", "मूत", "नाजायज़", "देहातन", "देहाती", "गणिका", "हबशी", 
-
-    let slurList = [  "kutti", "Badchalan", "Battameez", "kulta", "haramjadi", "dyan", "saali", "sali", "chooda", "chuda", "Bhdsk", "bsdk", "bhosad", "bhosdiwale", "Lodu", "bhenchod", "Madarchod", "Maderchod", "mcp", "mc", "Lanti", "chutiye", "chutiya", "chutie", "chutia", "chutan", "Lavde","Rakhail", "librandu", "bazaru", "balatkar", "Ugly", "Mujra", "mujra", "hilana", "hilaogi", "Mlechcha", "Suar", "doghli", "Panauti", "panooti", "harami", "gadhi", "kalmuhi", "pichwada", "jhadu", "bai", "naali", "hagna", "Sulli", "Tawaif", "Dhimmihood", "izzlam", "gaddar", "chamcha", "chamchi", "aatankwadi", "Mulliya", "Uncut", "chatukar", "Kachra", "Chuslim", "chuslami", "Chusalmans", "Bhimta", "Budhdhi", "Gatiya", "nalli", "bhootni", "madarjaat", "bhadva", "bhadvi", "bhandve", "chuchi", "tatti", "mooh", "mutth", "Pataka", "Ganika", "chewtypa", "atrocuty_act", "RandiKutiya", "sulli", "lovejihad", "dull-it", "Presstitutes", "libtard", "bimbo", "slims", "faggot", "Sissy", "whore", "chrislamocommies", "piddilover", "Chinks", "chinky", "Feminazi", "Mulli", "halala", "Scumreds", "scumbags", "burnol", "pheminist", "dented-painted", "Muzlim", "Buzlim", "Izzlam", "pissfull", "Simp", "Bitch", "sekoolar", "sickular", "Ferrorists", "Cunt", "Slut", "pussy", "ugly", "promiscuous", "fat", "fag", "homo", "hoe", "motherfucker", "sisterfucker", "bastard", "bint", "dyke", "gash", "muslimette", "muttah", "scag", "assfucker", "boobs", "boobies", "Melons", "lesbain", "moslem", "nasty", "redlight", "nymph", "piss", "pimp", "poop", "pube", "puke", "retarded", "slave", "sissy", "mothafucka", "mothafucked", "mothafucker", "motherfucked", "motherfucking", "lesbain", "lesbayn", "lesbian", "lesbin", "lesbo", "nastyslut", "nastywhore", "nastybitch", "nastyho", "Koodhi", "pottai", "Aththai", "athai", "loosu", "fuck", "cunt", "stupid", "Stupid", "crazy", "Crazy", "mad", "MAD"];
-
+    let targetWords = ["Blog", "BLOG", "Choose", "domain", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "mad", "Mad", "MAD", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu"]
 
     // let targetWords = slurList ; 
     let uliStore = []
     // getAllTextNodes(document.body, uliStore)
     getAllTextNodes(firstBody, uliStore)
-    // console.log(uliStore)
+    console.log(uliStore)
     abc = locateSlur(uliStore, targetWords)
-    // console.log("uliStore", abc)
+    console.log("uliStore", abc)
     addMetaData(targetWords)
 }
-
-
 
 
 
@@ -183,8 +170,7 @@ function locateSlur(uliStore, targetWords) {
             if (Object.keys(pos).length !== 0) {
                 slurs.push(pos)
             }
-            
-            
+
             if (tempParent.innerHTML.includes(targetWord)) {
                 const className = `icon-container-${targetWord}`;
                 const parts = tempParent.innerHTML.split(targetWord);
@@ -221,7 +207,6 @@ function locateSlur(uliStore, targetWords) {
 function addMetaData(targetWords) {
     targetWords.forEach(targetWord => {
         const className = `icon-container-${targetWord}`
-        console.log(className)
         const elements = Array.from(document.querySelectorAll(`.${className}`))
         elements.forEach(element => {
 
@@ -269,20 +254,18 @@ function addMetaData(targetWords) {
 
 
 
-            // if (targetWord.toLowerCase() === "crazy") {
-            //     span.innerHTML = `It can perpetuate stereotypes about mental health and may be hurtful to those with mental health conditions.`
-            // }
-            // else if (targetWord.toLowerCase() === "mad") {
-            //     span.innerHTML = `Using "mad" to describe someone negatively can be insensitive.`
-            // }
-            // else if (targetWord.toLowerCase() === 'stupid') {
-            //     span.innerHTML = `Describing actions or decisions as "stupid" can be demeaning and hurtful.`
-            // }
-            // else {
-            //     
-            // }
-
-            span.innerHTML = `This word is considered offensive.`
+            if (targetWord.toLowerCase() === "crazy") {
+                span.innerHTML = `It can perpetuate stereotypes about mental health and may be hurtful to those with mental health conditions.`
+            }
+            else if (targetWord.toLowerCase() === "mad") {
+                span.innerHTML = `Using "mad" to describe someone negatively can be insensitive.`
+            }
+            else if (targetWord.toLowerCase() === 'stupid') {
+                span.innerHTML = `Describing actions or decisions as "stupid" can be demeaning and hurtful.`
+            }
+            else {
+                span.innerHTML = `This word is considered offensive.`
+            }
 
 
             sup.appendChild(img)
