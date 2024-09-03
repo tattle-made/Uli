@@ -1,0 +1,101 @@
+[
+    {
+      "fuck": {
+        "Level of Severity": "Low",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": "a casual slur used to convey dislike, disrespect or lack of care. Sometimes also used aggresively or intensely"
+      }
+    },
+    {
+      "cunt": {
+        "Level of Severity": "High",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": "slang for women's genetalia"
+      }
+    },
+    {
+      "slut": {
+        "Level of Severity": "High",
+        "Casual": "No",
+        "Appropriated": "Yes",
+        "If, Appropriated, Is it by Community or Others?": "Community",
+        "What Makes it Problematic?": ""
+      }
+    },
+    {
+      "whore": {
+        "Level of Severity": "Low",
+        "Casual": "Yes",
+        "Appropriated": "Yes",
+        "If, Appropriated, Is it by Community or Others?": "Community",
+        "What Makes it Problematic?": ""
+      }
+    },
+    {
+      "Randi": {
+        "Level of Severity": "High",
+        "Casual": "No",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": ""
+      }
+    },
+    {
+      "chutiya": {
+        "Level of Severity": "Low",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": ""
+      }
+    },
+    {
+      "bsdk": {
+        "Level of Severity": "Low",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": ""
+      }
+    },
+    {
+      "jihadi": {
+        "Level of Severity": "High",
+        "Casual": "No",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": ""
+      }
+    },
+    {
+      "Madarchod": {
+        "Level of Severity": "Medium",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": "sexualized act and describing incest, acted on a woman's (sister) body"
+      }
+    },
+    {
+      "bhenchod": {
+        "Level of Severity": "Medium",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": "sexualized act and describing incest, acted on a woman's (sister) body"
+      }
+    },
+    {
+      "motherfucker": {
+        "Level of Severity": "Medium",
+        "Casual": "Yes",
+        "Appropriated": "No",
+        "If, Appropriated, Is it by Community or Others?": "",
+        "What Makes it Problematic?": "slur based on incest which is a common theme for derogatory words. Incest based slurs imply immorality since it is a deviation from established moral codes. But such insults express action over female bodies"
+      }
+    }
+]
