@@ -94,7 +94,7 @@ export function Preferences() {
 
     async function handleSlurReplacement(enableSlurReplacement) {
         try {
-            setEnableSlurMetadata(false);
+            // setEnableSlurMetadata(false);
             
             const confirmed = window.confirm(
                 'This action requires a page reload. Do you want to continue?'
@@ -108,7 +108,8 @@ export function Preferences() {
 
                 await setPreferenceData({
                     ...localPreferences,
-                    enableSlurReplacement
+                    enableSlurReplacement,
+                    // enableSlurMetadata
                 });
 
                 userBrowserTabs.sendMessage(tabId, {
@@ -124,7 +125,7 @@ export function Preferences() {
 
     async function handleSlurMetadata(enableSlurMetadata) {
         try {
-            setEnableSlurReplacement(false)
+            // setEnableSlurReplacement(false)
             
             const confirmed = window.confirm(
                 'This action requires a page reload. Do you want to continue?'
@@ -138,7 +139,8 @@ export function Preferences() {
 
                 await setPreferenceData({
                     ...localPreferences,
-                    enableSlurMetadata
+                    enableSlurMetadata,
+                    // enableSlurReplacement
                 });
 
                 userBrowserTabs.sendMessage(tabId, {

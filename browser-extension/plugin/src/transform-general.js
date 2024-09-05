@@ -54,7 +54,7 @@ const processNewlyAddedNodesGeneral2 = function (firstBody) {
 
     // const config = { attributes: true, childList: true, subtree: true };
     console.log("HEY THERE !!!")
-    let targetWords = ["Blog", "BLOG", "Choose", "domain", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "mad", "Mad", "MAD", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu"]
+    let targetWords = ["Blog", "BLOG", "Choose", "domain", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "idiot" , "Idiot" , "IDIOT", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu"]
 
     // let targetWords = slurList ; 
     let uliStore = []
@@ -213,11 +213,12 @@ function addMetaData(targetWords) {
             let sup = document.createElement("sup");
 
             let img = document.createElement("img");
-            img.style.height = "2%"
-            img.style.width = "2%"
+            img.style.height = "1.5%"
+            img.style.width = "1.5%"
+            img.style.border = "1px solid black"
             img.style.cursor = "pointer"
 
-            img.src = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
+            img.src = "https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png"
             // img.src = "./icon16.png"
             // img.src = "./info.png"
             img.alt = "altText"
