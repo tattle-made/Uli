@@ -18,6 +18,9 @@
         "dev:chrome": "mkdir -p dist && concurrently \"npm run start:options\" \"npm run start:contentScript\" \"npm run moveBuildArtefactsToDistDir\"",
         "dev:clean": "rm -rf dist/"
     },
+    "jest": {
+        "testEnvironment": "jsdom"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
@@ -29,6 +32,8 @@
         "eslint-plugin-react": "7.33.2",
         "husky": "8.0.3",
         "jest": "29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "jsdom": "^25.0.0",
         "lint-staged": "15.1.0",
         "parcel": "2.10.3",
         "prettier": "3.1.0",

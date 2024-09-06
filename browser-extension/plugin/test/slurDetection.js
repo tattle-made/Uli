@@ -1,100 +1,3 @@
-import { replaceSlur } from './slur-replace';
-import { log } from './logger';
-import repository from './repository';
-const { getPreferenceData } = repository;
-import {slurJSON} from '../../api-server/assets/slur_metadata.json'
-
-// Traverse dom nodes to find leaf node that are text nodes and process
-function bft(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-        const originalText = node.textContent;
-        // Get cursor position
-        const originalCursorPosition = getCaretCharacterOffsetWithin(node);
-        const replacementText = replaceSlur(originalText);
-
-        if (replacementText !== originalText) {
-            node.textContent = replacementText;
-            // Set cursor position
-            setCaretPosition(node, originalCursorPosition);
-        }
-    } else if (
-        node.nodeName !== 'STYLE' &&
-        node.nodeName !== 'SCRIPT' &&
-        node.nodeName !== 'NOSCRIPT'
-    ) {
-        node.childNodes.forEach(bft);
-    }
-}
-
-// Function to get the cursor position within a node
-function getCaretCharacterOffsetWithin(element) {
-    let caretOffset = 0;
-    const sel = window.getSelection();
-    if (sel.rangeCount > 0) {
-        const range = sel.getRangeAt(0);
-        const preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(element);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length;
-    }
-    return caretOffset;
-}
-
-// Function to set the cursor position within a node
-function setCaretPosition(element, offset) {
-    const range = document.createRange();
-    const sel = window.getSelection();
-    range.setStart(element, offset);
-    range.collapse(true);
-    sel.removeAllRanges();
-    sel.addRange(range);
-}
-
-
-const processNewlyAddedNodesGeneral2 = function (firstBody) {
-
-    // const config = { attributes: true, childList: true, subtree: true };
-    console.log("HEY THERE !!!")
-    let targetWords = ["Blog", "BLOG", "Choose", "domain", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "idiot" , "Idiot" , "IDIOT", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu"]
-
-    // let targetWords = slurList ; 
-    let uliStore = []
-    // getAllTextNodes(document.body, uliStore)
-    getAllTextNodes(firstBody, uliStore)
-    console.log(uliStore)
-    abc = locateSlur(uliStore, targetWords)
-    console.log("uliStore", abc)
-    addMetaData(targetWords)
-}
-
-
-
-const processNewlyAddedNodesGeneral = function (firstBody) {
-    log('processing new nodes');
-    const config = { attributes: true, childList: true, subtree: true };
-
-    const callback = async () => {
-        const pref = await getPreferenceData();
-        const { enableSlurReplacement } = pref;
-        if (enableSlurReplacement) {
-            let elems = firstBody.children;
-            const nodes = Array.from(elems);
-            let relevant_elements = nodes.filter((element) =>
-                ['P', 'DIV'].includes(element.nodeName)
-            );
-
-            relevant_elements.map((element) => {
-                bft(element);
-            });
-        }
-    };
-    const observer = new MutationObserver(callback);
-    observer.observe(firstBody, config);
-};
-
-
-// Code inserted below is for uliStore
-
 
 /*           getAllTextNodes()  STARTS HERE        */
 
@@ -214,13 +117,10 @@ function addMetaData(targetWords) {
             let sup = document.createElement("sup");
 
             let img = document.createElement("img");
-            img.style.height = "1.5%"
-            img.style.width = "1.5%"
-            img.style.border = "1px solid black"
+            img.style.height = "2%"
+            img.style.width = "2%"
             img.style.cursor = "pointer"
-
-            img.src = "https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png"
-            // img.src = "./icon16.png"
+            img.src = "https://upload.wikimedia.org/wikipedia/commons/4/43/Minimalist_info_Icon.png"
             // img.src = "./info.png"
             img.alt = "altText"
 
@@ -259,7 +159,7 @@ function addMetaData(targetWords) {
             if (targetWord.toLowerCase() === "crazy") {
                 span.innerHTML = `It can perpetuate stereotypes about mental health and may be hurtful to those with mental health conditions.`
             }
-            else if (targetWord.toLowerCase() === "idiot") {
+            else if (targetWord.toLowerCase() === "mad") {
                 span.innerHTML = `Using "mad" to describe someone negatively can be insensitive.`
             }
             else if (targetWord.toLowerCase() === 'stupid') {
@@ -294,16 +194,4 @@ function addMetaData(targetWords) {
 
 
 
-
-export default {
-    processNewlyAddedNodesGeneral,
-    processNewlyAddedNodesGeneral2,
-    addMetaData, 
-    locateSlur, 
-    findPositions, 
-    getAllTextNodes, 
-    checkFalseTextNode 
-};
-
-
-
+module.exports = { addMetaData, locateSlur, findPositions, getAllTextNodes, checkFalseTextNode }
