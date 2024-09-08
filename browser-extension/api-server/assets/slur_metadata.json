@@ -1,177 +1,112 @@
 [
 	{
-		"fuck": {
-			"Level of Severity": "Low",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "a casual slur used to convey dislike, disrespect or lack of care. Sometimes also used aggresively or intensely",
-			"Categories": [
-				"sexualized"
-			]
-		}
+	  "fuck": {
+		"Level of Severity": "Low",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "a casual slur used to convey dislike, disrespect or lack of care. Sometimes also used aggresively or intensely",
+		"Categories": ["sexualized"]
+	  }
 	},
 	{
-		"cunt": {
-			"Level of Severity": "High",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "slang for women's genetalia",
-			"Categories": [
-				"sexualized"
-			]
-		}
+	  "cunt": {
+		"Level of Severity": "High",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "slang for women's genetalia",
+		"Categories": ["sexualized"]
+	  }
 	},
 	{
-		"slut": {
-			"Level of Severity": "High",
-			"Casual": "No",
-			"Appropriated": "Yes",
-			"If, Appropriated, Is it by Community or Others?": "Community",
-			"What Makes it Problematic?": "",
-			"Categories": [
-				"gendered",
-				"sexualized",
-				"body shaming"
-			]
-		}
+	  "slut": {
+		"Level of Severity": "High",
+		"Casual": "No",
+		"Appropriated": "Yes",
+		"If, Appropriated, Is it by Community or Others?": "Community",
+		"What Makes it Problematic?": "",
+		"Categories": ["gendered", "sexualized", "body shaming"]
+	  }
 	},
 	{
-		"whore": {
-			"Level of Severity": "Low",
-			"Casual": "Yes",
-			"Appropriated": "Yes",
-			"If, Appropriated, Is it by Community or Others?": "Community",
-			"What Makes it Problematic?": "",
-			"Categories": [
-				"gendered",
-				"sexualized"
-			]
-		}
+	  "whore": {
+		"Level of Severity": "Low",
+		"Casual": "Yes",
+		"Appropriated": "Yes",
+		"If, Appropriated, Is it by Community or Others?": "Community",
+		"What Makes it Problematic?": "",
+		"Categories": ["gendered", "sexualized"]
+	  }
 	},
 	{
-		"Randi": {
-			"Level of Severity": "High",
-			"Casual": "No",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "",
-			"Categories": [
-				"gendered",
-				"sexualized"
-			]
-		}
+	  "Randi": {
+		"Level of Severity": "High",
+		"Casual": "No",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "",
+		"Categories": ["gendered", "sexualized"]
+	  }
 	},
 	{
-		"chutiya": {
-			"Level of Severity": "Low",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "",
-			"Categories": []
-		}
+	  "chutiya": {
+		"Level of Severity": "Low",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "",
+		"Categories": []
+	  }
 	},
 	{
-		"bsdk": {
-			"Level of Severity": "Low",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "",
-			"Categories": [
-				"sexualized"
-			]
-		}
+	  "bsdk": {
+		"Level of Severity": "Low",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "",
+		"Categories": ["sexualized"]
+	  }
 	},
 	{
-		"jihadi": {
-			"Level of Severity": "High",
-			"Casual": "No",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "",
-			"Categories": [
-				"religion",
-				"ethnicity",
-				"political affiliation"
-			]
-		}
+	  "jihadi": {
+		"Level of Severity": "High",
+		"Casual": "No",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "",
+		"Categories": ["religion", "ethnicity", "political affiliation"]
+	  }
 	},
 	{
-		"Madarchod": {
-			"Level of Severity": "Medium",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "sexualized act and describing incest, acted on a woman's (sister) body",
-			"Categories": [
-				"gendered",
-				"sexualized"
-			]
-		}
+	  "Madarchod": {
+		"Level of Severity": "Medium",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "sexualized act and describing incest, acted on a woman's (sister) body",
+		"Categories": ["gendered", "sexualized"]
+	  }
 	},
 	{
-		"behenchod": {
-			"Level of Severity": "Medium",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "sexualized act and describing incest, acted on a woman's (sister) body",
-			"Categories": [
-				"gendered",
-				"sexualized"
-			]
-		}
+	  "bhenchod": {
+		"Level of Severity": "Medium",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "sexualized act and describing incest, acted on a woman's (sister) body",
+		"Categories": ["gendered", "sexualized"]
+	  }
 	},
 	{
-		"motherfucker": {
-			"Level of Severity": "Medium",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "slur based on incest which is a common theme for derogatory words. Incest based slurs imply immorality since it is a deviation from established moral codes. But such insults express action over female bodies",
-			"Categories": [
-				"sexualized",
-				"gendered"
-			]
-		}
-	},
-	{
-		"idiot": {
-			"Level of Severity": "Low",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "Used to demean someone's intelligence, often in a casual or aggressive manner.",
-			"Categories": [
-				"intellectual ability"
-			]
-		}
-	},
-	{
-		"crazy": {
-			"Level of Severity": "Medium",
-			"Casual": "Yes",
-			"Appropriated": "Yes",
-			"If, Appropriated, Is it by Community or Others?": "Community",
-			"What Makes it Problematic?": "Historically used to refer to mental health issues, reinforcing negative stereotypes about mental illness.",
-			"Categories": [
-				"mental health"
-			]
-		}
-	},
-	{
-		"stupid": {
-			"Level of Severity": "Low",
-			"Casual": "Yes",
-			"Appropriated": "No",
-			"If, Appropriated, Is it by Community or Others?": "",
-			"What Makes it Problematic?": "Used to insult someone's intelligence or capability, often belittling and dismissive.",
-			"Categories": [
-				"intellectual ability"
-			]
-		}
+	  "motherfucker": {
+		"Level of Severity": "Medium",
+		"Casual": "Yes",
+		"Appropriated": "No",
+		"If, Appropriated, Is it by Community or Others?": "",
+		"What Makes it Problematic?": "slur based on incest which is a common theme for derogatory words. Incest based slurs imply immorality since it is a deviation from established moral codes. But such insults express action over female bodies",
+		"Categories": ["sexualized", "gendered"]
+	  }
 	}
-]
+  ]
