@@ -109,7 +109,7 @@ export function Preferences() {
                 await setPreferenceData({
                     ...localPreferences,
                     enableSlurReplacement,
-                    // enableSlurMetadata
+                    enableSlurMetadata
                 });
 
                 userBrowserTabs.sendMessage(tabId, {
@@ -140,7 +140,7 @@ export function Preferences() {
                 await setPreferenceData({
                     ...localPreferences,
                     enableSlurMetadata,
-                    // enableSlurReplacement
+                    enableSlurReplacement
                 });
 
                 userBrowserTabs.sendMessage(tabId, {

@@ -2,7 +2,7 @@ import { replaceSlur } from './slur-replace';
 import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData } = repository;
-import {slurJSON} from '../../api-server/assets/slur_metadata.json'
+const jsonData = require('../../api-server/assets/slur_metadata.json')
 
 // Traverse dom nodes to find leaf node that are text nodes and process
 function bft(node) {
@@ -52,18 +52,21 @@ function setCaretPosition(element, offset) {
 
 
 const processNewlyAddedNodesGeneral2 = function (firstBody) {
+    
+
 
     // const config = { attributes: true, childList: true, subtree: true };
     console.log("HEY THERE !!!")
-    let targetWords = ["Blog", "BLOG", "Choose", "domain", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "idiot" , "Idiot" , "IDIOT", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu"]
+    let targetWords = ["Blog", "BLOG", "Choose", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "idiot" , "Idiot" , "IDIOT", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu","fuck","Fuck","Cunt","cunt","slut","Slut","Whore","whore","Chutiya","chutiya","Bsdk","bsdk","Madarchod","madarchod","behenchod","Bhenchod" , "Behenchod","motherfucker"
+    ]
 
     // let targetWords = slurList ; 
     let uliStore = []
     // getAllTextNodes(document.body, uliStore)
     getAllTextNodes(firstBody, uliStore)
-    console.log(uliStore)
+    // console.log(uliStore)
     abc = locateSlur(uliStore, targetWords)
-    console.log("uliStore", abc)
+    // console.log("uliStore", abc)
     addMetaData(targetWords)
 }
 
@@ -232,7 +235,7 @@ function addMetaData(targetWords) {
             span.style.border = "1px solid black"
             span.style.borderRadius = "12px"
             span.style.padding = "2px 6px"
-            // span.style.width = "12rem"
+            span.style.width = "16rem"
             span.style.textAlign = "justify"
             span.style.fontWeight = "lighter"
             span.style.color = "black"
@@ -241,34 +244,51 @@ function addMetaData(targetWords) {
             span.style.textDecoration = "none"
             span.style.fontStyle = "normal"
             // span.style.height = "fit-content"
-            span.innerHTML = `This is ${targetWord}`
-
-            // span.style.display = "none";
-            // span.style.position = "absolute";
-            // span.style.backgroundColor = "antiquewhite !important";
-            // span.style.border = "1px solid black !important";
-            // span.style.borderRadius = "12px !important";
-            // span.style.padding = "2px 6px !important";
-            // span.style.width = "12rem !important";
-            // span.style.textAlign = "justify !important";
-            // span.innerHTML = `This is ${targetWord}`;
+            span.innerHTML = `${targetWord} is an offensive word`
 
 
+            jsonData.forEach(slur => {
+                const slurWord = Object.keys(slur)[0]; // Get the slur word (the key)
+                if (slurWord.toLowerCase() === targetWord.toLowerCase()) { // Check if it matches the provided word
+                    const slurDetails = slur[slurWord]; // Access the details of the slur
+                    
+                    let levelOfSeverity = slurDetails["Level of Severity"] ; 
+                    let casual = slurDetails["Casual"] ; 
+                    let approapriated = slurDetails["Appropriated"] ; 
+                    let reason = slurDetails["If, Appropriated, Is it by Community or Others?"] ; 
+                    let problematic = slurDetails["What Makes it Problematic?"]; 
+                    let categories = slurDetails["Categories"] ;
 
+                    let htmlContent = `` ; 
+                    if(levelOfSeverity){
+                        htmlContent += `<p><span class="label"><b>Level of Severity:</b></span> ${levelOfSeverity}</p>`
+                    }
 
-            if (targetWord.toLowerCase() === "crazy") {
-                span.innerHTML = `It can perpetuate stereotypes about mental health and may be hurtful to those with mental health conditions.`
-            }
-            else if (targetWord.toLowerCase() === "idiot") {
-                span.innerHTML = `Using "mad" to describe someone negatively can be insensitive.`
-            }
-            else if (targetWord.toLowerCase() === 'stupid') {
-                span.innerHTML = `Describing actions or decisions as "stupid" can be demeaning and hurtful.`
-            }
-            else {
-                span.innerHTML = `This word is considered offensive.`
-            }
-
+                    if(casual){
+                        htmlContent += `<p><span class="label"><b>Casual:</b></span> ${casual}</p>`
+                    }
+                    
+                    if(approapriated){
+                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${approapriated}</p>`
+                    }
+                    
+                    if(reason){
+                        htmlContent += `<p><span class="label"><b>If, Appropriated, Is it by Community or Others?:</b></span> ${reason}</p>`
+                    }
+                    
+                    if(problematic){
+                        htmlContent += `<p><span class="label"><b>What Makes it Problematic?:</b></span> ${problematic}</p>`
+                    }
+                    
+                    if(categories.length > 0){
+                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${slurDetails["Categories"].join(', ')}</p>`
+                    }
+                      
+                    
+                    span.innerHTML = htmlContent; // Set the HTML content to the span element
+                }
+            });
+                
 
             sup.appendChild(img)
             sup.appendChild(span)
