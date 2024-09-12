@@ -2,11 +2,11 @@ const { TextEncoder, TextDecoder } = require('util');
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-const { findPositions, locateSlur, addMetaData, checkFalseTextNode, getAllTextNodes } = require('./slurDetection.js');
+const { findPositions, locateSlur, addMetaData, checkFalseTextNode, getAllTextNodes } = require('./enableSlurMetadataFunctions.js');
 const { JSDOM } = require('jsdom');
 
-jest.mock('./slurDetection.js', () => {
-    const actualModule = jest.requireActual('./slurDetection.js');
+jest.mock('./enableSlurMetadataFunctions.js', () => {
+    const actualModule = jest.requireActual('./enableSlurMetadataFunctions.js');
     return {
         ...actualModule,
         checkFalseTextNode: jest.fn()

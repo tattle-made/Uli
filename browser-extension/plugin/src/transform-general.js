@@ -50,27 +50,18 @@ function setCaretPosition(element, offset) {
     sel.addRange(range);
 }
 
-
 const processNewlyAddedNodesGeneral2 = function (firstBody) {
-    
-
-
-    // const config = { attributes: true, childList: true, subtree: true };
-    console.log("HEY THERE !!!")
-    let targetWords = ["Blog", "BLOG", "Choose", "bad", "BAD", "Bad", "Stupid", "STUPID", "stupid", "crazy", "Crazy", "idiot" , "Idiot" , "IDIOT", "CRAZY","ABLANARI","AblaNari","ablanari","chakka","jihidis","Jihadi","jihadi","Jihidi","zehadi","jehadan","jihadinon","Chakko","chakki","chaka","Chinal","Randi","ramdi","randya","Lulli","Gasti","Meetha","Halwa","Gud","Gandu","Gaand","Gandiaal","lodu","fuck","Fuck","Cunt","cunt","slut","Slut","Whore","whore","Chutiya","chutiya","Bsdk","bsdk","Madarchod","madarchod","behenchod","Bhenchod" , "Behenchod","motherfucker"
-    ]
-
-    // let targetWords = slurList ; 
+    let targetWords = [] ; 
+    jsonData.forEach(slur => {
+        const slurWord = Object.keys(slur)[0];
+        targetWords.push(slurWord) ; 
+        targetWords.push(slurWord.charAt(0).toUpperCase() + slurWord.slice(1)); 
+    })
     let uliStore = []
-    // getAllTextNodes(document.body, uliStore)
     getAllTextNodes(firstBody, uliStore)
-    // console.log(uliStore)
     abc = locateSlur(uliStore, targetWords)
-    // console.log("uliStore", abc)
     addMetaData(targetWords)
 }
-
-
 
 const processNewlyAddedNodesGeneral = function (firstBody) {
     log('processing new nodes');
@@ -95,27 +86,19 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
     observer.observe(firstBody, config);
 };
 
-
-// Code inserted below is for uliStore
-
-
-/*           getAllTextNodes()  STARTS HERE        */
-
 function checkFalseTextNode(text, actualLengthOfText) {
     let totalNewlineAndWhitespaces = 0;
     for (let i = 0; i < text.length; i++) {
         if (text[i] === "\n" || text[i] === " " || text[i] === "\t") {
-            // I think not only \n and " " , if a textNode is comprised of any escape characters and whitespace, it should be a false textNode
             totalNewlineAndWhitespaces++;
         }
     }
     return totalNewlineAndWhitespaces === actualLengthOfText;
 }
 
-
-// Function to recursively get all text nodes under a given node
+// Function to recursively get all text nodes for a given node
 function getAllTextNodes(node, uliStore) {
-    if (node.nodeType === 3) { // Text node
+    if (node.nodeType === 3) { 
         if (!checkFalseTextNode(node.data, node.length)) {
             uliStore.push({ node: node, parent: node.parentNode });
         }
@@ -125,16 +108,8 @@ function getAllTextNodes(node, uliStore) {
     }
 }
 
-
-
-/*                getAllTextNodes()  ENDS HERE                */
-
-
-/*                 locateSlur()  STARTS HERE                  */
-
 function findPositions(word, text) {
     let positions = {};
-
     let len = word.length
     let loc = []
     let index = text.toString().indexOf(word);
@@ -143,8 +118,6 @@ function findPositions(word, text) {
         loc.push([index, index + len]);
         index = text.toString().indexOf(word, index + 1);
     }
-
-
     if (loc.length !== 0) {
         positions.slurText = word
         positions.slurLocation = loc;
@@ -158,14 +131,12 @@ function locateSlur(uliStore, targetWords) {
     let n = uliStore.length;
 
     for (let i = 0; i < n; i++) {
-        let store = uliStore[i];  //This will contain the textNode 
+        let store = uliStore[i];  
         let parentNode = store.parent
         let textnode = store.node
         let text = store.node.textContent
-        let tempParent = document.createElement("span");  //I chose span over p because span is an inline element and p is a block element, injecting block
-        //element would cause a lot of change in the stylings and can damage the overall webpage to a greater extent
+        let tempParent = document.createElement("span"); 
         tempParent.textContent = text;
-
         let slurs = [];
         let slurPresentInTempParent = false;
         targetWords.forEach(targetWord => {
@@ -183,30 +154,16 @@ function locateSlur(uliStore, targetWords) {
                 slurPresentInTempParent = true;
             }
         })
-        // for(let i = 0 ; i < )
-        // console.log("tempParent " , tempParent)
         uliStore[i].nodeToParent = tempParent
         uliStore[i].slurs = slurs;
 
         //O(1) complexity
         if (slurPresentInTempParent) {
-            // parentNode.replaceChild(tempParent, textnode)
             textnode.replaceWith(tempParent)
-            // textnode.replaceWith(createTextNode(tempParent.innerHTML))
-
         }
-
     }
     return uliStore;
 }
-
-
-/*                    locateSlur()  ENDS HERE               */
-
-
-
-
-/*                        addMetaData()  STARTS HERE           */
 
 function addMetaData(targetWords) {
     targetWords.forEach(targetWord => {
@@ -215,7 +172,6 @@ function addMetaData(targetWords) {
         elements.forEach(element => {
 
             let sup = document.createElement("sup");
-
             let img = document.createElement("img");
             img.style.height = "1.5%"
             img.style.width = "1.5%"
@@ -223,12 +179,9 @@ function addMetaData(targetWords) {
             img.style.cursor = "pointer"
 
             img.src = "https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png"
-            // img.src = "./icon16.png"
-            // img.src = "./info.png"
             img.alt = "altText"
 
             let span = document.createElement("span")
-            // span.style.all = "unset"
             span.style.display = "none"
             span.style.position = "absolute"
             span.style.backgroundColor = "antiquewhite"
@@ -243,49 +196,39 @@ function addMetaData(targetWords) {
             span.style.fontSize = "14px"
             span.style.textDecoration = "none"
             span.style.fontStyle = "normal"
-            // span.style.height = "fit-content"
             span.innerHTML = `${targetWord} is an offensive word`
 
 
             jsonData.forEach(slur => {
-                const slurWord = Object.keys(slur)[0]; // Get the slur word (the key)
-                if (slurWord.toLowerCase() === targetWord.toLowerCase()) { // Check if it matches the provided word
-                    const slurDetails = slur[slurWord]; // Access the details of the slur
-                    
+                const slurWord = Object.keys(slur)[0]; 
+                if (slurWord.toLowerCase() === targetWord.toLowerCase()) {
+                    const slurDetails = slur[slurWord]; 
                     let levelOfSeverity = slurDetails["Level of Severity"] ; 
                     let casual = slurDetails["Casual"] ; 
                     let approapriated = slurDetails["Appropriated"] ; 
                     let reason = slurDetails["If, Appropriated, Is it by Community or Others?"] ; 
                     let problematic = slurDetails["What Makes it Problematic?"]; 
                     let categories = slurDetails["Categories"] ;
-
                     let htmlContent = `` ; 
                     if(levelOfSeverity){
                         htmlContent += `<p><span class="label"><b>Level of Severity:</b></span> ${levelOfSeverity}</p>`
                     }
-
                     if(casual){
                         htmlContent += `<p><span class="label"><b>Casual:</b></span> ${casual}</p>`
                     }
-                    
                     if(approapriated){
                         htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${approapriated}</p>`
                     }
-                    
                     if(reason){
                         htmlContent += `<p><span class="label"><b>If, Appropriated, Is it by Community or Others?:</b></span> ${reason}</p>`
                     }
-                    
                     if(problematic){
                         htmlContent += `<p><span class="label"><b>What Makes it Problematic?:</b></span> ${problematic}</p>`
                     }
-                    
                     if(categories.length > 0){
                         htmlContent += `<p><span class="label"><b>Categories:</b></span> ${slurDetails["Categories"].join(', ')}</p>`
                     }
-                      
-                    
-                    span.innerHTML = htmlContent; // Set the HTML content to the span element
+                    span.innerHTML = htmlContent;
                 }
             });
                 
@@ -299,7 +242,6 @@ function addMetaData(targetWords) {
             const svgs = element.children[0].children[0];
             svgs.addEventListener('mouseover', function () {
                 sups.children[1].style.display = "inline-block"
-                // sups.children[1].style.display = "block"
             });
 
             svgs.addEventListener('mouseout', function () {
@@ -308,12 +250,6 @@ function addMetaData(targetWords) {
         })
     })
 }
-
-
-/*                      addMetaData() ENDS HERE                  */
-
-
-
 
 export default {
     processNewlyAddedNodesGeneral,

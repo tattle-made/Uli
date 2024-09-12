@@ -148,10 +148,8 @@ chrome.runtime.onMessage.addListener(async function (request) {
 window.addEventListener(
     'load',
     async () => {
-        // console.log('content loaded');
-        // console.log("wowowow")
+        console.log('content loaded');
         const pref = await getPreferenceData();
-        // console.log(pref);
         const { enableSlurReplacement , enableSlurMetadata } = pref;
         if (enableSlurMetadata) {
             let body = document.getElementsByTagName('body');
@@ -161,7 +159,6 @@ window.addEventListener(
         else if (enableSlurReplacement) {
             processPage(location.href);
         }
-        
     },
     false
 );
