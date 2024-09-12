@@ -92,9 +92,9 @@ export function Preferences() {
         };
     }, [user]);
 
-    async function handleSlurReplacement(enableSlurReplacement) {
+    async function handleSlurReplacementAndSlurMetadata(enableSlurReplacement, enableSlurMetadata) {
         try {
-            // setEnableSlurMetadata(false);
+            
             
             const confirmed = window.confirm(
                 'This action requires a page reload. Do you want to continue?'
@@ -123,44 +123,15 @@ export function Preferences() {
         }
     }
 
-    async function handleSlurMetadata(enableSlurMetadata) {
-        try {
-            // setEnableSlurReplacement(false)
-            
-            const confirmed = window.confirm(
-                'This action requires a page reload. Do you want to continue?'
-            );
-            if (confirmed) {
-                const tabsCurrent = await userBrowserTabs.query({
-                    active: true,
-                    currentWindow: true
-                });
-                const tabId = tabsCurrent[0].id;
-
-                await setPreferenceData({
-                    ...localPreferences,
-                    enableSlurMetadata,
-                    enableSlurReplacement
-                });
-
-                userBrowserTabs.sendMessage(tabId, {
-                    type: 'ULI_ENABLE_SLUR_METADATA',
-                    payload: enableSlurMetadata
-                });
-                userBrowserTabs.reload(tabId);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     async function changeEnableSlurReplacementOption(checked) {
         console.log(checked);
+        if(checked === true) setEnableSlurMetadata(false); 
         setEnableSlurReplacement(checked);
     }
 
     async function changeEnableSlurMetadataOption(checked) {
         console.log(checked);
+        if(checked === true) setEnableSlurReplacement(false); 
         setEnableSlurMetadata(checked);
     }
 
@@ -190,14 +161,9 @@ export function Preferences() {
             const enableSlurMetadataChanged =
                 enableSlurMetadata !== preferenceInLS.enableSlurMetadata;
 
-            if (enableSlurReplacementChanged) {
+            if (enableSlurReplacementChanged || enableSlurMetadataChanged) {
                 console.log('enable val changed', enableSlurReplacementChanged);
-                await handleSlurReplacement(enableSlurReplacement);
-            }
-
-            if(enableSlurMetadataChanged){
-                console.log('enable val changed', enableSlurMetadataChanged);
-                await handleSlurMetadata(enableSlurMetadata);
+                await handleSlurReplacementAndSlurMetadata(enableSlurReplacement, enableSlurMetadata);
             }
 
             showNotification({
