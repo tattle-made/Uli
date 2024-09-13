@@ -2,6 +2,7 @@ import { replaceSlur } from './slur-replace';
 import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData } = repository;
+const jsonData = require('../../api-server/assets/slur_metadata.json')
 
 // Traverse dom nodes to find leaf node that are text nodes and process
 function bft(node) {
@@ -49,6 +50,19 @@ function setCaretPosition(element, offset) {
     sel.addRange(range);
 }
 
+const processNewlyAddedNodesGeneral2 = function (firstBody) {
+    let targetWords = [] ; 
+    jsonData.forEach(slur => {
+        const slurWord = Object.keys(slur)[0];
+        targetWords.push(slurWord) ; 
+        targetWords.push(slurWord.charAt(0).toUpperCase() + slurWord.slice(1)); 
+    })
+    let uliStore = []
+    getAllTextNodes(firstBody, uliStore)
+    abc = locateSlur(uliStore, targetWords)
+    addMetaData(targetWords)
+}
+
 const processNewlyAddedNodesGeneral = function (firstBody) {
     log('processing new nodes');
     const config = { attributes: true, childList: true, subtree: true };
@@ -72,114 +86,179 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
     observer.observe(firstBody, config);
 };
 
-
-// Code inserted below is for uliStore
-
-
-/*           getAllTextNodes()  STARTS HERE        */
-
 function checkFalseTextNode(text, actualLengthOfText) {
-    let n = text.length;
     let totalNewlineAndWhitespaces = 0;
-    for (let i = 0; i < n; i++) {
-        if (text[i] === "\n") {
-            totalNewlineAndWhitespaces += 1;
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === "\n" || text[i] === " " || text[i] === "\t") {
+            totalNewlineAndWhitespaces++;
         }
-
-        else if (text[i] === " ") {
-            totalNewlineAndWhitespaces += 1;
-        }
-
     }
-    if (totalNewlineAndWhitespaces === actualLengthOfText) {
-        //False Text Node Confirmed
-        return true;
-    }
-    else {
-        //True Text Node Confirmed
-        return false;
-    }
+    return totalNewlineAndWhitespaces === actualLengthOfText;
 }
 
-
-function getAllTextNodes(node) {
-    let uliStore = []
-    if (node.nodeType === 3) {
-        //If node.data contains just whitespaces and \n, then its a false text node
-
-        // let whitespaces = (node.data.split(" ").length - 1);
-        // console.log(node.data) ; 
-        if (checkFalseTextNode(node.data, node.length) === false) {
+// Function to recursively get all text nodes for a given node
+function getAllTextNodes(node, uliStore) {
+    if (node.nodeType === 3) { 
+        if (!checkFalseTextNode(node.data, node.length)) {
             uliStore.push({ node: node, parent: node.parentNode });
         }
-        // textNodes.push({ node: node, parent: node.parentNode });
-        return;
+    } else {
+        let children = Array.from(node.childNodes);
+        children.forEach(child => getAllTextNodes(child, uliStore));
     }
-
-    let children = Array.from(node.childNodes);
-    for (let i = 0; i < children.length; i++) {
-        getAllTextNodes(children[i]);
-    }
-
-    return uliStore ; 
 }
-
-
-/*                getAllTextNodes()  ENDS HERE                */
-
-
-/*                 locateSlur()  STARTS HERE                  */
 
 function findPositions(word, text) {
     let positions = {};
-    
     let len = word.length
     let loc = []
     let index = text.toString().indexOf(word);
     while (index !== -1) {
-        let obj = {} ; 
-        loc.push([index , index + len]);
+        let obj = {};
+        loc.push([index, index + len]);
         index = text.toString().indexOf(word, index + 1);
     }
-    
-
-    if(loc.length !== 0){
-        positions.slurText = word 
-        positions.slurLocation = loc ;
+    if (loc.length !== 0) {
+        positions.slurText = word
+        positions.slurLocation = loc;
     }
     return positions;
 }
 
 
-function locateSlur(uliStore, targetWords){
-    let n = uliStore.length ;
 
-    for(let i = 0 ; i < n ; i++){
-        let store = uliStore[i] ;  //This will contain the textNode 
-        let parentNode = store.parent 
+function locateSlur(uliStore, targetWords) {
+    let n = uliStore.length;
+
+    for (let i = 0; i < n; i++) {
+        let store = uliStore[i];  
+        let parentNode = store.parent
+        let textnode = store.node
         let text = store.node.textContent
-        //We have to look into this store for all the slurWords 
-        let slurs = [] ; 
-
+        let tempParent = document.createElement("span"); 
+        tempParent.textContent = text;
+        let slurs = [];
+        let slurPresentInTempParent = false;
         targetWords.forEach(targetWord => {
-            let slurWord = targetWord ;
-            let pos = findPositions(slurWord , text) ;
-            if(Object.keys(pos).length !== 0){
+            let slurWord = targetWord;
+            let pos = findPositions(slurWord, text);
+            if (Object.keys(pos).length !== 0) {
                 slurs.push(pos)
             }
+
+            if (tempParent.innerHTML.includes(targetWord)) {
+                const className = `icon-container-${targetWord}`;
+                const parts = tempParent.innerHTML.split(targetWord);
+                const replacedHTML = parts.join(`${targetWord}<span class="${className}"></span>`);
+                tempParent.innerHTML = replacedHTML
+                slurPresentInTempParent = true;
+            }
         })
-        uliStore[i].slurs = slurs ; 
+        uliStore[i].nodeToParent = tempParent
+        uliStore[i].slurs = slurs;
+
+        //O(1) complexity
+        if (slurPresentInTempParent) {
+            textnode.replaceWith(tempParent)
+        }
     }
-    return uliStore ; //This will return the final uliStore (after appending slurs)
+    return uliStore;
 }
 
+function addMetaData(targetWords) {
+    targetWords.forEach(targetWord => {
+        const className = `icon-container-${targetWord}`
+        const elements = Array.from(document.querySelectorAll(`.${className}`))
+        elements.forEach(element => {
 
-/*                    locateSlur()  ENDS HERE               */
+            let sup = document.createElement("sup");
+            let img = document.createElement("img");
+            img.style.height = "1.5%"
+            img.style.width = "1.5%"
+            img.style.border = "1px solid black"
+            img.style.cursor = "pointer"
+
+            img.src = "https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png"
+            img.alt = "altText"
+
+            let span = document.createElement("span")
+            span.style.display = "none"
+            span.style.position = "absolute"
+            span.style.backgroundColor = "antiquewhite"
+            span.style.border = "1px solid black"
+            span.style.borderRadius = "12px"
+            span.style.padding = "2px 6px"
+            span.style.width = "16rem"
+            span.style.textAlign = "justify"
+            span.style.fontWeight = "lighter"
+            span.style.color = "black"
+            span.style.zIndex = "1000000000"; // This ensures it appears above other elements
+            span.style.fontSize = "14px"
+            span.style.textDecoration = "none"
+            span.style.fontStyle = "normal"
+            span.innerHTML = `${targetWord} is an offensive word`
 
 
+            jsonData.forEach(slur => {
+                const slurWord = Object.keys(slur)[0]; 
+                if (slurWord.toLowerCase() === targetWord.toLowerCase()) {
+                    const slurDetails = slur[slurWord]; 
+                    let levelOfSeverity = slurDetails["Level of Severity"] ; 
+                    let casual = slurDetails["Casual"] ; 
+                    let approapriated = slurDetails["Appropriated"] ; 
+                    let reason = slurDetails["If, Appropriated, Is it by Community or Others?"] ; 
+                    let problematic = slurDetails["What Makes it Problematic?"]; 
+                    let categories = slurDetails["Categories"] ;
+                    let htmlContent = `` ; 
+                    if(levelOfSeverity){
+                        htmlContent += `<p><span class="label"><b>Level of Severity:</b></span> ${levelOfSeverity}</p>`
+                    }
+                    if(casual){
+                        htmlContent += `<p><span class="label"><b>Casual:</b></span> ${casual}</p>`
+                    }
+                    if(approapriated){
+                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${approapriated}</p>`
+                    }
+                    if(reason){
+                        htmlContent += `<p><span class="label"><b>If, Appropriated, Is it by Community or Others?:</b></span> ${reason}</p>`
+                    }
+                    if(problematic){
+                        htmlContent += `<p><span class="label"><b>What Makes it Problematic?:</b></span> ${problematic}</p>`
+                    }
+                    if(categories.length > 0){
+                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${slurDetails["Categories"].join(', ')}</p>`
+                    }
+                    span.innerHTML = htmlContent;
+                }
+            });
+                
+
+            sup.appendChild(img)
+            sup.appendChild(span)
+
+            element.append(sup)
+            let sups = element.children[0]
+            let spans = element.children[0].children[1]
+            const svgs = element.children[0].children[0];
+            svgs.addEventListener('mouseover', function () {
+                sups.children[1].style.display = "inline-block"
+            });
+
+            svgs.addEventListener('mouseout', function () {
+                sups.children[1].style.display = "none"
+            });
+        })
+    })
+}
 
 export default {
-    processNewlyAddedNodesGeneral
+    processNewlyAddedNodesGeneral,
+    processNewlyAddedNodesGeneral2,
+    addMetaData, 
+    locateSlur, 
+    findPositions, 
+    getAllTextNodes, 
+    checkFalseTextNode 
 };
 
 

@@ -30,6 +30,7 @@ export function Preferences() {
     const [enable, setEnable] = useState(true);
     const [enableML, setEnableMLOption] = useState(false);
     const [enableSlurReplacement, setEnableSlurReplacement] = useState(true);
+    const [enableSlurMetadata, setEnableSlurMetadata] = useState(false);
     const [storeLocally, setStoreLocally] = useState(true);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
@@ -39,6 +40,7 @@ export function Preferences() {
         async function getPrefsLocalStorage() {
             try {
                 const preference = await getPreferenceData();
+                console.log("preference " , preference)
                 if (!ignore) {
                     // console.log({ preference });
                     setLocalPreferences(preference);
@@ -51,7 +53,8 @@ export function Preferences() {
                             enableML,
                             storeLocally,
                             language,
-                            enableSlurReplacement
+                            enableSlurReplacement,
+                            enableSlurMetadata
                         } = preference;
                         if (enable != undefined) {
                             setEnable(enable);
@@ -67,6 +70,9 @@ export function Preferences() {
                         }
                         if (enableSlurReplacement != undefined) {
                             setEnableSlurReplacement(enableSlurReplacement);
+                        }
+                        if (enableSlurMetadata != undefined) {
+                            setEnableSlurMetadata(enableSlurMetadata);
                         }
                     }
                 }
@@ -86,8 +92,10 @@ export function Preferences() {
         };
     }, [user]);
 
-    async function handleSlurReplacement(enableSlurReplacement) {
+    async function handleSlurReplacementAndSlurMetadata(enableSlurReplacement, enableSlurMetadata) {
         try {
+            
+            
             const confirmed = window.confirm(
                 'This action requires a page reload. Do you want to continue?'
             );
@@ -100,7 +108,8 @@ export function Preferences() {
 
                 await setPreferenceData({
                     ...localPreferences,
-                    enableSlurReplacement
+                    enableSlurReplacement,
+                    enableSlurMetadata
                 });
 
                 userBrowserTabs.sendMessage(tabId, {
@@ -116,7 +125,14 @@ export function Preferences() {
 
     async function changeEnableSlurReplacementOption(checked) {
         console.log(checked);
+        if(checked === true) setEnableSlurMetadata(false); 
         setEnableSlurReplacement(checked);
+    }
+
+    async function changeEnableSlurMetadataOption(checked) {
+        console.log(checked);
+        if(checked === true) setEnableSlurReplacement(false); 
+        setEnableSlurMetadata(checked);
     }
 
     async function clickSave(preference) {
@@ -135,15 +151,19 @@ export function Preferences() {
                 enableML,
                 storeLocally,
                 language,
-                enableSlurReplacement
+                enableSlurReplacement,
+                enableSlurMetadata
             });
 
             const enableSlurReplacementChanged =
                 enableSlurReplacement !== preferenceInLS.enableSlurReplacement;
 
-            if (enableSlurReplacementChanged) {
+            const enableSlurMetadataChanged =
+                enableSlurMetadata !== preferenceInLS.enableSlurMetadata;
+
+            if (enableSlurReplacementChanged || enableSlurMetadataChanged) {
                 console.log('enable val changed', enableSlurReplacementChanged);
-                await handleSlurReplacement(enableSlurReplacement);
+                await handleSlurReplacementAndSlurMetadata(enableSlurReplacement, enableSlurMetadata);
             }
 
             showNotification({
@@ -220,6 +240,16 @@ export function Preferences() {
                     label="Enable Slur Replacement"
                     onChange={(e) =>
                         changeEnableSlurReplacementOption(e.target.checked)
+                    }
+                />
+            </Box>
+
+            <Box direction="row" gap={'large'} align="center">
+                <CheckBox
+                    checked={enableSlurMetadata}
+                    label="Enable Slur Metadata"
+                    onChange={(e) =>
+                        changeEnableSlurMetadataOption(e.target.checked)
                     }
                 />
             </Box>

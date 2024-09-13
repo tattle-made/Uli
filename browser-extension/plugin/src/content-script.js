@@ -150,9 +150,13 @@ window.addEventListener(
     async () => {
         console.log('content loaded');
         const pref = await getPreferenceData();
-        console.log(pref);
-        const { enableSlurReplacement } = pref;
-        if (enableSlurReplacement) {
+        const { enableSlurReplacement , enableSlurMetadata } = pref;
+        if (enableSlurMetadata) {
+            let body = document.getElementsByTagName('body');
+            let first_body = body[0];
+            transformGeneral.processNewlyAddedNodesGeneral2(first_body);
+        }
+        else if (enableSlurReplacement) {
             processPage(location.href);
         }
     },
