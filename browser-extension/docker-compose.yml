@@ -2,18 +2,21 @@ version: "3"
 
 services:
   db:
-    image: "mysql"
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres:14.10
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root_pw
-      MYSQL_USER: tattle
-      MYSQL_PASSWORD: tattle_pw
-      MYSQL_DATABASE: uli_dev
-    ports:
-      - 3306:3306
+      - POSTGRES_USER=tattle
+      - POSTGRES_PASSWORD=tattle_pw
+      - POSTGRES_DB=uli_dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
     volumes:
-      - "~/data/ogbv_plugin/db:/var/lib/mysql"
+      - ~/data/uli_test/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
   db_gui:
     image: adminer
     restart: always
@@ -27,10 +30,11 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - db
-    command: tail -f /dev/null
+    # command: tail -f /dev/null
     ports:
       - 3000:3000
     volumes:
       - "./api-server:/app"
+      - /app/node_modules
     env_file:
       - "./api-server/development.env"
