@@ -148,8 +148,10 @@ function locateSlur(uliStore, targetWords) {
 
             if (tempParent.innerHTML.includes(targetWord)) {
                 const className = `icon-container-${targetWord}`;
+                const slurClass = `slur-container-${targetWord}`
                 const parts = tempParent.innerHTML.split(targetWord);
-                const replacedHTML = parts.join(`${targetWord}<span class="${className}"></span>`);
+                console.log("PARTS: ",parts)
+                const replacedHTML = parts.join(`<span class="${slurClass}"><span class="slur">${targetWord}</span></span>`);
                 tempParent.innerHTML = replacedHTML
                 slurPresentInTempParent = true;
             }
@@ -161,22 +163,31 @@ function locateSlur(uliStore, targetWords) {
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent)
         }
+
+        console.log("TEMPParent: ",tempParent)
     }
     return uliStore;
 }
 
 function addMetaData(targetWords) {
+    // console.log(targetWords)
     targetWords.forEach(targetWord => {
-        const className = `icon-container-${targetWord}`
+        const className = `slur-container-${targetWord}`
         const elements = Array.from(document.querySelectorAll(`.${className}`))
+        console.log("ELEMENTS are: ",elements)
         elements.forEach(element => {
 
-            let sup = document.createElement("sup");
+            console.log("ELements InnerHTML:",element.innerHTML)
+
+            // element.innerHTML = element.innerHTML.replace(/<img[^>]*>/g, '')
+
+            let sup = document.createElement("span");
             let img = document.createElement("img");
-            img.style.height = "1.5%"
-            img.style.width = "1.5%"
+            img.style.height = "0.6em"
+            img.style.width = "0.6em"
             img.style.border = "1px solid black"
             img.style.cursor = "pointer"
+            img.style.marginBottom="0.4em"
 
             img.src = "https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png"
             img.alt = "altText"
@@ -184,6 +195,8 @@ function addMetaData(targetWords) {
             let span = document.createElement("span")
             span.style.display = "none"
             span.style.position = "absolute"
+            span.style.marginLeft ="2px"
+            span.style.marginTop ="2px"
             span.style.backgroundColor = "antiquewhite"
             span.style.border = "1px solid black"
             span.style.borderRadius = "12px"
@@ -196,6 +209,7 @@ function addMetaData(targetWords) {
             span.style.fontSize = "14px"
             span.style.textDecoration = "none"
             span.style.fontStyle = "normal"
+
             span.innerHTML = `${targetWord} is an offensive word`
 
 
@@ -233,19 +247,53 @@ function addMetaData(targetWords) {
             });
                 
 
-            sup.appendChild(img)
+
+            // sup.appendChild(span)
+
+            
+            // element.append(sup)
+            // element.append(img)
+            // let sups = element.children[0]
+            // let spans = element.children[0].children[1]
+            // // const svgs = element.children[0].children[0];
+            // const svgs = element.children[element.children.length-1];
+            // svgs.addEventListener('mouseover', function () {
+            //     sups.children[0].style.display = "inline-block"
+            // });
+
+            // svgs.addEventListener('mouseout', function () {
+            //     sups.children[0].style.display = "none"
+            // });
+
+
             sup.appendChild(span)
 
-            element.append(sup)
-            let sups = element.children[0]
+            console.log("Element first child",element.children[0])
+            console.log("Element last child",element.children[element.children.length-1])
+            console.log("SUP: ",sup)
+            console.log("ELEMENT IS: ",element)
+            console.log("ELEMENT INNERHTML: ",element.innerHTML)
+            
+            element.append(span)
+
+            console.log("ELEMENT AFTER IS: ",element)
+            // element.append(img)
+            let slur = element.children[0]
+            slur.style.backgroundColor="#ffde2155"
+            slur.style.boxShadow="0px 0px 5px #ffde21"
+            slur.style.cursor = "pointer"
+   
+            let metabox = element.children[1]
+            console.log("METABOX IS: ",metabox)
             let spans = element.children[0].children[1]
-            const svgs = element.children[0].children[0];
-            svgs.addEventListener('mouseover', function () {
-                sups.children[1].style.display = "inline-block"
+            // const svgs = element.children[0].children[0];
+            const svgs = element.children[element.children.length-1];
+            slur.addEventListener('mouseover', function () {
+                metabox.style.display = "inline-block"
             });
 
-            svgs.addEventListener('mouseout', function () {
-                sups.children[1].style.display = "none"
+            slur.addEventListener('mouseout', function () {
+                metabox.style.display = "none"
             });
         })
     })
