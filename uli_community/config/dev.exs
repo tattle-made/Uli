@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :uli_community, UliCommunity.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "tattle",
+  password: "weak_password",
   hostname: "localhost",
   database: "uli_community_dev",
   stacktrace: true,
