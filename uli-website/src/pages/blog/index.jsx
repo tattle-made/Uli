@@ -23,12 +23,14 @@ const BlogIndex = ({ data }) => {
               return (
                 <Box key={blog.fields.slug} margin={{ bottom: "medium" }}>
                   <NavLink to={`${blog.fields.slug}`}>
-                    <Paragraph fill>
+                    <Paragraph fill margin="none">
                       <Text size={"xlarge"}>{blog.frontmatter.name}</Text>,
                       <Text> {blog.frontmatter.author}</Text>
                     </Paragraph>
                     {/* Publish date ko yahan display kiya gaya hai */}
-                    <Text size={"small"} color="gray">
+                    <Text size="small"
+                      color="grey"
+                      margin={{ top: "xxsmall" }}>
                       Published on: {formatDate(blog.frontmatter.date)}
                     </Text>
                   </NavLink>
