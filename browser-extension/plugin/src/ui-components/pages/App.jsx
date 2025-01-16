@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import Theme from '../atoms/Theme';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import { Debug } from './Debug';
-import { Preferences } from './Preferences';
+import {
+    Preferences,
+    PreferencesHome,
+    PreferencesSlurList
+} from './Preferences';
 import { Resources } from './Resources';
 import { Archive } from './Archive';
 import '../atoms/i18n';
@@ -43,25 +47,38 @@ export function App() {
             try {
                 const userData = await getUserData();
                 const preferenceData = await getPreferenceData();
-    
-                if(!ignore) {
-                    if (userData != undefined && Object.keys(userData).length !== 0) {
+
+                if (!ignore) {
+                    if (
+                        userData != undefined &&
+                        Object.keys(userData).length !== 0
+                    ) {
                         setUser(userData);
+                    } else {
+                        setUser(null);
+                        await setUserData(user)
                     }
-        
+
                     if (preferenceData != undefined) {
                         const { language } = preferenceData;
                         i18n.changeLanguage(langNameMap[language]);
-        
-                        navigate('/preferences');
-                    }    
+                    } else {
+                        await setPreferenceData({
+                            enableSlurReplacement: true,
+                            enableSlurMetadata: false,
+                            language: 'English'
+                        });
+                        i18n.changeLanguage(langNameMap["English"]);
+                    }
+                    navigate('/preferences');
                 }
             } catch (error) {
                 console.error('Error in useEffect:', error);
             }
-        } 
+        }
         let ignore = false;
         navigatePreferences();
+
         return () => {
             ignore = true;
         };
@@ -137,63 +154,57 @@ export function App() {
                             ) : null}
                         </Box>
 
-                        {user ? (
-                            <div>
-                                <Box direction="row" gap={'medium'}>
-                                    <Link
-                                        id="app_nav_preference"
-                                        to="/preferences"
-                                    >
-                                        {t('navigation_preferences')}
-                                    </Link>
-                                    <Link id="app_nav_archive" to="/archive">
+                        {/* {user ? ( */}
+                        <div>
+                            <Box direction="row" gap={'medium'}>
+                                <Link id="app_nav_preference" to="/preferences">
+                                    {t('navigation_preferences')}
+                                </Link>
+                                {/* <Link id="app_nav_archive" to="/archive">
                                         {t('navigation_archive')}
-                                    </Link>
-                                    <Link
-                                        id="app_nav_resources"
-                                        to="/resources"
-                                    >
-                                        {t('navigation_resources')}
-                                    </Link>
-                                    <Link to="/debug">
-                                        {t('navigation_debug')}
-                                    </Link>
-                                    <Link id="slur-link" to="/slur">
-                                        {t('navigation_slur_list')}
-                                    </Link>
-                                </Box>
+                                    </Link> */}
+                                <Link id="app_nav_resources" to="/resources">
+                                    {t('navigation_resources')}
+                                </Link>
+                                <Link to="/debug">{t('navigation_debug')}</Link>
+                                <Link id="slur-link" to="/slur">
+                                    {t('navigation_slur_list')}
+                                </Link>
+                            </Box>
 
-                                <Box height={'2.0em'} />
+                            <Box height={'2.0em'} />
 
-                                <Routes>
-                                    <Route></Route>
+                            <Routes>
+                                <Route
+                                    exact
+                                    path="preferences"
+                                    element={<Preferences />}
+                                >
                                     <Route
-                                        exact
-                                        path="/preferences"
-                                        element={<Preferences />}
+                                        path=""
+                                        element={<PreferencesHome />}
                                     />
                                     <Route
-                                        path="archive"
-                                        element={<Archive />}
+                                        path="slur-list"
+                                        element={<PreferencesSlurList />}
                                     />
-                                    <Route
-                                        path="resources"
-                                        element={<Resources />}
-                                    />
-                                    <Route path="debug" element={<Debug />} />
-                                    <Route path="off" element={<Off />} />
-                                    <Route path="slur" element={<Slur />} />
-                                    <Route
-                                        path="slur/create"
-                                        element={<SlurCreate />}
-                                    />
-                                    <Route
-                                        path="slur/:id"
-                                        element={<SlurEdit />}
-                                    />
-                                </Routes>
-                            </div>
-                        ) : (
+                                </Route>
+                                <Route path="archive" element={<Archive />} />
+                                <Route
+                                    path="resources"
+                                    element={<Resources />}
+                                />
+                                <Route path="debug" element={<Debug />} />
+                                <Route path="off" element={<Off />} />
+                                <Route path="slur" element={<Slur />} />
+                                <Route
+                                    path="slur/create"
+                                    element={<SlurCreate />}
+                                />
+                                <Route path="slur/:id" element={<SlurEdit />} />
+                            </Routes>
+                        </div>
+                        {/* ) : (
                             <Box>
                                 <Button
                                     id="app_btn_activate"
@@ -201,7 +212,7 @@ export function App() {
                                     onClick={clickActivateAccount}
                                 ></Button>
                             </Box>
-                        )}
+                        )} */}
                     </Box>
                 </NotificationContext.Provider>
             </UserContext.Provider>
