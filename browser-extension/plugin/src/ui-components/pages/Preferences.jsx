@@ -8,7 +8,8 @@ import {
     Text,
     Button,
     Select,
-    CheckBox
+    CheckBox,
+    RadioButtonGroup
 } from 'grommet';
 // import { HelpCircle } from 'react-feather';
 import Api from '../pages/Api';
@@ -38,13 +39,30 @@ export function PreferencesHome() {
     const [enableSlurMetadata, setEnableSlurMetadata] = useState(false);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
+    const radioOptions = [
+        {
+            value: 'replace',
+            id: 'radio-replace',
+            label: 'Enable Slur Replacement'
+        },
+        {
+            value: 'metadata',
+            id: 'radio-metadata',
+            label: 'Enable Slur Metadata'
+        }
+    ];
+    const [selectedOption, setSelectedOption] = useState(undefined);
 
     // GET PREFERENCE FOR THIS USER FROM LS
+
     useEffect(() => {
         async function getPrefsLocalStorage() {
             try {
                 const preference = await getPreferenceData();
                 console.log('preference ', preference);
+
+                const { enableSlurMetadata, enableSlurReplacement, language } =
+                    preference;
                 if (!ignore) {
                     // console.log({ preference });
                     setLocalPreferences(preference);
@@ -52,11 +70,22 @@ export function PreferencesHome() {
                         preference != undefined &&
                         Object.keys(preference).length != 0
                     ) {
+                        if (language) {
+                            setLanguage(language);
+                        }
                         if (enableSlurReplacement != undefined) {
                             setEnableSlurReplacement(enableSlurReplacement);
+                            if (enableSlurReplacement) {
+                                console.log('HEREE');
+                                setSelectedOption('replace');
+                            }
                         }
                         if (enableSlurMetadata != undefined) {
                             setEnableSlurMetadata(enableSlurMetadata);
+                            if (enableSlurMetadata) {
+                                console.log('HEREE META');
+                                setSelectedOption('metadata');
+                            }
                         }
                     }
                 }
@@ -75,6 +104,18 @@ export function PreferencesHome() {
             ignore = true;
         };
     }, [user]);
+
+    useEffect(() => {
+        console.log('SELECTED OPTION: ', selectedOption);
+
+        if (selectedOption == 'replace') {
+            setEnableSlurReplacement(true);
+            setEnableSlurMetadata(false);
+        } else if (selectedOption == 'metadata') {
+            setEnableSlurReplacement(false);
+            setEnableSlurMetadata(true);
+        }
+    }, [selectedOption]);
 
     async function handleSlurReplacementAndSlurMetadata(
         enableSlurReplacement,
@@ -192,25 +233,13 @@ export function PreferencesHome() {
                     size={'small'}
                 />
             </Box>
-            <Box direction="row" gap={'large'} align="center">
-                <CheckBox
-                    checked={enableSlurReplacement}
-                    label="Enable Slur Replacement"
-                    onChange={(e) =>
-                        changeEnableSlurReplacementOption(e.target.checked)
-                    }
-                />
-            </Box>
 
-            <Box direction="row" gap={'large'} align="center">
-                <CheckBox
-                    checked={enableSlurMetadata}
-                    label="Enable Slur Metadata"
-                    onChange={(e) =>
-                        changeEnableSlurMetadataOption(e.target.checked)
-                    }
-                />
-            </Box>
+            <RadioButtonGroup
+                name="plugin-options"
+                options={radioOptions}
+                value={selectedOption}
+                onChange={(event) => setSelectedOption(event.target.value)}
+            />
 
             <Link to={'/preferences/slur-list'}>
                 <Button label="Add to your personal block list" />
