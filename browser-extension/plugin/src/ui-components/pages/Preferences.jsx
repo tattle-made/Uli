@@ -49,6 +49,11 @@ export function PreferencesHome() {
             value: 'metadata',
             id: 'radio-metadata',
             label: 'Enable Slur Metadata'
+        },
+        {
+            value: 'off',
+            id: 'radio-off',
+            label: 'Turn off'
         }
     ];
     const [selectedOption, setSelectedOption] = useState(undefined);
@@ -73,19 +78,22 @@ export function PreferencesHome() {
                         if (language) {
                             setLanguage(language);
                         }
-                        if (enableSlurReplacement != undefined) {
+                        if (enableSlurReplacement) {
                             setEnableSlurReplacement(enableSlurReplacement);
                             if (enableSlurReplacement) {
                                 console.log('HEREE');
                                 setSelectedOption('replace');
                             }
                         }
-                        if (enableSlurMetadata != undefined) {
+                        if (enableSlurMetadata) {
                             setEnableSlurMetadata(enableSlurMetadata);
                             if (enableSlurMetadata) {
                                 console.log('HEREE META');
                                 setSelectedOption('metadata');
                             }
+                        }
+                        if(!enableSlurMetadata && !enableSlurReplacement){
+                            setSelectedOption('off')
                         }
                     }
                 }
@@ -114,6 +122,9 @@ export function PreferencesHome() {
         } else if (selectedOption == 'metadata') {
             setEnableSlurReplacement(false);
             setEnableSlurMetadata(true);
+        }else if (selectedOption == 'off') {
+            setEnableSlurReplacement(false);
+            setEnableSlurMetadata(false);
         }
     }, [selectedOption]);
 
