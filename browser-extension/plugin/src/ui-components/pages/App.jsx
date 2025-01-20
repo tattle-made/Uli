@@ -46,6 +46,7 @@ export function App() {
         async function navigatePreferences() {
             try {
                 const userData = await getUserData();
+                console.log("USER DATA: ", userData)
                 const preferenceData = await getPreferenceData();
 
                 if (!ignore) {

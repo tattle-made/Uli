@@ -18,7 +18,7 @@ defmodule UliCommunityWeb.SessionControllerApi do
       user ->
         IO.inspect(user, label: "USER IS: ")
         with {:ok, token} <- Token.sign(%{user_id: user.id}) do
-          json(conn, %{token: token, message: "Token Generation Successful!"})
+          json(conn, %{token: token, message: "Token Generation Successful!", email: user.email})
         else
           _ ->
             conn
