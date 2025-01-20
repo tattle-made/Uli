@@ -47,12 +47,15 @@ export async function get_all_words() {
 // Test function to add temp words to the DB (this could be done via UI too)
 // Initialize database with default words
 export async function initializeDatabase() {
+    console.log("inside db init");
     const wordCount = await db.words.count();
+    console.log("Word count", wordCount);
     if (wordCount === 0) {
         const defaultWords = ['tattle', 'uli'];
         for (const word of defaultWords) {
             await add_to_indexerdb(word);
         }
         console.log('Database initialized with default words');
+        console.log('Words added to the database:', defaultWords);
     }
 }

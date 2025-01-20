@@ -1,8 +1,8 @@
-import { initializeDatabase } from "./indexeddb";
-initializeDatabase().catch(console.error);
-
+// import { initializeDatabase } from "./indexeddb";
 // import { userBrowserTabs, userBrowserContextMenus } from './browser-compat';
 console.log('bg script 7');
+
+// initializeDatabase().catch(console.error);
 
 const BROWSER_CHROME = 'chrome';
 const BROWSER_FIREFOX = 'firefox';

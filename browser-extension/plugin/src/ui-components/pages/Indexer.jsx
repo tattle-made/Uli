@@ -1,51 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, List, Text } from 'grommet';
-import { get_all_words } from '../../indexeddb';
+import { get_all_words, initializeDatabase } from '../../indexeddb';
 
 const Indexer = () => {
     const [words, setWords] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadWords = async () => {
             try {
-                setLoading(true);
+                // Initialize database
+                await initializeDatabase();
+                // Fetch all words
                 const allWords = await get_all_words();
                 setWords(allWords);
-                setError(null);
             } catch (err) {
-                setError('Failed to load words');
-                console.error(err);
-            } finally {
-                setLoading(false);
+                console.error('Error loading words:', err);
             }
         };
 
         loadWords();
     }, []);
 
-    if (loading) return (
-        <Box pad="medium">
-            <Text>Loading...</Text>
-        </Box>
-    );
-
-    if (error) return (
-        <Box pad="medium">
-            <Text color="status-error">Error: {error}</Text>
-        </Box>
-    );
-
     return (
         <Box pad="medium">
-            <Heading level={2}>Stored Words</Heading>
-            <List 
+            <Heading level={3}>Stored Words</Heading>
+            <List
                 data={words}
                 margin={{ top: 'small' }}
                 pad={{ left: 'small' }}
                 primaryKey={(item) => (
-                    <Text key={item.id}>{item.word}</Text>
+                    <Text key={item.id}>{item.word || 'No word found'}</Text>
                 )}
             />
         </Box>
