@@ -1,3 +1,6 @@
+import { initializeDatabase } from "./indexeddb";
+initializeDatabase().catch(console.error);
+
 // import { userBrowserTabs, userBrowserContextMenus } from './browser-compat';
 console.log('bg script 7');
 
