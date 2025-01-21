@@ -423,14 +423,14 @@ export function PreferencesSlurList() {
             let preferenceInLS = await getPreferenceData();
 
             preferenceInLS = { ...preferenceInLS, slurList: slurs.toString() };
-            let preferenceRemote = await savePreference(
-                user.accessToken,
-                preferenceInLS
-            );
+            // let preferenceRemote = await savePreference(
+            //     user.accessToken,
+            //     preferenceInLS
+            // );
 
             await setPreferenceData({
                 ...preferenceInLS,
-                ...preferenceRemote.data
+                // ...preferenceRemote.data
             });
 
             setResetSlurs(slurs);
