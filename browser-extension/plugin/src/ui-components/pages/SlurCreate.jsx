@@ -36,7 +36,7 @@ export function SlurCreate() {
         let newValue = slurCreatePluginToApi(value);
         // console.log(newValue);
         try {
-            await createSlurAndCategory(user.accessToken, newValue);
+            await createSlurAndCategory("dea07e31-417c-4547-9208-57ff7fcf2da8", newValue);
             navigate('/slur');
             showNotification({
                 type: 'message',

@@ -7,9 +7,10 @@ import {
     Form,
     FormField,
     TextInput,
-    Heading
+    Heading,
+    Anchor
 } from 'grommet';
-import { UserContext } from '../atoms/AppContext';
+import { UserContext, NotificationContext } from '../atoms/AppContext';
 import repository from '../../repository';
 import config from '../../config';
 import { useTranslation } from 'react-i18next';
@@ -18,41 +19,129 @@ const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
     repository;
 const { resetAccount } = Api;
 import { Hide, View } from 'grommet-icons';
+import { userLogin } from '../../api';
+import config from '../../config';
+
+const { API_URL } = config;
 
 export function Debug() {
     const { user, setUser } = useContext(UserContext);
+    const { showNotification } = useContext(NotificationContext);
 
     const [localStorageData, setLocalStorageData] = useState(undefined);
     const { t, i18n } = useTranslation();
+    const [isResetChecked, setIsResetChecked] = useState(false);
 
-    useEffect(() => {
-        async function localStorage() {
-            const userData = await getUserData();
-            const preferenceData = await getPreferenceData();
-            if (!ignore) {
-                setLocalStorageData({
-                    user: userData,
-                    preference: preferenceData
+    // useEffect(() => {
+    //     async function localStorage() {
+    //         const userData = await getUserData();
+    //         const preferenceData = await getPreferenceData();
+    //         if (!ignore) {
+    //             setLocalStorageData({
+    //                 user: userData,
+    //                 preference: preferenceData
+    //             });
+    //         }
+    //     }
+    //     let ignore = false;
+    //     localStorage();
+    //     return () => {
+    //         ignore = true;
+    //     };
+    // }, []);
+
+    return (
+        <Box>
+            {user ? (
+                <Box>
+                    <Text>
+                        Hello, <b>{user?.email}</b> !
+                    </Text>
+                    <Box
+                        pad={'small'}
+                        border={{ color: 'status-critical' }}
+                        margin={{ top: 'xsmall' }}
+                        fill={'horizontal'}
+                        align="start"
+                    >
+                        <Text color={'status-critical'}>Logout</Text>
+                        <Box height={'0.8em'}></Box>
+                        <Box gap={'small'}>
+                            <CheckBox
+                                checked={isResetChecked}
+                                label={
+                                    'I am sure I want to logout from this account'
+                                }
+                                onChange={(e) =>
+                                    setIsResetChecked(e.target.checked)
+                                }
+                            />
+                            <Button
+                                label={'Logout'}
+                                disabled={!isResetChecked}
+                                secondary
+                                onClick={async () => {
+                                    await setUserData(null);
+                                    setUser(null);
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                </Box>
+            ) : (
+                <LoginForm />
+            )}
+        </Box>
+    );
+}
+
+function LoginForm() {
+    const [reveal, setReveal] = useState(false);
+    const [formValues, setFormValues] = useState({ email: '', password: '' });
+    const { showNotification } = useContext(NotificationContext);
+    const { user, setUser } = useContext(UserContext);
+
+    async function handleSubmit({ value }) {
+        console.log('Form Submitted:', value);
+
+        try {
+            let data = await userLogin(value);
+
+            console.log('LOGIN SUCCESS: ', data);
+            showNotification({
+                type: 'info',
+                message: 'Login Successful'
+            });
+
+            const { email, token } = data;
+
+            let setData = { email, token };
+
+            await setUserData(setData);
+            setUser(setData);
+        } catch (error) {
+            console.error(error);
+            if (error?.response?.status === 401) {
+                // console.log('UNAUTHORIZED', error);
+                showNotification({
+                    type: 'error',
+                    message: 'Unauthorized'
+                });
+            } else if (error?.response?.status >= 500) {
+                // console.log('UNAUTHORIZED', error);
+                showNotification({
+                    type: 'error',
+                    message: 'Server Error'
+                });
+            } else {
+                // console.log('SOMETHING WENT WRONG', error);
+                showNotification({
+                    type: 'error',
+                    message: 'Something Went Wrong'
                 });
             }
         }
-        let ignore = false;
-        localStorage();
-        return () => {
-            ignore = true;
-        };
-    }, []);
-
-    return <Box>{user ? <Box>Logged in. Settings</Box> : <LoginForm />}</Box>;
-}
-
-const LoginForm = () => {
-    const [reveal, setReveal] = useState(false);
-    const [formValues, setFormValues] = useState({ email: '', password: '' });
-
-    const handleSubmit = ({ value }) => {
-        console.log('Form Submitted:', value);
-    };
+    }
 
     return (
         <Box>
@@ -111,11 +200,22 @@ const LoginForm = () => {
                         />
                         <Button type="submit" label="Login" primary />
                     </Box>
+                    <Box margin={{ top: '4px' }}>
+                        <Text size="small">
+                            Don't have an account?{' '}
+                            <Anchor
+                                href={`${API_URL}/users/register`}
+                                label="Register here"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            />
+                        </Text>
+                    </Box>
                 </Form>
             </Box>
         </Box>
     );
-};
+}
 
 // import { useEffect, useContext, useState } from 'react';
 // import { Box, Text, Button, CheckBox } from 'grommet';

@@ -46,11 +46,12 @@ export function App() {
         async function navigatePreferences() {
             try {
                 const userData = await getUserData();
+                console.log("USER DATA: ", userData)
                 const preferenceData = await getPreferenceData();
 
                 if (!ignore) {
                     if (
-                        userData != undefined &&
+                        userData &&
                         Object.keys(userData).length !== 0
                     ) {
                         setUser(userData);
@@ -59,7 +60,7 @@ export function App() {
                         await setUserData(user)
                     }
 
-                    if (preferenceData != undefined) {
+                    if (preferenceData) {
                         const { language } = preferenceData;
                         i18n.changeLanguage(langNameMap[language]);
                     } else {
