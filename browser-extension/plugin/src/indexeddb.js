@@ -45,8 +45,7 @@ export async function get_all_words() {
 }
 
 // Test function to add temp words to the DB (this could be done via UI too)
-// Initialize database with default words
-export async function initializeDatabase() {
+export async function addDataToDatabase() {
     console.log("inside db init");
     const wordCount = await db.words.count();
     console.log("Word count", wordCount);

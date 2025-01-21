@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, List, Text } from 'grommet';
-import { get_all_words, initializeDatabase } from '../../indexeddb';
+import { get_all_words, addDataToDatabase } from '../../indexeddb';
 
 const Indexer = () => {
     const [words, setWords] = useState([]);
@@ -9,7 +9,7 @@ const Indexer = () => {
         const loadWords = async () => {
             try {
                 // Initialize database
-                await initializeDatabase();
+                await addDataToDatabase();
                 // Fetch all words
                 const allWords = await get_all_words();
                 setWords(allWords);
