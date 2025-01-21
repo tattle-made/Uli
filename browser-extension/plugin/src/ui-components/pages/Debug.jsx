@@ -7,7 +7,8 @@ import {
     Form,
     FormField,
     TextInput,
-    Heading
+    Heading,
+    Anchor
 } from 'grommet';
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 import repository from '../../repository';
@@ -19,6 +20,9 @@ const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
 const { resetAccount } = Api;
 import { Hide, View } from 'grommet-icons';
 import { userLogin } from '../../api';
+import config from '../../config';
+
+const { API_URL } = config;
 
 export function Debug() {
     const { user, setUser } = useContext(UserContext);
@@ -26,7 +30,7 @@ export function Debug() {
 
     const [localStorageData, setLocalStorageData] = useState(undefined);
     const { t, i18n } = useTranslation();
-        const [isResetChecked, setIsResetChecked] = useState(false);
+    const [isResetChecked, setIsResetChecked] = useState(false);
 
     // useEffect(() => {
     //     async function localStorage() {
@@ -60,24 +64,24 @@ export function Debug() {
                         fill={'horizontal'}
                         align="start"
                     >
-                        <Text color={'status-critical'}>
-                            Logout
-                        </Text>
+                        <Text color={'status-critical'}>Logout</Text>
                         <Box height={'0.8em'}></Box>
                         <Box gap={'small'}>
                             <CheckBox
                                 checked={isResetChecked}
-                                label={"I am sure I want to logout from this account"}
+                                label={
+                                    'I am sure I want to logout from this account'
+                                }
                                 onChange={(e) =>
                                     setIsResetChecked(e.target.checked)
                                 }
                             />
                             <Button
-                                label={"Logout"}
+                                label={'Logout'}
                                 disabled={!isResetChecked}
                                 secondary
-                                onClick={async()=>{
-                                    await setUserData(undefined);
+                                onClick={async () => {
+                                    await setUserData(null);
                                     setUser(null);
                                 }}
                             />
@@ -91,7 +95,7 @@ export function Debug() {
     );
 }
 
-const LoginForm = () => {
+function LoginForm() {
     const [reveal, setReveal] = useState(false);
     const [formValues, setFormValues] = useState({ email: '', password: '' });
     const { showNotification } = useContext(NotificationContext);
@@ -196,11 +200,22 @@ const LoginForm = () => {
                         />
                         <Button type="submit" label="Login" primary />
                     </Box>
+                    <Box margin={{ top: '4px' }}>
+                        <Text size="small">
+                            Don't have an account?{' '}
+                            <Anchor
+                                href={`${API_URL}/users/register`}
+                                label="Register here"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            />
+                        </Text>
+                    </Box>
                 </Form>
             </Box>
         </Box>
     );
-};
+}
 
 // import { useEffect, useContext, useState } from 'react';
 // import { Box, Text, Button, CheckBox } from 'grommet';
