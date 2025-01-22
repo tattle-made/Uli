@@ -22,7 +22,6 @@ import { Slur } from './Slur';
 import SlurCreate from './SlurCreate';
 import SlurEdit from './SlurEdit';
 import { userBrowserTabs } from '../../browser-compat';
-import Indexer from './Indexer';
 
 export function App() {
     const [user, setUser] = useState(undefined);
@@ -47,11 +46,12 @@ export function App() {
         async function navigatePreferences() {
             try {
                 const userData = await getUserData();
+                console.log("USER DATA: ", userData)
                 const preferenceData = await getPreferenceData();
 
                 if (!ignore) {
                     if (
-                        userData != undefined &&
+                        userData &&
                         Object.keys(userData).length !== 0
                     ) {
                         setUser(userData);
@@ -60,7 +60,7 @@ export function App() {
                         await setUserData(user)
                     }
 
-                    if (preferenceData != undefined) {
+                    if (preferenceData) {
                         const { language } = preferenceData;
                         i18n.changeLanguage(langNameMap[language]);
                     } else {
@@ -171,7 +171,6 @@ export function App() {
                                 <Link id="slur-link" to="/slur">
                                     {t('navigation_slur_list')}
                                 </Link>
-                                <Link to="/indexerdb">Indexer DB</Link>
                             </Box>
 
                             <Box height={'2.0em'} />
@@ -204,7 +203,6 @@ export function App() {
                                     element={<SlurCreate />}
                                 />
                                 <Route path="slur/:id" element={<SlurEdit />} />
-                                <Route path="indexerdb" element={<Indexer />} />
                             </Routes>
                         </div>
                         {/* ) : (
