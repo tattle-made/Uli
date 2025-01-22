@@ -9,7 +9,7 @@ db.version(1).stores({
 });
 
 // Function to add a word to the database
-export async function add_to_indexerdb(word, source) {
+export async function addSlur(word, source) {
     try {
         const id = await db.words.add({
             word: word,
@@ -24,7 +24,7 @@ export async function add_to_indexerdb(word, source) {
 }
 
 // Function to get a word by id
-export async function get_word_by_id(id) {
+export async function getSlurById(id) {
     try {
         const word = await db.words.get(id);
         return word;
@@ -34,7 +34,7 @@ export async function get_word_by_id(id) {
 }
 
 // Function to get all words
-export async function get_all_words() {
+export async function getAllSlurs() {
     try {
         const words = await db.words.toArray();
         return words;
@@ -45,7 +45,7 @@ export async function get_all_words() {
 }
 
 // Function to bulk add words to the database
-export async function bulkAddWords(wordsArray, source) {
+export async function bulkAddSlurs(wordsArray, source) {
     if (!Array.isArray(wordsArray) || typeof source !== 'string') {
         throw new Error('Invalid input: wordsArray must be an array and source must be a string');
     }
@@ -67,7 +67,7 @@ export async function bulkAddWords(wordsArray, source) {
 }
 
 
-export async function initIndexedDB() {
+export async function initializeSlurs() {
     console.log('Initializing Indexed database');
 
     try {
@@ -85,7 +85,7 @@ export async function initIndexedDB() {
         const mainSlurListArray = mainSlurList.split('|');
         // Index hard-coded slurs into the database
         if (mainSlurListArray.length > 0) {
-            await bulkAddWords(mainSlurListArray, 'hard_coded');
+            await bulkAddSlurs(mainSlurListArray, 'hard_coded');
             console.log(`Indexed ${mainSlurListArray.length} hard-coded slurs into the database.`);
         } else {
             console.log('No slurs found in the JSON file.');

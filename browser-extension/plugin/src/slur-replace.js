@@ -1,4 +1,4 @@
-import { get_all_words } from './slur-store';
+import { getAllSlurs } from './slur-store';
 
 const PUNCTUATIONS = [' ', '.', ',', ';', '#', '"'];
 
@@ -25,13 +25,13 @@ let missedSlurListStatic = 'லூசு|கூFire';
 // These are words that are not replaced if part of 'slurList' and contain escape character
 let missedEscapedSlurListStatic = 'choo$iya';
 
-// Function to initialize/update the expression from IndexedDB
+// Function to initialize/update the expression's
 async function initializeExpressions() {
     try {
-        // Fetch all words from IndexedDB
-        const allSlurWords = await get_all_words();
+        // Fetch all words
+        const allSlurWords = await getAllSlurs();
         const slurList = allSlurWords.map((wordObj) => wordObj.word);
-        console.log("Slur words fetched from IndexedDB", slurList.length);
+        console.log("Slur words fetched from DB", slurList.length);
 
         // Sort and join slur list
         const sortedSlurList = slurList.sort((a, b) => b.length - a.length).join('|');
@@ -40,7 +40,7 @@ async function initializeExpressions() {
         const sortedMissedList = missedSlurListStatic.split('|').sort((a, b) => b.length - a.length).join('|');
         expressionStatic = new RegExp(`(?:${sortedMissedList})`, 'gi');
 
-        console.log('Expressions initialized with IndexedDB slurs.');
+        console.log('Expressions initialized with slurs.');
     } catch (error) {
         console.error('Error initializing expressions:', error);
     }

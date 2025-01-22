@@ -8,7 +8,7 @@ const { getUserData, getPreferenceData, setPreferenceData } = repository;
 // import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initIndexedDB } from './slur-store';
+import { initializeSlurs } from './slur-store';
 
 const { createSlurAndCategory } = Api;
 
@@ -153,8 +153,8 @@ window.addEventListener(
         const pref = await getPreferenceData();
         const { enableSlurReplacement , enableSlurMetadata } = pref;
 
-        // Initialize IndexedDB on content load
-        await initIndexedDB();
+        // Initialize Slurs on content load
+        await initializeSlurs();
         
         if (enableSlurMetadata) {
             let body = document.getElementsByTagName('body');
