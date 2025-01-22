@@ -19,8 +19,8 @@ const { getUserData, getPreferenceData, setUserData, setPreferenceData } =
     repository;
 const { resetAccount } = Api;
 import { Hide, View } from 'grommet-icons';
-import { userLogin } from '../../api';
 import config from '../../config';
+import { userLogin } from '../../api/user';
 
 const { API_URL } = config;
 

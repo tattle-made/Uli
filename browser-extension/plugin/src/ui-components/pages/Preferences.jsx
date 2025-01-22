@@ -178,25 +178,30 @@ export function PreferencesHome() {
         // alert(JSON.stringify({preferenceInLS, preference}))
 
         try {
-            if (user) {
-                const preferenceRemote = await savePreference(
-                    user.accessToken,
-                    preference
-                );
+            await setPreferenceData({
+                language,
+                enableSlurReplacement,
+                enableSlurMetadata
+            });
+            // if (user) {
+            //     const preferenceRemote = await savePreference(
+            //         user.accessToken,
+            //         preference
+            //     );
 
-                await setPreferenceData({
-                    ...preferenceRemote.data,
-                    language,
-                    enableSlurReplacement,
-                    enableSlurMetadata
-                });
-            } else {
-                await setPreferenceData({
-                    language,
-                    enableSlurReplacement,
-                    enableSlurMetadata
-                });
-            }
+            //     await setPreferenceData({
+            //         ...preferenceRemote.data,
+            //         language,
+            //         enableSlurReplacement,
+            //         enableSlurMetadata
+            //     });
+            // } else {
+            //     await setPreferenceData({
+            //         language,
+            //         enableSlurReplacement,
+            //         enableSlurMetadata
+            //     });
+            // }
 
             const enableSlurReplacementChanged =
                 enableSlurReplacement !== preferenceInLS.enableSlurReplacement;

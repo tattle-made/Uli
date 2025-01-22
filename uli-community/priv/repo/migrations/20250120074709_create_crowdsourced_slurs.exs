@@ -21,9 +21,10 @@ defmodule UliCommunity.Repo.Migrations.CreateCrowdsourcedSlurs do
       add :level_of_severity, :level_of_severity
       add :casual, :boolean, default: false, null: false
       add :appropriated, :boolean, default: false, null: false
-      add :appropriation_context, :boolean, default: false, null: false
+      add :appropriation_context, :boolean, null: true
       add :meaning, :text
-      add :category, {:array, :category_enum}
+      add :categories, {:array, :category_enum}
+      add :contributor_user_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps(type: :utc_datetime)
     end

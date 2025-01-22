@@ -10,6 +10,7 @@ import {
 import { Alert, FormUp, FormDown } from 'grommet-icons';
 
 const SlurCard = ({ data }) => {
+
     const isDataEmpty =
         !data.levelOfSeverity ||
         data.casual === undefined ||
@@ -33,6 +34,7 @@ const SlurCard = ({ data }) => {
             property: 'value',
             header: false,
             render: data => {
+
                 return data.name === 'Categories' ? (
                     <Box direction="row" gap="medium" wrap={true}>
                         {data.value.map((category, categoryIndex) => (
@@ -55,7 +57,7 @@ const SlurCard = ({ data }) => {
     if (showMore) {
         dataToShow.push(
             { name: 'If, Appropriated, Is it by Community or Others?', value: data.appropriationContext ? 'Community' : 'Others' },
-            { name: 'What Makes it Problematic?', value: data.labelMeaning },
+            { name: 'What Makes it Problematic?', value: data.meaning },
             { name: 'Categories', value: data.categories },
         );
     }

@@ -55,6 +55,12 @@ defmodule UliCommunity.UserContribution do
     |> Repo.insert()
   end
 
+  def create_crowdsourced_slur_with_label(attrs \\ %{}) do
+    %CrowdsourcedSlur{}
+    |> CrowdsourcedSlur.changeset_only_label(attrs)
+    |> Repo.insert()
+  end
+
   @doc """
   Updates a crowdsourced_slur.
 
@@ -100,5 +106,11 @@ defmodule UliCommunity.UserContribution do
   """
   def change_crowdsourced_slur(%CrowdsourcedSlur{} = crowdsourced_slur, attrs \\ %{}) do
     CrowdsourcedSlur.changeset(crowdsourced_slur, attrs)
+  end
+
+  def get_crowdsourced_slur_by_user(contributor_user_id) do
+    slurs = Repo.all(from s in CrowdsourcedSlur, where: s.contributor_user_id == ^contributor_user_id)
+
+    {:ok, slurs}
   end
 end
