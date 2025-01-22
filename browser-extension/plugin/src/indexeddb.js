@@ -1,12 +1,12 @@
 import Dexie from 'dexie';
 import repository from './repository';
-const { setPreferenceData, getPreferenceData } = repository;
+const { getPreferenceData } = repository;
 
 const db = new Dexie('SlurWordsDatabase');
 
 // Define database schema
 db.version(1).stores({
-    words: '++id, word' // Primary key is id, word is indexed
+    words: '++id, word, source'
 });
 
 // Function to add a word to the database
@@ -70,10 +70,33 @@ export async function addDataToDatabase() {
 
     if (wordCount === 0) {
         const defaultWords = [...personalSlurList, ...mainSlurListArray, ...randomWordsArray];
-        console.time('Total insertion time')
-        for (const word of defaultWords) {
-            await add_to_indexerdb(word);
+        // Prepare objects for bulkAdd
+        const wordObjects = [
+            ...personalSlurList.map(word => ({
+                word: word,
+                timestamp: new Date().toISOString(),
+                source: 'personal'
+            })),
+            ...mainSlurListArray.map(word => ({
+                word: word,
+                timestamp: new Date().toISOString(),
+                source: 'hard_coded'
+            })),
+            ...randomWordsArray.map(word => ({
+                word: word,
+                timestamp: new Date().toISOString(),
+                source: 'crowdsourced'
+            }))
+        ];
+
+        console.time('Bulk insertion time');
+        try {
+            await db.words.bulkAdd(wordObjects);
+            console.log('Database initialized with default words');
+            console.log('Words added to the database:', wordObjects.length);
+        } catch (error) {
+            console.error('Error during bulk add:', error);
         }
-        console.timeEnd('Total insertion time');
+        console.timeEnd('Bulk insertion time');
     }
 }
