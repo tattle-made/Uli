@@ -28,11 +28,10 @@ let missedEscapedSlurListStatic = 'choo$iya';
 // Function to initialize/update the expression from IndexedDB
 async function initializeExpressions() {
     try {
-        console.log("INSIDE INIT EXPRESS");
         // Fetch all words from IndexedDB
         const allSlurWords = await get_all_words();
         const slurList = allSlurWords.map((wordObj) => wordObj.word);
-        console.log("SLURS FETCHED FROM DB", slurList.length);
+        console.log("Slur words fetched from IndexedDB", slurList.length);
 
         // Sort and join slur list
         const sortedSlurList = slurList.sort((a, b) => b.length - a.length).join('|');
