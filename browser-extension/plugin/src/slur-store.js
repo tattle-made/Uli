@@ -66,6 +66,50 @@ export async function bulkAddSlurs(wordsArray, source) {
     }
 }
 
+export async function bulkDeleteSlurs(wordsToDelete, source) {
+    try {
+        if (!wordsToDelete || wordsToDelete.length === 0) {
+            console.log(`No words to delete for source "${source}".`);
+            return;
+        }
+        // Fetch the primary keys of the words to delete based on the source
+        const keysToDelete = await db.words
+            .where('source')
+            .equals(source)
+            .filter((word) => wordsToDelete.includes(word.word))
+            .primaryKeys();
+
+        if (keysToDelete.length > 0) {
+            await db.words.bulkDelete(keysToDelete);
+        } else {
+            console.log(`No words found to delete for source "${source}".`);
+        }
+    } catch (error) {
+        console.error(`Error during bulk deletion for source "${source}":`, error);
+    }
+}
+
+export async function getSlurDifferences(slurList, source) {
+    try {
+        const existingSlurs = await db.words
+            .where('source')
+            .equals(source)
+            .toArray();
+
+        const existingSlurWords = existingSlurs.map((slur) => slur.word);
+        const slursToAdd = slurList.filter(
+            (word) => !existingSlurWords.includes(word)
+        );
+        const slursToRemove = existingSlurWords.filter(
+            (word) => !slurList.includes(word)
+        );
+
+        return { slursToAdd, slursToRemove };
+    } catch (error) {
+        console.error(`Error fetching slur differences for source "${source}":`, error);
+        return { slursToAdd: [], slursToRemove: [] };
+    }
+}
 
 export async function initializeSlurs() {
     console.log('Initializing Indexed database');

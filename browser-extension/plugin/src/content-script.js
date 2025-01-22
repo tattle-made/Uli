@@ -8,7 +8,7 @@ const { getUserData, getPreferenceData, setPreferenceData } = repository;
 // import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initializeSlurs } from './slur-store';
+import { initializeSlurs, bulkAddSlurs, bulkDeleteSlurs, getSlurDifferences } from './slur-store';
 
 const { createSlurAndCategory } = Api;
 
@@ -80,16 +80,31 @@ function processPage(newUrl) {
  * go from the home page to the user status page.
  */
 chrome.runtime.onMessage.addListener(async function (request) {
-    // if (request.type === 'updateData') {
-    //     console.log('data changed. time to update slurs');
-    //     const preference = await getPreferenceData();
-    //     console.log(preference);
-    //     if (preference.slurList != undefined) {
-    //         updateSlurList(preference.slurList);
-    //         processPage(location.href);
-    //     }
-    //     return true;
-    // }
+    if (request.type === 'updateData') {
+        try {
+            const preference = await getPreferenceData();
+            console.log('Fetched Preference Data:', preference);
+            const personalSlurList = preference?.slurList?.split(',') || [];
+            // Get slurs to add and remove
+            const { slursToAdd, slursToRemove } = await getSlurDifferences(personalSlurList, 'personal');
+            console.log('Slurs to add:', slursToAdd);
+            console.log('Slurs to remove:', slursToRemove);
+            // Add new slurs
+            if (slursToAdd.length > 0) {
+                await bulkAddSlurs(slursToAdd, 'personal');
+                console.log(`Added ${slursToAdd.length} slurs to IndexedDB.`);
+            }
+            // Remove outdated slurs
+            if (slursToRemove.length > 0) {
+                await bulkDeleteSlurs(slursToRemove, 'personal');
+                console.log(`Removed ${slursToRemove.length} slurs from IndexedDB.`);
+            }
+            processPage(location.href);
+        } catch (error) {
+            console.error('Error during updateData operation:', error);
+        }
+        return true;
+    }
     if (request.message === 'URL_CHANGED') {
         const newUrl = request.url;
         log('Url Changed', newUrl);
@@ -97,30 +112,30 @@ chrome.runtime.onMessage.addListener(async function (request) {
         return true;
     }
     if (request.type === 'SLUR_ADDED') {
-    //     const slur = request.slur;
-    //     log('slur added from bg', slur);
-    //     const pref = await getPreferenceData();
-    //     let slurList;
+        const slur = request.slur;
+        log('slur added from bg', slur);
+        const pref = await getPreferenceData();
+        let slurList;
 
-    //     const user = await getUserData();
-    //     // console.log('USER in content-script', user);
+        const user = await getUserData();
+        // console.log('USER in content-script', user);
 
-    //     // Adding Slur to Prefrences
-    //     if (!pref || !pref.slurList) {
-    //         slurList = slur;
-    //     } else {
-    //         slurList = pref.slurList;
-    //         if (!slurList || slurList === '') {
-    //             slurList = slur;
-    //         } else {
-    //             slurList += `,${slur}`;
-    //         }
-    //     }
-    //     try {
-    //         await setPreferenceData({ ...pref, slurList });
-    //     } catch (error) {
-    //         console.error('error updating pref data', error);
-    //     }
+        // Adding Slur to Prefrences
+        if (!pref || !pref.slurList) {
+            slurList = slur;
+        } else {
+            slurList = pref.slurList;
+            if (!slurList || slurList === '') {
+                slurList = slur;
+            } else {
+                slurList += `,${slur}`;
+            }
+        }
+        try {
+            await setPreferenceData({ ...pref, slurList });
+        } catch (error) {
+            console.error('error updating pref data', error);
+        }
 
         //Crowdsourcing Slur
         const crowdsourceData = {
@@ -151,17 +166,16 @@ window.addEventListener(
     async () => {
         console.log('content loaded');
         const pref = await getPreferenceData();
-        const { enableSlurReplacement , enableSlurMetadata } = pref;
+        const { enableSlurReplacement, enableSlurMetadata } = pref;
 
         // Initialize Slurs on content load
         await initializeSlurs();
-        
+
         if (enableSlurMetadata) {
             let body = document.getElementsByTagName('body');
             let first_body = body[0];
             transformGeneral.processNewlyAddedNodesGeneral2(first_body);
-        }
-        else if (enableSlurReplacement) {
+        } else if (enableSlurReplacement) {
             processPage(location.href);
         }
     },
