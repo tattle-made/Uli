@@ -15,6 +15,7 @@ defmodule UliCommunityWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    # plug Corsica, origins: "*", allow_headers: ["content-type"], allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
   end
 
   pipeline :authenticated_api do
@@ -95,7 +96,14 @@ defmodule UliCommunityWeb.Router do
   scope "/api", UliCommunityWeb do
     pipe_through [:api, :authenticated_api]
     get "/auth/hi", SessionControllerApi, :say_hi
+    resources "/slurs", SlursController, except: [:edit, :new]
+    options "/slurs", SlurController, :options
   end
+  # scope "/api", UliCommunityWeb do
+  #   pipe_through [:api]
+  #   options "/slurs", SlurController, :options
+
+  # end
 
   ## Auth routes for Access Token
   scope "/api/accesstoken", UliCommunityWeb do

@@ -23,9 +23,11 @@ import {
     defaultMetadata
 } from '../../slur-crowdsource/values';
 import {
+    crowdsourceSlurMapApiKeys,
     slurCreateApiToPlugin,
     slurCreatePluginToApi
 } from '../../slur-crowdsource/adapters';
+import { getCrowdsourceSlurById, updateCrowdsourceSlur } from '../../api/crowdsource-slurs';
 
 export function SlurEdit() {
     const { user } = useContext(UserContext);
@@ -39,12 +41,20 @@ export function SlurEdit() {
     useEffect(() => {
         async function fetchSlurData() {
             try {
-                const data = await getSlurAndCategoryById(user.accessToken, id);
-                console.log(data);
+                // const data = await getSlurAndCategoryById(user.accessToken, id);
+                let data = await getCrowdsourceSlurById(id, user.token);
+
+                data = crowdsourceSlurMapApiKeys(data);
+
                 const modifiedData = slurCreateApiToPlugin(data);
+
                 setFormData(modifiedData);
             } catch (error) {
                 console.error(error);
+                showNotification({
+                    type: 'error',
+                    message: 'Error - Failed to Load the Slur'
+                });
             }
         }
 
@@ -71,7 +81,8 @@ export function SlurEdit() {
         let newValue = slurCreatePluginToApi(value);
         console.log(newValue);
         try {
-            await updateSlurAndCategory(user.accessToken, id, newValue);
+            // await updateSlurAndCategory(user.accessToken, id, newValue);
+            await updateCrowdsourceSlur(id, newValue, user.token);
             navigate('/slur');
             showNotification({
                 type: 'message',
@@ -132,11 +143,7 @@ export function SlurEdit() {
                     />
                 </FormField>
 
-                <FormField
-                    name="appropriated"
-                    label="Appropriated"
-                    required
-                >
+                <FormField name="appropriated" label="Appropriated" required>
                     <RadioButtonGroup
                         id="slur-form-appropriated"
                         name="appropriated"
@@ -165,13 +172,13 @@ export function SlurEdit() {
                 </FormField>
 
                 <FormField
-                    name="labelMeaning"
+                    name="meaning"
                     label="What Makes it Problematic?"
                     // required
                 >
                     <TextArea
                         id="slur-form-label-meaning"
-                        name="labelMeaning"
+                        name="meaning"
                         focusIndicator="true"
                         resize="vertical"
                     />
@@ -194,6 +201,11 @@ export function SlurEdit() {
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
+                        labelKey={"label"}
+                        valueKey={{
+                            key: "value",
+                            reduce: true
+                          }}
                         onChange={handleCategoryChange}
                     />
                 </FormField>
