@@ -85,6 +85,22 @@ function sendMessage(type) {
             }
         );
     }
+    else if (type == 'fetchPersonalSlurs') {
+        console.log("log 2");
+        userBrowserTabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+                userBrowserTabs.sendMessage(
+                    tabs[0].id,
+                    { type: 'fetchPersonalSlurs' }, 
+                    {},
+                    function (response) {
+                        console.log("call back function",response);
+                    }
+                );
+            }
+        );
+    }
 }
 
 function addListener(type, func, response) {

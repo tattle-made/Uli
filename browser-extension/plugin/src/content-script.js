@@ -8,7 +8,7 @@ const { getUserData, getPreferenceData, setPreferenceData } = repository;
 // import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initializeSlurs, bulkAddSlurs, bulkDeleteSlurs } from './slur-store';
+import { initializeSlurs, getSlursBySource } from './slur-store';
 
 const { createSlurAndCategory } = Api;
 
@@ -79,29 +79,34 @@ function processPage(newUrl) {
  * eg : When a user clicks on a tweet on their home timeline, they
  * go from the home page to the user status page.
  */
-chrome.runtime.onMessage.addListener(async function (request) {
-    // if (request.type === 'updateData') {
-    //     try {
-    //         const preference = await getPreferenceData();
-    //         const personalSlurList = preference?.slurList?.split(',') || [];
-    //         // Get slurs to add and remove
-    //         const { slursToAdd, slursToRemove } = await getSlurDifferences(personalSlurList, 'personal');
-    //         console.log('Slurs to add:', slursToAdd);
-    //         console.log('Slurs to remove:', slursToRemove);
-    //         // Add new slurs
-    //         if (slursToAdd.length > 0) {
-    //             await bulkAddSlurs(slursToAdd, 'personal');
-    //         }
-    //         // Remove outdated slurs
-    //         if (slursToRemove.length > 0) {
-    //             await bulkDeleteSlurs(slursToRemove, 'personal');
-    //         }
-    //         processPage(location.href);
-    //     } catch (error) {
-    //         console.error('Error during updating slur list:', error);
-    //     }
-    //     return true;
-    // }
+chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+    console.log("msg gotten", request);
+    console.log(sendResponse);
+    console.log(sender);
+    if (request.type === 'updateData') {
+        try {
+            console.log("reached content update data");
+            // processPage(location.href);
+        } catch (error) {
+            console.error('Error during updating slur list:', error);
+        }
+        return true;
+    }
+    if (request.type === 'fetchPersonalSlurs') {
+        console.log("inside fetch content personal");
+        try {
+            const personalSlurs = await getSlursBySource('personal');
+            const slurArr = personalSlurs.map((slur) => slur.word);
+            console.log('Sending slurs back to pref:', slurArr);
+            // sendResponse({msg: 23});
+            return {msg: 20};
+        } catch (error) {
+            console.error('Error fetching personal slurs in content script:', error);
+            // sendResponse({ success: false, error: error.message });
+            return {msg: 21};
+        }
+        return {msg: 22};
+    }
     if (request.message === 'URL_CHANGED') {
         const newUrl = request.url;
         log('Url Changed', newUrl);

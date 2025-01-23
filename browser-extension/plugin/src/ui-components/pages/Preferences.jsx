@@ -23,6 +23,7 @@ import { userBrowserTabs } from '../../browser-compat';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { FormClose, FormPreviousLink, LinkPrevious } from 'grommet-icons';
 const { setPreferenceData, getPreferenceData } = repository;
+import { getSlursBySource, bulkAddSlurs, slurExists, deleteSlur } from '../../slur-store';
 
 const defaultValue = {};
 
@@ -319,24 +320,32 @@ export function PreferencesSlurList() {
 
     useEffect(() => {
         async function getPrefsLocalStorage() {
+            console.log("brow util", browserUtils);
             try {
-                const preference = await getPreferenceData();
-                console.log('preference ', preference);
-                if (!ignore) {
-                    // console.log({ preference });
-                    // setLocalPreferences(preference);
-                    let slurString = preference.slurList || '';
-                    let slurArr = slurString == '' ? [] : slurString.split(',');
-                    setSlurs(slurArr);
-                    setDisplaySlurs(slurArr);
-                    setResetSlurs(slurArr);
-                }
+                const response = await browserUtils.sendMessage('fetchPersonalSlurs');
+                console.log("personal data from content", response);
+                // console.log(response);
+                // browserUtils.sendMessage('fetchPersonalSlurs', undefined);
+                // if (response.success) {
+                //     console.log("INSIDE RESPONSE SUCCESS");
+                //     const slurArr = response.slurs;
+                //     console.log('Personal slurs fetched from content script:', slurArr);
+                //     setSlurs(slurArr);
+                //     setDisplaySlurs(slurArr);
+                //     setResetSlurs(slurArr);
+                // } else {
+                //     console.error('Error fetching slurs:', response.error);
+                //     showNotification({
+                //         type: 'error',
+                //         message: t('message_error_preference_data_load'),
+                //     });
+                // }
             } catch (err) {
+                console.error('Error loading personal slurs:', err);
                 showNotification({
                     type: 'error',
                     message: t('message_error_preference_data_load')
                 });
-                // alert(err);
             }
         }
 
@@ -392,9 +401,22 @@ export function PreferencesSlurList() {
         setInput('');
     }
 
-    function deleteSlur(slur) {
+    async function deleteSlurUI(slur) {
+        // Remove from UI
         setSlurs((prevSlurs) => prevSlurs.filter((s) => s !== slur));
         setDisplaySlurs((prevSlurs) => prevSlurs.filter((s) => s !== slur));
+
+        // Remove from IndexedDB
+        try {
+            await deleteSlur(slur, 'personal');
+            browserUtils.sendMessage('updateData', undefined);
+        } catch (error) {
+            console.error('Error deleting slur:', error);
+            showNotification({
+                type: 'error',
+                message: 'Failed to remove slur'
+            });
+        }
     }
 
     function resetAllSlurs() {
@@ -420,19 +442,17 @@ export function PreferencesSlurList() {
         }
 
         try {
-            let preferenceInLS = await getPreferenceData();
+            // Filter out slurs that already exist in the database
+            const slursToAdd = [];
+            for (const word of slurs) {
+                const exists = await slurExists(word, 'personal');
+                if (!exists) {
+                    slursToAdd.push(word);
+                }
+            }
 
-            preferenceInLS = { ...preferenceInLS, slurList: slurs.toString() };
-            // let preferenceRemote = await savePreference(
-            //     user.accessToken,
-            //     preferenceInLS
-            // );
-
-            await setPreferenceData({
-                ...preferenceInLS,
-                // ...preferenceRemote.data
-            });
-
+            await bulkAddSlurs(slursToAdd, 'personal');
+            
             setResetSlurs(slurs);
             // setSuccess("Saved Successfully!")
             showNotification({
@@ -493,7 +513,7 @@ export function PreferencesSlurList() {
                                 <SlurChip
                                     key={key}
                                     slur={slur}
-                                    deleteSlur={() => deleteSlur(slur)}
+                                    deleteSlur={() => deleteSlurUI(slur)}
                                 />
                             );
                         })

@@ -70,26 +70,38 @@ export async function bulkAddSlurs(wordsArray, source) {
     }
 }
 
-export async function bulkDeleteSlurs(wordsToDelete, source) {
+// Function to delete a single slur
+export async function deleteSlur(word, source) {
     try {
-        if (!wordsToDelete || wordsToDelete.length === 0) {
-            console.log(`No words to delete for source "${source}".`);
-            return;
-        }
-        // Fetch the primary keys of the words to delete based on the source
-        const keysToDelete = await db.words
+        const slurToDelete = await db.words
             .where('source')
             .equals(source)
-            .filter((word) => wordsToDelete.includes(word.word))
-            .primaryKeys();
+            .and((slur) => slur.word === word)
+            .first(); // Fetch only the first matching slur
 
-        if (keysToDelete.length > 0) {
-            await db.words.bulkDelete(keysToDelete);
+        if (slurToDelete) {
+            await db.words.delete(slurToDelete.id);
+            console.log(`Deleted slur "${word}" from source "${source}".`);
         } else {
-            console.log(`No words found to delete for source "${source}".`);
+            console.log(`Slur "${word}" not found for source "${source}".`);
         }
     } catch (error) {
-        console.error(`Error during bulk deletion for source "${source}":`, error);
+        console.error(`Error deleting slur "${word}" from source "${source}":`, error);
+    }
+}
+
+// Function to check if a slur exists in the database
+export async function slurExists(word, source) {
+    try {
+        const count = await db.words
+            .where('source')
+            .equals(source)
+            .filter((slur) => slur.word === word)
+            .count();
+        return count > 0; // Returns true if the slur exists, else false
+    } catch (error) {
+        console.error(`Error checking if slur exists: ${error}`);
+        throw error;
     }
 }
 
