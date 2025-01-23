@@ -5,13 +5,6 @@ defmodule UliCommunityWeb.SlursController do
 
   def options(conn, _params) do
     conn
-    # Or specify a domain like "http://localhost:3000"
-    |> put_resp_header("access-control-allow-origin", "*")
-    # Allow the POST method
-    |> put_resp_header("access-control-allow-methods", "POST")
-    # Allow the Content-Type header
-    |> put_resp_header("access-control-allow-headers", "Content-Type")
-    # Respond with a 200 OK and no body content
     |> send_resp(200, "")
   end
 
