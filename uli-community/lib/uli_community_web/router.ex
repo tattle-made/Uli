@@ -15,6 +15,11 @@ defmodule UliCommunityWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    plug Corsica,
+      origins: "*",
+      allow_headers: ["content-type", "authorization"],
+      allow_methods: ["OPTIONS"]
   end
 
   pipeline :authenticated_api do
@@ -95,6 +100,15 @@ defmodule UliCommunityWeb.Router do
   scope "/api", UliCommunityWeb do
     pipe_through [:api, :authenticated_api]
     get "/auth/hi", SessionControllerApi, :say_hi
+    resources "/slurs", SlursController, except: [:edit, :new]
+    # options "/slurs", SlurController, :options
+  end
+
+  scope "/api", UliCommunityWeb do
+    pipe_through [:api]
+    options "/slurs", SlurController, :options
+    get "/dataset/slur/:batch", PublicDatasetController, :get_slurs_by_batch
+    get "/dataset/slurmetadata/:batch", PublicDatasetController, :get_slursmetadata_by_batch
   end
 
   ## Auth routes for Access Token
@@ -131,6 +145,7 @@ defmodule UliCommunityWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       live "/testadmin", TestAdminRoleLive, :index
       live "/gentoken", TokenGeneratorLive, :index
+      live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
     end
   end
 

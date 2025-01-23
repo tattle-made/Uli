@@ -18,6 +18,7 @@ import {
     categoryOptions,
     defaultMetadata
 } from '../../slur-crowdsource/values';
+import { createCrowdsourceSlur } from '../../api/crowdsource-slurs';
 
 const { createSlurAndCategory } = Api;
 
@@ -34,14 +35,15 @@ export function SlurCreate() {
 
     const handleSubmit = async ({ value }) => {
         let newValue = slurCreatePluginToApi(value);
-        // console.log(newValue);
+        console.log("FORM VALUE: ", value);
         try {
-            await createSlurAndCategory("dea07e31-417c-4547-9208-57ff7fcf2da8", newValue);
-            navigate('/slur');
+            // await createSlurAndCategory("dea07e31-417c-4547-9208-57ff7fcf2da8", newValue);
+            await createCrowdsourceSlur(newValue, user.token)
             showNotification({
                 type: 'message',
                 message: 'Slur Created'
             });
+            navigate('/slur');
         } catch (err) {
             console.error('Error creating slur', err);
             showNotification({
@@ -149,13 +151,13 @@ export function SlurCreate() {
                 </FormField>
 
                 <FormField
-                    name="labelMeaning"
+                    name="meaning"
                     label="What Makes it Problematic?"
                     // required
                 >
                     <TextArea
                         id="slur-form-label-meaning"
-                        name="labelMeaning"
+                        name="meaning"
                         focusIndicator="true"
                         resize="vertical"
                     />
@@ -178,6 +180,11 @@ export function SlurCreate() {
                         id="slur-form-categories-select"
                         name="categories"
                         options={categoryOptions}
+                        labelKey={"label"}
+                        valueKey={{
+                            key: "value",
+                            reduce: true
+                          }}
                         onChange={handleCategoryChange}
                     />
                 </FormField>

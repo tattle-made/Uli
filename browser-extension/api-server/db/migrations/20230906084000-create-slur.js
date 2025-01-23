@@ -31,7 +31,7 @@ module.exports = {
       appropriationContext: {
         type: Sequelize.BOOLEAN,
       },
-      labelMeaning: {
+      meaning: {
         type: Sequelize.TEXT,
       },
       createdAt: {

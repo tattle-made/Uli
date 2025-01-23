@@ -9,6 +9,7 @@ const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
 import { initializeSlurs, getSlursBySource } from './slur-store';
+import { createCrowdsourceSlur } from './api/crowdsource-slurs';
 
 const { createSlurAndCategory } = Api;
 
@@ -121,6 +122,9 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
 
         const user = await getUserData();
         // console.log('USER in content-script', user);
+        const crowdsourceData = {
+            label: slur,
+        };
 
         // Adding Slur to Prefrences
         if (!pref || !pref.slurList) {
@@ -140,12 +144,9 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
         }
 
         //Crowdsourcing Slur
-        const crowdsourceData = {
-            label: slur,
-            categories: []
-        };
         try {
-            await createSlurAndCategory(user.accessToken, crowdsourceData);
+            // await createSlurAndCategory(user.accessToken, crowdsourceData);
+            await createCrowdsourceSlur(crowdsourceData, user.token)
             console.log('finsihed POST req');
             window.alert(`Slur word "${slur}" added to Uli`);
         } catch (error) {

@@ -60,13 +60,13 @@ const createSlur = async (req, res) => {
     casual,
     appropriated,
     appropriationContext,
-    labelMeaning,
+    meaning,
     categories,
   } = req.body;
   console.log(
     userId,
     label,
-    labelMeaning,
+    meaning,
     appropriated,
     appropriationContext,
     categories
@@ -82,7 +82,7 @@ const createSlur = async (req, res) => {
         casual,
         appropriated,
         appropriationContext,
-        labelMeaning,
+        meaning,
       },
       { transaction: t }
     );
@@ -122,7 +122,7 @@ const updateSlur = async (req, res) => {
     casual,
     appropriated,
     appropriationContext,
-    labelMeaning,
+    meaning,
     categories,
   } = req.body;
   const t = await sequelize.transaction();
@@ -140,7 +140,7 @@ const updateSlur = async (req, res) => {
     existingSlur.casual = casual;
     existingSlur.appropriated = appropriated;
     existingSlur.appropriationContext = appropriationContext;
-    existingSlur.labelMeaning = labelMeaning;
+    existingSlur.meaning = meaning;
     await existingSlur.save({ transaction: t });
 
     // Delete existing categories for this slur

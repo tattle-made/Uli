@@ -20,7 +20,7 @@ describe('Slur Crowdsource', () => {
             casual: true,
             appropriated: true,
             appropriationContext: false,
-            labelMeaning: 'test1-jest',
+            meaning: 'test1-jest',
             categories: ["gendered", "ethnicity"]
         };
 
@@ -38,7 +38,7 @@ describe('Slur Crowdsource', () => {
             casual: true,
             appropriated: false,
             appropriationContext: true,
-            labelMeaning: 'test1-jest-update',
+            meaning: 'test1-jest-update',
             categories: ["caste"]
         };
 

@@ -15,10 +15,10 @@ defmodule UliCommunityWeb.Plugs.AuthenticateApi do
       try do
         conn |> assign(:current_user, Accounts.get_user!(data.user_id))
       rescue
-        _exception -> conn |> put_status(:unauthorized) |> json(%{error: "Access is Unauthorized"})
+        _exception -> conn |> put_status(:unauthorized) |> json(%{error: "Access is Unauthorized"}) |> halt()
       end
     else
-      _error -> conn |> put_status(:unauthorized) |> json(%{error: "Access is Unauthorized"})
+      _error -> conn |> put_status(:unauthorized) |> json(%{error: "Access is Unauthorized"}) |> halt()
     end
   end
 

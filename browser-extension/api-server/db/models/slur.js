@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       appropriationContext: {
         type: DataTypes.BOOLEAN,
       },
-      labelMeaning: {
+      meaning: {
         type: DataTypes.TEXT,
       },
     },

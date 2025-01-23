@@ -11,7 +11,7 @@ const SlurCardBubble = ({ data }) => {
                 width={'fit-content'}
                 wrap={true}
             >
-                <Text size={'small'}>{data.category}</Text>{' '}
+                <Text size={'small'}>{data}</Text>{' '}
             </Box>
         </Box>
     );
