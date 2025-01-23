@@ -23,16 +23,6 @@ export async function addSlur(word, source) {
     }
 }
 
-// Function to get a word by id
-export async function getSlurById(id) {
-    try {
-        const word = await db.words.get(id);
-        return word;
-    } catch (error) {
-        throw error;
-    }
-}
-
 // Function to get all words
 export async function getAllSlurs() {
     try {
@@ -40,6 +30,20 @@ export async function getAllSlurs() {
         return words;
     } catch (error) {
         console.error(`Error getting all words from database: ${error}`);
+        throw error;
+    }
+}
+
+// Function to get all words by source
+export async function getSlursBySource(source) {
+    try {
+        if (!source || typeof source !== 'string') {
+            throw new Error('Source must be a valid string');
+        }
+        const words = await db.words.where('source').equals(source).toArray();
+        return words;
+    } catch (error) {
+        console.error(`Error getting words by source "${source}":`, error);
         throw error;
     }
 }
@@ -86,28 +90,6 @@ export async function bulkDeleteSlurs(wordsToDelete, source) {
         }
     } catch (error) {
         console.error(`Error during bulk deletion for source "${source}":`, error);
-    }
-}
-
-export async function getSlurDifferences(slurList, source) {
-    try {
-        const existingSlurs = await db.words
-            .where('source')
-            .equals(source)
-            .toArray();
-
-        const existingSlurWords = existingSlurs.map((slur) => slur.word);
-        const slursToAdd = slurList.filter(
-            (word) => !existingSlurWords.includes(word)
-        );
-        const slursToRemove = existingSlurWords.filter(
-            (word) => !slurList.includes(word)
-        );
-
-        return { slursToAdd, slursToRemove };
-    } catch (error) {
-        console.error(`Error fetching slur differences for source "${source}":`, error);
-        return { slursToAdd: [], slursToRemove: [] };
     }
 }
 

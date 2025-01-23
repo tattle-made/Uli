@@ -8,7 +8,7 @@ const { getUserData, getPreferenceData, setPreferenceData } = repository;
 // import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initializeSlurs, bulkAddSlurs, bulkDeleteSlurs, getSlurDifferences } from './slur-store';
+import { initializeSlurs, bulkAddSlurs, bulkDeleteSlurs } from './slur-store';
 
 const { createSlurAndCategory } = Api;
 
@@ -80,31 +80,28 @@ function processPage(newUrl) {
  * go from the home page to the user status page.
  */
 chrome.runtime.onMessage.addListener(async function (request) {
-    if (request.type === 'updateData') {
-        try {
-            const preference = await getPreferenceData();
-            console.log('Fetched Preference Data:', preference);
-            const personalSlurList = preference?.slurList?.split(',') || [];
-            // Get slurs to add and remove
-            const { slursToAdd, slursToRemove } = await getSlurDifferences(personalSlurList, 'personal');
-            console.log('Slurs to add:', slursToAdd);
-            console.log('Slurs to remove:', slursToRemove);
-            // Add new slurs
-            if (slursToAdd.length > 0) {
-                await bulkAddSlurs(slursToAdd, 'personal');
-                console.log(`Added ${slursToAdd.length} slurs to IndexedDB.`);
-            }
-            // Remove outdated slurs
-            if (slursToRemove.length > 0) {
-                await bulkDeleteSlurs(slursToRemove, 'personal');
-                console.log(`Removed ${slursToRemove.length} slurs from IndexedDB.`);
-            }
-            processPage(location.href);
-        } catch (error) {
-            console.error('Error during updateData operation:', error);
-        }
-        return true;
-    }
+    // if (request.type === 'updateData') {
+    //     try {
+    //         const preference = await getPreferenceData();
+    //         const personalSlurList = preference?.slurList?.split(',') || [];
+    //         // Get slurs to add and remove
+    //         const { slursToAdd, slursToRemove } = await getSlurDifferences(personalSlurList, 'personal');
+    //         console.log('Slurs to add:', slursToAdd);
+    //         console.log('Slurs to remove:', slursToRemove);
+    //         // Add new slurs
+    //         if (slursToAdd.length > 0) {
+    //             await bulkAddSlurs(slursToAdd, 'personal');
+    //         }
+    //         // Remove outdated slurs
+    //         if (slursToRemove.length > 0) {
+    //             await bulkDeleteSlurs(slursToRemove, 'personal');
+    //         }
+    //         processPage(location.href);
+    //     } catch (error) {
+    //         console.error('Error during updating slur list:', error);
+    //     }
+    //     return true;
+    // }
     if (request.message === 'URL_CHANGED') {
         const newUrl = request.url;
         log('Url Changed', newUrl);
