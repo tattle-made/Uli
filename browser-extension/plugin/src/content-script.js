@@ -7,7 +7,7 @@ import repository from './repository';
 const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initializeSlurs, getSlursBySource, addSlur, deleteSlur } from './slur-store';
+import { initializeSlurs, getSlursBySource, addSlur, deleteSlur, slurExists } from './slur-store';
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
 
 const { createSlurAndCategory } = Api;
@@ -124,7 +124,6 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
     if (request.type === 'SLUR_ADDED') {
         const slur = request.slur;
         log('slur added from bg', slur);
-        const pref = await getPreferenceData();
         let slurList;
 
         const user = await getUserData();
@@ -133,21 +132,18 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
             label: slur,
         };
 
-        // Adding Slur to Prefrences
-        if (!pref || !pref.slurList) {
-            slurList = slur;
-        } else {
-            slurList = pref.slurList;
-            if (!slurList || slurList === '') {
-                slurList = slur;
-            } else {
-                slurList += `,${slur}`;
-            }
-        }
+        // Adding Slur to IndexedDB
         try {
-            await setPreferenceData({ ...pref, slurList });
+            const exists = await slurExists(slur, 'personal');
+
+            if (!exists) {
+                await addSlur(slur, 'personal');
+                log('Slur added to IndexedDB:', slur);
+            } else {
+                log('Slur already exists in IndexedDB, skipping:', slur);
+            }
         } catch (error) {
-            console.error('error updating pref data', error);
+            console.error('Error handling SLUR_ADDED request:', error);
         }
 
         //Crowdsourcing Slur
