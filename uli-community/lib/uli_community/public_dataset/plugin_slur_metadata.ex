@@ -19,16 +19,16 @@ defmodule UliCommunity.PublicDataset.PluginSlurMetadata do
            ]}
 
   schema "plugin_slur_metadata" do
-    field :label, :string
-    field :language, :string
-    field :level_of_severity, Ecto.Enum, values: [:low, :medium, :high]
-    field :casual, :boolean
-    field :appropriated, :boolean, default: false
-    field :appropriation_context, :boolean, default: false
-    field :meaning, :string
-    field :batch, :integer
+    field(:label, :string)
+    field(:language, :string)
+    field(:level_of_severity, Ecto.Enum, values: [:low, :medium, :high])
+    field(:casual, :boolean)
+    field(:appropriated, :boolean, default: false)
+    field(:appropriation_context, :boolean, default: false)
+    field(:meaning, :string)
+    field(:batch, :integer)
 
-    field :categories, {:array, Ecto.Enum},
+    field(:categories, {:array, Ecto.Enum},
       values: [
         :gendered,
         :sexualized,
@@ -42,6 +42,7 @@ defmodule UliCommunity.PublicDataset.PluginSlurMetadata do
         :sexual_identity,
         :other
       ]
+    )
 
     timestamps(type: :utc_datetime)
   end

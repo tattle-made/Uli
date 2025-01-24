@@ -7,8 +7,9 @@ import repository from './repository';
 const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initializeSlurs, getSlursBySource, addSlur, deleteSlur, slurExists } from './slur-store';
+import { initializeSlurs, getSlursBySource, addSlur, deleteSlur, slurExists, bulkAddSlurs } from './slur-store';
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
+import { getPublicSlurs } from './api/public-slurs';
 
 const { createSlurAndCategory } = Api;
 
@@ -113,6 +114,30 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
         } catch (error) {
             console.error('Error fetching personal slurs in content script:', error);
             // sendResponse({ success: false, error: error.message });
+        }
+    }
+    if (request.type === 'syncApprovedCrowdsourcedSlurs'){
+        const source = 'public_crowdsourced_slurs';
+        try {
+            const publicSlurs = await getPublicSlurs();
+            const publicSlursArray = publicSlurs.map(slur => slur.label);
+            // console.log(publicSlursArray);
+
+            const filteredSlurs = [];
+            for (const slur of publicSlursArray) {
+                const exists = await slurExists(slur, source);
+                if (!exists) {
+                    filteredSlurs.push(slur);
+                }
+            }
+            // If there are slurs to add, bulk add them to the database
+            if (filteredSlurs.length > 0) {
+                await bulkAddSlurs(filteredSlurs, source);
+            } else {
+                console.log('No new slurs to add.');
+            }
+        } catch (error) {
+            console.error("Error fetch public crowsrouced slurs");
         }
     }
     if (request.message === 'URL_CHANGED') {

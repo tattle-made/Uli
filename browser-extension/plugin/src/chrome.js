@@ -77,7 +77,11 @@ function sendMessage(type, data = null) {
             message.data = data;
         }
 
-        if (type === 'updateData' || type === 'fetchPersonalSlurs') {
+        if (
+            type === 'updateData' ||
+            type === 'fetchPersonalSlurs' ||
+            type === 'syncApprovedCrowdsourcedSlurs'
+        ) {
             userBrowserTabs.query(
                 { active: true, currentWindow: true },
                 function (tabs) {
@@ -97,16 +101,14 @@ function sendMessage(type, data = null) {
 }
 
 function addListener(type, func, response) {
-    chrome.runtime.onMessage.addListener(async function (
-        message,
-        sender,
-        sendResponse
-    ) {
-        if (message.type === type) {
-            func();
-            sendResponse(response);
+    chrome.runtime.onMessage.addListener(
+        async function (message, sender, sendResponse) {
+            if (message.type === type) {
+                func();
+                sendResponse(response);
+            }
         }
-    });
+    );
 }
 
 export default {

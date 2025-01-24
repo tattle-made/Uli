@@ -9,7 +9,8 @@ import {
     Button,
     Select,
     CheckBox,
-    RadioButtonGroup
+    RadioButtonGroup,
+    Tip
 } from 'grommet';
 // import { HelpCircle } from 'react-feather';
 import Api from '../pages/Api';
@@ -21,9 +22,8 @@ const { savePreference } = Api;
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 import { userBrowserTabs } from '../../browser-compat';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { FormClose, FormPreviousLink, LinkPrevious } from 'grommet-icons';
+import { FormClose, FormPreviousLink, LinkPrevious, Sync } from 'grommet-icons';
 const { setPreferenceData, getPreferenceData } = repository;
-import { getSlursBySource, bulkAddSlurs, slurExists, deleteSlur } from '../../slur-store';
 
 const defaultValue = {};
 
@@ -237,10 +237,33 @@ export function PreferencesHome() {
         i18n.changeLanguage(langNameMap[option]);
     }
 
+    async function handleSyncApprovedSlurs() {
+        try {
+            browserUtils.sendMessage('syncApprovedCrowdsourcedSlurs', undefined);
+    
+            console.log('Sync message sent to content-script.js');
+        } catch (error) {
+            console.error('Error syncing approved slurs:', error);
+        }
+    }
+
     return (
         <Box fill gap={'medium'}>
             <Box direction="column" gap={'small'}>
-                <Text>{t('language')}</Text>
+                <Box direction="row" justify="between" align="center">
+                    <Text>{t('language')}</Text>
+                    <Button
+                        icon={<Sync />}
+                        onClick={handleSyncApprovedSlurs}
+                        plain
+                        title="Add Approved Crowdsourced Slurs"
+                        style={{
+                            border: '1px solid black',
+                            borderRadius: '4px',
+                            padding: '4px',
+                        }}
+                    />
+                </Box>
                 <Select
                     options={['English', 'Tamil', 'Hindi']}
                     value={language}
