@@ -93,8 +93,8 @@ export function PreferencesHome() {
                                 setSelectedOption('metadata');
                             }
                         }
-                        if(!enableSlurMetadata && !enableSlurReplacement){
-                            setSelectedOption('off')
+                        if (!enableSlurMetadata && !enableSlurReplacement) {
+                            setSelectedOption('off');
                         }
                     }
                 }
@@ -123,7 +123,7 @@ export function PreferencesHome() {
         } else if (selectedOption == 'metadata') {
             setEnableSlurReplacement(false);
             setEnableSlurMetadata(true);
-        }else if (selectedOption == 'off') {
+        } else if (selectedOption == 'off') {
             setEnableSlurReplacement(false);
             setEnableSlurMetadata(false);
         }
@@ -239,9 +239,23 @@ export function PreferencesHome() {
 
     async function handleSyncApprovedSlurs() {
         try {
-            browserUtils.sendMessage('syncApprovedCrowdsourcedSlurs', undefined);
-    
-            console.log('Sync message sent to content-script.js');
+            const res = await browserUtils.sendMessage(
+                'syncApprovedCrowdsourcedSlurs',
+                undefined
+            );
+            console.log("RESS in sync", res);
+            if (res) {
+                console.log('Sync message sent to content-script.js');
+                showNotification({
+                    type: 'message',
+                    message: 'Synced!'
+                });
+            } else {
+                showNotification({
+                    type: 'error',
+                    message: 'Unable to Sync'
+                });
+            }
         } catch (error) {
             console.error('Error syncing approved slurs:', error);
         }
@@ -250,20 +264,7 @@ export function PreferencesHome() {
     return (
         <Box fill gap={'medium'}>
             <Box direction="column" gap={'small'}>
-                <Box direction="row" justify="between" align="center">
-                    <Text>{t('language')}</Text>
-                    <Button
-                        icon={<Sync />}
-                        onClick={handleSyncApprovedSlurs}
-                        plain
-                        title="Add Approved Crowdsourced Slurs"
-                        style={{
-                            border: '1px solid black',
-                            borderRadius: '4px',
-                            padding: '4px',
-                        }}
-                    />
-                </Box>
+                <Text>{t('language')}</Text>
                 <Select
                     options={['English', 'Tamil', 'Hindi']}
                     value={language}
@@ -274,16 +275,39 @@ export function PreferencesHome() {
                 />
             </Box>
 
+            <Box height={'0.8em'}>
+            </Box>
             <RadioButtonGroup
                 name="plugin-options"
                 options={radioOptions}
                 value={selectedOption}
                 onChange={(event) => setSelectedOption(event.target.value)}
             />
-
+            
+            <Box height={'0.8em'}>
+            </Box>
             <Link to={'/preferences/slur-list'}>
                 <Button label="Add to your personal block list" />
             </Link>
+
+            <Box height={'0.8em'}>
+            </Box>
+
+            <Box>
+                <Box direction='row' align='center' gap='small'>
+                <Button
+                        icon={<Sync />}
+                        onClick={handleSyncApprovedSlurs}
+                        // title="Add Approved Crowdsourced Slurs"
+                        label='Download New Crowdsourced Slurs'
+                        // style={{
+                        //     border: '1px solid black',
+                        //     borderRadius: '4px',
+                        //     padding: '4px'
+                        // }}
+                        />
+                </Box>
+            </Box>
 
             {/* <Box
                 height={'2px'}
@@ -348,10 +372,11 @@ export function PreferencesSlurList() {
 
     useEffect(() => {
         async function getPrefsLocalStorage() {
-            console.log("brow util", browserUtils);
+            console.log('brow util', browserUtils);
             try {
-                const response = await browserUtils.sendMessage('fetchPersonalSlurs');
-                console.log("personal data from content", response);
+                const response =
+                    await browserUtils.sendMessage('fetchPersonalSlurs');
+                console.log('personal data from content', response);
                 if (response) {
                     const slurArr = response;
                     setSlurs(slurArr);
@@ -361,7 +386,7 @@ export function PreferencesSlurList() {
                     console.error('Error fetching slurs:', response);
                     showNotification({
                         type: 'error',
-                        message: t('message_error_preference_data_load'),
+                        message: t('message_error_preference_data_load')
                     });
                 }
             } catch (err) {
@@ -455,7 +480,7 @@ export function PreferencesSlurList() {
 
         try {
             browserUtils.sendMessage('updateData', slurs);
-            
+
             setResetSlurs(slurs);
             // setSuccess("Saved Successfully!")
             showNotification({

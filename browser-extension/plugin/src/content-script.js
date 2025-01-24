@@ -150,8 +150,10 @@ chrome.runtime.onMessage.addListener(
                 } else {
                     console.log('No new slurs to add.');
                 }
+                return true
             } catch (error) {
                 console.error('Error fetch public crowsrouced slurs');
+                return false
             }
         }
         if (request.message === 'URL_CHANGED') {
@@ -172,18 +174,18 @@ chrome.runtime.onMessage.addListener(
             };
 
             // Adding Slur to IndexedDB
-            try {
-                const exists = await slurExists(slur, 'personal');
+            // try {
+            //     const exists = await slurExists(slur, 'personal');
 
-                if (!exists) {
-                    await addSlur(slur, 'personal');
-                    log('Slur added to IndexedDB:', slur);
-                } else {
-                    log('Slur already exists in IndexedDB, skipping:', slur);
-                }
-            } catch (error) {
-                console.error('Error handling SLUR_ADDED request:', error);
-            }
+            //     if (!exists) {
+            //         await addSlur(slur, 'personal');
+            //         log('Slur added to IndexedDB:', slur);
+            //     } else {
+            //         log('Slur already exists in IndexedDB, skipping:', slur);
+            //     }
+            // } catch (error) {
+            //     console.error('Error handling SLUR_ADDED request:', error);
+            // }
 
             //Crowdsourcing Slur
             try {
