@@ -11,7 +11,7 @@ const resources = {
             navigation_preferences: 'Preferences',
             navigation_archive: 'Archive',
             navigation_resources: 'Resources',
-            navigation_debug: 'Settings',
+            navigation_debug: 'Account',
             navigation_slur_list: 'Slur List',
             activate_account: 'Activate Account',
             user_guide: 'User Guide',

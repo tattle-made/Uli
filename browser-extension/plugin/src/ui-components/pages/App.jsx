@@ -65,7 +65,7 @@ export function App() {
                         i18n.changeLanguage(langNameMap[language]);
                     } else {
                         await setPreferenceData({
-                            enableSlurReplacement: true,
+                            enableSlurReplacement: false,
                             enableSlurMetadata: false,
                             language: 'English'
                         });
@@ -167,10 +167,10 @@ export function App() {
                                 <Link id="app_nav_resources" to="/resources">
                                     {t('navigation_resources')}
                                 </Link>
-                                <Link to="/debug">{t('navigation_debug')}</Link>
                                 <Link id="slur-link" to="/slur">
                                     {t('navigation_slur_list')}
                                 </Link>
+                                <Link to="/debug">{t('navigation_debug')}</Link>
                             </Box>
 
                             <Box height={'2.0em'} />
