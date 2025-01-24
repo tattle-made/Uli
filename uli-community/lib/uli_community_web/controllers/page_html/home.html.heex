@@ -1,5 +1,5 @@
 <.flash_group flash={@flash} />
-<div class="left-[40rem] fixed inset-y-0 right-0 z-0 hidden lg:block xl:left-[50rem]">
+<%!-- <div class="left-[40rem] fixed inset-y-0 right-0 z-0 hidden lg:block xl:left-[50rem]">
   <svg
     viewBox="0 0 1480 957"
     fill="none"
@@ -37,8 +37,8 @@
       fill-opacity=".2"
     />
   </svg>
-</div>
-<div class="px-4 py-10 sm:px-6 sm:py-28 lg:px-8 xl:px-28 xl:py-32">
+</div> --%>
+<%!-- <div class="px-4 py-10 sm:px-6 sm:py-28 lg:px-8 xl:px-28 xl:py-32">
   <div class="mx-auto max-w-xl lg:mx-0">
     <svg viewBox="0 0 71 48" class="h-12" aria-hidden="true">
       <path
@@ -219,4 +219,43 @@
       </div>
     </div>
   </div>
+</div> --%>
+
+<div class="flex px-20 items-center">
+  <div>
+    <p class="text-2xl font-bold mb-2">Reclaim your online space</p>
+    <p>
+      Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence
+    </p>
+
+    <div class="flex gap-2 mt-2">
+      <a
+        href="https://chrome.google.com/webstore/detail/uli/hbfmbflgailjeobfkhpdipcdmpclinki"
+        target="_blank"
+      >
+        <button class="border border-gray-500 rounded-md text-sm font-semibold px-2 py-1">
+          Add to Chrome/ Brave
+        </button>
+      </a>
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/uli/" target="_blank">
+        <button class="border border-gray-500 rounded-md text-sm font-semibold px-2 py-1">
+          Add to Firefox
+        </button>
+      </a>
+    </div>
+
+    <p class="text-xs my-1 text-gray-600">Supported on Chrome, Brave and Firefox</p>
+    <%!-- <p>If you are a Trust and Safety team interested in the Uli resources please Click here</p> --%>
+    <%=if @current_user do %>
+      <a href="/crowdsource-contributions">
+          <button class="border border-gray-500 rounded-md text-sm font-semibold px-2 py-1 mt-8">
+
+            View Crowdsourced Contributions
+          </button>
+        </a>
+     <% end %>
+  </div>
+
+  <div class="w-[900px]"><img src={~p"/images/HeroIllustration.gif"} /></div>
+  
 </div>
