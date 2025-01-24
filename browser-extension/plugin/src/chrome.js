@@ -70,37 +70,30 @@ const set = (key, value) => {
     });
 };
 
-function sendMessage(type) {
-    if (type == 'updateData') {
-        userBrowserTabs.query(
-            { active: true, currentWindow: true },
-            function (tabs) {
-                userBrowserTabs.sendMessage(
-                    tabs[0].id,
-                    { type: 'updateData' },
-                    function (response) {
-                        console.log(response);
-                    }
-                );
-            }
-        );
-    }
-    else if (type == 'fetchPersonalSlurs') {
-        console.log("log 2");
-        userBrowserTabs.query(
-            { active: true, currentWindow: true },
-            function (tabs) {
-                userBrowserTabs.sendMessage(
-                    tabs[0].id,
-                    { type: 'fetchPersonalSlurs' }, 
-                    {},
-                    function (response) {
-                        console.log("call back function",response);
-                    }
-                );
-            }
-        );
-    }
+function sendMessage(type, data = null) {
+    return new Promise((resolve, reject) => {
+        const message = { type };
+        if (data) {
+            message.data = data;
+        }
+
+        if (type === 'updateData' || type === 'fetchPersonalSlurs') {
+            userBrowserTabs.query(
+                { active: true, currentWindow: true },
+                function (tabs) {
+                    userBrowserTabs.sendMessage(
+                        tabs[0].id,
+                        message,
+                        function (response) {
+                            resolve(response);
+                        }
+                    );
+                }
+            );
+        } else {
+            reject(new Error('Unsupported message type'));
+        }
+    });
 }
 
 function addListener(type, func, response) {

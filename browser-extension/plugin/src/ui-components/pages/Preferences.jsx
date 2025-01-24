@@ -222,7 +222,7 @@ export function PreferencesHome() {
                 type: 'message',
                 message: t('message_ok_saved')
             });
-            browserUtils.sendMessage('updateData', undefined);
+            // browserUtils.sendMessage('updateData', undefined);
         } catch (err) {
             showNotification({
                 type: 'error',
@@ -329,22 +329,18 @@ export function PreferencesSlurList() {
             try {
                 const response = await browserUtils.sendMessage('fetchPersonalSlurs');
                 console.log("personal data from content", response);
-                // console.log(response);
-                // browserUtils.sendMessage('fetchPersonalSlurs', undefined);
-                // if (response.success) {
-                //     console.log("INSIDE RESPONSE SUCCESS");
-                //     const slurArr = response.slurs;
-                //     console.log('Personal slurs fetched from content script:', slurArr);
-                //     setSlurs(slurArr);
-                //     setDisplaySlurs(slurArr);
-                //     setResetSlurs(slurArr);
-                // } else {
-                //     console.error('Error fetching slurs:', response.error);
-                //     showNotification({
-                //         type: 'error',
-                //         message: t('message_error_preference_data_load'),
-                //     });
-                // }
+                if (response) {
+                    const slurArr = response;
+                    setSlurs(slurArr);
+                    setDisplaySlurs(slurArr);
+                    setResetSlurs(slurArr);
+                } else {
+                    console.error('Error fetching slurs:', response);
+                    showNotification({
+                        type: 'error',
+                        message: t('message_error_preference_data_load'),
+                    });
+                }
             } catch (err) {
                 console.error('Error loading personal slurs:', err);
                 showNotification({
@@ -410,18 +406,6 @@ export function PreferencesSlurList() {
         // Remove from UI
         setSlurs((prevSlurs) => prevSlurs.filter((s) => s !== slur));
         setDisplaySlurs((prevSlurs) => prevSlurs.filter((s) => s !== slur));
-
-        // Remove from IndexedDB
-        try {
-            await deleteSlur(slur, 'personal');
-            browserUtils.sendMessage('updateData', undefined);
-        } catch (error) {
-            console.error('Error deleting slur:', error);
-            showNotification({
-                type: 'error',
-                message: 'Failed to remove slur'
-            });
-        }
     }
 
     function resetAllSlurs() {
@@ -447,16 +431,7 @@ export function PreferencesSlurList() {
         }
 
         try {
-            // Filter out slurs that already exist in the database
-            const slursToAdd = [];
-            for (const word of slurs) {
-                const exists = await slurExists(word, 'personal');
-                if (!exists) {
-                    slursToAdd.push(word);
-                }
-            }
-
-            await bulkAddSlurs(slursToAdd, 'personal');
+            browserUtils.sendMessage('updateData', slurs);
             
             setResetSlurs(slurs);
             // setSuccess("Saved Successfully!")
@@ -464,7 +439,6 @@ export function PreferencesSlurList() {
                 type: 'message',
                 message: t('message_ok_saved')
             });
-            browserUtils.sendMessage('updateData', undefined);
         } catch (error) {
             console.error(error);
             setError('Something went wrong while saving.');

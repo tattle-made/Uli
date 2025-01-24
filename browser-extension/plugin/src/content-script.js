@@ -5,10 +5,9 @@ import transform_v2 from './transform-v2';
 import { log } from './logger';
 import repository from './repository';
 const { getUserData, getPreferenceData, setPreferenceData } = repository;
-// import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
-import { initializeSlurs, getSlursBySource } from './slur-store';
+import { initializeSlurs, getSlursBySource, addSlur, deleteSlur } from './slur-store';
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
 
 const { createSlurAndCategory } = Api;
@@ -81,32 +80,40 @@ function processPage(newUrl) {
  * go from the home page to the user status page.
  */
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
-    console.log("msg gotten", request);
-    console.log(sendResponse);
-    console.log(sender);
     if (request.type === 'updateData') {
         try {
-            console.log("reached content update data");
-            // processPage(location.href);
+            const newSlurs = request.data;
+            console.log("New slurs received:", newSlurs);
+            // fetch exisiting slurs
+            const existingSlurs = (await getSlursBySource('personal')).map((slur) => slur.word);
+            // Add new slurs to the database
+            for (const slur of newSlurs) {
+                if (!existingSlurs.includes(slur)) {
+                    await addSlur(slur, 'personal');
+                }
+            }
+            // Remove slurs from the database that no longer exist in the new list
+            for (const slur of existingSlurs) {
+                if (!newSlurs.includes(slur)) {
+                    await deleteSlur(slur, 'personal');
+                }
+            }
+            processPage(location.href);
         } catch (error) {
             console.error('Error during updating slur list:', error);
         }
         return true;
     }
     if (request.type === 'fetchPersonalSlurs') {
-        console.log("inside fetch content personal");
         try {
             const personalSlurs = await getSlursBySource('personal');
             const slurArr = personalSlurs.map((slur) => slur.word);
             console.log('Sending slurs back to pref:', slurArr);
-            // sendResponse({msg: 23});
-            return {msg: 20};
+            return slurArr;
         } catch (error) {
             console.error('Error fetching personal slurs in content script:', error);
             // sendResponse({ success: false, error: error.message });
-            return {msg: 21};
         }
-        return {msg: 22};
     }
     if (request.message === 'URL_CHANGED') {
         const newUrl = request.url;
