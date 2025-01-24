@@ -17,7 +17,7 @@ export async function getPublicSlursMetadata() {
     try {
         const res = await axios.get(`${API_URL}/api/dataset/slurmetadata/1`);
 
-        return res.data.slurs;
+        return res.data.slurs_metadata;
     } catch (error) {
         throw error;
     }

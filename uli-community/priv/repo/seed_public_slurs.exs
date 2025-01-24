@@ -16,6 +16,128 @@ alias UliCommunity.PublicDataset
 
 [
   %{
+    label: "fuck",
+    language: "English",
+    level_of_severity: :low,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning:
+      "A casual slur used to convey dislike, disrespect or lack of care. Sometimes also used aggressively or intensely",
+    batch: 1,
+    categories: [:sexualized]
+  },
+  %{
+    label: "cunt",
+    language: "English",
+    level_of_severity: :high,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Slang for women's genitalia",
+    batch: 1,
+    categories: [:sexualized]
+  },
+  %{
+    label: "slut",
+    language: "English",
+    level_of_severity: :high,
+    casual: false,
+    appropriated: true,
+    appropriation_context: true,
+    meaning: "Derogatory term for sexual behavior",
+    batch: 1,
+    categories: [:gendered, :sexualized, :body_shaming]
+  },
+  %{
+    label: "whore",
+    language: "English",
+    level_of_severity: :low,
+    casual: true,
+    appropriated: true,
+    appropriation_context: true,
+    meaning: "Derogatory term for sexual behavior",
+    batch: 1,
+    categories: [:gendered, :sexualized]
+  },
+  %{
+    label: "Randi",
+    language: "Hindi",
+    level_of_severity: :high,
+    casual: false,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Offensive term for sex worker",
+    batch: 1,
+    categories: [:gendered, :sexualized]
+  },
+  %{
+    label: "chutiya",
+    language: "Hindi",
+    level_of_severity: :low,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Vulgar term implying stupidity",
+    batch: 1,
+    categories: []
+  },
+  %{
+    label: "bsdk",
+    language: "Hindi",
+    level_of_severity: :low,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Offensive abbreviation",
+    batch: 1,
+    categories: [:sexualized]
+  },
+  %{
+    label: "jihadi",
+    language: "Hindi",
+    level_of_severity: :high,
+    casual: false,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Derogatory term related to religious and political ideology",
+    batch: 1,
+    categories: [:religion, :ethnicity, :political_affiliation]
+  },
+  %{
+    label: "Madarchod",
+    language: "Hindi",
+    level_of_severity: :medium,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Offensive term involving sexual act and incest",
+    batch: 1,
+    categories: [:gendered, :sexualized]
+  },
+  %{
+    label: "bhenchod",
+    language: "Hindi",
+    level_of_severity: :medium,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Offensive term involving sexual act and incest",
+    batch: 1,
+    categories: [:gendered, :sexualized]
+  },
+  %{
+    label: "motherfucker",
+    language: "English",
+    level_of_severity: :medium,
+    casual: true,
+    appropriated: false,
+    appropriation_context: false,
+    meaning: "Slur based on incest, implying immorality through sexual taboo",
+    batch: 1,
+    categories: [:sexualized, :gendered]
+  },
+  %{
     label: "crazy",
     language: "English",
     level_of_severity: :low,
@@ -23,105 +145,6 @@ alias UliCommunity.PublicDataset
     appropriated: false,
     appropriation_context: false,
     meaning: "Describing something unusual or unexpected",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "test",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "A method of assessment or evaluation",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "awesome",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Inspiring admiration or impressive",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "weird",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Strange or unusual",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "cool",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Fashionable or impressive",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "nice",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Pleasant or agreeable",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "great",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Excellent or very good",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "interesting",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Arousing curiosity or attention",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "unique",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Being the only one of its kind",
-    batch: 1,
-    categories: [:other]
-  },
-  %{
-    label: "random",
-    language: "English",
-    level_of_severity: :low,
-    casual: true,
-    appropriated: false,
-    appropriation_context: false,
-    meaning: "Without method or conscious decision",
     batch: 1,
     categories: [:other]
   }
