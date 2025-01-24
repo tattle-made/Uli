@@ -70,34 +70,45 @@ const set = (key, value) => {
     });
 };
 
-function sendMessage(type) {
-    if (type == 'updateData') {
-        userBrowserTabs.query(
-            { active: true, currentWindow: true },
-            function (tabs) {
-                userBrowserTabs.sendMessage(
-                    tabs[0].id,
-                    { type: 'updateData' },
-                    function (response) {
-                        console.log(response);
-                    }
-                );
-            }
-        );
-    }
+function sendMessage(type, data = null) {
+    return new Promise((resolve, reject) => {
+        const message = { type };
+        if (data) {
+            message.data = data;
+        }
+
+        if (
+            type === 'updateData' ||
+            type === 'fetchPersonalSlurs' ||
+            type === 'syncApprovedCrowdsourcedSlurs'
+        ) {
+            userBrowserTabs.query(
+                { active: true, currentWindow: true },
+                function (tabs) {
+                    userBrowserTabs.sendMessage(
+                        tabs[0].id,
+                        message,
+                        function (response) {
+                            resolve(response);
+                        }
+                    );
+                }
+            );
+        } else {
+            reject(new Error('Unsupported message type'));
+        }
+    });
 }
 
 function addListener(type, func, response) {
-    chrome.runtime.onMessage.addListener(async function (
-        message,
-        sender,
-        sendResponse
-    ) {
-        if (message.type === type) {
-            func();
-            sendResponse(response);
+    chrome.runtime.onMessage.addListener(
+        async function (message, sender, sendResponse) {
+            if (message.type === type) {
+                func();
+                sendResponse(response);
+            }
         }
-    });
+    );
 }
 
 export default {

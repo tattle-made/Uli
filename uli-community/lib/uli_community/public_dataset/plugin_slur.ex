@@ -3,20 +3,19 @@ defmodule UliCommunity.PublicDataset.PluginSlur do
   import Ecto.Changeset
 
   @derive {Jason.Encoder,
-  only: [
-    :id,
-    :label,
-    :batch,
-    :language,
-    :inserted_at,
-    :updated_at
-  ]}
-
+           only: [
+             :id,
+             :label,
+             :batch,
+             :language,
+             :inserted_at,
+             :updated_at
+           ]}
 
   schema "plugin_slurs" do
-    field :label, :string
-    field :language, :string
-    field :batch, :integer
+    field(:label, :string)
+    field(:language, :string)
+    field(:batch, :integer)
 
     timestamps(type: :utc_datetime)
   end

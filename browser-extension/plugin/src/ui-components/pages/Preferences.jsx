@@ -9,7 +9,8 @@ import {
     Button,
     Select,
     CheckBox,
-    RadioButtonGroup
+    RadioButtonGroup,
+    Tip
 } from 'grommet';
 // import { HelpCircle } from 'react-feather';
 import Api from '../pages/Api';
@@ -21,7 +22,7 @@ const { savePreference } = Api;
 import { UserContext, NotificationContext } from '../atoms/AppContext';
 import { userBrowserTabs } from '../../browser-compat';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { FormClose, FormPreviousLink, LinkPrevious } from 'grommet-icons';
+import { FormClose, FormPreviousLink, LinkPrevious, Sync } from 'grommet-icons';
 const { setPreferenceData, getPreferenceData } = repository;
 
 const defaultValue = {};
@@ -221,7 +222,7 @@ export function PreferencesHome() {
                 type: 'message',
                 message: t('message_ok_saved')
             });
-            browserUtils.sendMessage('updateData', undefined);
+            // browserUtils.sendMessage('updateData', undefined);
         } catch (err) {
             showNotification({
                 type: 'error',
@@ -236,10 +237,33 @@ export function PreferencesHome() {
         i18n.changeLanguage(langNameMap[option]);
     }
 
+    async function handleSyncApprovedSlurs() {
+        try {
+            browserUtils.sendMessage('syncApprovedCrowdsourcedSlurs', undefined);
+    
+            console.log('Sync message sent to content-script.js');
+        } catch (error) {
+            console.error('Error syncing approved slurs:', error);
+        }
+    }
+
     return (
         <Box fill gap={'medium'}>
             <Box direction="column" gap={'small'}>
-                <Text>{t('language')}</Text>
+                <Box direction="row" justify="between" align="center">
+                    <Text>{t('language')}</Text>
+                    <Button
+                        icon={<Sync />}
+                        onClick={handleSyncApprovedSlurs}
+                        plain
+                        title="Add Approved Crowdsourced Slurs"
+                        style={{
+                            border: '1px solid black',
+                            borderRadius: '4px',
+                            padding: '4px',
+                        }}
+                    />
+                </Box>
                 <Select
                     options={['English', 'Tamil', 'Hindi']}
                     value={language}
@@ -324,24 +348,28 @@ export function PreferencesSlurList() {
 
     useEffect(() => {
         async function getPrefsLocalStorage() {
+            console.log("brow util", browserUtils);
             try {
-                const preference = await getPreferenceData();
-                console.log('preference ', preference);
-                if (!ignore) {
-                    // console.log({ preference });
-                    // setLocalPreferences(preference);
-                    let slurString = preference.slurList || '';
-                    let slurArr = slurString == '' ? [] : slurString.split(',');
+                const response = await browserUtils.sendMessage('fetchPersonalSlurs');
+                console.log("personal data from content", response);
+                if (response) {
+                    const slurArr = response;
                     setSlurs(slurArr);
                     setDisplaySlurs(slurArr);
                     setResetSlurs(slurArr);
+                } else {
+                    console.error('Error fetching slurs:', response);
+                    showNotification({
+                        type: 'error',
+                        message: t('message_error_preference_data_load'),
+                    });
                 }
             } catch (err) {
+                console.error('Error loading personal slurs:', err);
                 showNotification({
                     type: 'error',
                     message: t('message_error_preference_data_load')
                 });
-                // alert(err);
             }
         }
 
@@ -397,7 +425,8 @@ export function PreferencesSlurList() {
         setInput('');
     }
 
-    function deleteSlur(slur) {
+    async function deleteSlurUI(slur) {
+        // Remove from UI
         setSlurs((prevSlurs) => prevSlurs.filter((s) => s !== slur));
         setDisplaySlurs((prevSlurs) => prevSlurs.filter((s) => s !== slur));
     }
@@ -425,26 +454,14 @@ export function PreferencesSlurList() {
         }
 
         try {
-            let preferenceInLS = await getPreferenceData();
-
-            preferenceInLS = { ...preferenceInLS, slurList: slurs.toString() };
-            let preferenceRemote = await savePreference(
-                user.accessToken,
-                preferenceInLS
-            );
-
-            await setPreferenceData({
-                ...preferenceInLS,
-                ...preferenceRemote.data
-            });
-
+            browserUtils.sendMessage('updateData', slurs);
+            
             setResetSlurs(slurs);
             // setSuccess("Saved Successfully!")
             showNotification({
                 type: 'message',
                 message: t('message_ok_saved')
             });
-            browserUtils.sendMessage('updateData', undefined);
         } catch (error) {
             console.error(error);
             setError('Something went wrong while saving.');
@@ -498,7 +515,7 @@ export function PreferencesSlurList() {
                                 <SlurChip
                                     key={key}
                                     slur={slur}
-                                    deleteSlur={() => deleteSlur(slur)}
+                                    deleteSlur={() => deleteSlurUI(slur)}
                                 />
                             );
                         })
