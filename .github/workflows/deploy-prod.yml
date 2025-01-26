@@ -10,6 +10,7 @@ jobs:
     outputs:
       uli-website: ${{ steps.filter.outputs.uli-website}}
       uli-server: ${{ steps.filter.outputs.uli-server }}
+      uli-community: ${{ steps.filter.outputs.uli-community }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -22,6 +23,8 @@ jobs:
                 - 'uli-website/**/*'
             uli-server:
             - 'browser-extension/api-server/**/*'
+            uli-community:
+              - 'uli-community/**/*'
 
   uli-website:
     runs-on: ubuntu-latest
@@ -47,19 +50,10 @@ jobs:
           npm run build
           npm run deploy
 
-      # - name: Notify on Slack
-      #   uses: rtCamp/action-slack-notify@v2
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      #     SLACK_MESSAGE: "Deployed uli-website to production environment"
-      #     SLACK_TITLE: "deploy-production workflow complete"
-      #     SLACK_COLOR: "#020637"
-      #     SLACK_ICON: https://tattle-media.s3.amazonaws.com/monogram-dark.svg
-
-  uli-server:
+  uli-community:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.uli-server == 'true' }}
+    if: ${{ needs.changes.outputs.uli-community == 'true' }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -72,22 +66,9 @@ jobs:
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Publish to Docker
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           username: tattletech
           password: ${{ secrets.DOCKER_PASSWORD }}
-          name: tattletech/ogbv-plugin
+          name: tattletech/uli-community
           tags: ${{ steps.vars.outputs.sha_short }}
-          workdir: browser-extension/api-server/
-
-      - name: deploy to cluster
-        uses: steebchen/kubectl@v2.0.0
-        with: # defaults to latest kubectl binary version
-          config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
-          command: set image --record deployment/ogbv-plugin ogbv-plugin=tattletech/ogbv-plugin:${{ steps.vars.outputs.sha_short }}
-      - name: verify deployment
-        uses: steebchen/kubectl@v2.0.0
-        with:
-          config: ${{ secrets.PROD_KUBE_CONFIG_DATA }}
-          version: v1.21.0 # specify kubectl binary version explicitly
-          command: rollout status deployment/ogbv-plugin

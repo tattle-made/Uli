@@ -20,13 +20,43 @@ if System.get_env("PHX_SERVER") do
   config :uli_community, UliCommunityWeb.Endpoint, server: true
 end
 
+aws_access_key_id =
+  System.get_env("AWS_ACCESS_KEY_ID") ||
+    raise """
+    aws access key is missing. Please contact tattle admin.
+    """
+
+aws_secret_access_key =
+  System.get_env("AWS_SECRET_ACCESS_KEY") ||
+    raise """
+    aws secret acess key are missing. Please contact tattle admin.
+    """
+
+slack_webhook_url =
+  System.get_env("SLACK_WEBHOOK_URL") ||
+    raise """
+    Slack webhook url is missing. Please contact tattle admin
+    """
+
+config :ex_aws,
+  region: "ap-south-1",
+  access_key_id: aws_access_key_id,
+  secret_access_key: aws_secret_access_key
+
+config :uli_community,
+  aws_access_key_id: aws_access_key_id,
+  aws_secret_access_key: aws_secret_access_key,
+  slack_webhook_url: slack_webhook_url
+
 if config_env() == :prod do
-  database_url =
-    System.get_env("DATABASE_URL") ||
-      raise """
-      environment variable DATABASE_URL is missing.
-      For example: ecto://USER:PASS@HOST/DATABASE
-      """
+  config :dau, DAU.Repo,
+    username: System.get_env("DATABASE_USER"),
+    password: System.get_env("DATABASE_PASSWORD"),
+    hostname: System.get_env("DATABASE_HOSTNAME"),
+    database: System.get_env("DATABASE_NAME"),
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: maybe_ipv6,
+    stacktrace: true
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
@@ -98,20 +128,5 @@ if config_env() == :prod do
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
   # ## Configuring the mailer
-  #
-  # In production you need to configure the mailer to use a different adapter.
-  # Also, you may need to configure the Swoosh API client of your choice if you
-  # are not using SMTP. Here is an example of the configuration:
-  #
-  #     config :uli_community, UliCommunity.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
-  #
-  # For this example you need include a HTTP client required by Swoosh API client.
-  # Swoosh supports Hackney and Finch out of the box:
-  #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
-  #
-  # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+  config :uli_community, UliCommunity.Mailer, adapter: Swoosh.Adapters.ExAwsAmazonSES
 end
