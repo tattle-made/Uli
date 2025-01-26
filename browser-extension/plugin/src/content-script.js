@@ -84,19 +84,17 @@ function processPage(newUrl) {
 }
 
 /**
- * This Listens to any changed on the URL
- * eg : When a user clicks on a tweet on their home timeline, they
- * go from the home page to the user status page.
- */
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     sendResponse(10);
-//     return true;
-// });
-
-/**
- * If the handler is asynchronous, it must send an explicit `true` and use the `sendResponse` function to return the response.
- * addListener's call back MUST return a true or false.
- *  todo : add meaning for both return values?
+ * Register message listeners from extension, background scripts or service workers.
+ *
+ * Example code to handle a message
+ * chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+ *      sendResponse(10);
+ *      return true;
+ * });
+ * addListener's callback function MUST return a true or false.
+ *
+ * If the callback function is asynchronous, it must send an explicit `true` and use the `sendResponse`
+ * function to return the response. If it is synchronous, it must return false.
  */
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.type) {
