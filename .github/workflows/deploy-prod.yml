@@ -72,3 +72,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           name: tattletech/uli-community
           tags: ${{ steps.vars.outputs.sha_short }}
+          dockerfile: uli-community/Dockerfile
