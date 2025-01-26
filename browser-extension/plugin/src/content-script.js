@@ -5,9 +5,20 @@ import transform_v2 from './transform-v2';
 import { log } from './logger';
 import repository from './repository';
 const { getUserData, getPreferenceData, setPreferenceData } = repository;
-import { updateSlurList } from './slur-replace';
 import transformGeneral from './transform-general';
 import Api from './ui-components/pages/Api';
+import {
+    initializeSlurs,
+    getSlursBySource,
+    addSlur,
+    deleteSlur,
+    slurExists,
+    bulkAddSlurs,
+    convertSlurMetadataFromDBtoJSON
+} from './slur-store';
+import { createCrowdsourceSlur } from './api/crowdsource-slurs';
+import { getPublicSlurs } from './api/public-slurs';
+import { fetchPublicSlursMetadata } from './slur-store';
 
 const { createSlurAndCategory } = Api;
 
@@ -74,89 +85,174 @@ function processPage(newUrl) {
 }
 
 /**
- * This Listens to any changed on the URL
- * eg : When a user clicks on a tweet on their home timeline, they
- * go from the home page to the user status page.
+ * Register message listeners from extension, background scripts or service workers.
+ *
+ * Example code to handle a message
+ * chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+ *      sendResponse(10);
+ *      return true;
+ * });
+ * addListener's callback function MUST return a true or false.
+ *
+ * If the callback function is asynchronous, it must send an explicit `true` and use the `sendResponse`
+ * function to return the response. If it is synchronous, it must return false.
  */
-chrome.runtime.onMessage.addListener(async function (request) {
-    if (request.type === 'updateData') {
-        console.log('data changed. time to update slurs');
-        const preference = await getPreferenceData();
-        console.log(preference);
-        if (preference.slurList != undefined) {
-            updateSlurList(preference.slurList);
-            processPage(location.href);
-        }
-        return true;
-    }
-    if (request.message === 'URL_CHANGED') {
-        const newUrl = request.url;
-        log('Url Changed', newUrl);
-        processPage(location.href);
-        return true;
-    }
-    if (request.type === 'SLUR_ADDED') {
-        const slur = request.slur;
-        log('slur added from bg', slur);
-        const pref = await getPreferenceData();
-        let slurList;
-
-        const user = await getUserData();
-        // console.log('USER in content-script', user);
-        const crowdsourceData = {
-            label: slur,
-            categories: []
-        };
-
-        // Adding Slur to Prefrences
-        if (!pref || !pref.slurList) {
-            slurList = slur;
-        } else {
-            slurList = pref.slurList;
-            if (!slurList || slurList === '') {
-                slurList = slur;
-            } else {
-                slurList += `,${slur}`;
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.type) {
+        case 'updateData':
+            handleMessageUpdateData(request, sendResponse);
+            return true;
+        case 'fetchPersonalSlurs':
+            handleMessageFetchPersonalSlurs(request, sendResponse);
+            return true;
+        case 'syncApprovedCrowdsourcedSlurs':
+            handleMessageSyncApprovedSlurs(request, sendResponse);
+            return true;
+        case 'SLUR_ADDED':
+            return handleMessageSlurAdded(request);
+        case 'ULI_ENABLE_SLUR_REPLACEMENT':
+            console.log("reached content script uli enable slur replace");
+            if (!request.payload) {
+                clearInterval(mainLoadedChecker);
             }
-        }
-        try {
-            await setPreferenceData({ ...pref, slurList });
-        } catch (error) {
-            console.error('error updating pref data', error);
-        }
-
-        //Crowdsourcing Slur
-        try {
-            await createSlurAndCategory(user.accessToken, crowdsourceData);
-            console.log('finsihed POST req');
-            window.alert(`Slur word "${slur}" added to Uli`);
-        } catch (error) {
-            console.log(error);
-        }
-
-        return true;
-    }
-
-    if (request.type === 'ULI_ENABLE_SLUR_REPLACEMENT') {
-        console.log('Toggle change event received', request.payload);
-        if (!request.payload) {
-            clearInterval(mainLoadedChecker);
-        }
+            return true;
+        case 'URL_CHANGED':
+            return processPage(location.href);
+        default:
+            return false;
     }
 });
+
+async function handleMessageSyncApprovedSlurs(request, sendResponse) {
+    const source = 'public_crowdsourced_slurs';
+    try {
+        const publicSlurs = await getPublicSlurs();
+        const publicSlursArray = publicSlurs.map((slur) => slur.label);
+        // console.log(publicSlursArray);
+
+        const filteredSlurs = [];
+        for (const slur of publicSlursArray) {
+            const exists = await slurExists(slur, source);
+            if (!exists) {
+                filteredSlurs.push(slur);
+            }
+        }
+        // If there are slurs to add, bulk add them to the database
+        if (filteredSlurs.length > 0) {
+            await bulkAddSlurs(filteredSlurs, source);
+        } else {
+            console.log('No new slurs to add.');
+        }
+
+        // fetch public metadata again
+        await fetchPublicSlursMetadata();
+        sendResponse({status: 200});
+    } catch (error) {
+        console.error('Error fetch public crowsrouced slurs');
+        sendResponse({status: 400});
+    }
+}
+
+async function handleMessageUpdateData(request, sendResponse) {
+    try {
+        const newSlurs = request.data;
+        console.log('New slurs received:', newSlurs);
+        // fetch exisiting slurs
+        const existingSlurs = (await getSlursBySource('personal')).map(
+            (slur) => slur.word
+        );
+        // Add new slurs to the database
+        for (const slur of newSlurs) {
+            if (!existingSlurs.includes(slur)) {
+                await addSlur(slur, 'personal');
+            }
+        }
+        // Remove slurs from the database that no longer exist in the new list
+        for (const slur of existingSlurs) {
+            if (!newSlurs.includes(slur)) {
+                await deleteSlur(slur, 'personal');
+            }
+        }
+        processPage(location.href);
+    } catch (error) {
+        console.error('Error during updating slur list:', error);
+    }
+}
+
+async function handleMessageFetchPersonalSlurs(request, sendResponse) {
+    try {
+        console.log('fetching personal slurs');
+        getSlursBySource('personal').then((personalSlurs) => {
+            const slurArr = personalSlurs.map((slur) => slur.word);
+            console.log('sending personal slurs', slurArr);
+            sendResponse(slurArr);
+        });
+        return true;
+    } catch (error) {
+        console.error(
+            'Error fetching personal slurs in content script:',
+            error
+        );
+    }
+}
+
+async function handleMessageSlurAdded(request) {
+    const slur = request.slur;
+    // log('slur added from bg', slur);
+
+    // Adding Slur to IndexedDB
+    // try {
+    //     const exists = await slurExists(slur, 'personal');
+
+    //     if (!exists) {
+    //         await addSlur(slur, 'personal');
+    //         log('Slur added to IndexedDB:', slur);
+    //     } else {
+    //         log('Slur already exists in IndexedDB, skipping:', slur);
+    //     }
+    // } catch (error) {
+    //     console.error('Error handling SLUR_ADDED request:', error);
+    // }
+
+    //Crowdsourcing Slur
+
+    const user = await getUserData();
+    if (!user){
+        window.alert(`Please login to Uli Browser Extension to contribute`);
+        return;
+    }
+    const crowdsourceData = {
+        label: slur
+    };
+    try {
+        // await createSlurAndCategory(user.accessToken, crowdsourceData);
+        await createCrowdsourceSlur(crowdsourceData, user.token);
+        console.log('finsihed POST req');
+        window.alert(`Slur word "${slur}" added to Uli`);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 window.addEventListener(
     'load',
     async () => {
         console.log('content loaded');
         const pref = await getPreferenceData();
-        const { enableSlurReplacement , enableSlurMetadata } = pref;
+        const { enableSlurReplacement, enableSlurMetadata } = pref;
+
+        // Initialize Slurs on content load
+        await initializeSlurs();
+
         if (enableSlurMetadata) {
             let body = document.getElementsByTagName('body');
             let first_body = body[0];
-            transformGeneral.processNewlyAddedNodesGeneral2(first_body);
-        }
-        else if (enableSlurReplacement) {
+            const jsonData = await convertSlurMetadataFromDBtoJSON();
+            transformGeneral.processNewlyAddedNodesGeneral2(
+                first_body,
+                jsonData
+            );
+        } else if (enableSlurReplacement) {
             processPage(location.href);
         }
     },

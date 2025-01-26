@@ -2,7 +2,6 @@ import { replaceSlur } from './slur-replace';
 import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData } = repository;
-const jsonData = require('../../api-server/assets/slur_metadata.json')
 
 // Traverse dom nodes to find leaf node that are text nodes and process
 function bft(node) {
@@ -50,18 +49,19 @@ function setCaretPosition(element, offset) {
     sel.addRange(range);
 }
 
-const processNewlyAddedNodesGeneral2 = function (firstBody) {
-    let targetWords = [] ; 
+const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
+    let targetWords = []; 
     jsonData.forEach(slur => {
         const slurWord = Object.keys(slur)[0];
-        targetWords.push(slurWord) ; 
+        targetWords.push(slurWord); 
         targetWords.push(slurWord.charAt(0).toUpperCase() + slurWord.slice(1)); 
-    })
-    let uliStore = []
-    getAllTextNodes(firstBody, uliStore)
-    abc = locateSlur(uliStore, targetWords)
-    addMetaData(targetWords)
-}
+    });
+
+    let uliStore = [];
+    getAllTextNodes(firstBody, uliStore);
+    abc = locateSlur(uliStore, targetWords);
+    addMetaData(targetWords, jsonData);
+};
 
 const processNewlyAddedNodesGeneral = function (firstBody) {
     log('processing new nodes');
@@ -150,7 +150,7 @@ function locateSlur(uliStore, targetWords) {
                 const className = `icon-container-${targetWord}`;
                 const slurClass = `slur-container-${targetWord}`
                 const parts = tempParent.innerHTML.split(targetWord);
-                console.log("PARTS: ",parts)
+                // console.log("PARTS: ",parts)
                 const replacedHTML = parts.join(`<span class="${slurClass}"><span class="slur">${targetWord}</span></span>`);
                 tempParent.innerHTML = replacedHTML
                 slurPresentInTempParent = true;
@@ -164,20 +164,20 @@ function locateSlur(uliStore, targetWords) {
             textnode.replaceWith(tempParent)
         }
 
-        console.log("TEMPParent: ",tempParent)
+        // console.log("TEMPParent: ",tempParent)
     }
     return uliStore;
 }
 
-function addMetaData(targetWords) {
+function addMetaData(targetWords, jsonData) {
     // console.log(targetWords)
     targetWords.forEach(targetWord => {
         const className = `slur-container-${targetWord}`
         const elements = Array.from(document.querySelectorAll(`.${className}`))
-        console.log("ELEMENTS are: ",elements)
+        // console.log("ELEMENTS are: ",elements)
         elements.forEach(element => {
 
-            console.log("ELements InnerHTML:",element.innerHTML)
+            // console.log("ELements InnerHTML:",element.innerHTML)
 
             // element.innerHTML = element.innerHTML.replace(/<img[^>]*>/g, '')
 
@@ -268,15 +268,15 @@ function addMetaData(targetWords) {
 
             sup.appendChild(span)
 
-            console.log("Element first child",element.children[0])
-            console.log("Element last child",element.children[element.children.length-1])
-            console.log("SUP: ",sup)
-            console.log("ELEMENT IS: ",element)
-            console.log("ELEMENT INNERHTML: ",element.innerHTML)
+            // console.log("Element first child",element.children[0])
+            // console.log("Element last child",element.children[element.children.length-1])
+            // console.log("SUP: ",sup)
+            // console.log("ELEMENT IS: ",element)
+            // console.log("ELEMENT INNERHTML: ",element.innerHTML)
             
             element.append(span)
 
-            console.log("ELEMENT AFTER IS: ",element)
+            // console.log("ELEMENT AFTER IS: ",element)
             // element.append(img)
             let slur = element.children[0]
             slur.style.backgroundColor="#ffde2155"
@@ -284,7 +284,7 @@ function addMetaData(targetWords) {
             slur.style.cursor = "pointer"
    
             let metabox = element.children[1]
-            console.log("METABOX IS: ",metabox)
+            // console.log("METABOX IS: ",metabox)
             let spans = element.children[0].children[1]
             // const svgs = element.children[0].children[0];
             const svgs = element.children[element.children.length-1];

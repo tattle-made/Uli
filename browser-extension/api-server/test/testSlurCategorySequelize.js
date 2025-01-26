@@ -6,7 +6,7 @@ async function createSlur() {
     try {
         await slur.create({
             label: "test",
-            labelMeaning: "test",
+            meaning: "test",
             appropriated: false,
             appropriationContext: "test",
         })
@@ -32,7 +32,7 @@ async function createCategory() {
 //     try {
 //         await slur.create({
 //             label: "test2",
-//             labelMeaning: "test2",
+//             meaning: "test2",
 //             appropriated: true,
 //             appropriationContext: "test2",
 //             category: {category:'gender'}
@@ -51,7 +51,7 @@ async function createSlurAndCategory() {
     try {
         const newSlur = await slur.create({
             label: "test2",
-            labelMeaning: "test2",
+            meaning: "test2",
             appropriated: true,
             appropriationContext: "test2",
         });
