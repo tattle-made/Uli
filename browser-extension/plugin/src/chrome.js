@@ -70,34 +70,28 @@ const set = (key, value) => {
     });
 };
 
-function sendMessage(type, data = null) {
-    return new Promise((resolve, reject) => {
-        const message = { type };
-        if (data) {
-            message.data = data;
-        }
+async function sendMessage(type, data = null) {
+    const message = { type };
+    if (data) {
+        message.data = data;
+    }
+    console.log('message', message);
 
-        if (
-            type === 'updateData' ||
-            type === 'fetchPersonalSlurs' ||
-            type === 'syncApprovedCrowdsourcedSlurs'
-        ) {
-            userBrowserTabs.query(
-                { active: true, currentWindow: true },
-                function (tabs) {
-                    userBrowserTabs.sendMessage(
-                        tabs[0].id,
-                        message,
-                        function (response) {
-                            resolve(response);
-                        }
-                    );
-                }
-            );
-        } else {
-            reject(new Error('Unsupported message type'));
-        }
-    });
+    if (
+        type === 'updateData' ||
+        type === 'fetchPersonalSlurs' ||
+        type === 'syncApprovedCrowdsourcedSlurs'
+    ) {
+        const [tab] = await userBrowserTabs.query({
+            active: true,
+            currentWindow: true
+        });
+        const response = await userBrowserTabs.sendMessage(tab.id, message);
+        console.log('response from CS', response);
+        return response;
+    } else {
+        throw new Error('Unsupported message type');
+    }
 }
 
 function addListener(type, func, response) {
