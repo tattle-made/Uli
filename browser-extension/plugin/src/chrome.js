@@ -82,7 +82,7 @@ async function sendMessage(type, data = null) {
         type === 'fetchPersonalSlurs' ||
         type === 'syncApprovedCrowdsourcedSlurs'
     ) {
-        const [tab] = await chrome.tabs.query({
+        const [tab] = await userBrowserTabs.query({
             active: true,
             currentWindow: true
         });

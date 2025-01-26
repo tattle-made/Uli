@@ -10,7 +10,8 @@ import {
     Select,
     CheckBox,
     RadioButtonGroup,
-    Tip
+    Tip,
+    Spinner
 } from 'grommet';
 // import { HelpCircle } from 'react-feather';
 import Api from '../pages/Api';
@@ -40,6 +41,7 @@ export function PreferencesHome() {
     const [enableSlurMetadata, setEnableSlurMetadata] = useState(false);
     const [language, setLanguage] = useState('English');
     const { t, i18n } = useTranslation();
+    const [syncSlurs, setsyncSlurs] = useState(false);
     const radioOptions = [
         {
             value: 'replace',
@@ -150,10 +152,10 @@ export function PreferencesHome() {
                     enableSlurMetadata
                 });
 
-                userBrowserTabs.sendMessage(tabId, {
-                    type: 'ULI_ENABLE_SLUR_REPLACEMENT',
-                    payload: enableSlurReplacement
-                });
+                // userBrowserTabs.sendMessage(tabId, {
+                //     type: 'ULI_ENABLE_SLUR_REPLACEMENT',
+                //     payload: enableSlurReplacement
+                // });
                 userBrowserTabs.reload(tabId);
             }
         } catch (error) {
@@ -239,18 +241,19 @@ export function PreferencesHome() {
 
     async function handleSyncApprovedSlurs() {
         try {
+            setsyncSlurs(true);
             const res = await browserUtils.sendMessage(
                 'syncApprovedCrowdsourcedSlurs',
                 undefined
             );
-            console.log("RESS in sync", res);
-            if (res) {
+            // console.log("RESS in sync", res);
+            if (res.status == 200) {
                 console.log('Sync message sent to content-script.js');
                 showNotification({
                     type: 'message',
                     message: 'Synced!'
                 });
-            } else {
+            } else if (res.status == 400) {
                 showNotification({
                     type: 'error',
                     message: 'Unable to Sync'
@@ -258,6 +261,9 @@ export function PreferencesHome() {
             }
         } catch (error) {
             console.error('Error syncing approved slurs:', error);
+        } 
+        finally {
+            setsyncSlurs(false);
         }
     }
 
@@ -296,9 +302,11 @@ export function PreferencesHome() {
             <Box>
                 <Box direction='row' align='center' gap='small'>
                 <Button
-                        icon={<Sync />}
+                        icon={syncSlurs? <Spinner />:<Sync />}
                         onClick={handleSyncApprovedSlurs}
                         // title="Add Approved Crowdsourced Slurs"
+                        
+                        disabled={syncSlurs}
                         label='Download New Crowdsourced Slurs'
                         // style={{
                         //     border: '1px solid black',

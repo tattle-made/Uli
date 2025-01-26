@@ -20,8 +20,8 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
   schema "crowdsourced_slurs" do
     field(:label, :string)
     field(:level_of_severity, Ecto.Enum, values: [:low, :medium, :high])
-    field(:casual, :boolean, default: false)
-    field(:appropriated, :boolean, default: false)
+    field(:casual, :boolean)
+    field(:appropriated, :boolean)
     field(:appropriation_context, :boolean, default: nil)
     field(:meaning, :string)
 

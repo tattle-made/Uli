@@ -170,22 +170,48 @@ export async function convertSlurMetadataFromDBtoJSON() {
     }
 }
 
+export async function fetchPublicSlursMetadata() {
+    try {
+        // Fetch slurs from the backend
+        const publicSlursMetadata = await getPublicSlursMetadata();
+        // Fetch existing metadata from the indexed database
+        const existingMetadata = await getAllSlurMetadata();
+        // Convert existing metadata objects to JSON strings for comparison
+        const existingMetadataSet = new Set(existingMetadata.map(meta => JSON.stringify(meta)));
+        // Filter out metadata entries that already exist
+        const newMetadata = publicSlursMetadata.filter(meta => 
+            !existingMetadataSet.has(JSON.stringify(meta))
+        );
+        if (newMetadata.length === 0) {
+            console.log("All public slurs metadata already exist in the database. Skipping addition.");
+            return;
+        }
+
+        await bulkAddSlurMetadata(newMetadata);
+        console.log(`${newMetadata.length} new slur metadata entries added.`);
+    } catch (error) {
+        console.error('Error fetching and adding public slurs metadata:', error);
+    }
+}
+
 export async function initializeSlurs() {
     console.log('Initializing Indexed database');
 
     try {
         // Check if any words with source "hard_coded" already exist
-        const hardCodedWordCount = await db.words
+        const mainSlurListArray = mainSlurList.split('|');
+        const existingWords = await db.words
             .where('source')
             .equals('hard_coded')
-            .count();
-
-        if (hardCodedWordCount > 0) {
-            console.log('Hard-coded slurs already exist in the database. Skipping initialization.');
+            .toArray();
+        const existingWordSet = new Set(existingWords.map(wordObj => wordObj.word))
+        // Check if all words in mainSlurListArray exist in the database
+        const allWordsExist = mainSlurListArray.every(word => existingWordSet.has(word));
+        if (allWordsExist) {
+            console.log('All hard-coded slurs already exist in the database. Skipping initialization.');
             return;
         }
 
-        const mainSlurListArray = mainSlurList.split('|');
         // Index hard-coded slurs into the database
         if (mainSlurListArray.length > 0) {
             await bulkAddSlurs(mainSlurListArray, 'hard_coded');
@@ -194,14 +220,8 @@ export async function initializeSlurs() {
             console.log('No slurs found in the JSON file.');
         }
 
-        // Fetch and store public slurs metadata
-        try {
-            const publicSlursMetadata = await getPublicSlursMetadata();
-            // console.log('Public Slurs Metadata:', publicSlursMetadata);
-            await bulkAddSlurMetadata(publicSlursMetadata);
-        } catch (error) {
-            console.error('Error fetching and adding public slurs metadata:', error);
-        }
+        // fetch public metadata
+        await fetchPublicSlursMetadata();
     } catch (error) {
         console.error('Error during database initialization:', error);
     }

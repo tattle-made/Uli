@@ -18,6 +18,7 @@ import {
 } from './slur-store';
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
 import { getPublicSlurs } from './api/public-slurs';
+import { fetchPublicSlursMetadata } from './slur-store';
 
 const { createSlurAndCategory } = Api;
 
@@ -99,19 +100,22 @@ function processPage(newUrl) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.type) {
         case 'updateData':
-            handleMessageUpdateData();
+            handleMessageUpdateData(request, sendResponse);
             return true;
         case 'fetchPersonalSlurs':
             handleMessageFetchPersonalSlurs(request, sendResponse);
             return true;
         case 'syncApprovedCrowdsourcedSlurs':
-            return handleMessageSyncApprovedSlurs();
+            handleMessageSyncApprovedSlurs(request, sendResponse);
+            return true;
         case 'SLUR_ADDED':
             return handleMessageSlurAdded(request);
         case 'ULI_ENABLE_SLUR_REPLACEMENT':
+            console.log("reached content script uli enable slur replace");
             if (!request.payload) {
                 clearInterval(mainLoadedChecker);
             }
+            return true;
         case 'URL_CHANGED':
             return processPage(location.href);
         default:
@@ -139,14 +143,17 @@ async function handleMessageSyncApprovedSlurs(request, sendResponse) {
         } else {
             console.log('No new slurs to add.');
         }
-        return true;
+
+        // fetch public metadata again
+        await fetchPublicSlursMetadata();
+        sendResponse({status: 200});
     } catch (error) {
         console.error('Error fetch public crowsrouced slurs');
-        return false;
+        sendResponse({status: 400});
     }
 }
 
-async function handleMessageUpdateData(request) {
+async function handleMessageUpdateData(request, sendResponse) {
     try {
         const newSlurs = request.data;
         console.log('New slurs received:', newSlurs);
@@ -201,18 +208,18 @@ async function handleMessageSlurAdded(request) {
     };
 
     // Adding Slur to IndexedDB
-    try {
-        const exists = await slurExists(slur, 'personal');
+    // try {
+    //     const exists = await slurExists(slur, 'personal');
 
-        if (!exists) {
-            await addSlur(slur, 'personal');
-            log('Slur added to IndexedDB:', slur);
-        } else {
-            log('Slur already exists in IndexedDB, skipping:', slur);
-        }
-    } catch (error) {
-        console.error('Error handling SLUR_ADDED request:', error);
-    }
+    //     if (!exists) {
+    //         await addSlur(slur, 'personal');
+    //         log('Slur added to IndexedDB:', slur);
+    //     } else {
+    //         log('Slur already exists in IndexedDB, skipping:', slur);
+    //     }
+    // } catch (error) {
+    //     console.error('Error handling SLUR_ADDED request:', error);
+    // }
 
     //Crowdsourcing Slur
     try {
