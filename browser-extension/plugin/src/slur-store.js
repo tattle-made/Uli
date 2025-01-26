@@ -6,7 +6,7 @@ const db = new Dexie('SlurWordsDatabase');
 
 // Define database schema
 db.version(1).stores({
-    words: '++id, word, source',
+    words: '++id, word, source, enable_status',
     words_metadata: '++id, label, level_of_severity, meaning, categories, language, timestamp'
 });
 
@@ -16,7 +16,8 @@ export async function addSlur(word, source) {
         const id = await db.words.add({
             word: word,
             timestamp: new Date().toISOString(),
-            source: source
+            source: source,
+            enable_status: true
         });
         return id;
     } catch (error) {
@@ -60,7 +61,8 @@ export async function bulkAddSlurs(wordsArray, source) {
     const wordObjects = wordsArray.map((word) => ({
         word: word,
         timestamp: new Date().toISOString(),
-        source: source
+        source: source,
+        enable_status: true
     }));
 
     try {
@@ -163,7 +165,7 @@ export async function convertSlurMetadataFromDBtoJSON() {
             };
         });
 
-        console.log("Formatted jsonData:", jsonData);
+        // console.log("Formatted jsonData:", jsonData);
         return jsonData;
     } catch (error) {
         console.error('Error fetching or formatting slur metadata:', error);

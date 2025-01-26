@@ -12,7 +12,7 @@ const resources = {
             navigation_archive: 'Archive',
             navigation_resources: 'Resources',
             navigation_debug: 'Account',
-            navigation_slur_list: 'Slur List',
+            navigation_slur_list: 'My Contributions',
             activate_account: 'Activate Account',
             user_guide: 'User Guide',
             mental_health: 'Mental Health Resources',

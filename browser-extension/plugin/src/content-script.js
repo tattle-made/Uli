@@ -198,14 +198,7 @@ async function handleMessageFetchPersonalSlurs(request, sendResponse) {
 
 async function handleMessageSlurAdded(request) {
     const slur = request.slur;
-    log('slur added from bg', slur);
-    let slurList;
-
-    const user = await getUserData();
-    // console.log('USER in content-script', user);
-    const crowdsourceData = {
-        label: slur
-    };
+    // log('slur added from bg', slur);
 
     // Adding Slur to IndexedDB
     // try {
@@ -222,6 +215,15 @@ async function handleMessageSlurAdded(request) {
     // }
 
     //Crowdsourcing Slur
+
+    const user = await getUserData();
+    if (!user){
+        window.alert(`Please login to Uli Browser Extension to contribute`);
+        return;
+    }
+    const crowdsourceData = {
+        label: slur
+    };
     try {
         // await createSlurAndCategory(user.accessToken, crowdsourceData);
         await createCrowdsourceSlur(crowdsourceData, user.token);
