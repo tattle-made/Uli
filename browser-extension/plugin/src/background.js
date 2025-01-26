@@ -1,5 +1,5 @@
 // import { userBrowserTabs, userBrowserContextMenus } from './browser-compat';
-console.log('bg script 7');
+console.log('bg script 8');
 
 const BROWSER_CHROME = 'chrome';
 const BROWSER_FIREFOX = 'firefox';
