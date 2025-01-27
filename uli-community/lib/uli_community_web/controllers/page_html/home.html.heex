@@ -1,21 +1,22 @@
-<.flash_group flash={@flash} />
-<div class="flex px-20 items-center">
-  <div>
-    <p class="text-2xl font-bold mb-2">Reclaim your online space</p>
-    <p>
-      Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence
-    </p>
+<div class="max-w-7xl mx-auto">
+  <div class="flex items-center justify-center gap-12 py-12">
+    <div class="max-w-md">
+      <p class="text-4xl font-bold mb-4">Reclaim your online space</p>
+      <p class="mt-2 text-lg">
+        Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence
+      </p>
 
-    <%!-- <p>If you are a Trust and Safety team interested in the Uli resources please Click here</p> --%>
-    <%=if @current_user do %>
-      <a href="/crowdsource-contributions">
+      <%=if @current_user do %>
+        <a href="/crowdsource-contributions">
           <button class="border border-gray-500 rounded-md text-sm font-semibold px-2 py-1 mt-8">
-
             View Crowdsourced Contributions
           </button>
         </a>
-     <% end %>
-  </div>
+      <% end %>
+    </div>
 
-  <div class="w-[700px]"><img src={~p"/images/HeroIllustration.gif"} /></div>
+    <div class="w-[600px]">
+      <img src={~p"/images/HeroIllustration.gif"} alt="Hero Illustration" />
+    </div>
+  </div>
 </div>
