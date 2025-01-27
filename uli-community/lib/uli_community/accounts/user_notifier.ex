@@ -8,7 +8,7 @@ defmodule UliCommunity.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"UliCommunity", "contact@example.com"})
+      |> from({"UliCommunity", "admin@tattle.co.in"})
       |> subject(subject)
       |> text_body(body)
 
