@@ -7,35 +7,30 @@
 # This file is based on these images:
 #
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
-#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20230227-slim - for the release image
+#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20240701-slim - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: hexpm/elixir:1.15.0-erlang-26.0-debian-bullseye-20230227-slim
+#   - Ex: hexpm/elixir:1.17.2-erlang-27.0-debian-bullseye-20240701-slim
 #
-# 1.18.2-erlang-27.2.1-ubuntu-jammy-20240808
-
 ARG ELIXIR_VERSION=1.18.2
 ARG OTP_VERSION=27.2.1
-# ARG DEBIAN_VERSION=rc3-debian-bullseye-20230522-slim
 ARG DEBIAN_VERSION=ubuntu-jammy-20240808
 ARG RUNNER_DEBIAN_VERSION=jammy-20240808
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="ubuntu:${RUNNER_DEBIAN_VERSION}"
 
-
-
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
-RUN apt-get update -y && apt-get install -y build-essential git npm \
-    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+RUN apt-get update -y && apt-get install -y build-essential git \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
 WORKDIR /app
 
 # install hex + rebar
 RUN mix local.hex --force && \
-    mix local.rebar --force
+  mix local.rebar --force
 
 # set build ENV
 ENV MIX_ENV="prod"
@@ -49,10 +44,7 @@ RUN mkdir config
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
 COPY config/config.exs config/${MIX_ENV}.exs config/
-# RUN mix deps.compile gen_smtp --force
-# RUN mix deps.clean gen_smtp
 RUN mix deps.compile
-
 
 COPY priv priv
 
@@ -60,29 +52,27 @@ COPY lib lib
 
 COPY assets assets
 
-RUN npm install --prefix assets
-
 # compile assets
 RUN mix assets.deploy
 
-# # Compile the release
+# Compile the release
 RUN mix compile
 
-# # Changes to config/runtime.exs don't require recompiling the code
+# Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
 
-# COPY rel rel
+COPY rel rel
 RUN mix release
 
-# # start a new build stage so that the final image will only contain
-# # the compiled release and other runtime necessities
+# start a new build stage so that the final image will only contain
+# the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
-    apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
-    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-# # Set the locale
+# Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
 ENV LANG en_US.UTF-8
@@ -92,10 +82,10 @@ ENV LC_ALL en_US.UTF-8
 WORKDIR "/app"
 RUN chown nobody /app
 
-# # set runner ENV
+# set runner ENV
 ENV MIX_ENV="prod"
 
-# # Only copy the final release from the build stage
+# Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/uli_community ./
 
 USER nobody
@@ -105,5 +95,4 @@ USER nobody
 # above and adding an entrypoint. See https://github.com/krallin/tini for details
 # ENTRYPOINT ["/tini", "--"]
 
-# CMD ["/app/bin/server"]
-CMD ["tail", "-f", "/dev/null"]
+CMD ["/app/bin/server"]
