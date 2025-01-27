@@ -2,14 +2,14 @@
     "manifest_version": 2,
     "name": "uli",
     "description": "Moderate your Twitter Feed",
-    "version": "0.1.18",
+    "version": "0.2.0",
     "author": "tattlemade|cis",
-    "content_security_policy": "default-src 'none'; connect-src https://ogbv-plugin.tattle.co.in/ https://uli-media.tattle.co.in/; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self' ; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; img-src https://uli-media.tattle.co.in/; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';",
+    "content_security_policy": "default-src 'none'; connect-src https://uli-community.tattle.co.in/ https://uli-media.tattle.co.in/; font-src https://fonts.gstatic.com; object-src 'none'; script-src 'self' ; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; img-src https://uli-media.tattle.co.in/; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-uri 'none';",
     "permissions": [
         "storage",
         "webRequest",
         "contextMenus",
-        "https://ogbv-plugin.tattle.co.in/*"
+        "https://uli-community.tattle.co.in/*"
     ],
     "background": {
         "scripts": ["background.js"]
