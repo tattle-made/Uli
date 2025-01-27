@@ -1,0 +1,107 @@
+<.modal id="add-slur-modal" on_cancel={JS.push("close-modal")}>
+
+  <.header class="text-center">Approve Slur</.header>
+  <.simple_form for={@slur_form} phx-submit="submit-slur">
+    <.input required label="Slur Label" field={@slur_form[:label]} />
+    <div class="flex justify-start gap-12">
+      <.input
+        required
+        label="Level of Severity"
+        type="select"
+        options={[{"Low", "low"}, {"Medium", "medium"}, {"High", "high"}]}
+        field={@slur_form[:level_of_severity]}
+      />
+      <.input
+        required
+        label="Is Casual?"
+        type="select"
+        options={[{"Yes", true}, {"No", false}]}
+        field={@slur_form[:casual]}
+      />
+      <.input
+        required
+        label="Language"
+        type="select"
+        options={[{"English", :en}, {"Hindi", :hi}, {"Tamil", :ta}]}
+        field={@slur_form[:language]}
+      />
+    </div>
+    <div class="flex justify-start gap-12">
+      <.input
+        required
+        label="Is Appropriated?"
+        type="select"
+        options={[{"Yes", true}, {"No", false}]}
+        field={@slur_form[:appropriated]}
+      />
+      <.input
+        required
+        label="Appropriation Context"
+        type="select"
+        options={[{"Null", nil}, {"Community", true}, {"Others", false}]}
+        field={@slur_form[:appropriation_context]}
+      />
+    </div>
+    <.input label="Meaning" type="textarea" field={@slur_form[:meaning]} />
+    <.input
+      required
+      label="Categories"
+      type="select"
+      multiple
+      options={[
+        {"Gendered", :gendered},
+        {"Sexualized", :sexualized},
+        {"Religion", :religion},
+        {"Ethnicity", :ethnicity},
+        {"Political Affiliation", :political_affiliation},
+        {"Caste", :caste},
+        {"Class", :class},
+        {"Body Shaming", :body_shaming},
+        {"Ableist", :ableist},
+        {"Sexual Identity", :sexual_identity},
+        {"Other", :other}
+      ]}
+      field={@slur_form[:categories]}
+    />
+    <%!-- <.input field={@slur_form[:tags]} type="select" multiple options={[:item_1, :item_2, :item_3]} label="Tags" /> --%>
+
+    <div>
+      <.button type="button">Save Only Slur</.button>
+      <.button type="submit">Save Slur Metadata</.button>
+    </div>
+  </.simple_form>
+</.modal>
+
+<.header class="text-center">
+  Crowdsource Contributions
+</.header>
+
+<.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
+  <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
+  <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
+  <:col :let={slur} label="Is Casual?">
+    <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
+  </:col>
+
+  <:col :let={slur} label="Is Appropriated?">
+    <%= if is_nil(slur.appropriated), do: "-", else: (slur.appropriated == true && "Yes") || "No" %>
+  </:col>
+  <:col :let={slur} label="Appropriation Context">
+    <%= if is_nil(slur.appropriation_context),
+      do: "-",
+      else: (slur.appropriation_context == true && "Yes") || "No" %>
+  </:col>
+
+  <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
+  <:col :let={slur} label="Categories"><%= Enum.join(slur.categories || ["-"], ",") %></:col>
+  <:col :let={slur}>
+    <button
+      phx-click={
+        JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
+      }
+      class="px-2 py-1 border border-gray-500"
+    >
+      Add
+    </button>
+  </:col>
+</.table>
