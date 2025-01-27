@@ -123,7 +123,7 @@ if config_env() == :prod do
 
   # ## Configuring the mailer
   config :uli_community, UliCommunity.Mailer,
-    adapter: Swoosh.Adapters.ExAwsAmazonSES,
+    adapter: Swoosh.Adapters.AmazonSES,
     region: "ap-south-1",
     access_key: aws_access_key_id,
     secret: aws_secret_access_key
