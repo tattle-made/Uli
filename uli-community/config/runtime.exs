@@ -50,10 +50,10 @@ if config_env() == :prod do
       Slack webhook url is missing. Please contact tattle admin
       """
 
-  config :ex_aws,
-    region: "ap-south-1",
-    access_key_id: aws_access_key_id,
-    secret_access_key: aws_secret_access_key
+  # config :ex_aws,
+  #   region: "ap-south-1",
+  #   access_key_id: aws_access_key_id,
+  #   secret_access_key: aws_secret_access_key
 
   config :uli_community,
     aws_access_key_id: aws_access_key_id,
@@ -122,5 +122,9 @@ if config_env() == :prod do
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
   # ## Configuring the mailer
-  config :uli_community, UliCommunity.Mailer, adapter: Swoosh.Adapters.ExAwsAmazonSES
+  config :uli_community, UliCommunity.Mailer,
+    adapter: Swoosh.Adapters.ExAwsAmazonSES,
+    region: "ap-south-1",
+    access_key: aws_access_key_id,
+    secret: aws_secret_access_key
 end

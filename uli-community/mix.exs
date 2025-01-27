@@ -61,9 +61,6 @@ defmodule UliCommunity.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:corsica, "~>2.1.3"},
-      {:ex_aws, "~> 2.1"},
-      # Dependency of `:ex_aws`
-      {:sweet_xml, "~> 0.6"},
       {:gen_smtp, "~> 1.0"}
     ]
   end
