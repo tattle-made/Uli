@@ -20,36 +20,10 @@ if System.get_env("PHX_SERVER") do
   config :uli_community, UliCommunityWeb.Endpoint, server: true
 end
 
-aws_access_key_id =
-  System.get_env("AWS_ACCESS_KEY_ID") ||
-    raise """
-    aws access key is missing. Please contact tattle admin.
-    """
-
-aws_secret_access_key =
-  System.get_env("AWS_SECRET_ACCESS_KEY") ||
-    raise """
-    aws secret acess key are missing. Please contact tattle admin.
-    """
-
-slack_webhook_url =
-  System.get_env("SLACK_WEBHOOK_URL") ||
-    raise """
-    Slack webhook url is missing. Please contact tattle admin
-    """
-
-config :ex_aws,
-  region: "ap-south-1",
-  access_key_id: aws_access_key_id,
-  secret_access_key: aws_secret_access_key
-
-config :uli_community,
-  aws_access_key_id: aws_access_key_id,
-  aws_secret_access_key: aws_secret_access_key,
-  slack_webhook_url: slack_webhook_url
-
 if config_env() == :prod do
-  config :dau, DAU.Repo,
+  maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
+
+  config :uli_community, UliCommunity.Repo,
     username: System.get_env("DATABASE_USER"),
     password: System.get_env("DATABASE_PASSWORD"),
     hostname: System.get_env("DATABASE_HOSTNAME"),
@@ -58,13 +32,33 @@ if config_env() == :prod do
     socket_options: maybe_ipv6,
     stacktrace: true
 
-  maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
+  aws_access_key_id =
+    System.get_env("AWS_ACCESS_KEY_ID") ||
+      raise """
+      aws access key is missing. Please contact tattle admin.
+      """
 
-  config :uli_community, UliCommunity.Repo,
-    # ssl: true,
-    url: database_url,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-    socket_options: maybe_ipv6
+  aws_secret_access_key =
+    System.get_env("AWS_SECRET_ACCESS_KEY") ||
+      raise """
+      aws secret acess key are missing. Please contact tattle admin.
+      """
+
+  slack_webhook_url =
+    System.get_env("SLACK_WEBHOOK_URL") ||
+      raise """
+      Slack webhook url is missing. Please contact tattle admin
+      """
+
+  config :ex_aws,
+    region: "ap-south-1",
+    access_key_id: aws_access_key_id,
+    secret_access_key: aws_secret_access_key
+
+  config :uli_community,
+    aws_access_key_id: aws_access_key_id,
+    aws_secret_access_key: aws_secret_access_key,
+    slack_webhook_url: slack_webhook_url
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

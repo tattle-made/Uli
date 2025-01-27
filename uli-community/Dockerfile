@@ -11,13 +11,16 @@
 #   - https://pkgs.org/ - resource for finding needed packages
 #   - Ex: hexpm/elixir:1.15.0-erlang-26.0-debian-bullseye-20230227-slim
 #
-ARG ELIXIR_VERSION=1.15.0
-ARG OTP_VERSION=26.0
-ARG DEBIAN_VERSION=rc3-debian-bullseye-20230522-slim
-ARG RUNNER_DEBIAN_VERSION=bullseye-20230522-slim
+# 1.18.2-erlang-27.2.1-ubuntu-jammy-20240808
+
+ARG ELIXIR_VERSION=1.18.2
+ARG OTP_VERSION=27.2.1
+# ARG DEBIAN_VERSION=rc3-debian-bullseye-20230522-slim
+ARG DEBIAN_VERSION=ubuntu-jammy-20240808
+ARG RUNNER_DEBIAN_VERSION=jammy-20240808
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-${DEBIAN_VERSION}"
-ARG RUNNER_IMAGE="debian:${RUNNER_DEBIAN_VERSION}"
+ARG RUNNER_IMAGE="ubuntu:${RUNNER_DEBIAN_VERSION}"
 
 
 
@@ -46,7 +49,10 @@ RUN mkdir config
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
 COPY config/config.exs config/${MIX_ENV}.exs config/
+# RUN mix deps.compile gen_smtp --force
+# RUN mix deps.clean gen_smtp
 RUN mix deps.compile
+
 
 COPY priv priv
 
@@ -90,7 +96,7 @@ RUN chown nobody /app
 ENV MIX_ENV="prod"
 
 # # Only copy the final release from the build stage
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/dau ./
+COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/uli_community ./
 
 USER nobody
 

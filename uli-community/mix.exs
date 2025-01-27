@@ -52,7 +52,7 @@ defmodule UliCommunity.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:swoosh, "~> 1.5"},
+      {:swoosh, "~> 1.17"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
@@ -61,10 +61,10 @@ defmodule UliCommunity.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:corsica, "~>2.1.3"},
-      {:gen_smtp, "~> 1.0"},
       {:ex_aws, "~> 2.1"},
       # Dependency of `:ex_aws`
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+      {:gen_smtp, "~> 1.0"}
     ]
   end
 
