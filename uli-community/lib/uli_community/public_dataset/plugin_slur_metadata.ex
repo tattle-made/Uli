@@ -66,7 +66,6 @@ defmodule UliCommunity.PublicDataset.PluginSlurMetadata do
       :level_of_severity,
       :casual,
       :appropriated,
-      :appropriation_context,
       :meaning,
       :language,
       :batch,
