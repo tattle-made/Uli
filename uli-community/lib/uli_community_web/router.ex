@@ -146,6 +146,7 @@ defmodule UliCommunityWeb.Router do
       live "/testadmin", TestAdminRoleLive, :index
       live "/gentoken", TokenGeneratorLive, :index
       live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
+      live "/plugin-metadata/:slur_label", PluginMetadataSlurLive, :index
     end
   end
 

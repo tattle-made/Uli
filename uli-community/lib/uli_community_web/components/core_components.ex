@@ -223,6 +223,7 @@ defmodule UliCommunityWeb.CoreComponents do
   attr :type, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
+  attr :disabled, :boolean, default: false
 
   slot :inner_block, required: true
 
@@ -230,8 +231,9 @@ defmodule UliCommunityWeb.CoreComponents do
     ~H"""
     <button
       type={@type}
+      disabled={@disabled}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3 disabled:bg-gray-500",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}

@@ -24,7 +24,7 @@ defmodule UliCommunity.PublicDataset.PluginSlurMetadata do
     field(:level_of_severity, Ecto.Enum, values: [:low, :medium, :high])
     field(:casual, :boolean)
     field(:appropriated, :boolean, default: false)
-    field(:appropriation_context, :boolean, default: false)
+    field(:appropriation_context, :boolean, default: nil)
     field(:meaning, :string)
     field(:batch, :integer)
 
@@ -66,7 +66,6 @@ defmodule UliCommunity.PublicDataset.PluginSlurMetadata do
       :level_of_severity,
       :casual,
       :appropriated,
-      :appropriation_context,
       :meaning,
       :language,
       :batch,

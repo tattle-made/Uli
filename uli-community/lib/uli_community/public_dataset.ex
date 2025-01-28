@@ -108,6 +108,12 @@ defmodule UliCommunity.PublicDataset do
     {:ok, slurs}
   end
 
+  def get_plugin_slur_metadata_by_label(label) do
+    slurs = Repo.all(from s in PluginSlurMetadata, where: s.label == ^label)
+
+    {:ok, slurs}
+  end
+
   alias UliCommunity.PublicDataset.PluginSlur
 
   @doc """
@@ -208,6 +214,11 @@ defmodule UliCommunity.PublicDataset do
     slurs = Repo.all(from s in PluginSlur, where: s.batch == ^batch)
 
     {:ok, slurs}
+  end
+
+  def get_plugin_slurs_by_label(label) do
+    slur = Repo.get_by(PluginSlur, label: label)
+    {:ok, slur}
   end
 
 end
