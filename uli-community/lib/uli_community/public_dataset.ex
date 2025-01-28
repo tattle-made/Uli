@@ -7,6 +7,7 @@ defmodule UliCommunity.PublicDataset do
   alias UliCommunity.Repo
 
   alias UliCommunity.PublicDataset.PluginSlurMetadata
+  alias UliCommunity.PublicDataset.PluginSlur
 
   @doc """
   Returns the list of plugin_slur_metadata.
@@ -114,8 +115,6 @@ defmodule UliCommunity.PublicDataset do
     {:ok, slurs}
   end
 
-  alias UliCommunity.PublicDataset.PluginSlur
-
   @doc """
   Returns the list of plugin_slurs.
 
@@ -220,5 +219,4 @@ defmodule UliCommunity.PublicDataset do
     slur = Repo.get_by(PluginSlur, label: label)
     {:ok, slur}
   end
-
 end
