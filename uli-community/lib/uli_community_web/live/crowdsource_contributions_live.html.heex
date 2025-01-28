@@ -1,0 +1,159 @@
+<.modal id="add-slur-modal" on_cancel={JS.push("close-modal")}>
+  <.header class="text-center">Approve Slur and Slur Metadata</.header>
+  <.simple_form
+    for={@slur_form}
+    phx-submit={
+      JS.push((@approve_type == "only-slur" && "add-only-slur") || "add-slur-metadata")
+      |> hide_modal("add-slur-modal")
+    }
+  >
+    <.header class="text-center">
+      <.input
+        required
+        phx-change="update-form-type"
+        class="text-center"
+        type="select"
+        options={[{"Approve Slur Only", "only-slur"}, {"Approve Slur Metadata", "slur-metadata"}]}
+        field={@slur_form[:approve_type]}
+      />
+    </.header>
+    <%= if @approve_type == "slur-metadata" do %>
+      <p class="text-xs m-0 p-0 text-slate-700">
+        Frequency of Metadata with same label:
+        <%= if @already_present_metadata_freq > 0 do %>
+          <a href={"/plugin-metadata/#{@selected_slur["label"]}"} class="font-semibold underline">
+            <%= @already_present_metadata_freq %>
+          </a>
+        <% else %>
+          <span class="font-semibold">
+            <%= @already_present_metadata_freq %>
+          </span>
+        <% end %>
+      </p>
+    <% end %>
+
+    <div class="flex gap-4">
+      <div class="flex-1">
+        <.input required label="Slur Label" field={@slur_form[:label]} />
+      </div>
+      <.input
+        required
+        label="Language"
+        type="select"
+        options={[{"English", :en}, {"Hindi", :hi}, {"Tamil", :ta}]}
+        field={@slur_form[:language]}
+      />
+    </div>
+
+    <%= if @approve_type == "slur-metadata" do %>
+      <div class="flex justify-between">
+        <.input
+          required
+          label="Level of Severity"
+          type="select"
+          options={[{"Low", "low"}, {"Medium", "medium"}, {"High", "high"}]}
+          field={@slur_form[:level_of_severity]}
+        />
+        <.input
+          required
+          label="Is Casual?"
+          type="select"
+          options={[{"Yes", true}, {"No", false}]}
+          field={@slur_form[:casual]}
+        />
+
+        <%!-- </div>
+      <div class="flex justify-start gap-12"> --%>
+        <.input
+          required
+          label="Is Appropriated?"
+          type="select"
+          options={[{"Yes", true}, {"No", false}]}
+          field={@slur_form[:appropriated]}
+        />
+        <.input
+          label="Appropriation Context"
+          type="select"
+          options={[{"Null", nil}, {"Community", true}, {"Others", false}]}
+          field={@slur_form[:appropriation_context]}
+        />
+      </div>
+      <.input required label="Meaning" type="textarea" field={@slur_form[:meaning]} />
+      <.input
+        required
+        label="Categories"
+        type="select"
+        multiple
+        options={[
+          {"Gendered", :gendered},
+          {"Sexualized", :sexualized},
+          {"Religion", :religion},
+          {"Ethnicity", :ethnicity},
+          {"Political Affiliation", :political_affiliation},
+          {"Caste", :caste},
+          {"Class", :class},
+          {"Body Shaming", :body_shaming},
+          {"Ableist", :ableist},
+          {"Sexual Identity", :sexual_identity},
+          {"Other", :other}
+        ]}
+        field={@slur_form[:categories]}
+      />
+    <% end %>
+
+    <div class="flex gap-4 justify-center">
+      <.button
+        phx-click={hide_modal("add-slur-modal")}
+        type="button"
+        class="bg-red-400 hover:bg-red-500"
+      >
+        Cancel
+      </.button>
+
+      <%= if @approve_type== "only-slur" do %>
+        <.button type="submit" disabled={@slur_already_added?}>
+          <%= if @slur_already_added? do
+            "Slur Already Added"
+          else
+            "Add Only Slur"
+          end %>
+        </.button>
+      <% else %>
+        <.button type="submit">Save Slur Metadata</.button>
+      <% end %>
+    </div>
+  </.simple_form>
+</.modal>
+
+<.header class="text-center">
+  Crowdsource Contributions
+</.header>
+
+<.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
+  <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
+  <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
+  <:col :let={slur} label="Is Casual?">
+    <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
+  </:col>
+
+  <:col :let={slur} label="Is Appropriated?">
+    <%= if is_nil(slur.appropriated), do: "-", else: (slur.appropriated == true && "Yes") || "No" %>
+  </:col>
+  <:col :let={slur} label="Appropriation Context">
+    <%= if is_nil(slur.appropriation_context),
+      do: "-",
+      else: (slur.appropriation_context == true && "Yes") || "No" %>
+  </:col>
+
+  <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
+  <:col :let={slur} label="Categories"><%= Enum.join(slur.categories || ["-"], ",") %></:col>
+  <:action :let={slur}>
+    <%= if @user_role == :admin do %>
+      <.button phx-click={
+        JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
+      }>
+        Add
+      </.button>
+    <% end %>
+  </:action>
+</.table>
