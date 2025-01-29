@@ -85,18 +85,18 @@ defmodule Scripts.SeedPluginSlurMetadata280125 do
         batch: 1,
         categories: [:gendered, :sexualized]
       },
-      %{
-        label: "r&d-khana",
-        language: "Unknown",
-        level_of_severity: :high,
-        casual: false,
-        appropriated: false,
-        appropriation_context: nil,
-        meaning:
-          "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
-        batch: 1,
-        categories: [:gendered, :sexualized]
-      },
+      # %{
+      #   label: "r&d-khana",
+      #   language: "Unknown",
+      #   level_of_severity: :high,
+      #   casual: false,
+      #   appropriated: false,
+      #   appropriation_context: nil,
+      #   meaning:
+      #     "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+      #   batch: 1,
+      #   categories: [:gendered, :sexualized]
+      # },
       %{
         label: "khanki",
         language: "Unknown",
@@ -199,17 +199,17 @@ defmodule Scripts.SeedPluginSlurMetadata280125 do
         batch: 1,
         categories: [:gendered, :sexualized]
       },
-      %{
-        label: "Dheela Lun@",
-        language: "Unknown",
-        level_of_severity: :low,
-        casual: true,
-        appropriated: false,
-        appropriation_context: nil,
-        meaning: "It is used to humilate people with a penis on their sexual performance",
-        batch: 1,
-        categories: [:gendered, :body_shaming]
-      },
+      # %{
+      #   label: "Dheela Lun@",
+      #   language: "Unknown",
+      #   level_of_severity: :low,
+      #   casual: true,
+      #   appropriated: false,
+      #   appropriation_context: nil,
+      #   meaning: "It is used to humilate people with a penis on their sexual performance",
+      #   batch: 1,
+      #   categories: [:gendered, :body_shaming]
+      # },
       %{
         label: "kutiya",
         language: "Unknown",
@@ -1140,18 +1140,18 @@ defmodule Scripts.SeedPluginSlurMetadata280125 do
         batch: 1,
         categories: [:gendered, :political_affiliation]
       },
-      %{
-        label: "R@ndi",
-        language: "Unknown",
-        level_of_severity: :high,
-        casual: false,
-        appropriated: true,
-        appropriation_context: true,
-        meaning:
-          "A word that demeans a sex-worker; also used against women to insult and insinuate they are a prostitute.",
-        batch: 1,
-        categories: [:gendered, :sexualized, :class, :caste]
-      },
+      # %{
+      #   label: "R@ndi",
+      #   language: "Unknown",
+      #   level_of_severity: :high,
+      #   casual: false,
+      #   appropriated: true,
+      #   appropriation_context: true,
+      #   meaning:
+      #     "A word that demeans a sex-worker; also used against women to insult and insinuate they are a prostitute.",
+      #   batch: 1,
+      #   categories: [:gendered, :sexualized, :class, :caste]
+      # },
       %{
         label: "pheminist",
         language: "Unknown",
@@ -1319,17 +1319,17 @@ defmodule Scripts.SeedPluginSlurMetadata280125 do
         batch: 1,
         categories: [:ableist]
       },
-      %{
-        label: "r*tarded",
-        language: "Unknown",
-        level_of_severity: :medium,
-        casual: true,
-        appropriated: false,
-        appropriation_context: nil,
-        meaning: "The word is used to mock someone who does something silly.",
-        batch: 1,
-        categories: [:ableist]
-      },
+      # %{
+      #   label: "r*tarded",
+      #   language: "Unknown",
+      #   level_of_severity: :medium,
+      #   casual: true,
+      #   appropriated: false,
+      #   appropriation_context: nil,
+      #   meaning: "The word is used to mock someone who does something silly.",
+      #   batch: 1,
+      #   categories: [:ableist]
+      # },
       %{
         label: "lesbo",
         language: "Unknown",
@@ -2218,18 +2218,18 @@ defmodule Scripts.SeedPluginSlurMetadata280125 do
         batch: 1,
         categories: [:religion, :ethnicity]
       },
-      %{
-        label: "wh@re child",
-        language: "Unknown",
-        level_of_severity: :high,
-        casual: false,
-        appropriated: false,
-        appropriation_context: nil,
-        meaning:
-          "The word whore historically referred to a person, typically a woman, who engages in sexual activity for payment. The term whore child is a gendered insult towards someone to shame or ridicule someone and to say they are a child of a sex worker.",
-        batch: 1,
-        categories: [:sexualized, :gendered, :class, :sexual_identity]
-      },
+      # %{
+      #   label: "wh@re child",
+      #   language: "Unknown",
+      #   level_of_severity: :high,
+      #   casual: false,
+      #   appropriated: false,
+      #   appropriation_context: nil,
+      #   meaning:
+      #     "The word whore historically referred to a person, typically a woman, who engages in sexual activity for payment. The term whore child is a gendered insult towards someone to shame or ridicule someone and to say they are a child of a sex worker.",
+      #   batch: 1,
+      #   categories: [:sexualized, :gendered, :class, :sexual_identity]
+      # },
       %{
         label: "nigga",
         language: "Unknown",
