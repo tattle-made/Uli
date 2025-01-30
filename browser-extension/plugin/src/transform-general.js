@@ -54,8 +54,9 @@ const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
     jsonData.forEach((slur) => {
         const slurWord = Object.keys(slur)[0];
         targetWords.push(slurWord);
-        // targetWords.push(slurWord.charAt(0).toUpperCase() + slurWord.slice(1));
     });
+    console.log("LEN OF TRGET WORDS", targetWords.length);
+    console.log("TG - ", targetWords);
     let uliStore = [];
     getAllTextNodes(firstBody, uliStore);
     abc = locateSlur(uliStore, targetWords);
@@ -136,6 +137,7 @@ function locateSlur(uliStore, targetWords) {
         tempParent.textContent = text;
         let slurs = [];
         let slurPresentInTempParent = false;
+
         targetWords.forEach((targetWord) => {
             let slurWord = targetWord;
             let pos = findPositions(slurWord, text);
@@ -143,29 +145,33 @@ function locateSlur(uliStore, targetWords) {
                 slurs.push(pos);
             }
 
-            if (tempParent.innerHTML.includes(targetWord)) {
-                const className = `icon-container-${targetWord}`;
-                const slurClass = `slur-container-${targetWord}`;
+            const slurClass = `slur-container-${targetWord}`;
+            const regex = new RegExp(`\\b${targetWord}\\b(?![^<]*>)`, 'gi');
 
-                // if (!tempParent.innerHTML.includes(`class="${slurClass}"`)) {
-                const parts = tempParent.innerHTML.split(targetWord);
-                const replacedHTML = parts.join(
-                    `<span class="${slurClass}"><span class="slur">${targetWord}</span></span>`
+            // Check if the word is already wrapped inside a <span>
+            if (
+                !new RegExp(
+                    `<span[^>]*class=["']?${slurClass}["']?[^>]*>`,
+                    'i'
+                ).test(tempParent.innerHTML)
+            ) {
+                tempParent.innerHTML = tempParent.innerHTML.replace(
+                    regex,
+                    (match) => {
+                        return `<span class="${slurClass}"><span class="slur">${match}</span></span>`;
+                    }
                 );
-                tempParent.innerHTML = replacedHTML;
                 slurPresentInTempParent = true;
-                // }
             }
         });
+
         uliStore[i].nodeToParent = tempParent;
         uliStore[i].slurs = slurs;
 
-        //O(1) complexity
+        // Replace only if a slur was added
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent);
         }
-
-        // console.log("TEMPParent: ",tempParent)
     }
     return uliStore;
 }
@@ -249,8 +255,6 @@ function addMetaData(targetWords, jsonData) {
                     span.innerHTML = htmlContent;
                 }
             });
-
-
 
             // sup.appendChild(span)
 
