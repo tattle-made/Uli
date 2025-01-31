@@ -139,14 +139,15 @@ function locateSlur(uliStore, targetWords) {
         let slurPresentInTempParent = false;
 
         targetWords.forEach((targetWord) => {
-            let slurWord = targetWord;
-            let pos = findPositions(slurWord, text);
-            if (Object.keys(pos).length !== 0) {
-                slurs.push(pos);
-            }
+            // Replace spaces in the target word with a hyphen for the class name
+            const sanitizedTargetWord = targetWord.replace(/\s+/g, '-'); // Replace spaces with hyphens
+            const slurClass = `slur-container-${sanitizedTargetWord}`;
 
-            const slurClass = `slur-container-${targetWord}`;
-            const regex = new RegExp(`\\b${targetWord}\\b(?![^<]*>)`, 'gi');
+            // Escape special characters in the target word for the regex
+            const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            // Use a regex to match the exact phrase, including spaces
+            const regex = new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi');
 
             // Check if the word is already wrapped inside a <span>
             if (
@@ -158,7 +159,10 @@ function locateSlur(uliStore, targetWords) {
                 tempParent.innerHTML = tempParent.innerHTML.replace(
                     regex,
                     (match) => {
-                        return `<span class="${slurClass}"><span class="slur">${match}</span></span>`;
+                        // Preserve leading whitespace (if any)
+                        const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
+                        const trimmedMatch = match.trim();
+                        return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${trimmedMatch}</span></span>`;
                     }
                 );
                 slurPresentInTempParent = true;
@@ -178,14 +182,11 @@ function locateSlur(uliStore, targetWords) {
 
 function addMetaData(targetWords, jsonData) {
     targetWords.forEach((targetWord) => {
-        const className = `slur-container-${targetWord}`;
+        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-'); // Replace spaces with hyphens
+        const className = `slur-container-${sanitizedTargetWord}`;
         const elements = Array.from(document.querySelectorAll(`.${className}`));
-        // console.log("ELEMENTS are: ",elements)
+
         elements.forEach((element) => {
-            // console.log("ELements InnerHTML:",element.innerHTML)
-
-            // element.innerHTML = element.innerHTML.replace(/<img[^>]*>/g, '')
-
             let sup = document.createElement('span');
             let img = document.createElement('img');
             img.style.height = '0.6em';
@@ -256,43 +257,15 @@ function addMetaData(targetWords, jsonData) {
                 }
             });
 
-            // sup.appendChild(span)
-
-            // element.append(sup)
-            // element.append(img)
-            // let sups = element.children[0]
-            // let spans = element.children[0].children[1]
-            // // const svgs = element.children[0].children[0];
-            // const svgs = element.children[element.children.length-1];
-            // svgs.addEventListener('mouseover', function () {
-            //     sups.children[0].style.display = "inline-block"
-            // });
-
-            // svgs.addEventListener('mouseout', function () {
-            //     sups.children[0].style.display = "none"
-            // });
-
             sup.appendChild(span);
-
-            // console.log("Element first child",element.children[0])
-            // console.log("Element last child",element.children[element.children.length-1])
-            // console.log("SUP: ",sup)
-            // console.log("ELEMENT IS: ",element)
-            // console.log("ELEMENT INNERHTML: ",element.innerHTML)
-
             element.append(span);
-
-            // console.log("ELEMENT AFTER IS: ",element)
-            // element.append(img)
             let slur = element.children[0];
             slur.style.backgroundColor = '#ffde2155';
             slur.style.boxShadow = '0px 0px 5px #ffde21';
             slur.style.cursor = 'pointer';
 
             let metabox = element.children[1];
-            // console.log("METABOX IS: ",metabox)
             let spans = element.children[0].children[1];
-            // const svgs = element.children[0].children[0];
             const svgs = element.children[element.children.length - 1];
             slur.addEventListener('mouseover', function () {
                 metabox.style.display = 'inline-block';
