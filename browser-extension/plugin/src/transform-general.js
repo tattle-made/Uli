@@ -50,15 +50,12 @@ function setCaretPosition(element, offset) {
 }
 
 const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
-    let targetWords = [];
-    jsonData.forEach((slur) => {
-        const slurWord = Object.keys(slur)[0];
-        targetWords.push(slurWord);
-        // targetWords.push(slurWord.charAt(0).toUpperCase() + slurWord.slice(1));
-    });
+    let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
+    targetWords.sort((a, b) => b.length - a.length);
+    
     let uliStore = [];
     getAllTextNodes(firstBody, uliStore);
-    abc = locateSlur(uliStore, targetWords);
+    locateSlur(uliStore, targetWords);
     addMetaData(targetWords, jsonData);
 };
 
@@ -125,73 +122,37 @@ function findPositions(word, text) {
 }
 
 function locateSlur(uliStore, targetWords) {
-    let n = uliStore.length;
-
-    for (let i = 0; i < n; i++) {
-        let store = uliStore[i];
-        let parentNode = store.parent;
+    uliStore.forEach(store => {
         let textnode = store.node;
-        let text = store.node.textContent;
         let tempParent = document.createElement('span');
-        tempParent.textContent = text;
-        let slurs = [];
+        tempParent.textContent = textnode.textContent;
         let slurPresentInTempParent = false;
-        targetWords.forEach((targetWord) => {
-            let slurWord = targetWord;
-            let pos = findPositions(slurWord, text);
-            if (Object.keys(pos).length !== 0) {
-                slurs.push(pos);
-            }
 
-            if (tempParent.innerHTML.includes(targetWord)) {
-                const className = `icon-container-${targetWord}`;
-                const slurClass = `slur-container-${targetWord}`;
+        targetWords.forEach(targetWord => {
+            const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
+            const slurClass = `slur-container-${sanitizedTargetWord}`;
+            const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(^|\s)${escapedTargetWord}(?=\s|$|[.,!?])`, 'gi');
 
-                // if (!tempParent.innerHTML.includes(`class="${slurClass}"`)) {
-                const parts = tempParent.innerHTML.split(targetWord);
-                const replacedHTML = parts.join(
-                    `<span class="${slurClass}"><span class="slur">${targetWord}</span></span>`
-                );
-                tempParent.innerHTML = replacedHTML;
+            if (!new RegExp(`<span[^>]*class=["']?${slurClass}["']?[^>]*>`, 'i').test(tempParent.innerHTML)) {
+                tempParent.innerHTML = tempParent.innerHTML.replace(regex, match => {
+                    const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
+                    return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
+                });
                 slurPresentInTempParent = true;
-                // }
             }
         });
-        uliStore[i].nodeToParent = tempParent;
-        uliStore[i].slurs = slurs;
 
-        //O(1) complexity
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent);
         }
-
-        // console.log("TEMPParent: ",tempParent)
-    }
-    return uliStore;
+    });
 }
 
 function addMetaData(targetWords, jsonData) {
-    targetWords.forEach((targetWord) => {
-        const className = `slur-container-${targetWord}`;
-        const elements = Array.from(document.querySelectorAll(`.${className}`));
-        // console.log("ELEMENTS are: ",elements)
-        elements.forEach((element) => {
-            // console.log("ELements InnerHTML:",element.innerHTML)
-
-            // element.innerHTML = element.innerHTML.replace(/<img[^>]*>/g, '')
-
-            let sup = document.createElement('span');
-            let img = document.createElement('img');
-            img.style.height = '0.6em';
-            img.style.width = '0.6em';
-            img.style.border = '1px solid black';
-            img.style.cursor = 'pointer';
-            img.style.marginBottom = '0.4em';
-
-            img.src =
-                'https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png';
-            img.alt = 'altText';
-
+    targetWords.forEach(targetWord => {
+        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
+        document.querySelectorAll(`.slur-container-${sanitizedTargetWord}`).forEach(element => {
             let span = document.createElement('span');
             span.style.display = 'none';
             span.style.position = 'absolute';
@@ -205,12 +166,8 @@ function addMetaData(targetWords, jsonData) {
             span.style.textAlign = 'justify';
             span.style.fontWeight = 'lighter';
             span.style.color = 'black';
-            span.style.zIndex = '1000000000'; // This ensures it appears above other elements
+            span.style.zIndex = '1000000000';
             span.style.fontSize = '14px';
-            span.style.textDecoration = 'none';
-            span.style.fontStyle = 'normal';
-
-            span.innerHTML = `${targetWord} is an offensive word`;
 
             jsonData.forEach((slur) => {
                 const slurWord = Object.keys(slur)[0];
@@ -218,11 +175,8 @@ function addMetaData(targetWords, jsonData) {
                     const slurDetails = slur[slurWord];
                     let levelOfSeverity = slurDetails['Level of Severity'];
                     let casual = slurDetails['Casual'];
-                    let approapriated = slurDetails['Appropriated'];
-                    let reason =
-                        slurDetails[
-                            'If, Appropriated, Is it by Community or Others?'
-                        ];
+                    let appropriated = slurDetails['Appropriated'];
+                    let reason = slurDetails['If, Appropriated, Is it by Community or Others?'];
                     let problematic = slurDetails['What Makes it Problematic?'];
                     let categories = slurDetails['Categories'];
                     let htmlContent = ``;
@@ -232,8 +186,8 @@ function addMetaData(targetWords, jsonData) {
                     if (casual) {
                         htmlContent += `<p><span class="label"><b>Casual:</b></span> ${casual}</p>`;
                     }
-                    if (approapriated) {
-                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${approapriated}</p>`;
+                    if (appropriated) {
+                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${appropriated}</p>`;
                     }
                     if (reason) {
                         htmlContent += `<p><span class="label"><b>If, Appropriated, Is it by Community or Others?:</b></span> ${reason}</p>`;
@@ -241,62 +195,22 @@ function addMetaData(targetWords, jsonData) {
                     if (problematic) {
                         htmlContent += `<p><span class="label"><b>What Makes it Problematic?:</b></span> ${problematic}</p>`;
                     }
-                    if (categories.length > 0) {
-                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${slurDetails[
-                            'Categories'
-                        ].join(', ')}</p>`;
+                    if (categories && categories.length > 0) {
+                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${categories.join(', ')}</p>`;
                     }
                     span.innerHTML = htmlContent;
                 }
             });
 
-
-
-            // sup.appendChild(span)
-
-            // element.append(sup)
-            // element.append(img)
-            // let sups = element.children[0]
-            // let spans = element.children[0].children[1]
-            // // const svgs = element.children[0].children[0];
-            // const svgs = element.children[element.children.length-1];
-            // svgs.addEventListener('mouseover', function () {
-            //     sups.children[0].style.display = "inline-block"
-            // });
-
-            // svgs.addEventListener('mouseout', function () {
-            //     sups.children[0].style.display = "none"
-            // });
-
-            sup.appendChild(span);
-
-            // console.log("Element first child",element.children[0])
-            // console.log("Element last child",element.children[element.children.length-1])
-            // console.log("SUP: ",sup)
-            // console.log("ELEMENT IS: ",element)
-            // console.log("ELEMENT INNERHTML: ",element.innerHTML)
-
             element.append(span);
-
-            // console.log("ELEMENT AFTER IS: ",element)
-            // element.append(img)
             let slur = element.children[0];
             slur.style.backgroundColor = '#ffde2155';
             slur.style.boxShadow = '0px 0px 5px #ffde21';
             slur.style.cursor = 'pointer';
 
             let metabox = element.children[1];
-            // console.log("METABOX IS: ",metabox)
-            let spans = element.children[0].children[1];
-            // const svgs = element.children[0].children[0];
-            const svgs = element.children[element.children.length - 1];
-            slur.addEventListener('mouseover', function () {
-                metabox.style.display = 'inline-block';
-            });
-
-            slur.addEventListener('mouseout', function () {
-                metabox.style.display = 'none';
-            });
+            slur.addEventListener('mouseover', () => metabox.style.display = 'inline-block');
+            slur.addEventListener('mouseout', () => metabox.style.display = 'none');
         });
     });
 }
