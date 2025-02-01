@@ -54,11 +54,10 @@ function setCaretPosition(element, offset) {
 const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
     let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
     targetWords.sort((a, b) => b.length - a.length);
-    console.log("LEN OF TRGET WORDS", targetWords.length);
-    console.log("TG - ", targetWords);
+
     let uliStore = [];
     getAllTextNodes(firstBody, uliStore);
-    abc = locateSlur(uliStore, targetWords);
+    locateSlur(uliStore, targetWords);
     addMetaData(targetWords, jsonData);
 };
 
@@ -95,7 +94,6 @@ function checkFalseTextNode(text, actualLengthOfText) {
     return totalNewlineAndWhitespaces === actualLengthOfText;
 }
 
-// Function to recursively get all text nodes for a given node
 function getAllTextNodes(node, uliStore) {
     if (node.nodeType === 3) {
         if (!checkFalseTextNode(node.data, node.length)) {
@@ -125,53 +123,31 @@ function findPositions(word, text) {
 }
 
 function locateSlur(uliStore, targetWords) {
-    let n = uliStore.length;
-
-    for (let i = 0; i < n; i++) {
-        let store = uliStore[i];
-        let parentNode = store.parent;
+    uliStore.forEach(store => {
         let textnode = store.node;
-        let text = store.node.textContent;
         let tempParent = document.createElement('span');
-        tempParent.textContent = text;
-        let slurs = [];
+        tempParent.textContent = textnode.textContent;
         let slurPresentInTempParent = false;
 
-        targetWords.forEach((targetWord) => {
+        targetWords.forEach(targetWord => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
             const regex = new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi');
 
-            if (
-                !new RegExp(
-                    `<span[^>]*class=["']?${slurClass}["']?[^>]*>`,
-                    'i'
-                ).test(tempParent.innerHTML)
-            ) {
-                tempParent.innerHTML = tempParent.innerHTML.replace(
-                    regex,
-                    (match) => {
-                        // Preserve leading whitespace (if any)
-                        const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
-                        const trimmedMatch = match.trim();
-                        return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${trimmedMatch}</span></span>`;
-                    }
-                );
+            if (!new RegExp(`<span[^>]*class=["']?${slurClass}["']?[^>]*>`, 'i').test(tempParent.innerHTML)) {
+                tempParent.innerHTML = tempParent.innerHTML.replace(regex, match => {
+                    const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
+                    return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
+                });
                 slurPresentInTempParent = true;
             }
         });
 
-        uliStore[i].nodeToParent = tempParent;
-        uliStore[i].slurs = slurs;
-
-        // Replace only if a slur was added
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent);
         }
-    }
-    return uliStore;
+    });
 }
 
 function addMetaData(targetWords, jsonData) {
@@ -181,93 +157,46 @@ function addMetaData(targetWords, jsonData) {
         const elements = Array.from(document.querySelectorAll(`.${className}`));
 
         elements.forEach((element) => {
-            let sup = document.createElement('span');
-            let img = document.createElement('img');
-            img.style.height = '0.6em';
-            img.style.width = '0.6em';
-            img.style.border = '1px solid black';
-            img.style.cursor = 'pointer';
-            img.style.marginBottom = '0.4em';
+            const slur = element.querySelector('.slur');
+            if (!slur) return;
 
-            img.src =
-                'https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png';
-            img.alt = 'altText';
-
-            let span = document.createElement('span');
-            span.style.display = 'none';
-            span.style.position = 'absolute';
-            span.style.marginLeft = '2px';
-            span.style.marginTop = '2px';
-            span.style.backgroundColor = 'antiquewhite';
-            span.style.border = '1px solid black';
-            span.style.borderRadius = '12px';
-            span.style.padding = '2px 6px';
-            span.style.width = '16rem';
-            span.style.textAlign = 'justify';
-            span.style.fontWeight = 'lighter';
-            span.style.color = 'black';
-            span.style.zIndex = '1000000000'; // This ensures it appears above other elements
-            span.style.fontSize = '14px';
-            span.style.textDecoration = 'none';
-            span.style.fontStyle = 'normal';
-
-            span.innerHTML = `${targetWord} is an offensive word`;
-
-            jsonData.forEach((slur) => {
-                const slurWord = Object.keys(slur)[0];
-                if (slurWord.toLowerCase() === targetWord.toLowerCase()) {
-                    const slurDetails = slur[slurWord];
-                    let levelOfSeverity = slurDetails['Level of Severity'];
-                    let casual = slurDetails['Casual'];
-                    let approapriated = slurDetails['Appropriated'];
-                    let reason =
-                        slurDetails[
-                            'If, Appropriated, Is it by Community or Others?'
-                        ];
-                    let problematic = slurDetails['What Makes it Problematic?'];
-                    let categories = slurDetails['Categories'];
-                    let htmlContent = ``;
-                    if (levelOfSeverity) {
-                        htmlContent += `<p><span class="label"><b>Level of Severity:</b></span> ${levelOfSeverity}</p>`;
-                    }
-                    if (casual) {
-                        htmlContent += `<p><span class="label"><b>Casual:</b></span> ${casual}</p>`;
-                    }
-                    if (approapriated) {
-                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${approapriated}</p>`;
-                    }
-                    if (reason) {
-                        htmlContent += `<p><span class="label"><b>If, Appropriated, Is it by Community or Others?:</b></span> ${reason}</p>`;
-                    }
-                    if (problematic) {
-                        htmlContent += `<p><span class="label"><b>What Makes it Problematic?:</b></span> ${problematic}</p>`;
-                    }
-                    if (categories.length > 0) {
-                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${slurDetails[
-                            'Categories'
-                        ].join(', ')}</p>`;
-                    }
-                    span.innerHTML = htmlContent;
-                }
-            });
-
-            sup.appendChild(span);
-            element.append(span);
-            let slur = element.children[0];
+            // Add hover styles
             slur.style.backgroundColor = '#ffde2155';
             slur.style.boxShadow = '0px 0px 5px #ffde21';
             slur.style.cursor = 'pointer';
 
-            let metabox = element.children[1];
-            let spans = element.children[0].children[1];
-            const svgs = element.children[element.children.length - 1];
-            slur.addEventListener('mouseover', function () {
-                metabox.style.display = 'inline-block';
-            });
+            // Create a container for the React component
+            let tooltipContainer = document.createElement('div');
+            tooltipContainer.style.position = 'absolute';
+            tooltipContainer.style.zIndex = '1000000000';
+            document.body.appendChild(tooltipContainer);
 
-            slur.addEventListener('mouseout', function () {
-                metabox.style.display = 'none';
-            });
+            // Find the slur details from jsonData
+            const slurDetails = jsonData.find(slur => {
+                const slurWord = Object.keys(slur)[0].toLowerCase();
+                return slurWord === targetWord.toLowerCase();
+            })?.[Object.keys(slur)[0]] || {};
+
+            // Add hover event listeners
+            const handleMouseOver = (event) => {
+                const root = createRoot(tooltipContainer);
+                root.render(
+                    <HoverSlurMetadata slurDetails={slurDetails} />
+                );
+
+                const rect = slur.getBoundingClientRect();
+                tooltipContainer.style.top = `${rect.bottom + window.scrollY}px`;
+                tooltipContainer.style.left = `${rect.left + window.scrollX}px`;
+            };
+
+            const handleMouseOut = () => {
+                const root = createRoot(tooltipContainer);
+                root.unmount();
+                tooltipContainer.remove();
+            };
+
+            slur.addEventListener('mouseover', handleMouseOver);
+            slur.addEventListener('mouseout', handleMouseOut);
         });
     });
 }
