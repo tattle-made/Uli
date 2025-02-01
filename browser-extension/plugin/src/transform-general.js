@@ -2,6 +2,8 @@ import { replaceSlur } from './slur-replace';
 import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData } = repository;
+import { createRoot } from 'react-dom/client';
+import HoverSlurMetadata from './ui-components/atoms/HoverSlurMetadata';
 
 // Traverse dom nodes to find leaf node that are text nodes and process
 function bft(node) {
@@ -50,12 +52,16 @@ function setCaretPosition(element, offset) {
 }
 
 const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
-    let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
-    targetWords.sort((a, b) => b.length - a.length);
-    
+    let targetWords = [];
+    jsonData.forEach((slur) => {
+        const slurWord = Object.keys(slur)[0];
+        targetWords.push(slurWord);
+    });
+    console.log("LEN OF TRGET WORDS", targetWords.length);
+    console.log("TG - ", targetWords);
     let uliStore = [];
     getAllTextNodes(firstBody, uliStore);
-    locateSlur(uliStore, targetWords);
+    abc = locateSlur(uliStore, targetWords);
     addMetaData(targetWords, jsonData);
 };
 
@@ -122,37 +128,74 @@ function findPositions(word, text) {
 }
 
 function locateSlur(uliStore, targetWords) {
-    uliStore.forEach(store => {
+    let n = uliStore.length;
+
+    for (let i = 0; i < n; i++) {
+        let store = uliStore[i];
+        let parentNode = store.parent;
         let textnode = store.node;
+        let text = store.node.textContent;
         let tempParent = document.createElement('span');
-        tempParent.textContent = textnode.textContent;
+        tempParent.textContent = text;
+        let slurs = [];
         let slurPresentInTempParent = false;
 
-        targetWords.forEach(targetWord => {
+        targetWords.forEach((targetWord) => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(^|\s)${escapedTargetWord}(?=\s|$|[.,!?])`, 'gi');
 
-            if (!new RegExp(`<span[^>]*class=["']?${slurClass}["']?[^>]*>`, 'i').test(tempParent.innerHTML)) {
-                tempParent.innerHTML = tempParent.innerHTML.replace(regex, match => {
-                    const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
-                    return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
-                });
+            const regex = new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi');
+
+            if (
+                !new RegExp(
+                    `<span[^>]*class=["']?${slurClass}["']?[^>]*>`,
+                    'i'
+                ).test(tempParent.innerHTML)
+            ) {
+                tempParent.innerHTML = tempParent.innerHTML.replace(
+                    regex,
+                    (match) => {
+                        // Preserve leading whitespace (if any)
+                        const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
+                        const trimmedMatch = match.trim();
+                        return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${trimmedMatch}</span></span>`;
+                    }
+                );
                 slurPresentInTempParent = true;
             }
         });
 
+        uliStore[i].nodeToParent = tempParent;
+        uliStore[i].slurs = slurs;
+
+        // Replace only if a slur was added
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent);
         }
-    });
+    }
+    return uliStore;
 }
 
 function addMetaData(targetWords, jsonData) {
-    targetWords.forEach(targetWord => {
-        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
-        document.querySelectorAll(`.slur-container-${sanitizedTargetWord}`).forEach(element => {
+    targetWords.forEach((targetWord) => {
+        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-'); // Replace spaces with hyphens
+        const className = `slur-container-${sanitizedTargetWord}`;
+        const elements = Array.from(document.querySelectorAll(`.${className}`));
+
+        elements.forEach((element) => {
+            let sup = document.createElement('span');
+            let img = document.createElement('img');
+            img.style.height = '0.6em';
+            img.style.width = '0.6em';
+            img.style.border = '1px solid black';
+            img.style.cursor = 'pointer';
+            img.style.marginBottom = '0.4em';
+
+            img.src =
+                'https://raw.githubusercontent.com/tattle-made/Uli/main/uli-website/src/images/favicon-32x32.png';
+            img.alt = 'altText';
+
             let span = document.createElement('span');
             span.style.display = 'none';
             span.style.position = 'absolute';
@@ -166,8 +209,12 @@ function addMetaData(targetWords, jsonData) {
             span.style.textAlign = 'justify';
             span.style.fontWeight = 'lighter';
             span.style.color = 'black';
-            span.style.zIndex = '1000000000';
+            span.style.zIndex = '1000000000'; // This ensures it appears above other elements
             span.style.fontSize = '14px';
+            span.style.textDecoration = 'none';
+            span.style.fontStyle = 'normal';
+
+            span.innerHTML = `${targetWord} is an offensive word`;
 
             jsonData.forEach((slur) => {
                 const slurWord = Object.keys(slur)[0];
@@ -175,8 +222,11 @@ function addMetaData(targetWords, jsonData) {
                     const slurDetails = slur[slurWord];
                     let levelOfSeverity = slurDetails['Level of Severity'];
                     let casual = slurDetails['Casual'];
-                    let appropriated = slurDetails['Appropriated'];
-                    let reason = slurDetails['If, Appropriated, Is it by Community or Others?'];
+                    let approapriated = slurDetails['Appropriated'];
+                    let reason =
+                        slurDetails[
+                            'If, Appropriated, Is it by Community or Others?'
+                        ];
                     let problematic = slurDetails['What Makes it Problematic?'];
                     let categories = slurDetails['Categories'];
                     let htmlContent = ``;
@@ -186,8 +236,8 @@ function addMetaData(targetWords, jsonData) {
                     if (casual) {
                         htmlContent += `<p><span class="label"><b>Casual:</b></span> ${casual}</p>`;
                     }
-                    if (appropriated) {
-                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${appropriated}</p>`;
+                    if (approapriated) {
+                        htmlContent += `<p><span class="label"><b>Appropriated:</b></span> ${approapriated}</p>`;
                     }
                     if (reason) {
                         htmlContent += `<p><span class="label"><b>If, Appropriated, Is it by Community or Others?:</b></span> ${reason}</p>`;
@@ -195,13 +245,16 @@ function addMetaData(targetWords, jsonData) {
                     if (problematic) {
                         htmlContent += `<p><span class="label"><b>What Makes it Problematic?:</b></span> ${problematic}</p>`;
                     }
-                    if (categories && categories.length > 0) {
-                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${categories.join(', ')}</p>`;
+                    if (categories.length > 0) {
+                        htmlContent += `<p><span class="label"><b>Categories:</b></span> ${slurDetails[
+                            'Categories'
+                        ].join(', ')}</p>`;
                     }
                     span.innerHTML = htmlContent;
                 }
             });
 
+            sup.appendChild(span);
             element.append(span);
             let slur = element.children[0];
             slur.style.backgroundColor = '#ffde2155';
@@ -209,8 +262,15 @@ function addMetaData(targetWords, jsonData) {
             slur.style.cursor = 'pointer';
 
             let metabox = element.children[1];
-            slur.addEventListener('mouseover', () => metabox.style.display = 'inline-block');
-            slur.addEventListener('mouseout', () => metabox.style.display = 'none');
+            let spans = element.children[0].children[1];
+            const svgs = element.children[element.children.length - 1];
+            slur.addEventListener('mouseover', function () {
+                metabox.style.display = 'inline-block';
+            });
+
+            slur.addEventListener('mouseout', function () {
+                metabox.style.display = 'none';
+            });
         });
     });
 }
