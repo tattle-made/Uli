@@ -52,11 +52,8 @@ function setCaretPosition(element, offset) {
 }
 
 const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
-    let targetWords = [];
-    jsonData.forEach((slur) => {
-        const slurWord = Object.keys(slur)[0];
-        targetWords.push(slurWord);
-    });
+    let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
+    targetWords.sort((a, b) => b.length - a.length);
     console.log("LEN OF TRGET WORDS", targetWords.length);
     console.log("TG - ", targetWords);
     let uliStore = [];
