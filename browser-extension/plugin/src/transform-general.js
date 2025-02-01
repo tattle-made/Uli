@@ -165,34 +165,36 @@ function addMetaData(targetWords, jsonData) {
             slur.style.boxShadow = '0px 0px 5px #ffde21';
             slur.style.cursor = 'pointer';
 
-            // Create a container for the React component
-            let tooltipContainer = document.createElement('div');
-            tooltipContainer.style.position = 'absolute';
-            tooltipContainer.style.zIndex = '1000000000';
-            document.body.appendChild(tooltipContainer);
+            // Create a single tooltip container and React root if not already created
+            let tooltipContainer = document.getElementById('slur-tooltip-container');
+            if (!tooltipContainer) {
+                tooltipContainer = document.createElement('div');
+                tooltipContainer.id = 'slur-tooltip-container';
+                tooltipContainer.style.position = 'absolute';
+                tooltipContainer.style.zIndex = '1000000000';
+                document.body.appendChild(tooltipContainer);
+                tooltipContainer.root = createRoot(tooltipContainer); // Store root instance
+            }
 
             // Find the slur details from jsonData
             const slurDetails = jsonData.find(slur => {
                 const slurWord = Object.keys(slur)[0].toLowerCase();
                 return slurWord === targetWord.toLowerCase();
-            })?.[Object.keys(slur)[0]] || {};
+            })?.[targetWord] || {};
 
             // Add hover event listeners
             const handleMouseOver = (event) => {
-                const root = createRoot(tooltipContainer);
-                root.render(
-                    <HoverSlurMetadata slurDetails={slurDetails} />
-                );
-
                 const rect = slur.getBoundingClientRect();
                 tooltipContainer.style.top = `${rect.bottom + window.scrollY}px`;
                 tooltipContainer.style.left = `${rect.left + window.scrollX}px`;
+
+                tooltipContainer.root.render(
+                    <HoverSlurMetadata slurDetails={slurDetails} />
+                );
             };
 
             const handleMouseOut = () => {
-                const root = createRoot(tooltipContainer);
-                root.unmount();
-                tooltipContainer.remove();
+                tooltipContainer.root.render(null);
             };
 
             slur.addEventListener('mouseover', handleMouseOver);
