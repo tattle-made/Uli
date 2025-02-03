@@ -51,16 +51,6 @@ function setCaretPosition(element, offset) {
     sel.addRange(range);
 }
 
-const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
-    let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
-    targetWords.sort((a, b) => b.length - a.length);
-
-    let uliStore = [];
-    getAllTextNodes(firstBody, uliStore);
-    locateSlur(uliStore, targetWords);
-    addMetaData(targetWords, jsonData);
-};
-
 const processNewlyAddedNodesGeneral = function (firstBody) {
     log('processing new nodes');
     const config = { attributes: true, childList: true, subtree: true };
@@ -82,6 +72,17 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
     };
     const observer = new MutationObserver(callback);
     observer.observe(firstBody, config);
+};
+
+const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
+    let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
+    targetWords.sort((a, b) => b.length - a.length);
+    console.log("TGGG words", targetWords);
+
+    let uliStore = [];
+    getAllTextNodes(firstBody, uliStore);
+    locateSlur(uliStore, targetWords);
+    addMetaData(targetWords, jsonData);
 };
 
 function checkFalseTextNode(text, actualLengthOfText) {
@@ -128,17 +129,20 @@ function locateSlur(uliStore, targetWords) {
         let tempParent = document.createElement('span');
         tempParent.textContent = textnode.textContent;
         let slurPresentInTempParent = false;
-
         targetWords.forEach(targetWord => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
+            
+            const testDiv = document.createElement('div');
+            testDiv.textContent = tempParent.textContent;
+            
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const regex = new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi');
-
-            if (!new RegExp(`<span[^>]*class=["']?${slurClass}["']?[^>]*>`, 'i').test(tempParent.innerHTML)) {
-                tempParent.innerHTML = tempParent.innerHTML.replace(regex, match => {
-                    const leadingWhitespace = match.match(/^\s+/)?.[0] || '';
-                    return `${leadingWhitespace}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
+            
+            if (regex.test(testDiv.textContent)) {
+                tempParent.innerHTML = tempParent.textContent.replace(regex, (match, p1) => {
+                    const prefix = p1 || ''; // Preserve any leading whitespace
+                    return `${prefix}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
                 });
                 slurPresentInTempParent = true;
             }
