@@ -131,11 +131,11 @@ function locateSlur(uliStore, targetWords) {
         targetWords.forEach(targetWord => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
-
+            
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             // regex for multi-word and single-word phrases
             const regex = new RegExp(`(^|\\s|[.,!?])(${escapedTargetWord})(?=\\s|$|[.,!?])`, 'giu');
-
+            
             if (regex.test(tempParent.textContent)) {
                 tempParent.innerHTML = tempParent.innerHTML.replace(regex, (match, prefix, word) => {
                     return `${prefix}<span class="${slurClass}"><span class="slur">${word}</span></span>`;
@@ -177,10 +177,10 @@ function addMetaData(targetWords, jsonData) {
             }
 
             // Find the slur details from jsonData
-            const slurDetails = jsonData.find(slur => {
-                const slurWord = Object.keys(slur)[0].toLowerCase();
-                return slurWord === targetWord.toLowerCase();
-            })?.[targetWord] || {};
+            const matchedSlur = jsonData.find(slur => 
+                Object.keys(slur)[0].toLowerCase() === targetWord.toLowerCase()
+            );
+            const slurDetails = matchedSlur ? matchedSlur[Object.keys(matchedSlur)[0]] : {};          
 
             const handleMouseOver = () => {
                 const rect = slur.getBoundingClientRect();
