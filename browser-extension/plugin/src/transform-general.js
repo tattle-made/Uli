@@ -129,19 +129,23 @@ function locateSlur(uliStore, targetWords) {
         let tempParent = document.createElement('span');
         tempParent.textContent = textnode.textContent;
         let slurPresentInTempParent = false;
+        
         targetWords.forEach(targetWord => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
             
+            // Create a temporary div to test for matches
             const testDiv = document.createElement('div');
             testDiv.textContent = tempParent.textContent;
             
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi');
+            const regex = targetWord.includes(' ') 
+                ? new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi')  // Exact phrase match
+                : new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])\\b`, 'gi');  // Whole word match
             
             if (regex.test(testDiv.textContent)) {
                 tempParent.innerHTML = tempParent.textContent.replace(regex, (match, p1) => {
-                    const prefix = p1 || ''; // Preserve any leading whitespace
+                    const prefix = p1 || '';
                     return `${prefix}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
                 });
                 slurPresentInTempParent = true;
@@ -156,7 +160,7 @@ function locateSlur(uliStore, targetWords) {
 
 function addMetaData(targetWords, jsonData) {
     targetWords.forEach((targetWord) => {
-        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-'); // Replace spaces with hyphens
+        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
         const className = `slur-container-${sanitizedTargetWord}`;
         const elements = Array.from(document.querySelectorAll(`.${className}`));
 
@@ -177,7 +181,7 @@ function addMetaData(targetWords, jsonData) {
                 tooltipContainer.style.position = 'absolute';
                 tooltipContainer.style.zIndex = '1000000000';
                 document.body.appendChild(tooltipContainer);
-                tooltipContainer.root = createRoot(tooltipContainer); // Store root instance
+                tooltipContainer.root = createRoot(tooltipContainer);
             }
 
             // Find the slur details from jsonData
@@ -186,8 +190,7 @@ function addMetaData(targetWords, jsonData) {
                 return slurWord === targetWord.toLowerCase();
             })?.[targetWord] || {};
 
-            // Add hover event listeners
-            const handleMouseOver = (event) => {
+            const handleMouseOver = () => {
                 const rect = slur.getBoundingClientRect();
                 tooltipContainer.style.top = `${rect.bottom + window.scrollY}px`;
                 tooltipContainer.style.left = `${rect.left + window.scrollX}px`;
