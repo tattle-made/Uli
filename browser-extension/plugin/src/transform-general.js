@@ -77,7 +77,6 @@ const processNewlyAddedNodesGeneral = function (firstBody) {
 const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
     let targetWords = jsonData.map(slur => Object.keys(slur)[0]);
     targetWords.sort((a, b) => b.length - a.length);
-    console.log("TGGG words", targetWords);
 
     let uliStore = [];
     getAllTextNodes(firstBody, uliStore);
@@ -129,24 +128,17 @@ function locateSlur(uliStore, targetWords) {
         let tempParent = document.createElement('span');
         tempParent.textContent = textnode.textContent;
         let slurPresentInTempParent = false;
-        
         targetWords.forEach(targetWord => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
-            
-            // Create a temporary div to test for matches
-            const testDiv = document.createElement('div');
-            testDiv.textContent = tempParent.textContent;
-            
+
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = targetWord.includes(' ') 
-                ? new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])`, 'gi')  // Exact phrase match
-                : new RegExp(`(^|\\s)${escapedTargetWord}(?=\\s|$|[.,!?])\\b`, 'gi');  // Whole word match
-            
-            if (regex.test(testDiv.textContent)) {
-                tempParent.innerHTML = tempParent.textContent.replace(regex, (match, p1) => {
-                    const prefix = p1 || '';
-                    return `${prefix}<span class="${slurClass}"><span class="slur">${match.trim()}</span></span>`;
+            // regex for multi-word and single-word phrases
+            const regex = new RegExp(`(^|\\s|[.,!?])(${escapedTargetWord})(?=\\s|$|[.,!?])`, 'giu');
+
+            if (regex.test(tempParent.textContent)) {
+                tempParent.innerHTML = tempParent.innerHTML.replace(regex, (match, prefix, word) => {
+                    return `${prefix}<span class="${slurClass}"><span class="slur">${word}</span></span>`;
                 });
                 slurPresentInTempParent = true;
             }
