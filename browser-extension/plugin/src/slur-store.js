@@ -172,27 +172,60 @@ export async function convertSlurMetadataFromDBtoJSON() {
     }
 }
 
+export async function deleteSlurMetadataEntries(entriesToDelete) {
+    if (!Array.isArray(entriesToDelete) || entriesToDelete.length === 0) {
+        console.warn("No valid entries provided for deletion.");
+        return;
+    }
+
+    try {
+        for (const entry of entriesToDelete) {
+            await db.words_metadata
+                .filter(dbEntry => 
+                    dbEntry.label === entry.label &&
+                    dbEntry.level_of_severity === entry.level_of_severity &&
+                    dbEntry.meaning === entry.meaning &&
+                    JSON.stringify(dbEntry.categories) === JSON.stringify(entry.categories) &&
+                    dbEntry.language === entry.language &&
+                    dbEntry.timestamp === entry.timestamp
+                )
+                .delete();
+        }
+        console.log(`${entriesToDelete.length} metadata entries deleted.`);
+    } catch (error) {
+        console.error('Error deleting slur metadata:', error);
+    }
+}
+
 export async function fetchPublicSlursMetadata() {
     try {
         // Fetch slurs from the backend
         const publicSlursMetadata = await getPublicSlursMetadata();
         // Fetch existing metadata from the indexed database
         const existingMetadata = await getAllSlurMetadata();
-        // Convert existing metadata objects to JSON strings for comparison
+        // Convert existing metadata to a Set of JSON strings for exact comparison
+        const publicMetadataSet = new Set(publicSlursMetadata.map(meta => JSON.stringify(meta)));
         const existingMetadataSet = new Set(existingMetadata.map(meta => JSON.stringify(meta)));
-        // Filter out metadata entries that already exist
+        // Identify metadata that needs to be added (exists in fetched data but not in DB)
         const newMetadata = publicSlursMetadata.filter(meta => 
             !existingMetadataSet.has(JSON.stringify(meta))
         );
-        if (newMetadata.length === 0) {
-            console.log("All public slurs metadata already exist in the database. Skipping addition.");
-            return;
+        // Identify metadata that needs to be removed (exists in DB but not in fetched data)
+        const outdatedMetadata = existingMetadata.filter(meta => 
+            !publicMetadataSet.has(JSON.stringify(meta))
+        );
+        // Add new metadata
+        if (newMetadata.length > 0) {
+            await bulkAddSlurMetadata(newMetadata);
+            console.log(`${newMetadata.length} new slur metadata entries added.`);
         }
-
-        await bulkAddSlurMetadata(newMetadata);
-        console.log(`${newMetadata.length} new slur metadata entries added.`);
+        // Delete outdated metadata
+        if (outdatedMetadata.length > 0) {
+            await deleteSlurMetadataEntries(outdatedMetadata);
+            console.log(`${outdatedMetadata.length} outdated slur metadata entries removed.`);
+        }
     } catch (error) {
-        console.error('Error fetching and adding public slurs metadata:', error);
+        console.error('Error fetching and updating public slurs metadata:', error);
     }
 }
 
