@@ -1,6 +1,21 @@
 import React from 'react';
 import { Box, Text } from 'grommet';
-import SlurCardBubble from './SlurCardBubble';
+
+const HoverCategoryBubble = ({ data }) => {
+    return (
+        <Box>
+            <Box
+                round="small"
+                background="#FADA5E"
+                pad="xsmall"
+                width="fit-content"
+                wrap={true}
+            >
+                <Text size="small">{data}</Text>
+            </Box>
+        </Box>
+    );
+};
 
 const HoverSlurMetadata = ({ slurDetails }) => {
     return (
@@ -13,10 +28,6 @@ const HoverSlurMetadata = ({ slurDetails }) => {
             justify="start"
             align="start"
             elevation="small"
-            style={{
-                fontSize: '12px',
-                lineHeight: '1.2',
-            }}
         >
             {slurDetails['Level of Severity'] && (
                 <Text>
@@ -59,7 +70,7 @@ const HoverSlurMetadata = ({ slurDetails }) => {
                         <Box direction="row" gap="xsmall" wrap>
                             {slurDetails['Categories'].map(
                                 (category, index) => (
-                                    <SlurCardBubble
+                                    <HoverCategoryBubble
                                         key={index}
                                         data={category.replace(/_/g, ' ')}
                                     />

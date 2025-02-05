@@ -205,9 +205,4 @@ function addMetaData(targetWords, jsonData) {
 export default {
     processNewlyAddedNodesGeneral,
     processNewlyAddedNodesGeneral2,
-    addMetaData,
-    locateSlur,
-    findPositions,
-    getAllTextNodes,
-    checkFalseTextNode
 };
