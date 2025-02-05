@@ -12,7 +12,7 @@ const HoverCategoryBubble = ({ data }) => {
                 wrap={true}
                 style={{
                     fontFamily: 'Raleway',
-                    fontSize: '10px',
+                    fontSize: '9px',
                     color: 'black',
                 }}
             >
@@ -35,7 +35,7 @@ const HoverSlurMetadata = ({ slurDetails }) => {
             elevation="small"
             style={{
                 fontFamily: 'Raleway',
-                fontSize: '10px',
+                fontSize: '9px',
                 color: 'black',
                 textAlign: 'left',
                 lineHeight: '1.5',
