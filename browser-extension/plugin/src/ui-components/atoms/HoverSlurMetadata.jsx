@@ -39,6 +39,7 @@ const HoverSlurMetadata = ({ slurDetails }) => {
                 color: 'black',
                 textAlign: 'left',
                 lineHeight: '1.5',
+                minWidth: "288px"
             }}
         >
             {slurDetails['Level of Severity'] && (
@@ -79,7 +80,7 @@ const HoverSlurMetadata = ({ slurDetails }) => {
                         <Text>
                             <b>Categories:</b>
                         </Text>
-                        <Box direction="row" gap="xsmall" wrap>
+                        <Box direction="row" gap="xsmall" cssGap wrap>
                             {slurDetails['Categories'].map(
                                 (category, index) => (
                                     <HoverCategoryBubble
