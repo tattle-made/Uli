@@ -10,6 +10,11 @@ const HoverCategoryBubble = ({ data }) => {
                 pad="xsmall"
                 width="fit-content"
                 wrap={true}
+                style={{
+                    fontFamily: 'Arial, sans-serif',
+                    fontSize: '12px',
+                    color: 'black',
+                }}
             >
                 <Text size="small">{data}</Text>
             </Box>
@@ -28,6 +33,13 @@ const HoverSlurMetadata = ({ slurDetails }) => {
             justify="start"
             align="start"
             elevation="small"
+            style={{
+                fontFamily: 'Arial, sans-serif',
+                fontSize: '14px', 
+                color: 'black',
+                textAlign: 'left',
+                lineHeight: '1.5',
+            }}
         >
             {slurDetails['Level of Severity'] && (
                 <Text>
