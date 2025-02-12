@@ -16,7 +16,9 @@ export default function AppShell({ children }) {
 
   return (
     <Grommet theme={Theme}>
-      <main>
+      <main
+        style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
         <Helmet>
           <meta charSet="utf-8" />
           <title>Uli</title>
@@ -32,7 +34,7 @@ export default function AppShell({ children }) {
         </Helmet>
 
         <NavBar />
-        {children}
+        <Box flex="grow">{children}</Box>
         {/* <Box align="center" pad={"medium"}>
           <Box direction="row" gap={"medium"}>
             <NavLink to={"/privacy-policy"}>Privacy Policy</NavLink>
