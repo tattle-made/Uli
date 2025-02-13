@@ -205,6 +205,7 @@ function addNodeMetaData(element, targetWord, jsonData) {
     slur.style.cursor = 'pointer';
     slur.style.zIndex = '3';
     slur.style.position = 'relative';
+    slur.style.pointerEvents = 'auto';
 
     let tooltipContainer = document.getElementById('slur-tooltip-container');
     if (!tooltipContainer) {
@@ -227,17 +228,42 @@ function addNodeMetaData(element, targetWord, jsonData) {
 
     const handleMouseOver = () => {
         const rect = slur.getBoundingClientRect();
-        tooltipContainer.style.top = `${rect.bottom + window.scrollY}px`;
-        tooltipContainer.style.left = `${rect.left + window.scrollX}px`;
+        const screenHeight = window.innerHeight;
+        const screenWidth = window.innerWidth;
 
-        // console.log('Position: ', {
-        //     y: `${rect.bottom + window.scrollY}px`,
-        //     x: `${rect.left + window.scrollX}px`
-        // });
+        // Initial position (assume tooltip goes below first)
+        let position = {
+            x: rect.left + window.scrollX,
+            y: rect.bottom + 10 + window.scrollY
+        };
+
+        // Render tooltip first (off-screen)
+        tooltipContainer.style.top = `-9999px`; // Prevent flickering
+        tooltipContainer.style.left = `-9999px`;
+        tooltipContainer.style.opacity = '0';
 
         tooltipContainer.root.render(
             <HoverSlurMetadata slurDetails={slurDetails} />
         );
+
+        // Wait for the next render cycle to measure the height
+        setTimeout(() => {
+            const tooltipHeight = tooltipContainer.offsetHeight;
+
+            const spaceBelow = screenHeight - rect.bottom;
+
+            if (spaceBelow < tooltipHeight + 10) {
+                position.y = rect.top - tooltipHeight - 10 + window.scrollY;
+            }
+
+            if (position.x + 290 > screenWidth) {
+                position.x = screenWidth - 320 + window.scrollX;
+            }
+
+            tooltipContainer.style.top = `${position.y}px`;
+            tooltipContainer.style.left = `${position.x}px`;
+            tooltipContainer.style.opacity = '1';
+        }, 0); // Short delay to ensure the DOM updates
     };
 
     const handleMouseOut = () => {
