@@ -203,7 +203,7 @@ function addNodeMetaData(element, targetWord, jsonData) {
     slur.style.backgroundColor = '#ffde2155';
     slur.style.boxShadow = '0px 0px 5px #ffde21';
     slur.style.cursor = 'pointer';
-    slur.style.zIndex = '99';
+    slur.style.zIndex = '3';
     slur.style.position = 'relative';
 
     let tooltipContainer = document.getElementById('slur-tooltip-container');
