@@ -1,50 +1,34 @@
 import React from "react";
-import { Box, Text, Button, TextArea } from "grommet";
+import { Box, Text, Button, TextArea, Heading } from "grommet";
 import AppShell from "../components/molecules/AppShell";
 import { useState } from "react";
 import styled from "styled-components";
+import slurMetadata from "../slurs-metadata/slurs-metadata.json";
 
 const CustomTextArea = styled(TextArea)`
-&:focus {
-
-  box-shadow: 0 0 0 4px #ffde2155 ;
-}
+  &:focus {
+    box-shadow: 0 0 0 4px #ffde2155;
+  }
 `;
 
 export default function Story() {
-  const [highlight, setHighlight] = useState(false);
   const [hoveredSlur, setHoveredSlur] = useState(null);
   const [input, setInput] = useState(null);
   const [displayText, setDisplayText] = useState("");
 
-  const slurs = [
-    {
-      name: "slur1",
-      metadata: {
-        levelOfSeverity: "low",
-        casual: "yes",
-        appropriated: "No",
-        meaning: "Test Slur",
-        categories: ["other"],
-      },
-    },
-  ];
-
-  const text =
-    "Lorem ipsum dolor sit slur1 consectetur adipisicing elit. peat slur1 placeat perferendis nam at impedit slur3 neque officia quas magni non, aliquam laboriosam adipisci esse animi, ut ipsum. Et slur1 necessitatibus veniam animi debitis slur2 eius fuga iusto omnis placeat nam ipsa modi at, facilis doloremque, quibusdam slur4 incidunt, nihil enim consectetur quo unde quasi. Sint voluptas error aspernatur fugit itaque molestiae pariatur slur3 aliquid ea consequuntur quam quasi officiis enim, ullam laboriosam explicabo mollitia in slur2 nulla excepturi perferendis. Saepe nesciunt minima voluptate exercitationem voluptatum vel slur4 vero corporis fuga, a minus facere odio culpa. Cupiditate delectus cum magni quia aliquam voluptatum quibusdam dicta deleniti, asperiores ut molestiae ab expedita slur1 vero, sequi quae aut maiores. Porro, est. Explicabo hic alias doloribus modi reprehenderit. Pariatur tempora vero tenetur facere enim omnis slur1 quaerat molestias slur4 minus. Corporis, consectetur provident. Aut minus numquam aspernatur eaque eligendi temporibus porro, obcaecati laboriosam voluptatum vitae velit, dicta totam, adipisci accusamus maiores! Sequi dolores necessitatibus slur3 error pariatur nesciunt unde est, commodi sapiente iste accusantium eaque doloremque possimus incidunt nostrum deserunt adipisci enim placeat quos facere earum, voluptatum officiis inventore? Impedit, modi quos nam, voluptates eos nobis a totam blanditiis repudiandae hic tenetur vel autem?";
+  const slurs = slurMetadata;
 
   const getHighlightedText = (text, words) => {
-    // if (!highlight) return text;
-    if(!text) return ""
+    if (!text) return "";
 
     const regex = new RegExp(
-      `\\b(${words.map((w) => w.name).join("|")})\\b`,
+      `\\b(${words.map((w) => w.label).join("|")})\\b`,
       "gi"
     );
 
     return text.split(regex).map((part, index) => {
       const wordData = words.find(
-        (w) => w.name.toLowerCase() === part.toLowerCase()
+        (w) => w.label.toLowerCase() === part.toLowerCase()
       );
 
       return wordData ? (
@@ -59,27 +43,39 @@ export default function Story() {
             whiteSpace: "pre-wrap",
           }}
           onMouseEnter={(e) => {
+            setHoveredSlur({
+              metadata: wordData,
+              position: { x: "-9999px", y: "-9999px" },
+            });
+
             const rect = e.currentTarget.getBoundingClientRect();
-            // console.log("SLUR POSITION: ", { x: rect.left, y: rect.bottom })
+            // Settimeout to wait for the re-render.
+            setTimeout(() => {
+              let tooltipContainer =
+                document.getElementById("metadata-tooltip");
 
-            const screenHeight = window.innerHeight;
-            const screenWidth = window.innerWidth;
+              let position = {
+                x: rect.left + window.scrollX,
+                y: rect.bottom + 10 + window.scrollY,
+              };
 
-            const spaceBelow = screenHeight - rect.bottom;
+              const screenHeight = window.innerHeight;
+              const screenWidth = window.innerWidth;
 
-            let position = { x: rect.left + window.scrollX, y: rect.bottom + 10 + window.scrollY };
+              const tooltipHeight = tooltipContainer.offsetHeight;
 
-            console.log("SPACE BELOW: ", spaceBelow);
+              const spaceBelow = screenHeight - rect.bottom;
 
-            if (spaceBelow < 300) {
-              position = { x: rect.left + window.scrollX, y: rect.top - 210 + window.scrollY };
-            }
+              if (spaceBelow < tooltipHeight + 10) {
+                position.y = rect.top - tooltipHeight - 10 + window.scrollY;
+              }
 
-            if (position.x + 290 > screenWidth) {
-              position.x = screenWidth - 320 + window.scrollX;
-            }
+              if (position.x + 290 > screenWidth) {
+                position.x = screenWidth - 320 + window.scrollX;
+              }
 
-            setHoveredSlur({ metadata: wordData.metadata, position });
+              setHoveredSlur({ metadata: wordData, position });
+            }, 0);
           }}
           onMouseLeave={() => setHoveredSlur(null)}
         >
@@ -90,43 +86,39 @@ export default function Story() {
       );
     });
   };
-  
-  function onCheck(){
 
-    setDisplayText(getHighlightedText(input, slurs))
+  function onCheck() {
+    setDisplayText(getHighlightedText(input, slurs));
   }
 
   return (
     <AppShell>
-      <Box align="center" margin={"large"}>
-        
+      <Box align="center">
+          <Heading margin={{horizontal:"large"}} level={3}>Check Text for Slur Metadata</Heading>
         <Box width={"large"} height={"full"}>
           <CustomTextArea
             value={input}
             resize={"vertical"}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Enter text here to check... "
-            // focusIndicator={"false"}
             style={{
               width: "full",
               minHeight: "12em",
-              fontWeight:"400",
-              padding:"0.5em"
-
+              fontWeight: "400",
+              padding: "0.5em",
             }}
-            
           />
           <Box flex width={"full"} direction="row" gap="1em">
             <Button
               color={"lightGrey"}
               primary
-              onClick={()=>{setDisplayText("")
-                setInput("")
+              onClick={() => {
+                setDisplayText("");
+                setInput("");
               }}
               label={"Reset"}
               style={{ width: "fit-content" }}
               margin={{ top: "0.5em" }}
-        
             />
             <Button
               color={"#ede09f"}
@@ -135,18 +127,24 @@ export default function Story() {
               label={"Check"}
               style={{ width: "fit-content" }}
               margin={{ top: "0.5em" }}
-        
             />
           </Box>
-          <Text size="large" margin={{top:"1em"}}>Output:</Text>
-          <p>{displayText ? displayText : "Check a Text to Display Result Here. . ."}</p>
+          <Text size="large" margin={{ top: "1em" }}>
+            Output:
+          </Text>
+          <p style={{ whiteSpace: "pre-wrap" }}>
+            {displayText
+              ? displayText
+              : "Check a Text to Display Result Here. . ."}
+          </p>
           {hoveredSlur && (
             <div
+              id="metadata-tooltip"
               className="absolute"
               style={{
                 position: "absolute",
                 left: hoveredSlur.position.x,
-                top: hoveredSlur.position.y + 10,
+                top: hoveredSlur.position.y,
               }}
             >
               <HoverSlurMetadata slurDetails={hoveredSlur.metadata} />
@@ -199,9 +197,9 @@ const HoverSlurMetadata = ({ slurDetails }) => {
         minWidth: "288px",
       }}
     >
-      {slurDetails["levelOfSeverity"] && (
+      {slurDetails["level_of_severity"] && (
         <Text>
-          <b>Level of Severity:</b> {slurDetails["levelOfSeverity"]}
+          <b>Level of Severity:</b> {slurDetails["level_of_severity"]}
         </Text>
       )}
       {slurDetails["casual"] && (
@@ -214,10 +212,10 @@ const HoverSlurMetadata = ({ slurDetails }) => {
           <b>Appropriated:</b> {slurDetails["appropriated"]}
         </Text>
       )}
-      {slurDetails["appropriationContext"] && (
+      {slurDetails["appropriation_context"] && (
         <Text>
           <b>If, Appropriated, Is it by Community or Others?:</b>{" "}
-          {slurDetails["appropriationContext"]}
+          {slurDetails["appropriation_context"]}
         </Text>
       )}
       {slurDetails["meaning"] && (

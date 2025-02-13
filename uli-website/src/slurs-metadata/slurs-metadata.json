@@ -1,0 +1,2758 @@
+[
+    {
+        "label": "Katwa",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Targets the Muslim population, largely men",
+        "categories": [
+            "religion",
+            "gendered"
+        ]
+    },
+    {
+        "label": "chakka",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It's a homophobic slur but also used in cricket",
+        "categories": [
+            "gendered",
+            "body shaming",
+            "other"
+        ]
+    },
+    {
+        "label": "Randi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "ramdi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Randie",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "randya",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "randikhana",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "r&d-khana",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "khanki",
+        "level_of_severity": null,
+        "casual": null,
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is an anti sex work slur in bengali. It is also the sound made by bangles in hindi. ",
+        "categories": [
+            "sexualized",
+            "other"
+        ]
+    },
+    {
+        "label": "randi ke beej",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to humilate a person by calling their mothers loose women ",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Lulli",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against people with a phallus to humilate them basis of their size",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "Gasti",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used against women, to imply 'looseness' and looks at sex work in a negative light",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Meetha",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a queerphobic slur. It is also means sweet in Hindi",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Gud",
+        "level_of_severity": "Low",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a queerphobic slur. It is also means Jaggery in Hindi",
+        "categories": []
+    },
+    {
+        "label": "Gaandu",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It can be severe for men, in that it can incite fights",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Gaand",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a queerphobic slur. It is also means  \"ass\" in Hindi",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Gandiaal",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Used in Haryana, this word can be said casually by children. Can be interpreted to mean an attack on manhood for men",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Dheela Lun@",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to humilate people with a penis on their sexual performance",
+        "categories": [
+            "gendered",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "kutiya",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to associate girls and women with animals ",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "kutti",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to associate girls and women with animals ",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "Chudail",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to associate girls and women with someone who does black magic",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "Battameez",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to correct behaviour of people or to highlight if they have deviated from social norms ",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "saali",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It refers to your brother in law's wife, used to insult a person by making insinuations about the sister-in-law",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "sali",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It refers to your brother in law's wife, used to insult a person by making insinuations about the sister-in-law",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "chod",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is the Hindi version of the slur \"fuck\"",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "chudai",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a conversational usage of the work fuck and sex in Hindi",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "Bhdsk",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is a slur used to term someone has son of a prositute. An anti sex worker slur",
+        "categories": [
+            "other",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "2BHK",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Bhosi ke",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bsdk",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhonsdi ke",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhosad",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhosdiwale",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "maa ka bhosra",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word is used during fights to humilate and silence the other person",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bokachoda",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends and also during fights",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Betichod",
+        "level_of_severity": "Low",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word is used during fights to humilate and silence the other person",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Lodu",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends ",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhenchod",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word can incite fights when said even casually",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Madarchod",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word can incite fights when said even casually",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Maderchod",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word can incite fights when said even casually",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "chutiye",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used casually between friends",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "chutiya",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used casually between friends",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "Rakhail",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used for shaming women, shaming women in certain profession, outgoing women, female friends, used for moral policing ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "other"
+        ]
+    },
+    {
+        "label": "pagal aurat",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used for mocking someone, meaning they are crazy",
+        "categories": [
+            "ableist",
+            "gendered"
+        ]
+    },
+    {
+        "label": "Ugly",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to criticise someone's physical appearance",
+        "categories": [
+            "body shaming"
+        ]
+    },
+    {
+        "label": "Mujra",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "People relate the word to sex work or women who dance for money. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "class"
+        ]
+    },
+    {
+        "label": "mujra",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "People relate the word to sex work or women who dance for money. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "class"
+        ]
+    },
+    {
+        "label": "jaahil aurat",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards people who are not educated enough especially to woman of certain class and caste",
+        "categories": [
+            "gendered",
+            "ethnicity",
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "Mulli",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards a sexual and reproductive organ penis and sometimes Muslim people.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "hilana",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards action of masturbating",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "other"
+        ]
+    },
+    {
+        "label": "hilaogi",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards woman to insinuate to give men a hand job",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Mlechcha",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "The word is directed towards people of lower caste to degrade them",
+        "categories": [
+            "ethnicity",
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "harami",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning says one who is born out of a wedlock or from a sex worker or one whose biological father is unknown. But it is also used casually by people in conversations.",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "gadhi",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards people who takes time to understand something or are not educated enough. Also used casually.",
+        "categories": [
+            "ableist",
+            "caste",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "रनडwa",
+        "level_of_severity": "Low",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards men whose wife has died or has no wife or also used for men who have multiple sex partners. But it is not that severe as the word Randi as it is used for men.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "🅱️ulli",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is casually used in conversations",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "kalmuhi",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards women who are considered as badluck especially widows, sex workers or women having multiple sex partners or a woman breaking sexual and gender norms.",
+        "categories": [
+            "gendered",
+            "caste"
+        ]
+    },
+    {
+        "label": "pichwada",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word means \"Butt\" and can be used in multiple situations. ",
+        "categories": [
+            "body shaming",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "jhadu",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word means \"broom\". Used in multiple situations to degrade someone to a dirty object. ",
+        "categories": [
+            "class",
+            "caste"
+        ]
+    },
+    {
+        "label": "kaam wali bai",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to belittle someone using class and caste ",
+        "categories": [
+            "class",
+            "caste",
+            "gendered"
+        ]
+    },
+    {
+        "label": "Ghatiya aurat",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards the character of a woman",
+        "categories": [
+            "gendered",
+            "class"
+        ]
+    },
+    {
+        "label": "behuda aurat",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards the character of a woman",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "chalu aurat",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards a modern woman.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "jhuti aurat",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards woman who lie",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "Kaali aurat",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards the skin color of a woman",
+        "categories": [
+            "gendered",
+            "ethnicity",
+            "caste",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "Kaali bhaand",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards the skin color of a woman",
+        "categories": [
+            "gendered",
+            "ethnicity",
+            "caste"
+        ]
+    },
+    {
+        "label": "marr kyun nahi jaati",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is an insult, asking insinuating someone is better off dead",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "nalli",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards women who don't work as much or are dumb",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "dimaag se paidal",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards women who are mentally ill or not educated enough or not smart enogh",
+        "categories": [
+            "gendered",
+            "ableist"
+        ]
+    },
+    {
+        "label": "beti ka baap",
+        "level_of_severity": "Low",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word in itself is not problematic but when used in a specific contexts, ex: arguments and fights it is problematic",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "bhootni",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards a person's appearnace and non-adherence to conventional beauty standards",
+        "categories": [
+            "gendered",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "bhootni ke",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards someone who is born out of a ghost woman",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "choot ke baal",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to degrade someone and tell that they are weak, fragile and sensitive",
+        "categories": [
+            "sexualized"
+        ]
+    },
+    {
+        "label": "madarjaat",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is an insult used to shaming a person and insinuate that they engaged in sexual acts with their mother.",
+        "categories": [
+            "sexualized",
+            "caste",
+            "other"
+        ]
+    },
+    {
+        "label": "bhadva",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to shame someone and insinuate that they sell/pimp woman.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhadvi",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to shame someone and insinuate that they sell/pimp woman.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhandve",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to shame someone and insinuate that they sell/pimp woman.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "chuchi",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards the breasts of a woman",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "tatti",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word translates to 'poop', can be used in a derogatory/casteist manner as well.",
+        "categories": [
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "maa ka boba chusu",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directly translates to an adult person who breastfeeds as a way of infantalising and demeaning them.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "mooh",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word directly translates to 'mouth' and can be used in a sexualised and derogatory manner.",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "munh mein le",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is usually used by men; it is the Hindi equivalent of asking someone to suck their penis.",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "mutth",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word translates to semen/cum",
+        "categories": [
+            "sexualized"
+        ]
+    },
+    {
+        "label": "najayaz paidaish",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to insinuate that someone is born out of a wedlock or whose father is not known, i.e. a bastard",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "najayaz aulaad",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to insinuate that someone is born out of a wedlock or whose father is not known, i.e. a bastard",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "Gutter ki paidaish",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is used to degrade someone and say they are born at a dirty and impure place.",
+        "categories": [
+            "class",
+            "caste",
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "bhikmange",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word translates to begger.",
+        "categories": [
+            "class",
+            "caste",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "kata Lund",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards men having circumcised penis especially muslim people",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "gendered"
+        ]
+    },
+    {
+        "label": "KLPD",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to say a woman cheated while seducing or alluring him usually used by men.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "Kala",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards people with darker skin tones.",
+        "categories": [
+            "ethnicity",
+            "caste",
+            "class",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "kali kalutti",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a racist word.",
+        "categories": [
+            "body shaming",
+            "caste",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "toxic aunty",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "A common term used to criticise someone, mainly women for being judgemental",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "mad",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used in casual conversations to express that someone is not \"normal\"",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "faggot",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used in a dergoatory manner to shame queer and trans people",
+        "categories": [
+            "gendered",
+            "sexual identity",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Sissy",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used in a dergoatory manner to shame queer and trans people",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "whore",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to shame women by saying that they have more than one sexual partner or is \"easy\"",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "paki",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock and bully muslim people and people from Pakistan",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "paxtani",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock and bully muslim people ",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "chinky",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "A racist word used towards people with east asian features",
+        "categories": [
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "Feminazi",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "The word is used to mock or criticise women or minority genders when they preach feminism ",
+        "categories": [
+            "gendered",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "R@ndi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "A word that demeans a sex-worker; also used against women to insult and insinuate they are a prostitute.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "class",
+            "caste"
+        ]
+    },
+    {
+        "label": "pheminist",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a sexist word that targets people who speak about feminism",
+        "categories": [
+            "gendered",
+            "political affiliation",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Muzlim",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "The word refers to the Muslim community",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "Barbarian",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word may be used in a classist and castiest manner.",
+        "categories": [
+            "ethnicity",
+            "caste",
+            "religion",
+            "class"
+        ]
+    },
+    {
+        "label": "ugly",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to body shame someone",
+        "categories": [
+            "body shaming"
+        ]
+    },
+    {
+        "label": "stupid",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock someone who does something silly.",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "lunatic",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word mocks the mental condition of a person",
+        "categories": [
+            "ableist",
+            "body shaming",
+            "gendered"
+        ]
+    },
+    {
+        "label": "illiterate",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word is classist and castiest.",
+        "categories": [
+            "caste",
+            "class",
+            "ethnicity",
+            "religion"
+        ]
+    },
+    {
+        "label": "Insanity",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word mocks a mental condition and also to talk about somebody's irrational action",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "crazy",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word mocks a mental condition and also to talk about somebody's irrational action",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "camelfuckers",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "This is an islamophobic slur",
+        "categories": [
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "bint",
+        "level_of_severity": null,
+        "casual": null,
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word is an offensive way of referring to women",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "boobs",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "This is used to objectify the breasts of a woman. ",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "boobies",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "This word is used as a less offensive term to refer to the breasts of a woman.",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "Melons",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "This is used to objectify the breasts of a woman. ",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "retarded",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock someone who does something silly.",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "r*tarded",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock someone who does something silly.",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "lesbo",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is directed towards the LGBTQIA+ community, especially lesbians.",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "nigga",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "It is a racist slur word.",
+        "categories": [
+            "body shaming",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "हिजड़ा",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "The word is used as a transphobic term but also used for and by the Hijra Community.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "रंडीखाना",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "This word demeans sex work as a profession.",
+        "categories": [
+            "caste",
+            "caste",
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "कुतिया",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word may be casually used between friends, loosely translates to 'bitch'.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "कुल्टा",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a sexist term.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "भंगी",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "It is a casteist term.",
+        "categories": [
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "मादरचोद",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a sexist term.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "लिब्राण्डू",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "This word is used to insult people who align with the political left ideology.",
+        "categories": [
+            "political affiliation",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "बदसूरत",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock the physical appearance of people.",
+        "categories": [
+            "caste",
+            "class",
+            "body shaming",
+            "ableist"
+        ]
+    },
+    {
+        "label": "बुरखा धत्त",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to target Muslim women.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "religion",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "गंदी नाली",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to refer to the vagina of a person.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "किन्नर",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "The word is used to mock trans people.",
+        "categories": [
+            "gendered",
+            "body shaming",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "भीमटा",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is a casteist slur.",
+        "categories": [
+            "class",
+            "caste",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "തടിച്ചി",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock a woman who is fat.",
+        "categories": [
+            "body shaming",
+            "gendered"
+        ]
+    },
+    {
+        "label": "തടിയൻ",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to mock a man who is fat.",
+        "categories": [
+            "body shaming",
+            "gendered"
+        ]
+    },
+    {
+        "label": "ma ki chui",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards woman, and her family. Honor being placed in one's vagina.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "maa ki chut",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards woman, and her family. Honor being placed in one's vagina.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "naachne waali",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Mocking one's profession (specifically related to dancing and performing) and also gender expression. It is also based on the type of dance one does. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "class",
+            "caste"
+        ]
+    },
+    {
+        "label": "Katwa",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Targetting Islam and Islamic practice",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "ABLANARI",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Its gendered nature; Reinforcing that women are powerless and lack agency",
+        "categories": [
+            "gendered",
+            "ableist"
+        ]
+    },
+    {
+        "label": "AblaNari",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Its gendered nature; Reinforcing that women are powerless and lack agency",
+        "categories": [
+            "gendered",
+            "ableist"
+        ]
+    },
+    {
+        "label": "ablanari",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Its gendered nature; Reinforcing that women are powerless and lack agency",
+        "categories": [
+            "gendered",
+            "ableist"
+        ]
+    },
+    {
+        "label": "chakka",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards Trans folks  especially trans women, gay and queer men. Used to insult and ridicule them.",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Chhakka",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards Trans folks  especially trans women, gay and queer men. Used to insult and ridicule them.",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "jihidis",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion. ",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "jihadis",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "jihadi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "Jihidis",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "Jihadis",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "jihadi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "zehadi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "jehadan",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "jihadinon",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people to terrorize people based on the religion.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "Chakko",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards Trans folks  especially trans women, gay and queer men. Used to insult and ridicule them.",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "chakki",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards Trans folks  especially trans women, gay and queer men. Used to insult and ridicule them.",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "chaka",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards Trans folks  especially trans women, gay and queer men. Used to insult and ridicule them.",
+        "categories": [
+            "gendered",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Chinal",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "Directed towards sex workers, women falling in love with multiple partners or having sex with multiple people or remarried or divorced. Basically women who is not following orthodox traditional norms. It is also used to insult trans women and bisexual women. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Randi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards sex workers, women falling in love with multiple partners or having sex with multiple people or remarried or divorced. Basically women who is not following orthodox traditional norms. It is also used to insult trans women and bisexual women. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "ramdi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards sex workers, women falling in love with multiple partners or having sex with multiple people or remarried or divorced. Basically women who is not following orthodox traditional norms. It is also used to insult trans women and bisexual women. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Randie",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards sex workers, women falling in love with multiple partners or having sex with multiple people or remarried or divorced. Basically women who is not following orthodox traditional norms. It is also used to insult trans women and bisexual women. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "randya",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards sex workers, women falling in love with multiple partners or having sex with multiple people or remarried or divorced. Basically women who is not following orthodox traditional norms. It is also used to insult trans women and bisexual women. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Gaand",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Sexual conotation to buttocks",
+        "categories": [
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "Badchalan",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Targets women who do not follow the cis-hetro-patriarchal norms of the society.  ",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bsdk",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Sexist. Points to a person's vulva and ridiculing someone by saying they are born out of a vagina.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "bhosad",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Directed towards women's body parts - vulva",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "class"
+        ]
+    },
+    {
+        "label": "Betichod",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": "Both",
+        "meaning": "Stated in anger, directed towards a person's daughter",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "Lodu",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": null,
+        "appropriation_context": "Both",
+        "meaning": "Directed towards a man's body parts - penis",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bhenchod",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "Stated in anger, directed towards a person's sister, it is said amongst male friend groups as well",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "Madarchod",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "Directed towards a person's mother, to say someone who fucks their mother, it is said amongst male friend groups as well",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "bazaru",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Mocks sex work",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "class",
+            "caste"
+        ]
+    },
+    {
+        "label": "Mulli",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Directed towards Muslim people",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "sau taka tunch maal",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Sexualises and objectifies a women",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "Chappri",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is classist and castiest",
+        "categories": [
+            "caste",
+            "class",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "aatankwadi",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Used for a lot of Muslim people to say they are terrorists.",
+        "categories": [
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "Kaali aurat",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Racist",
+        "categories": [
+            "gendered",
+            "ethnicity",
+            "body shaming",
+            "caste"
+        ]
+    },
+    {
+        "label": "choot ke baal",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "To say someone is the pubic hair of vulva; it also has disgust associated with it",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "najayaz paidaish",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Questions the legitimacy of one's blood line",
+        "categories": [
+            "caste",
+            "class",
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "ladki kahin ka",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Mocks queer and trans people specially towards effeminate men, gay men and trans femme people. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "lovejihad",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Both",
+        "meaning": "Those who are in an inter-faith relationship sometimes use it ",
+        "categories": [
+            "sexualized",
+            "religion",
+            "ethnicity",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "faggot",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Targets queer and trans people",
+        "categories": [
+            "sexual identity",
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "whore",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "The word \"whore\" historically referred to a person, typically a woman, who engages in sexual activity for payment. It is now used as a gendered insult primarily used to shame women, though it can be directed at anyone.  ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "Chinese Corona",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Racist",
+        "categories": [
+            "ethnicity",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "chinky",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "It is a derogatory and racist term used to mock or belittle people of East Asian descent or North east India. In India, using 'chinky' as a slur is a punishable offence. ",
+        "categories": [
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "Feminazi",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "Feminazi is a word often used to mock, silence or disregard a feminist. What it does is undermine the concept of feminism. It is seen almost under every post that talks about women's rights. ",
+        "categories": [
+            "gendered",
+            "political affiliation"
+        ]
+    },
+    {
+        "label": "Simp",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Among teenage boys, ‘Simp’ is used as a slang for a person (typically a man/boy) who is desperate for the attention and affection of someone else (typically a woman). In other words, it is used derogatorily to criticize someone's behavior as overly submissive or weak, reinforcing certain gender stereotypes and expectations about how men should behave with women or in relationships. However it is not a slur in a traditional sense. It is also used playfully or ironically in internet culture. ",
+        "categories": []
+    },
+    {
+        "label": "Characterless woman",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Questions the morals and characters of any women who does not adhere to the cis-het-patriarchal norms",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "Drama Queen",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "As a slur, it is a term used to belittle women, to disregard their emotions and truths, by suggesting they are overly dramatic. ",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "fat",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Body shaming fat people",
+        "categories": [
+            "body shaming",
+            "ableist"
+        ]
+    },
+    {
+        "label": "homo",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Targets queer and trans people specifically gay, lesbian and trans folks.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "boobs",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": null,
+        "appropriation_context": null,
+        "meaning": "The word is usually used to sexualise female bodies specifically the breasts. We might have come across online comments under women's posts regardless of the age and type of content. For example \"nice boobs\", etc.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "nasty",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is a term used to describe something unpleasant.",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "poop",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "A childish word for faeces and is usually used to make fun of someone. ",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "slave",
+        "level_of_severity": "High",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word 'slave' refers to 'a person who is forced to work for and obey another and is considered to be their property; an enslaved person.' The term has deep association with dehumanization, oppression of people, especially African people. It is linked to the transatlantic slave trade and the enslavement of millions of African people and others throughout history.",
+        "categories": [
+            "other",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "mothafucka",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "It is an abusive term used same as 'motherfucker'. It is rarely used in a literal way, which, under a standard reading, would mean an incestuous relationship with one's own mother. \"Mothafucka\" is also trying to imitate accent of black people and trying to make fun of their accent.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "nastyho",
+        "level_of_severity": "Medium",
+        "casual": null,
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The term nastyho combines the terms 'Nasty' and 'Ho'. The term Ho is a derogatory term (whore) used to refer to a sexworker. ",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "ragheads",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The term \"ragheads\" is a derogatory and offensive slang used to insult and demean individuals, typically targeting those who wear turbans or similar headwear. It has been used particularly against Sikh and Muslim communities, among others, where turbans or head coverings are part of religious or cultural attire.",
+        "categories": [
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "diaper-heads",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The term \"diaperheads\" is a derogatory and offensive slang used to insult and demean individuals, typically targeting those who wear turbans or similar headwear. It has been used particularly against Sikh and Muslim communities, among others, where turbans or head coverings are part of religious or cultural attire.",
+        "categories": [
+            "religion",
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "wh@re child",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word \"whore\" historically referred to a person, typically a woman, who engages in sexual activity for payment. The term whore child is a gendered insult towards someone to shame or ridicule someone and to say they are a child of a sex worker.",
+        "categories": [
+            "sexualized",
+            "gendered",
+            "class",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "nigga",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "A racial slur used against Black People, rooted in a a history of violence, discrimination, and systemic injustice against Black people",
+        "categories": [
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "niggers",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "A racial slur used against Black People, rooted in a a history of violence, discrimination, and systemic injustice against Black people",
+        "categories": [
+            "ethnicity"
+        ]
+    },
+    {
+        "label": "हिजड़ा",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Hijra is also a cultural identity and the fact that it is used as a slur for trans people makes it problematic",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "body shaming",
+            "other"
+        ]
+    },
+    {
+        "label": "नपुंसक",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Makes fun of the fertility of a man",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "ableist"
+        ]
+    },
+    {
+        "label": "छक्का",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Mocks queer and trans people",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "भंगी",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Castiest",
+        "categories": [
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "बाज़ारू औरत",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Sexualises a woman and questions her morality from a cis-hetero-patriarchal lens. ",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    },
+    {
+        "label": "गंदी नाली",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Derogates a AFAB person's vagina or castist slur directed towards marginalised caste or someone who is engaged with sex work or sex workers in some way or the other.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "हिज़रापंती",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Mocks queer and trans people",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "sexual identity"
+        ]
+    },
+    {
+        "label": "तवाइफ़",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "Mocks one's gender expression and occupation especially directed towards sex workers or who does dance performances publicly for money.",
+        "categories": [
+            "gendered",
+            "sexualized",
+            "caste",
+            "class"
+        ]
+    },
+    {
+        "label": "भीमटी",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "Yes",
+        "appropriation_context": "Community",
+        "meaning": "Castiest. Directed towards Dalit and Bahujan people or ambedkarite people",
+        "categories": [
+            "political affiliation",
+            "caste"
+        ]
+    },
+    {
+        "label": "बैल बुद्धि",
+        "level_of_severity": "Medium",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Mocks people with mental disabilities",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "नाजायज़",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "Yes",
+        "appropriation_context": "Others",
+        "meaning": "Questions the legitimacy in terms of tracing one's blood relation; questions a AFAB person's morality when they become a parent",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "काले तवे",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "Racist",
+        "categories": [
+            "ethnicity",
+            "caste"
+        ]
+    },
+    {
+        "label": "പൊട്ടൻ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word means dumb or deaf but it is usually used to describe someone stupid. Even young kids use it in Kerala. It becomes problematic as it mocks the disability. ",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "വെടി",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is often used by cis men to describe a woman who is attractive or is \"easy\". We hear this often in guys' group chats and as comments under the images of women.",
+        "categories": [
+            "sexualized",
+            "gendered"
+        ]
+    },
+    {
+        "label": "കഴുത",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning of the word is 'donkey' and is used to mock someone when they do something stupid.",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "കെഴങ്ങൻ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to call a man stupid.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "തടിച്ചി",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning of the word is 'fatty' and it is used to body shame women.",
+        "categories": [
+            "gendered",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "തടിയൻ",
+        "level_of_severity": "Medium",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning of the word is 'fatty' and it is used to body shame men.",
+        "categories": [
+            "gendered",
+            "body shaming"
+        ]
+    },
+    {
+        "label": "പട്ടി",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning of the word is 'dog' and it is used to demean someone. It is a pretty casual word, even used by kids in Kerala.",
+        "categories": [
+            "religion"
+        ]
+    },
+    {
+        "label": "പുല്ല്",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word literally means 'grass' and it is used when something goes wrong.",
+        "categories": [
+            "other"
+        ]
+    },
+    {
+        "label": "പൊട്ടൻ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word means 'someone retarded'. It is used to demean someone when they act stupid.",
+        "categories": [
+            "ableist"
+        ]
+    },
+    {
+        "label": "പോടാ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word means 'get lost' and is directed at someone when the other person is anoyed.",
+        "categories": [
+            "gendered",
+            "other"
+        ]
+    },
+    {
+        "label": "പോടീ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to ask a woman to get lost.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "മണ്ടന്‍",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning of the word is 'stupid person' and it is used to mock someone who does something stupid.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "മരമണ്ടൻ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The meaning of the word is 'stupid person' and it is used to mock someone who does something stupid.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "മൊണ്ണ",
+        "level_of_severity": "Low",
+        "casual": "Yes",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to call someone stupid.",
+        "categories": [
+            "gendered"
+        ]
+    },
+    {
+        "label": "വെടി",
+        "level_of_severity": "High",
+        "casual": "No",
+        "appropriated": "No",
+        "appropriation_context": null,
+        "meaning": "The word is used to defame a woman \"characterless\"; a woman who sleeps around. It is similar to the word slut.",
+        "categories": [
+            "gendered",
+            "sexualized"
+        ]
+    }
+]
