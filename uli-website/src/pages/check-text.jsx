@@ -3,7 +3,7 @@ import { Box, Text, Button, TextArea, Heading } from "grommet";
 import AppShell from "../components/molecules/AppShell";
 import { useState } from "react";
 import styled from "styled-components";
-import slurMetadata from "../slurs-metadata/slurs-metadata.json";
+import slurMetadata from "../slurs/slurs-metadata.json";
 
 const CustomTextArea = styled(TextArea)`
   &:focus {
