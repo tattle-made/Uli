@@ -82,11 +82,8 @@ const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
     getAllTextNodes(firstBody, uliStore);
 
     locateSlur(uliStore, targetWords, jsonData);
-    // addMetaData(targetWords, jsonData);
 
     const ob = new MutationObserver(async (mutations) => {
-        // console.log('NEW MUTATIONs: ', mutations);
-
         setTimeout(() => {
             mutations.forEach((mutation) => {
                 if (mutation.type === 'childList' && mutation.addedNodes) {
@@ -94,7 +91,6 @@ const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
                         let uliStore = [];
                         getAllTextNodes(node, uliStore);
                         locateSlur(uliStore, targetWords, jsonData);
-                        // addMetaData(targetWords, jsonData);
                     });
                 }
             });
@@ -143,17 +139,14 @@ function findPositions(word, text) {
 }
 
 function locateSlur(uliStore, targetWords, jsonData) {
-    // console.log('INSIDE LOCATE SLUR');
-    // console.log('INSIDE LOCATE SLUR< ULI STORE: ', uliStore);
     if (uliStore.length === 0) return;
     uliStore.forEach((store) => {
         let textnode = store.node;
-        // console.log('STORE ENTRY', store);
+
         if (
             store.parent?.classList.contains('slur') ||
             store.parent?.innerHTML.includes(`class="slur`)
         ) {
-            console.log('HERE inside IF', store.parent);
             return;
         }
         let tempParent = document.createElement('span');
@@ -185,15 +178,13 @@ function locateSlur(uliStore, targetWords, jsonData) {
 
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent);
-            // console.log('REPLACED NODE: ', textnode);
+
             addNodeMetaData(tempParent, foundTargettedWord, jsonData);
         }
     });
 }
 
 function addNodeMetaData(element, targetWord, jsonData) {
-    // console.log('INSIDE ADD METADATA yo1');
-
     const slur = element.querySelector('.slur');
     if (!slur) return;
 
