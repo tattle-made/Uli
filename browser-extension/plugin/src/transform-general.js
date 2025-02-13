@@ -134,7 +134,7 @@ function locateSlur(uliStore, targetWords) {
             
             const escapedTargetWord = targetWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             // regex for multi-word and single-word phrases
-            const regex = new RegExp(`(^|\\s|[.,!?])(${escapedTargetWord})(?=\\s|$|[.,!?])`, 'giu');
+            const regex = new RegExp(`(^|[\\s.,!?()'"\\[\\]{}<>;:@#\\$%\\^&*+=~_“”‘’])(${escapedTargetWord})(?=[\\s.,!?()'"\\[\\]{}<>;:@#\\$%\\^&*+=~_“”‘’]|$)`, 'giu');
             
             if (regex.test(tempParent.textContent)) {
                 tempParent.innerHTML = tempParent.innerHTML.replace(regex, (match, prefix, word) => {
