@@ -81,11 +81,11 @@ const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
     let uliStore = [];
     getAllTextNodes(firstBody, uliStore);
 
-    locateSlur(uliStore, targetWords);
-    addMetaData(targetWords, jsonData);
+    locateSlur(uliStore, targetWords, jsonData);
+    // addMetaData(targetWords, jsonData);
 
     const ob = new MutationObserver(async (mutations) => {
-        console.log('NEW MUTATIONs: ', mutations);
+        // console.log('NEW MUTATIONs: ', mutations);
 
         setTimeout(() => {
             mutations.forEach((mutation) => {
@@ -93,8 +93,8 @@ const processNewlyAddedNodesGeneral2 = function (firstBody, jsonData) {
                     mutation.addedNodes.forEach((node) => {
                         let uliStore = [];
                         getAllTextNodes(node, uliStore);
-                        locateSlur(uliStore, targetWords);
-                        addMetaData(targetWords, jsonData);
+                        locateSlur(uliStore, targetWords, jsonData);
+                        // addMetaData(targetWords, jsonData);
                     });
                 }
             });
@@ -142,13 +142,13 @@ function findPositions(word, text) {
     return positions;
 }
 
-function locateSlur(uliStore, targetWords) {
-    console.log('INSIDE LOCATE SLUR');
-    console.log('INSIDE LOCATE SLUR< ULI STORE: ', uliStore);
+function locateSlur(uliStore, targetWords, jsonData) {
+    // console.log('INSIDE LOCATE SLUR');
+    // console.log('INSIDE LOCATE SLUR< ULI STORE: ', uliStore);
     if (uliStore.length === 0) return;
     uliStore.forEach((store) => {
         let textnode = store.node;
-        console.log('STORE ENTRY', store);
+        // console.log('STORE ENTRY', store);
         if (
             store.parent?.classList.contains('slur') ||
             store.parent?.innerHTML.includes(`class="slur`)
@@ -159,6 +159,7 @@ function locateSlur(uliStore, targetWords) {
         let tempParent = document.createElement('span');
         tempParent.textContent = textnode.textContent;
         let slurPresentInTempParent = false;
+        let foundTargettedWord = '';
         targetWords.forEach((targetWord) => {
             const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
             const slurClass = `slur-container-${sanitizedTargetWord}`;
@@ -181,77 +182,72 @@ function locateSlur(uliStore, targetWords) {
                     }
                 );
                 slurPresentInTempParent = true;
+                foundTargettedWord = targetWord;
             }
         });
 
         if (slurPresentInTempParent) {
             textnode.replaceWith(tempParent);
-            console.log('REPLACED NODE: ', textnode);
+            // console.log('REPLACED NODE: ', textnode);
+            addNodeMetaData(tempParent, foundTargettedWord, jsonData);
         }
     });
 }
 
-function addMetaData(targetWords, jsonData) {
-    console.log('INSIDE ADD METADATA');
-    targetWords.forEach((targetWord) => {
-        const sanitizedTargetWord = targetWord.replace(/\s+/g, '-');
-        const className = `slur-container-${sanitizedTargetWord}`;
-        const elements = Array.from(document.querySelectorAll(`.${className}:not(.slur-metadata-added)`));
+function addNodeMetaData(element, targetWord, jsonData) {
+    // console.log('INSIDE ADD METADATA yo1');
 
-        elements.forEach((element) => {
-            const slur = element.querySelector('.slur');
-            if (!slur) return;
+    const slur = element.querySelector('.slur');
+    if (!slur) return;
 
-            // Add hover styles
-            slur.style.backgroundColor = '#ffde2155';
-            slur.style.boxShadow = '0px 0px 5px #ffde21';
-            slur.style.cursor = 'pointer';
+    slur.style.backgroundColor = '#ffde2155';
+    slur.style.boxShadow = '0px 0px 5px #ffde21';
+    slur.style.cursor = 'pointer';
+    slur.style.zIndex = '99';
+    slur.style.position = 'relative';
 
-            // Create a single tooltip container and React root if not already created
-            let tooltipContainer = document.getElementById(
-                'slur-tooltip-container'
-            );
-            if (!tooltipContainer) {
-                tooltipContainer = document.createElement('div');
-                tooltipContainer.id = 'slur-tooltip-container';
-                tooltipContainer.style.position = 'absolute';
-                tooltipContainer.style.zIndex = '1000000000';
-                document.body.appendChild(tooltipContainer);
-                tooltipContainer.root = createRoot(tooltipContainer);
-            }
+    let tooltipContainer = document.getElementById('slur-tooltip-container');
+    if (!tooltipContainer) {
+        tooltipContainer = document.createElement('div');
+        tooltipContainer.id = 'slur-tooltip-container';
+        tooltipContainer.style.position = 'absolute';
+        tooltipContainer.style.zIndex = '999';
+        document.body.appendChild(tooltipContainer);
+        tooltipContainer.root = createRoot(tooltipContainer);
+    }
 
-            // Find the slur details from jsonData
-            const matchedSlur = jsonData.find(
-                (slur) =>
-                    Object.keys(slur)[0].toLowerCase() ===
-                    targetWord.toLowerCase()
-            );
-            const slurDetails = matchedSlur
-                ? matchedSlur[Object.keys(matchedSlur)[0]]
-                : {};
+    // Find the slur details from jsonData
+    const matchedSlur = jsonData.find(
+        (slur) =>
+            Object.keys(slur)[0].toLowerCase() === targetWord.toLowerCase()
+    );
+    const slurDetails = matchedSlur
+        ? matchedSlur[Object.keys(matchedSlur)[0]]
+        : {};
 
-            const handleMouseOver = () => {
-                const rect = slur.getBoundingClientRect();
-                tooltipContainer.style.top = `${
-                    rect.bottom + window.scrollY
-                }px`;
-                tooltipContainer.style.left = `${rect.left + window.scrollX}px`;
+    const handleMouseOver = () => {
+        const rect = slur.getBoundingClientRect();
+        tooltipContainer.style.top = `${rect.bottom + window.scrollY}px`;
+        tooltipContainer.style.left = `${rect.left + window.scrollX}px`;
 
-                tooltipContainer.root.render(
-                    <HoverSlurMetadata slurDetails={slurDetails} />
-                );
-            };
+        // console.log('Position: ', {
+        //     y: `${rect.bottom + window.scrollY}px`,
+        //     x: `${rect.left + window.scrollX}px`
+        // });
 
-            const handleMouseOut = () => {
-                tooltipContainer.root.render(null);
-            };
+        tooltipContainer.root.render(
+            <HoverSlurMetadata slurDetails={slurDetails} />
+        );
+    };
 
-            slur.addEventListener('mouseover', handleMouseOver);
-            slur.addEventListener('mouseout', handleMouseOut);
+    const handleMouseOut = () => {
+        tooltipContainer.root.render(null);
+    };
 
-            element.classList.add("slur-metadata-added")
-        });
-    });
+    slur.addEventListener('mouseover', handleMouseOver);
+    slur.addEventListener('mouseout', handleMouseOut);
+
+    element.classList.add('slur-metadata-added');
 }
 
 export default {
