@@ -15,7 +15,12 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     end
 
     slurs_metadata_list = UserContribution.list_crowdsourced_slurs()
-    slurs_metadata_list = Enum.sort_by(slurs_metadata_list, & &1.inserted_at, :desc)
+
+    slurs_metadata_list =
+      Enum.sort(slurs_metadata_list, fn a, b ->
+        DateTime.compare(a.inserted_at, b.inserted_at) == :gt
+      end)
+
     form = to_form(%{}, as: "slur_form")
 
     user_role = socket.assigns.current_user.role
@@ -35,7 +40,9 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
 
   @impl Phoenix.LiveView
   def handle_info({:new_slur, slur}, socket) do
-    {:noreply, assign(socket, slurs_metadata_list: [slur | socket.assigns.slurs_metadata_list])|> put_flash(:info, "New Contribution Added!")}
+    {:noreply,
+     assign(socket, slurs_metadata_list: [slur | socket.assigns.slurs_metadata_list])
+     |> put_flash(:info, "New Contribution Added!")}
   end
 
   def handle_event("open-add-slur-modal", %{"slur" => slur}, socket) do
@@ -56,7 +63,13 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
           assign(socket, slur_already_added?: true)
       end
 
-    socket = assign(socket, selected_slur: slur, slur_form: to_form(slur), already_present_metadata_freq: length(already_added_metadata))
+    socket =
+      assign(socket,
+        selected_slur: slur,
+        slur_form: to_form(slur),
+        already_present_metadata_freq: length(already_added_metadata)
+      )
+
     # IO.inspect(socket, label: "modified socket: ")
     {:noreply, socket}
   end
@@ -89,11 +102,13 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   @impl Phoenix.LiveView
   def handle_event("add-slur-metadata", params, socket) do
     IO.inspect(params, label: "PAYLOAD FROM THE FORM")
-    appropriation_context = if params["appropriation_context"] == "" do
-      nil
-    else
-      params["appropriation_context"]
-    end
+
+    appropriation_context =
+      if params["appropriation_context"] == "" do
+        nil
+      else
+        params["appropriation_context"]
+      end
 
     metadata = %{
       label: params["label"],
@@ -108,6 +123,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     }
 
     IO.inspect(metadata, label: "METADATA to Add")
+
     case PublicDataset.create_plugin_slur_metadata(metadata) do
       {:ok, _plugin_slur_metadata} ->
         # {:noreply, socket} = handle_event("close-modal", %{}, socket)
@@ -149,7 +165,10 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   end
 
   defp reset_form(socket) do
-    assign(socket, selected_slur: nil, approve_type: "only-slur", slur_form: %{"approve_type"=> "only-slur"})
-
+    assign(socket,
+      selected_slur: nil,
+      approve_type: "only-slur",
+      slur_form: %{"approve_type" => "only-slur"}
+    )
   end
 end
