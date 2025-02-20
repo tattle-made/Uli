@@ -19,6 +19,7 @@ import {
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
 import { getPublicSlurs } from './api/public-slurs';
 import { fetchPublicSlursMetadata } from './slur-store';
+import { initializeSlurReplaceExpressions } from './slur-replace';
 
 const { createSlurAndCategory } = Api;
 
@@ -33,7 +34,7 @@ log('Content Script Loaded Test 2');
 
 var mainLoadedChecker;
 
-function processPage(newUrl) {
+function processPage(newUrl, slurWords) {
     const twitterUrl = 'twitter.com';
     if (newUrl.includes(twitterUrl)) {
         mainLoadedChecker = setInterval(() => {
@@ -74,7 +75,7 @@ function processPage(newUrl) {
 
             if (first_body) {
                 console.log('tick 2');
-                transformGeneral.processNewlyAddedNodesGeneral(first_body);
+                transformGeneral.processNewlyAddedNodesGeneral(first_body, slurWords);
                 clearInterval(mainLoadedChecker);
                 console.log(mainLoadedChecker);
             } else {
@@ -111,7 +112,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         case 'SLUR_ADDED':
             return handleMessageSlurAdded(request);
         case 'ULI_ENABLE_SLUR_REPLACEMENT':
-            console.log("reached content script uli enable slur replace");
+            console.log('reached content script uli enable slur replace');
             if (!request.payload) {
                 clearInterval(mainLoadedChecker);
             }
@@ -146,10 +147,10 @@ async function handleMessageSyncApprovedSlurs(request, sendResponse) {
 
         // fetch public metadata again
         await fetchPublicSlursMetadata();
-        sendResponse({status: 200});
+        sendResponse({ status: 200 });
     } catch (error) {
         console.error('Error fetch public crowsrouced slurs');
-        sendResponse({status: 400});
+        sendResponse({ status: 400 });
     }
 }
 
@@ -217,7 +218,7 @@ async function handleMessageSlurAdded(request) {
     //Crowdsourcing Slur
 
     const user = await getUserData();
-    if (!user){
+    if (!user) {
         window.alert(`Please login to Uli Browser Extension to contribute`);
         return;
     }
@@ -242,18 +243,27 @@ window.addEventListener(
         const { enableSlurReplacement, enableSlurMetadata } = pref;
 
         // Initialize Slurs on content load
-        await initializeSlurs();
+        try {
+            const response = await chrome.runtime.sendMessage({
+                type: 'initializeSlurs'
+            });
+            const allSlurWords = response.allSlurWords;
+            const allMetadata = response.allMetadata;
 
-        if (enableSlurMetadata) {
-            let body = document.getElementsByTagName('body');
-            let first_body = body[0];
-            const jsonData = await convertSlurMetadataFromDBtoJSON();
-            transformGeneral.processNewlyAddedNodesGeneral2(
-                first_body,
-                jsonData
-            );
-        } else if (enableSlurReplacement) {
-            processPage(location.href);
+            await initializeSlurReplaceExpressions(allSlurWords);
+
+            if (enableSlurMetadata) {
+                let body = document.getElementsByTagName('body');
+                let first_body = body[0];
+                transformGeneral.processNewlyAddedNodesGeneral2(
+                    first_body,
+                    allMetadata
+                );
+            } else if (enableSlurReplacement) {
+                processPage(location.href);
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     },
     false

@@ -1,4 +1,19 @@
+import Dexie from 'dexie';
+import {
+    initializeSlurs,
+    getAllSlurs,
+    convertSlurMetadataFromDBtoJSON
+} from './slur-store';
 console.log('bg script 8');
+
+let db;
+db = new Dexie('SlurWordsDatabase');
+db.version(1).stores({
+    words: '++id, word, source, enable_status',
+    words_metadata:
+        '++id, label, level_of_severity, meaning, categories, language, timestamp'
+});
+console.log('Database initialized');
 
 const BROWSER_CHROME = 'chrome';
 const BROWSER_FIREFOX = 'firefox';
@@ -67,3 +82,29 @@ userBrowserContextMenus.onClicked.addListener((info, tab) => {
             console('unexpected action');
     }
 });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.type) {
+        case 'initializeSlurs':
+            handleInitSlurs(request, sendResponse, db);
+            return true;
+        default:
+            return false;
+    }
+});
+
+async function handleInitSlurs(request, sendResponse, db) {
+    try {
+        await initializeSlurs(db);
+        allSlurWords = await getAllSlurs(db);
+        allMetadata = await convertSlurMetadataFromDBtoJSON(db);
+        sendResponse({
+            status: 200,
+            allSlurWords: allSlurWords,
+            allMetadata: allMetadata
+        });
+    } catch (error) {
+        console.error('Error initializing slurs in service worker:', error);
+        sendResponse({ status: 400, message: error.message });
+    }
+}

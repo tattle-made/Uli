@@ -1,14 +1,5 @@
-import Dexie from 'dexie';
 import mainSlurList from './slurlist-main';
 import { getPublicSlursMetadata } from './api/public-slurs';
-
-const db = new Dexie('SlurWordsDatabase');
-
-// Define database schema
-db.version(1).stores({
-    words: '++id, word, source, enable_status',
-    words_metadata: '++id, label, level_of_severity, meaning, categories, language, timestamp'
-});
 
 // Function to add a word to the database
 export async function addSlur(word, source) {
@@ -27,7 +18,7 @@ export async function addSlur(word, source) {
 }
 
 // Function to get all words
-export async function getAllSlurs() {
+export async function getAllSlurs(db) {
     try {
         const words = await db.words.toArray();
         return words;
@@ -38,7 +29,7 @@ export async function getAllSlurs() {
 }
 
 // Function to get all words by source
-export async function getSlursBySource(source) {
+export async function getSlursBySource(db, source) {
     try {
         if (!source || typeof source !== 'string') {
             throw new Error('Source must be a valid string');
@@ -52,7 +43,7 @@ export async function getSlursBySource(source) {
 }
 
 // Function to bulk add words to the database
-export async function bulkAddSlurs(wordsArray, source) {
+export async function bulkAddSlurs(db, wordsArray, source) {
     if (!Array.isArray(wordsArray) || typeof source !== 'string') {
         throw new Error('Invalid input: wordsArray must be an array and source must be a string');
     }
@@ -110,7 +101,7 @@ export async function slurExists(word, source) {
 }
 
 // Function to bulk add slur metadata to the database
-export async function bulkAddSlurMetadata(metadataArray) {
+export async function bulkAddSlurMetadata(db, metadataArray) {
     if (!Array.isArray(metadataArray)) {
         throw new Error('Invalid input: metadataArray must be an array');
     }
@@ -136,7 +127,7 @@ export async function bulkAddSlurMetadata(metadataArray) {
 }
 
 // Function to fetch all slur metadata from the database
-export async function getAllSlurMetadata() {
+export async function getAllSlurMetadata(db) {
     try {
         const slurMetadata = await db.words_metadata.toArray();
         return slurMetadata;
@@ -146,9 +137,9 @@ export async function getAllSlurMetadata() {
     }
 }
 
-export async function convertSlurMetadataFromDBtoJSON() {
+export async function convertSlurMetadataFromDBtoJSON(db) {
     try {
-        const slurMetadata = await getAllSlurMetadata();
+        const slurMetadata = await getAllSlurMetadata(db);
 
         // Format the data into the desired structure
         let jsonData = [];
@@ -172,7 +163,7 @@ export async function convertSlurMetadataFromDBtoJSON() {
     }
 }
 
-export async function deleteSlurMetadataEntries(entriesToDelete) {
+export async function deleteSlurMetadataEntries(db, entriesToDelete) {
     if (!Array.isArray(entriesToDelete) || entriesToDelete.length === 0) {
         console.warn("No valid entries provided for deletion.");
         return;
@@ -197,12 +188,12 @@ export async function deleteSlurMetadataEntries(entriesToDelete) {
     }
 }
 
-export async function fetchPublicSlursMetadata() {
+export async function fetchPublicSlursMetadata(db) {
     try {
         // Fetch slurs from the backend
         const publicSlursMetadata = await getPublicSlursMetadata();
         // Fetch existing metadata from the indexed database
-        const existingMetadata = await getAllSlurMetadata();
+        const existingMetadata = await getAllSlurMetadata(db);
         // Convert existing metadata to a Set of JSON strings for exact comparison
         const publicMetadataSet = new Set(publicSlursMetadata.map(meta => JSON.stringify(meta)));
         const existingMetadataSet = new Set(existingMetadata.map(meta => JSON.stringify(meta)));
@@ -216,12 +207,12 @@ export async function fetchPublicSlursMetadata() {
         );
         // Add new metadata
         if (newMetadata.length > 0) {
-            await bulkAddSlurMetadata(newMetadata);
+            await bulkAddSlurMetadata(db, newMetadata);
             console.log(`${newMetadata.length} new slur metadata entries added.`);
         }
         // Delete outdated metadata
         if (outdatedMetadata.length > 0) {
-            await deleteSlurMetadataEntries(outdatedMetadata);
+            await deleteSlurMetadataEntries(db, outdatedMetadata);
             console.log(`${outdatedMetadata.length} outdated slur metadata entries removed.`);
         }
     } catch (error) {
@@ -229,7 +220,7 @@ export async function fetchPublicSlursMetadata() {
     }
 }
 
-export async function initializeSlurs() {
+export async function initializeSlurs(db) {
     console.log('Initializing Indexed database');
 
     try {
@@ -249,14 +240,14 @@ export async function initializeSlurs() {
 
         // Index hard-coded slurs into the database
         if (mainSlurListArray.length > 0) {
-            await bulkAddSlurs(mainSlurListArray, 'hard_coded');
+            await bulkAddSlurs(db, mainSlurListArray, 'hard_coded');
             console.log(`Indexed ${mainSlurListArray.length} hard-coded slurs into the database.`);
         } else {
             console.log('No slurs found in the JSON file.');
         }
 
         // fetch public metadata
-        await fetchPublicSlursMetadata();
+        await fetchPublicSlursMetadata(db);
     } catch (error) {
         console.error('Error during database initialization:', error);
     }
