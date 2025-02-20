@@ -1,4 +1,3 @@
-// import { userBrowserTabs, userBrowserContextMenus } from './browser-compat';
 console.log('bg script 8');
 
 const BROWSER_CHROME = 'chrome';
@@ -39,16 +38,18 @@ userBrowserTabs.onUpdated.addListener(function (tabId, changeInfo) {
     }
 });
 
-userBrowserContextMenus.create(
-    {
-        id: 'add-slur',
-        title: 'Add Slur to Uli',
-        contexts: ['selection']
-    },
-    () => {
-        console.log('context menu created');
-    }
-);
+userBrowserContextMenus.removeAll(() => {
+    userBrowserContextMenus.create(
+        {
+            id: 'add-slur',
+            title: 'Add Slur to Uli',
+            contexts: ['selection']
+        },
+        () => {
+            console.log('context menu created');
+        }
+    );
+});
 
 userBrowserContextMenus.onClicked.addListener((info, tab) => {
     switch (info.menuItemId) {
