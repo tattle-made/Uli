@@ -2,20 +2,32 @@
     "name": "ogbv-chrome-plugin",
     "version": "0.0.1",
     "description": "",
+    "targets": {
+        "frontend": {
+            "context": "browser",
+            "source": [
+                "src/options.jsx",
+                "src/content-script.js"
+            ]
+        },
+        "background": {
+            "context": "service-worker",
+            "source": "src/background.js"
+        }
+    },
     "scripts": {
         "prepare": "cd ../.. && husky install \"browser-extension/plugin/.husky\"",
         "test": "echo \"Error: no test specified\" && exit 1",
         "test:api": "jest",
-        "start:options": "parcel src/options.jsx",
-        "start:contentScript": "parcel src/content-script.js",
-        "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist && cp src/background.js dist",
-        "moveBuildArtefactsToFirefoxDistDir": "cp src/options.html dist && cp manifest.firefox.json dist/manifest.json && cp icon* dist && cp src/background.js dist",
-        "build": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
-        "build:firefox": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToFirefoxDistDir",
         "pre-commit": "npm audit --audit-level=moderate",
         "lint": "lint-staged",
-        "dev:firefox": "mkdir -p dist && concurrently \"npm run start:options\" \"npm run start:contentScript\" \"npm run moveBuildArtefactsToFirefoxDistDir\"",
-        "dev:chrome": "mkdir -p dist && concurrently \"npm run start:options\" \"npm run start:contentScript\" \"npm run moveBuildArtefactsToDistDir\"",
+        "start:parcel": "parcel",
+        "moveBuildArtefactsToDistDir": "cp src/options.html dist && cp manifest.json dist && cp icon* dist",
+        "moveBuildArtefactsToFirefoxDistDir": "cp src/options.html dist && cp manifest.firefox.json dist/manifest.json && cp icon* dist",
+        "build": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToDistDir",
+        "build:firefox": "mkdir dist && NODE_ENV=production parcel build src/options.jsx src/content-script.js && npm run moveBuildArtefactsToFirefoxDistDir",
+        "dev:firefox": "mkdir -p dist && concurrently \"npm run start:parcel\" \"npm run moveBuildArtefactsToFirefoxDistDir\"",
+        "dev:chrome": "mkdir -p dist && concurrently \"npm run start:parcel\" \"npm run moveBuildArtefactsToDistDir\"",
         "dev:clean": "rm -rf dist/"
     },
     "jest": {
