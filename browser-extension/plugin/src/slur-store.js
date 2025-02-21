@@ -2,7 +2,7 @@ import mainSlurList from './slurlist-main';
 import { getPublicSlursMetadata } from './api/public-slurs';
 
 // Function to add a word to the database
-export async function addSlur(word, source) {
+export async function addSlur(db, word, source) {
     try {
         const id = await db.words.add({
             word: word,
@@ -66,7 +66,7 @@ export async function bulkAddSlurs(db, wordsArray, source) {
 }
 
 // Function to delete a single slur
-export async function deleteSlur(word, source) {
+export async function deleteSlur(db, word, source) {
     try {
         const slurToDelete = await db.words
             .where('source')
@@ -86,7 +86,7 @@ export async function deleteSlur(word, source) {
 }
 
 // Function to check if a slur exists in the database
-export async function slurExists(word, source) {
+export async function slurExists(db, word, source) {
     try {
         const count = await db.words
             .where('source')

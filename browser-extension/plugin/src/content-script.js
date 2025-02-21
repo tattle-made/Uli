@@ -6,30 +6,14 @@ import { log } from './logger';
 import repository from './repository';
 const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import transformGeneral from './transform-general';
-import Api from './ui-components/pages/Api';
-import {
-    initializeSlurs,
-    getSlursBySource,
-    addSlur,
-    deleteSlur,
-    slurExists,
-    bulkAddSlurs,
-    convertSlurMetadataFromDBtoJSON
-} from './slur-store';
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
-import { getPublicSlurs } from './api/public-slurs';
-import { fetchPublicSlursMetadata } from './slur-store';
 import { initializeSlurReplaceExpressions } from './slur-replace';
-
-const { createSlurAndCategory } = Api;
 
 log('Content Script Loaded Test 2');
 
 // test function to log variables in console
 (async function test() {
     console.log('Async Test');
-    // const data = await axios.get("http://localhost:3000/");
-    // console.log("api test data", data);
 })();
 
 var mainLoadedChecker;
@@ -112,7 +96,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         case 'SLUR_ADDED':
             return handleMessageSlurAdded(request);
         case 'ULI_ENABLE_SLUR_REPLACEMENT':
-            console.log('reached content script uli enable slur replace');
             if (!request.payload) {
                 clearInterval(mainLoadedChecker);
             }
@@ -125,56 +108,37 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 async function handleMessageSyncApprovedSlurs(request, sendResponse) {
-    const source = 'public_crowdsourced_slurs';
     try {
-        const publicSlurs = await getPublicSlurs();
-        const publicSlursArray = publicSlurs.map((slur) => slur.label);
-        // console.log(publicSlursArray);
+        const response = await chrome.runtime.sendMessage({
+            type: 'syncApprovedCrowdsourcedSlursToBG'
+        });
 
-        const filteredSlurs = [];
-        for (const slur of publicSlursArray) {
-            const exists = await slurExists(slur, source);
-            if (!exists) {
-                filteredSlurs.push(slur);
-            }
-        }
-        // If there are slurs to add, bulk add them to the database
-        if (filteredSlurs.length > 0) {
-            await bulkAddSlurs(filteredSlurs, source);
+        if (response.status === 200) {
+            console.log('Approved slurs synced successfully');
+            sendResponse({ status: 200 });
         } else {
-            console.log('No new slurs to add.');
+            console.error('Error syncing approved slurs:', response.message);
+            sendResponse({ status: 400, message: response.message });
         }
-
-        // fetch public metadata again
-        await fetchPublicSlursMetadata();
-        sendResponse({ status: 200 });
     } catch (error) {
-        console.error('Error fetch public crowsrouced slurs');
-        sendResponse({ status: 400 });
+        console.error('Error during syncing approved slurs:', error);
+        sendResponse({ status: 400, message: error.message });
     }
 }
 
 async function handleMessageUpdateData(request, sendResponse) {
     try {
-        const newSlurs = request.data;
-        console.log('New slurs received:', newSlurs);
-        // fetch exisiting slurs
-        const existingSlurs = (await getSlursBySource('personal')).map(
-            (slur) => slur.word
-        );
-        // Add new slurs to the database
-        for (const slur of newSlurs) {
-            if (!existingSlurs.includes(slur)) {
-                await addSlur(slur, 'personal');
-            }
+        const response = await chrome.runtime.sendMessage({
+            type: 'updateDataMsgToBG',
+            data: request.data
+        });
+
+        if (response.status === 200) {
+            console.log('Slurs updated successfully');
+            processPage(location.href);
+        } else {
+            console.error('Error updating slurs:', response.message);
         }
-        // Remove slurs from the database that no longer exist in the new list
-        for (const slur of existingSlurs) {
-            if (!newSlurs.includes(slur)) {
-                await deleteSlur(slur, 'personal');
-            }
-        }
-        processPage(location.href);
     } catch (error) {
         console.error('Error during updating slur list:', error);
     }
@@ -182,18 +146,20 @@ async function handleMessageUpdateData(request, sendResponse) {
 
 async function handleMessageFetchPersonalSlurs(request, sendResponse) {
     try {
-        console.log('fetching personal slurs');
-        getSlursBySource('personal').then((personalSlurs) => {
-            const slurArr = personalSlurs.map((slur) => slur.word);
-            console.log('sending personal slurs', slurArr);
-            sendResponse(slurArr);
+        const response = await chrome.runtime.sendMessage({
+            type: 'fetchPersonalSlursToBG'
         });
-        return true;
+
+        if (response) {
+            console.log('Received personal slurs:', response);
+            sendResponse(response);
+        } else {
+            console.error('Error fetching personal slurs:', response);
+            sendResponse({ status: 400, message: 'Failed to fetch personal slurs' });
+        }
     } catch (error) {
-        console.error(
-            'Error fetching personal slurs in content script:',
-            error
-        );
+        console.error('Error fetching personal slurs:', error);
+        sendResponse({ status: 400, message: error.message });
     }
 }
 
