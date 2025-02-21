@@ -18,7 +18,7 @@ log('Content Script Loaded Test 2');
 
 var mainLoadedChecker;
 
-function processPage(newUrl, slurWords) {
+function processPage(newUrl) {
     const twitterUrl = 'twitter.com';
     if (newUrl.includes(twitterUrl)) {
         mainLoadedChecker = setInterval(() => {
@@ -59,7 +59,7 @@ function processPage(newUrl, slurWords) {
 
             if (first_body) {
                 console.log('tick 2');
-                transformGeneral.processNewlyAddedNodesGeneral(first_body, slurWords);
+                transformGeneral.processNewlyAddedNodesGeneral(first_body);
                 clearInterval(mainLoadedChecker);
                 console.log(mainLoadedChecker);
             } else {
