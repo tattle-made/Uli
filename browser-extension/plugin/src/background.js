@@ -21,7 +21,8 @@ function initializeDB() {
         db = new Dexie('SlurWordsDatabase');
         db.version(1).stores({
             words: '++id, word, source, enable_status',
-            words_metadata: '++id, label, level_of_severity, meaning, categories, language, timestamp'
+            words_metadata:
+                '++id, label, level_of_severity, meaning, categories, language, timestamp'
         });
         console.log('Database initialized');
     }

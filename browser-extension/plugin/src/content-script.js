@@ -8,6 +8,7 @@ const { getUserData, getPreferenceData, setPreferenceData } = repository;
 import transformGeneral from './transform-general';
 import { createCrowdsourceSlur } from './api/crowdsource-slurs';
 import { initializeSlurReplaceExpressions } from './slur-replace';
+import { userBrowserRuntime } from './browser-compat';
 
 log('Content Script Loaded Test 2');
 
@@ -109,7 +110,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function handleMessageSyncApprovedSlurs(request, sendResponse) {
     try {
-        const response = await chrome.runtime.sendMessage({
+        const response = await userBrowserRuntime.sendMessage({
             type: 'syncApprovedCrowdsourcedSlursToBG'
         });
 
@@ -128,7 +129,7 @@ async function handleMessageSyncApprovedSlurs(request, sendResponse) {
 
 async function handleMessageUpdateData(request, sendResponse) {
     try {
-        const response = await chrome.runtime.sendMessage({
+        const response = await userBrowserRuntime.sendMessage({
             type: 'updateDataMsgToBG',
             data: request.data
         });
@@ -146,7 +147,7 @@ async function handleMessageUpdateData(request, sendResponse) {
 
 async function handleMessageFetchPersonalSlurs(request, sendResponse) {
     try {
-        const response = await chrome.runtime.sendMessage({
+        const response = await userBrowserRuntime.sendMessage({
             type: 'fetchPersonalSlursToBG'
         });
 
@@ -210,7 +211,7 @@ window.addEventListener(
 
         // Initialize Slurs on content load
         try {
-            const response = await chrome.runtime.sendMessage({
+            const response = await userBrowserRuntime.sendMessage({
                 type: 'initializeSlurs'
             });
             const allSlurWords = response.allSlurWords;
