@@ -76,22 +76,13 @@ async function sendMessage(type, data = null) {
         message.data = data;
     }
     console.log('message', message);
-
-    if (
-        type === 'updateData' ||
-        type === 'fetchPersonalSlurs' ||
-        type === 'syncApprovedCrowdsourcedSlurs'
-    ) {
-        const [tab] = await userBrowserTabs.query({
-            active: true,
-            currentWindow: true
-        });
-        const response = await userBrowserTabs.sendMessage(tab.id, message);
-        console.log('response from CS', response);
-        return response;
-    } else {
-        throw new Error('Unsupported message type');
-    }
+    const [tab] = await userBrowserTabs.query({
+        active: true,
+        currentWindow: true
+    });
+    const response = await userBrowserTabs.sendMessage(tab.id, message);
+    console.log('response from CS', response);
+    return response;
 }
 
 function addListener(type, func, response) {
