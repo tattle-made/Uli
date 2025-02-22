@@ -14,13 +14,32 @@ import { getPublicSlurs } from './api/public-slurs';
 console.log('bg script 8');
 
 let db;
-db = new Dexie('SlurWordsDatabase');
-db.version(1).stores({
-    words: '++id, word, source, enable_status',
-    words_metadata:
-        '++id, label, level_of_severity, meaning, categories, language, timestamp'
-});
-console.log('Database initialized');
+let isSlurInitialized = false;
+// init db schema
+function initializeDB() {
+    if (!db) {
+        db = new Dexie('SlurWordsDatabase');
+        db.version(1).stores({
+            words: '++id, word, source, enable_status',
+            words_metadata: '++id, label, level_of_severity, meaning, categories, language, timestamp'
+        });
+        console.log('Database initialized');
+    }
+    return db;
+}
+
+(async () => {
+    try {
+        const db = initializeDB();
+
+        if (!isSlurInitialized) {
+            await initializeSlurs(db);
+            isSlurInitialized = true;
+        }
+    } catch (error) {
+        console.error('Error initializing extension:', error);
+    }
+})();
 
 const BROWSER_CHROME = 'chrome';
 const BROWSER_FIREFOX = 'firefox';
@@ -111,7 +130,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function handleInitSlurs(request, sendResponse, db) {
     try {
-        await initializeSlurs(db);
         allSlurWords = await getAllSlurs(db);
         allMetadata = await convertSlurMetadataFromDBtoJSON(db);
         sendResponse({
@@ -127,7 +145,6 @@ async function handleInitSlurs(request, sendResponse, db) {
 
 async function handleUpdateData(request, sendResponse, db) {
     try {
-        console.log("inside handle udpate data BG");
         const newSlurs = request.data;
         console.log('New slurs received:', newSlurs);
 
@@ -185,7 +202,9 @@ async function handleSyncApprovedSlurs(request, sendResponse, db) {
         // If there are slurs to add, bulk add them to the database
         if (filteredSlurs.length > 0) {
             await bulkAddSlurs(db, filteredSlurs, source);
-            console.log(`${filteredSlurs.length} new slurs added from source: ${source}`);
+            console.log(
+                `${filteredSlurs.length} new slurs added from source: ${source}`
+            );
         } else {
             console.log('No new slurs to add.');
         }
@@ -198,4 +217,3 @@ async function handleSyncApprovedSlurs(request, sendResponse, db) {
         sendResponse({ status: 400, message: error.message });
     }
 }
-
