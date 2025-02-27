@@ -82,18 +82,10 @@ function processPage(newUrl) {
  *
  * If the callback function is asynchronous, it must send an explicit `true` and use the `sendResponse`
  * function to return the response. If it is synchronous, it must return false.
- */
+//  */
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.type) {
-        case 'updateData':
-            handleMessageUpdateData(request, sendResponse);
-            return true;
-        case 'fetchPersonalSlurs':
-            handleMessageFetchPersonalSlurs(request, sendResponse);
-            return true;
-        case 'syncApprovedCrowdsourcedSlurs':
-            handleMessageSyncApprovedSlurs(request, sendResponse);
-            return true;
         case 'SLUR_ADDED':
             return handleMessageSlurAdded(request);
         case 'ULI_ENABLE_SLUR_REPLACEMENT':
@@ -107,62 +99,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             return false;
     }
 });
-
-async function handleMessageSyncApprovedSlurs(request, sendResponse) {
-    try {
-        const response = await userBrowserRuntime.sendMessage({
-            type: 'syncApprovedCrowdsourcedSlursToBG'
-        });
-
-        if (response.status === 200) {
-            console.log('Approved slurs synced successfully');
-            sendResponse({ status: 200 });
-        } else {
-            console.error('Error syncing approved slurs:', response.message);
-            sendResponse({ status: 400, message: response.message });
-        }
-    } catch (error) {
-        console.error('Error during syncing approved slurs:', error);
-        sendResponse({ status: 400, message: error.message });
-    }
-}
-
-async function handleMessageUpdateData(request, sendResponse) {
-    try {
-        const response = await userBrowserRuntime.sendMessage({
-            type: 'updateDataMsgToBG',
-            data: request.data
-        });
-
-        if (response.status === 200) {
-            console.log('Slurs updated successfully');
-            processPage(location.href);
-        } else {
-            console.error('Error updating slurs:', response.message);
-        }
-    } catch (error) {
-        console.error('Error during updating slur list:', error);
-    }
-}
-
-async function handleMessageFetchPersonalSlurs(request, sendResponse) {
-    try {
-        const response = await userBrowserRuntime.sendMessage({
-            type: 'fetchPersonalSlursToBG'
-        });
-
-        if (response) {
-            console.log('Received personal slurs:', response);
-            sendResponse(response);
-        } else {
-            console.error('Error fetching personal slurs:', response);
-            sendResponse({ status: 400, message: 'Failed to fetch personal slurs' });
-        }
-    } catch (error) {
-        console.error('Error fetching personal slurs:', error);
-        sendResponse({ status: 400, message: error.message });
-    }
-}
 
 async function handleMessageSlurAdded(request) {
     const slur = request.slur;

@@ -242,13 +242,13 @@ export function PreferencesHome() {
     async function handleSyncApprovedSlurs() {
         try {
             setsyncSlurs(true);
-            const res = await browserUtils.sendMessage(
-                'syncApprovedCrowdsourcedSlurs',
+            const res = await browserUtils.sendMessageSW(
+                "syncApprovedCrowdsourcedSlursToBG",
                 undefined
             );
             // console.log("RESS in sync", res);
             if (res.status == 200) {
-                console.log('Sync message sent to content-script.js');
+                console.log('Sync message sent to background.js');
                 showNotification({
                     type: 'message',
                     message: 'Synced!'
@@ -261,6 +261,10 @@ export function PreferencesHome() {
             }
         } catch (error) {
             console.error('Error syncing approved slurs:', error);
+            showNotification({
+                type: 'error',
+                message: 'Unable to Sync'
+            });
         } 
         finally {
             setsyncSlurs(false);
@@ -383,8 +387,8 @@ export function PreferencesSlurList() {
             console.log('brow util', browserUtils);
             try {
                 const response =
-                    await browserUtils.sendMessage('fetchPersonalSlurs');
-                console.log('personal data from content', response);
+                    await browserUtils.sendMessageSW('fetchPersonalSlursToBG');
+                console.log('personal data from Service Worker', response);
                 if (response) {
                     const slurArr = response;
                     setSlurs(slurArr);
@@ -487,7 +491,7 @@ export function PreferencesSlurList() {
         }
 
         try {
-            browserUtils.sendMessage('updateData', slurs);
+            browserUtils.sendMessageSW('updateDataMsgToBG', slurs);
 
             setResetSlurs(slurs);
             // setSuccess("Saved Successfully!")
