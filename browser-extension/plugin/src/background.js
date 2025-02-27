@@ -22,7 +22,7 @@ function initializeDB() {
         db.version(1).stores({
             words: '++id, word, source, enable_status',
             words_metadata:
-                '++id, label, level_of_severity, meaning, categories, language, timestamp'
+                '++id, label, level_of_severity, casual, appropriated, appropriation_context, meaning, language, batch, categories, timestamp'
         });
         console.log('Database initialized');
     }

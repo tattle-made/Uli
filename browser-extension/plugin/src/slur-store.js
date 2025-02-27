@@ -111,9 +111,13 @@ export async function bulkAddSlurMetadata(db, metadataArray) {
     const metadataObjects = metadataArray.map((metadata) => ({
         label: metadata.label,
         level_of_severity: metadata.level_of_severity,
+        casual: metadata.casual,
+        appropriated: metadata.appropriated,
+        appropriation_context: metadata.appropriation_context,
         meaning: metadata.meaning,
-        categories: metadata.categories,
         language: metadata.language,
+        batch: metadata.batch,
+        categories: metadata.categories,
         timestamp: timestamp,
     }));
 
