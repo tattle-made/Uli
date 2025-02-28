@@ -8,7 +8,9 @@ import {
     deleteSlur,
     slurExists,
     bulkAddSlurs,
-    fetchPublicSlursMetadata
+    fetchPublicSlursMetadata,
+    bulkDeleteSlurs,
+    initializeMetadata
 } from './slur-store';
 import { getPublicSlurs } from './api/public-slurs';
 console.log('bg script 8');
@@ -20,11 +22,11 @@ function initializeDB() {
     if (!db) {
         db = new Dexie('SlurWordsDatabase');
         db.version(1).stores({
-            words: '++id, word, source, enable_status',
+            words: '++id, slur_id, word, source, enable_status, batch',
             words_metadata:
-                '++id, label, level_of_severity, casual, appropriated, appropriation_context, meaning, language, batch, categories, timestamp'
+                '++id, slur_id, label, level_of_severity, casual, appropriated, appropriation_context, meaning, language, batch, categories, timestamp'
         });
-        console.log('Database initialized');
+        console.log('Database Initialized');
     }
     return db;
 }
@@ -35,6 +37,7 @@ function initializeDB() {
 
         if (!isSlurInitialized) {
             await initializeSlurs(db);
+            await initializeMetadata(db)
             isSlurInitialized = true;
         }
     } catch (error) {
@@ -190,24 +193,29 @@ async function handleSyncApprovedSlurs(request, sendResponse, db) {
     try {
         const publicSlurs = await getPublicSlurs();
         const publicSlursArray = publicSlurs.map((slur) => slur.label);
-        console.log('Public slurs fetched:', publicSlursArray);
+        // console.log('Public slurs fetched:', publicSlursArray);
 
-        const filteredSlurs = [];
-        for (const slur of publicSlursArray) {
-            const exists = await slurExists(db, slur, source);
-            if (!exists) {
-                filteredSlurs.push(slur);
-            }
-        }
+        const existingSlurs = await getSlursBySource(db, source)
 
-        // If there are slurs to add, bulk add them to the database
-        if (filteredSlurs.length > 0) {
-            await bulkAddSlurs(db, filteredSlurs, source);
-            console.log(
-                `${filteredSlurs.length} new slurs added from source: ${source}`
-            );
+        const publicSlurSet = new Set(publicSlurs.map(s=>s.id))
+        const existingSlurSet = new Set(existingSlurs.map(s=>s.slur_id))
+
+        const newSlurs = publicSlurs.filter(s => 
+            !existingSlurSet.has(s.id)
+        );
+        // Identify metadata that needs to be removed (exists in DB but not in fetched data)
+        const outdatedSlurs = existingSlurs.filter(s => 
+            !publicSlurSet.has(s.slur_id)
+        );
+
+        if (newSlurs.length > 0) {
+            await bulkAddSlurs(db, newSlurs, source);
         } else {
             console.log('No new slurs to add.');
+        }
+
+        if(outdatedSlurs.length > 0){
+            await bulkDeleteSlurs(db, outdatedSlurs);
         }
 
         // Fetch public metadata again

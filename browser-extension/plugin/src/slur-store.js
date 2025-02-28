@@ -1,13 +1,15 @@
 import mainSlurList from './slurlist-main';
-import { getPublicSlursMetadata } from './api/public-slurs';
+import { getPublicSlurs, getPublicSlursMetadata } from './api/public-slurs';
 
-// Function to add a word to the database
+// Function to add a word to the database. Used in adding personal list slurs. "word" paramter is a string
 export async function addSlur(db, word, source) {
     try {
         const id = await db.words.add({
+            slur_id: null,
             word: word,
             timestamp: new Date().toISOString(),
             source: source,
+            batch: null,
             enable_status: true
         });
         return id;
@@ -42,21 +44,36 @@ export async function getSlursBySource(db, source) {
     }
 }
 
-// Function to bulk add words to the database
+// Function to bulk add words to the database. "wordsArray" can be an array of strings or slur-objects
 export async function bulkAddSlurs(db, wordsArray, source) {
     if (!Array.isArray(wordsArray) || typeof source !== 'string') {
-        throw new Error('Invalid input: wordsArray must be an array and source must be a string');
+        throw new Error(
+            'Invalid input: wordsArray must be an array and source must be a string'
+        );
     }
-
-    // Prepare word objects with source and timestamp
-    const wordObjects = wordsArray.map((word) => ({
-        word: word,
-        timestamp: new Date().toISOString(),
-        source: source,
-        enable_status: true
-    }));
-
     try {
+        let wordObjects = [];
+
+        if (typeof wordsArray[0] === 'string') {
+            wordObjects = wordsArray.map((word) => ({
+                slur_id: null,
+                word: word,
+                timestamp: new Date().toISOString(),
+                source: source,
+                batch: null,
+                enable_status: true
+            }));
+        } else {
+            wordObjects = wordsArray.map((word) => ({
+                slur_id: word.id || null,
+                word: word.label,
+                timestamp: new Date().toISOString(),
+                source: source,
+                batch: word.batch || null,
+                enable_status: true
+            }));
+        }
+
         await db.words.bulkAdd(wordObjects);
         console.log(`${wordObjects.length} words added from source: ${source}`);
     } catch (error) {
@@ -81,7 +98,10 @@ export async function deleteSlur(db, word, source) {
             console.log(`Slur "${word}" not found for source "${source}".`);
         }
     } catch (error) {
-        console.error(`Error deleting slur "${word}" from source "${source}":`, error);
+        console.error(
+            `Error deleting slur "${word}" from source "${source}":`,
+            error
+        );
     }
 }
 
@@ -109,6 +129,7 @@ export async function bulkAddSlurMetadata(db, metadataArray) {
     // Prepare metadata objects for the database
     const timestamp = new Date().toISOString();
     const metadataObjects = metadataArray.map((metadata) => ({
+        slur_id: metadata.id,
         label: metadata.label,
         level_of_severity: metadata.level_of_severity,
         casual: metadata.casual,
@@ -118,7 +139,7 @@ export async function bulkAddSlurMetadata(db, metadataArray) {
         language: metadata.language,
         batch: metadata.batch,
         categories: metadata.categories,
-        timestamp: timestamp,
+        timestamp: timestamp
     }));
 
     try {
@@ -147,48 +168,23 @@ export async function convertSlurMetadataFromDBtoJSON(db) {
 
         // Format the data into the desired structure
         let jsonData = [];
-        jsonData = slurMetadata.map(slur => {
+        jsonData = slurMetadata.map((slur) => {
             return {
                 [slur.label]: {
-                    "Level of Severity": slur.level_of_severity,
-                    "Casual": slur.casual ? "Yes" : "No",
-                    "Appropriated": slur.appropriated ? "Yes" : "No",
-                    "If, Appropriated, Is it by Community or Others?": slur.appropriation_context || "",
-                    "What Makes it Problematic?": slur.meaning || "",
-                    "Categories": slur.categories
+                    'Level of Severity': slur.level_of_severity,
+                    Casual: slur.casual ? 'Yes' : 'No',
+                    Appropriated: slur.appropriated ? 'Yes' : 'No',
+                    'If, Appropriated, Is it by Community or Others?':
+                        slur.appropriation_context || '',
+                    'What Makes it Problematic?': slur.meaning || '',
+                    Categories: slur.categories
                 }
             };
         });
 
-        // console.log("Formatted jsonData:", jsonData);
         return jsonData;
     } catch (error) {
         console.error('Error fetching or formatting slur metadata:', error);
-    }
-}
-
-export async function deleteSlurMetadataEntries(db, entriesToDelete) {
-    if (!Array.isArray(entriesToDelete) || entriesToDelete.length === 0) {
-        console.warn("No valid entries provided for deletion.");
-        return;
-    }
-
-    try {
-        for (const entry of entriesToDelete) {
-            await db.words_metadata
-                .filter(dbEntry => 
-                    dbEntry.label === entry.label &&
-                    dbEntry.level_of_severity === entry.level_of_severity &&
-                    dbEntry.meaning === entry.meaning &&
-                    JSON.stringify(dbEntry.categories) === JSON.stringify(entry.categories) &&
-                    dbEntry.language === entry.language &&
-                    dbEntry.timestamp === entry.timestamp
-                )
-                .delete();
-        }
-        console.log(`${entriesToDelete.length} metadata entries deleted.`);
-    } catch (error) {
-        console.error('Error deleting slur metadata:', error);
     }
 }
 
@@ -198,61 +194,174 @@ export async function fetchPublicSlursMetadata(db) {
         const publicSlursMetadata = await getPublicSlursMetadata();
         // Fetch existing metadata from the indexed database
         const existingMetadata = await getAllSlurMetadata(db);
+
+        if (!existingMetadata || existingMetadata?.length === 0) {
+            await bulkAddSlurMetadata(db, publicSlursMetadata);
+            return;
+        }
+
         // Convert existing metadata to a Set of JSON strings for exact comparison
-        const publicMetadataSet = new Set(publicSlursMetadata.map(meta => JSON.stringify(meta)));
-        const existingMetadataSet = new Set(existingMetadata.map(meta => JSON.stringify(meta)));
+        const publicMetadataSet = new Set(
+            publicSlursMetadata.map((meta) => meta.id)
+        );
+        const existingMetadataSet = new Set(
+            existingMetadata.map((meta) => meta.slur_id)
+        );
         // Identify metadata that needs to be added (exists in fetched data but not in DB)
-        const newMetadata = publicSlursMetadata.filter(meta => 
-            !existingMetadataSet.has(JSON.stringify(meta))
+        const newMetadata = publicSlursMetadata.filter(
+            (meta) => !existingMetadataSet.has(meta.id)
         );
         // Identify metadata that needs to be removed (exists in DB but not in fetched data)
-        const outdatedMetadata = existingMetadata.filter(meta => 
-            !publicMetadataSet.has(JSON.stringify(meta))
+        const outdatedMetadata = existingMetadata.filter(
+            (meta) => !publicMetadataSet.has(meta.slur_id)
         );
         // Add new metadata
         if (newMetadata.length > 0) {
             await bulkAddSlurMetadata(db, newMetadata);
-            console.log(`${newMetadata.length} new slur metadata entries added.`);
+        } else {
+            console.log('No new slur metadata entries added.');
         }
         // Delete outdated metadata
         if (outdatedMetadata.length > 0) {
-            await deleteSlurMetadataEntries(db, outdatedMetadata);
-            console.log(`${outdatedMetadata.length} outdated slur metadata entries removed.`);
+            await bulkDeleteSlurMetadata(db, outdatedMetadata);
         }
     } catch (error) {
-        console.error('Error fetching and updating public slurs metadata:', error);
+        console.error(
+            'Error fetching and updating public slurs metadata:',
+            error
+        );
     }
 }
 
-export async function initializeSlurs(db) {
-    console.log('Initializing Indexed database');
+async function bulkDeleteSlurMetadata(db, entriesToDelete) {
+    if (!Array.isArray(entriesToDelete) || entriesToDelete.length === 0) {
+        console.warn('No valid entries provided for deletion.');
+        return;
+    }
 
     try {
-        // Check if any words with source "hard_coded" already exist
+        const deleteKeys = entriesToDelete.map((entry) => entry.id);
+
+        await db.words_metadata.bulkDelete(deleteKeys);
+
+        console.log(`${entriesToDelete.length} slur metadata entries deleted.`);
+    } catch (error) {
+        console.error(
+            'Error while bulk deleting the slur metadata entries ',
+            error
+        );
+    }
+}
+
+export async function bulkDeleteSlurs(db, entriesToDelete) {
+    if (!Array.isArray(entriesToDelete) || entriesToDelete.length === 0) {
+        console.warn('No valid entries provided for deletion.');
+        return;
+    }
+
+    try {
+        const deleteKeys = entriesToDelete.map((entry) => entry.id);
+
+        await db.words.bulkDelete(deleteKeys);
+
+        console.log(`${entriesToDelete.length} slur entries deleted.`);
+    } catch (error) {
+        console.error('Error while bulk deleting the slur entries ', error);
+    }
+}
+
+async function checkAllHardCodedSlurs(db) {
+    const mainSlurListArray = mainSlurList.split('|');
+    const existingWords = await db.words
+        .where('source')
+        .equals('hard_coded')
+        .toArray();
+    const existingWordSet = new Set(
+        existingWords.map((wordObj) => wordObj.word)
+    );
+    // Check if all words in mainSlurListArray exist in the database
+    const allWordsExist = mainSlurListArray.every((word) =>
+        existingWordSet.has(word)
+    );
+    if (allWordsExist) {
+        return true;
+    }
+    return false;
+}
+
+export async function initializeSlurs(db) {
+    console.log('Initializing Indexed Slurs Database');
+
+    try {
+        const allSlurs = await getAllSlurs(db);
         const mainSlurListArray = mainSlurList.split('|');
-        const existingWords = await db.words
-            .where('source')
-            .equals('hard_coded')
-            .toArray();
-        const existingWordSet = new Set(existingWords.map(wordObj => wordObj.word))
-        // Check if all words in mainSlurListArray exist in the database
-        const allWordsExist = mainSlurListArray.every(word => existingWordSet.has(word));
-        if (allWordsExist) {
-            console.log('All hard-coded slurs already exist in the database. Skipping initialization.');
+
+        if (allSlurs && allSlurs.length > 0) {
+            const allHardCodedSlursExists = await checkAllHardCodedSlurs(db);
+
+            if (allHardCodedSlursExists) {
+                console.log(
+                    'All hard-coded slurs already exist in the database. Skipping initialization.'
+                );
+                return;
+            } else {
+                if (mainSlurListArray.length > 0) {
+                    // Only add the slurs that are missing
+                    const existingWords = await getSlursBySource(
+                        db,
+                        'hard_coded'
+                    );
+
+                    const existingWordSet = new Set(
+                        existingWords.map((wordObj) => wordObj.word)
+                    );
+
+                    const slursToAdd = mainSlurListArray.filter(
+                        (s) => !existingWordSet.has(s)
+                    );
+
+                    if (slursToAdd.length > 0) {
+                        await bulkAddSlurs(db, slursToAdd, 'hard_coded');
+                        console.log('Missing hard-coded slurs added.');
+                    }
+                } else {
+                    console.log('No slurs found in the JSON file.');
+                }
+            }
             return;
         }
-
-        // Index hard-coded slurs into the database
+        const source_crowdsourced = 'public_crowdsourced_slurs';
+        const publicSlurs = await getPublicSlurs();
+        await bulkAddSlurs(db, publicSlurs, source_crowdsourced);
         if (mainSlurListArray.length > 0) {
             await bulkAddSlurs(db, mainSlurListArray, 'hard_coded');
-            console.log(`Indexed ${mainSlurListArray.length} hard-coded slurs into the database.`);
         } else {
-            console.log('No slurs found in the JSON file.');
+            console.log(
+                'No slurs found in the JSON file. No hard-coded slurs added while initialization.'
+            );
         }
-
-        // fetch public metadata
-        await fetchPublicSlursMetadata(db);
     } catch (error) {
         console.error('Error during database initialization:', error);
+    }
+}
+
+export async function initializeMetadata(db) {
+    console.log('Initializing Indexed Slurs-Metadata Database');
+    try {
+        const existingMetadata = await getAllSlurMetadata(db);
+
+        if (!existingMetadata || existingMetadata?.length === 0) {
+            await fetchPublicSlursMetadata(db);
+            return;
+        } else {
+            console.log(
+                'Metadata entries already present. Skipping Initialization.'
+            );
+        }
+    } catch (error) {
+        console.error(
+            'Error occurred while initializing slur metadata. ',
+            error
+        );
     }
 }
