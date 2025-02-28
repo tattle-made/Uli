@@ -26,11 +26,9 @@ let missedSlurListStatic = 'லூசு|கூFire';
 let missedEscapedSlurListStatic = 'choo$iya';
 
 // Function to initialize/update the expression's
-async function initializeExpressions() {
+async function initializeSlurReplaceExpressions(slurWords) {
     try {
-        // Fetch all words
-        const allSlurWords = await getAllSlurs();
-        const slurList = allSlurWords.map((wordObj) => wordObj.word);
+        const slurList = slurWords.map((wordObj) => wordObj.word);
         console.log("Slur words fetched from DB", slurList.length);
 
         // Sort and join slur list
@@ -46,15 +44,10 @@ async function initializeExpressions() {
     }
 }
 
-// Initialize expressions on module load
-(async () => {
-    await initializeExpressions();
-})();
-
 export function replaceSlur(sentence) {
     // Ensure expressions are initialized
     if (!expression || !expressionStatic) {
-        throw new Error('Expressions not initialized. Call initializeExpressions first.');
+        throw new Error('Expressions not initialized. Call initializeSlurReplaceExpressions first.');
     }
     
     sentence = sentence.replace(expression, generateMask);
@@ -106,3 +99,5 @@ function testSlurReplace() {
     }
 
 }
+
+export { initializeSlurReplaceExpressions };

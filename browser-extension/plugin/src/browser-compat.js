@@ -24,15 +24,18 @@ if (userAgent.includes('chrome')) {
 let userBrowserTabs;
 let userBrowserContextMenus;
 let userBrowserStorage;
+let userBrowserRuntime;
 
 if (userBrowser === BROWSER_FIREFOX) {
     userBrowserTabs = browser.tabs;
     userBrowserContextMenus = browser.contextMenus;
     userBrowserStorage = browser.storage;
+    userBrowserRuntime = browser.runtime;
 } else if (userBrowser === BROWSER_CHROME) {
     userBrowserTabs = chrome.tabs;
     userBrowserContextMenus = chrome.contextMenus;
     userBrowserStorage = chrome.storage;
+    userBrowserRuntime = chrome.runtime;
 } else {
     // TODO: Indicate to user that browser is unsupported
 }
@@ -44,5 +47,6 @@ export {
     userBrowser,
     userBrowserTabs,
     userBrowserContextMenus,
-    userBrowserStorage
+    userBrowserStorage,
+    userBrowserRuntime
 };

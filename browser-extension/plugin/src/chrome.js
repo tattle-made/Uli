@@ -9,7 +9,7 @@
  * advantage of the dev tools you are familiar with for developing React Apps.
  */
 // import config from './config';
-import { userBrowserTabs, userBrowserStorage } from './browser-compat';
+import { userBrowserTabs, userBrowserStorage, userBrowserRuntime } from './browser-compat';
 // const ENVIRONMENT = config.ENVIRONMENT;
 
 /*
@@ -76,22 +76,24 @@ async function sendMessage(type, data = null) {
         message.data = data;
     }
     console.log('message', message);
-
-    if (
-        type === 'updateData' ||
-        type === 'fetchPersonalSlurs' ||
-        type === 'syncApprovedCrowdsourcedSlurs'
-    ) {
-        const [tab] = await userBrowserTabs.query({
-            active: true,
-            currentWindow: true
-        });
-        const response = await userBrowserTabs.sendMessage(tab.id, message);
-        console.log('response from CS', response);
-        return response;
-    } else {
-        throw new Error('Unsupported message type');
+    const [tab] = await userBrowserTabs.query({
+        active: true,
+        currentWindow: true
+    });
+    const response = await userBrowserTabs.sendMessage(tab.id, message);
+    console.log('response from CS', response);
+    return response;
+}
+async function sendMessageSW(type, data = null) {
+    const message = { type };
+    if (data) {
+        message.data = data;
     }
+    console.log('message', message);
+
+    const response = await userBrowserRuntime.sendMessage(message);
+    console.log('response from Service Worker', response);
+    return response;
 }
 
 function addListener(type, func, response) {
@@ -109,5 +111,6 @@ export default {
     get,
     set,
     sendMessage,
-    addListener
+    addListener,
+    sendMessageSW
 };

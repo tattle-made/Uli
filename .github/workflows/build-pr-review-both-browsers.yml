@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - main
+      - dev
+    paths:
+    # Run only if files inside this folder are modified
+      - "browser-extension/plugin/**"
 
 permissions:
   actions: write
@@ -39,13 +43,13 @@ jobs:
           ls
           pwd
           npm install
-          npm run build
+          npm run build:chrome
           mv dist/ extension-chrome/
           npm run build:firefox
           mv dist/ extension-firefox/
 
       - name: "Upload dist folder as artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: extension-artifacts
           path: |
