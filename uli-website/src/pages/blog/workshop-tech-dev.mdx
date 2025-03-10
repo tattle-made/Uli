@@ -13,7 +13,9 @@ import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 This year, the team has been implementing changes to Uli on the development side, and there have been many notable updates. In the process of conducting workshops with university students to explore Uli's use as a pedagogical tool for sensitization, we also created functionalities that show great potential for different use cases. This made us rethink the experience of using Uli and prioritize features differently. In this post we will go over changes we made to the browser extension and new features we built to support these workshops. 
 We were earlier able to build out our hover feature with help of a contributor through the DMP program we participated in. This feature allows you to hover on a slur word and view the contextual information (what we call “metadata”) behind it; you can enable it on the latest version of Uli by selecting the “Enable Slur Metadata” feature:
 
-![](/Uli-new-features-2025.png)
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img src="/Uli-new-features-2025.png" alt="Uli-new-features-2025" width="350" height="400" style={{ border: "1px solid black" }} />
+</div>
 
 In the process of updating Uli, we also created the following options on the plugin:
 
@@ -31,7 +33,7 @@ Ahead of workshops we were conducting with college faculty and students, we work
 
      We created a page that would allow users to look at words they added to the crowdsourced list, as well as the contextual information added about it, as below. It was  developed using the Phoenix web framework in the Elixir programming language and we use PostgreSQL for our database.
 
-![](/Uli-community-page.png)
+<img src="/Uli-community-page.png" alt="Uli input 1" width="800" height="400" style={{ border: "1px solid black" }} />
 
   2. Interactive Input Page
      For our second workshop, we wanted to have an interactive exercise where we set forth examples of daily life with uncomfortable interactions and problematic words mixed in during conversations.
@@ -40,9 +42,10 @@ Ahead of workshops we were conducting with college faculty and students, we work
      This feature processes the input text, checking it against predefined metadata. Matched words are wrapped with styled HTML elements for highlighting and hover effects, and the result is dynamically rendered.
      React components manage state and lifecycle events for interactions.
      
-![](/Uli-input-1.png)
-
-![](/Uli-input-2.png)
+<div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+  <img src="/Uli-input-1.png" alt="Uli input 1" width="400" height="300" style={{ border: "1px solid black" }} />
+  <img src="/Uli-input-2.png" alt="Uli input 2" width="400" height="300" style={{ border: "1px solid black" }} />
+</div>
 
 These functionalities proved extremely useful for us during our workshops: our participants were able to quickly grasp and take part in the task owing to the ease with which they could access them. 
 As we explore further possibilities, we welcome any feedback and suggestions. Our repositories are open on Github, and we invite contributors interested in exploring these projects to check out our open issues and reach out [here](https://github.com/tattle-made/Uli/issues).
