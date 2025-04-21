@@ -8,9 +8,11 @@ import {
   FormField,
   Form,
   Image,
+  Grommet,
 } from "grommet";
 
-import lose from "../images/you-lose-good-day.gif";
+import lose from "../images/thats-not-possible.gif";
+import perhaps from "../images/perhaps.gif";
 import { StaticImage } from "gatsby-plugin-image";
 
 import AppShell from "../components/molecules/AppShell";
@@ -24,19 +26,36 @@ function TextWithLabel({
   disabled = false,
   max = undefined,
 }) {
+  const customTheme = {
+    global: {
+      colors: {
+        focus: "brand",
+      },
+    },
+  };
+
   return (
-    <FormField label={<Text >{label}</Text>}>
-      <TextInput
-        required
-        placeholder={placeholder}
-        type={type}
-        min={0}
-        max={max}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-      />
-    </FormField>
+    <Grommet theme={customTheme}>
+      <FormField
+        label={<Text>{label}</Text>}
+        contentProps={{
+          colors: {
+            focus: "brand",
+          },
+        }}
+      >
+        <TextInput
+          required
+          placeholder={placeholder}
+          type={type}
+          min={0}
+          max={max}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      </FormField>
+    </Grommet>
   );
 }
 
@@ -78,8 +97,7 @@ const DataworksGameCalculator = () => {
     setResults(null);
   }, [days, budget, hoursRequired, annotators, wagePerAnnotator, hoursPerDay]);
 
-  function calculate(e) {
-    // e.preventDefault()
+  function calculate() {
     setResults(null);
     setAlert(null);
     if (
@@ -97,7 +115,9 @@ const DataworksGameCalculator = () => {
     let totalCost = Math.ceil(hoursRequired * wagePerAnnotator);
     let moneyLeft = budget - totalCost;
     let operationStatus =
-      moneyLeft >= 0 && totalDaysRequired <= days ? "Feasible" : "Not Feasible";
+      moneyLeft >= 0 && totalDaysRequired <= days
+        ? "Feasible—But What More You Could Offer?"
+        : "Not Feasible";
     setResults({
       totalDaysRequired,
       totalCost,
@@ -155,21 +175,19 @@ const DataworksGameCalculator = () => {
           <Button
             onClick={generateRandomScenario}
             label="Generate Random Scenario"
-            
             className="w-52 mt-2 text-sm bg-gray-200 hover:bg-gray-300"
           />
           {selectedScenario && (
             <Button
               onClick={clearScenario}
               label="Clear Scenario"
-              
               className="w-52 mt-2 text-sm bg-red-100 hover:bg-red-200"
             />
           )}
         </Box>
         {selectedScenario && (
           <Box className="flex flex-col items-center">
-            <Text  margin={{ top: "small" }}>
+            <Text margin={{ top: "small" }}>
               <b>Scenario:</b> {selectedScenario.text}
             </Text>
             {selectedScenario.note && (
@@ -244,6 +262,7 @@ const DataworksGameCalculator = () => {
               onChange={(e) => setHoursPerDay(e.target.value)}
               label="Hours per Annotator per Day"
               type="number"
+              max={24}
             />
           </Box>
         </Box>
@@ -257,18 +276,22 @@ const DataworksGameCalculator = () => {
 
       {alert && (
         <Box>
-          <Text  color="status-error" margin={{ top: "small" }}>
+          <Text color="status-error" margin={{ top: "small" }}>
             {alert}
           </Text>
         </Box>
       )}
 
       {results && (
-        <Box margin={{ top: "small" }}>
-          <Heading level={4} margin={{ top: "0", bottom: "0" }}>
+        <Box
+          margin={{ top: "small" }}
+          align="center"
+          className="p-4 bg-gradient-to-tr from-slate-50 to-amber-50"
+        >
+          <Heading level={3} margin={{ top: "0", bottom: "0" }}>
             Summary:
           </Heading>
-          <Text >
+          <Text>
             Number of days the task will take:{" "}
             <b
               className={`${
@@ -283,36 +306,40 @@ const DataworksGameCalculator = () => {
               )}
             </b>
           </Text>
-          <Text >
+          <Text>
             Total Cost of Data Work: <b>{results.totalCost} Rs.</b>
           </Text>
-          <Text >
+          <Text>
             Money Left:{" "}
             <b className={`${results.moneyLeft < 0 ? "text-red-500" : ""}`}>
               {results.moneyLeft} Rs.
             </b>
           </Text>
-          <Text >
-            Operation Status:{" "}
+          <Text size="xlarge">
             <b
               className={`${
-                results.operationStatus === "Not Feasible" ? "text-red-500" : ""
+                results.operationStatus === "Not Feasible"
+                  ? "text-red-500"
+                  : "text-lime-700"
               }`}
             >
               {results.operationStatus}
             </b>
           </Text>
 
-          {results.operationStatus === "Not Feasible" && (
+          {results.operationStatus === "Not Feasible" ? (
             <Box>
               <Image src={lose} className="w-64" />
+            </Box>
+          ) : (
+            <Box>
+              <Image src={perhaps} className="w-64" />
             </Box>
           )}
 
           <Button
             onClick={clearResults}
             label="Clear"
-            
             className="w-20 mt-1 text-sm bg-red-100 hover:bg-red-200 rounded-md  "
           />
         </Box>
@@ -327,10 +354,10 @@ const DataworksGamePage = () => {
       <Box align="center" margin={"large"}>
         <Box width={"large"}>
           <Heading level={2} alignSelf="center">
-            Make An Offer They Can’t Refuse
+            An Offer One Can’t Refuse
           </Heading>
 
-          <Text  margin={{ bottom: "medium" }}>
+          <Text margin={{ bottom: "medium" }}>
             The game is a group-based exercise around the data sourcing and
             annotation experience. Emulating the limited resources available in
             the real world, players must think of creative ways to complete
@@ -338,7 +365,7 @@ const DataworksGamePage = () => {
           </Text>
 
           <Heading level={3}>The Backdrop</Heading>
-          <Text  margin={{ bottom: "medium" }}>
+          <Text margin={{ bottom: "medium" }}>
             Datasets used to train AI are often labeled/annotated. This work is
             done by data annotators. It has been reported that data annotators
             are often underpaid and exploited, see{" "}
@@ -382,25 +409,37 @@ const DataworksGamePage = () => {
             annotators to come onboard under the terms they have set out.
             Players are therefore pushed to compute and create a compensation
             model under real-world constraints in a ‘fair’ manner, and/or
-            propose creative alternatives to supplant the model.
+            propose creative alternatives to supplant the model. This game was
+            first tried out at the Mapping Data Work conference in March 2025,
+            in partnership with the University of the Amsterdam, and Aapti
+            Institute.
           </Text>
 
           <Heading level={3}>Why is Tattle doing this?</Heading>
-          <Text>In 2023, with support from Mozilla through the Data Futures Lab, we began thinking through our annotation process in building Uli, and arrived at a question: “How can we recognise the contributions of the annotators who work with us on Uli beyond monetary compensation?” We have been speaking with stakeholders and data workers to address this question of value and recognition for data annotators; you can read more about it <a href="https://uli.tattle.co.in/blog/approach-data-annotation/" rel="noopener noreferrer" target="_blank">here</a>. This activity frames this question, and opens up the room for people to participate in developing models of compensation for a data annotation pipeline.</Text>
+          <Text>
+            In 2023, with support from Mozilla through the Data Futures Lab, we
+            began thinking through our annotation process in building Uli, and
+            arrived at a question: “How can we recognise the contributions of
+            the annotators who work with us on Uli beyond monetary
+            compensation?” We have been speaking with stakeholders and data
+            workers to address this question of value and recognition for data
+            annotators; you can read more about it{" "}
+            <a
+              href="https://uli.tattle.co.in/blog/approach-data-annotation/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              here
+            </a>
+            . This activity frames this question, and opens up the room for
+            people to participate in developing models of compensation for a
+            data annotation pipeline.
+          </Text>
 
           <Heading className="text-3xl">Game Play</Heading>
 
           <Heading level={3}>Goal</Heading>
-          <Text
-       
-            margin={{ bottom: "medium" }}
-            className="font-semibold"
-          >
-            {/* A group of players take on the persona of a Data
-              Vendor and are given a task. There are some constraints on budget
-              and the number of days in which you have to give the data back to
-              the Data Client. Your job is to make a pitch to data annotators
-              describing their wage and other benefits. */}
+          <Text margin={{ bottom: "medium" }} className="font-semibold">
             Your job is to make a pitch to data annotators describing their wage
             and other benefits.
           </Text>
@@ -411,7 +450,7 @@ const DataworksGamePage = () => {
               alt="Personas"
             ></StaticImage>
           </Box>
-          <Text  className="mt-4">
+          <Text className="mt-4">
             <b>Personas:</b> Data Vendor, Data Annotator and Data Client (aka
             looming figure in the background waiting for the annotations to be
             delivered)
@@ -420,7 +459,7 @@ const DataworksGamePage = () => {
           <Heading level={3} className="mb-0">
             Set Up
           </Heading>
-          <Text >
+          <Text>
             <ul>
               <li>
                 Each player is sorted into a group of 4-5 people (the group size
@@ -450,7 +489,7 @@ const DataworksGamePage = () => {
           <Heading level={3} className="mb-2">
             The Rules of the Game
           </Heading>
-          <Text >
+          <Text>
             <ul>
               <li>
                 Each group gets a scenario, budget, and dataset size, some with
@@ -475,8 +514,9 @@ const DataworksGamePage = () => {
                 With the given information, the groups make a 1-minute pitch.
               </li>
               <li>
-                Whoever has the best compensation model wins. Brownie points for
-                the most creative one.
+                The calculator is an assistive device. To win the game you need
+                to make an offer beyond just the monetory compensation, so get
+                creative!
               </li>
             </ul>
           </Text>
@@ -484,7 +524,7 @@ const DataworksGamePage = () => {
           <Heading className="mb-0" level={3}>
             Is there anything I need to set up?
           </Heading>
-          <Text >
+          <Text>
             <ul>
               <li>
                 If you are playing offline, and have one disinterested friend
@@ -504,7 +544,7 @@ const DataworksGamePage = () => {
           </Text>
 
           <Heading level={3}>The Calculator</Heading>
-          <Text  margin={{ bottom: "medium" }}>
+          <Text margin={{ bottom: "medium" }}>
             If you’d like to use the calculator as a standalone functionality
             outside of the game, please feel free to do so. Don’t click the
             generate scenario button, and you should be good to go.

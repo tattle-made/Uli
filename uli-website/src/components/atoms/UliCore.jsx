@@ -19,6 +19,14 @@ export const Theme = {
       height: "32px",
     },
   },
+
+    // global: {
+    //   focus: {
+    //     border: {
+    //       color: "brand",
+    //     },
+    //   },
+    // },
 };
 
 export const FeatureLabel = styled.p`
