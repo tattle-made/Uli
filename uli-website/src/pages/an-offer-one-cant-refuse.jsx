@@ -411,7 +411,7 @@ const DataworksGamePage = () => {
             model under real-world constraints in a ‘fair’ manner, and/or
             propose creative alternatives to supplant the model. This game was
             first tried out at the Mapping Data Work conference in March 2025,
-            in partnership with the University of the Amsterdam, and Aapti
+            in partnership with the University of Amsterdam and Aapti
             Institute.
           </Text>
 
