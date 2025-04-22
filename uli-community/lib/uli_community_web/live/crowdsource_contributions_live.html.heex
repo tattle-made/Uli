@@ -146,7 +146,20 @@
   </:col>
 
   <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
-  <:col :let={slur} label="Categories"><%= Enum.join(slur.categories || ["-"], ",") %></:col>
+  <:col :let={slur} label="Categories">
+  <%= 
+    Enum.map(slur.categories || ["-"], fn category ->
+      category
+      |> to_string()
+      |> String.replace("_", " ")
+      |> String.split(" ")
+      |> Enum.map(&String.capitalize/1)
+      |> Enum.join(" ")
+    end)
+    |> Enum.join(", ")
+  %>
+</:col>
+
   <:action :let={slur}>
     <%= if @user_role == :admin do %>
       <.button phx-click={
