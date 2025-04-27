@@ -3,6 +3,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   alias UliCommunity.PublicDataset
   use UliCommunityWeb, :live_view
   import UliCommunityWeb.CoreComponents
+  import UliCommunityWeb.CrowdsourceTable
   alias UliCommunity.PublicDataset.PluginSlurMetadata
 
   alias UliCommunity.UserContribution
