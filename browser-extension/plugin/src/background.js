@@ -100,18 +100,35 @@ userBrowserContextMenus.onClicked.addListener((info, tab) => {
     switch (info.menuItemId) {
         case 'add-slur':
             console.log('slur added');
-            userBrowserTabs.sendMessage(
-                tab.id,
-                { type: 'SLUR_ADDED', slur: info.selectionText },
-                function (response) {
-                    console.log(response);
-                }
-            );
+            const slur = info.selectionText;  
+            const pageUrl = tab.url;  
+            sendSlurToBackend(slur, pageUrl);  
             break;
         default:
-            console('unexpected action');
+            console.log('unexpected action');
     }
 });
+
+function sendSlurToBackend(slur, pageUrl) {
+    fetch('https://your-backend-api-url/api/crowdsourced_slurs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            slur: slur,
+            url: pageUrl
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Slur successfully sent:', data);
+    })
+    .catch(error => {
+        console.error('Error sending slur:', error);
+    });
+}
+
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.type) {
