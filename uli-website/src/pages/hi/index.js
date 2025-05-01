@@ -96,8 +96,9 @@ const IndexPage = () => {
               ईमेल के रूप में भेज सकतें हैं।
             </FeatureDescription>
             <FeatureFollowUp>
-              This crowdsourced list of offensive phrases is dynamic and each
-              user can gather around with Uli and help build a longer list.
+            यह क्राउडसोर्स्ड आपत्तिजनक वाक्यांशों की सूची गतिशील है 
+            और हर उपयोगकर्ता उली के साथ जुड़कर इसे और लंबा
+            बनाने में मदद कर सकता है।
             </FeatureFollowUp>
           </Box>
           <Box width={"28em"}>
@@ -146,14 +147,15 @@ const IndexPage = () => {
             <Box width={"1.2em"}>
               <img src={"/Slur Replacement Icon.png"}></img>
             </Box>
-            <FeatureLabel>DETECTING OGBV</FeatureLabel>
+            <FeatureLabel>ऑनलाइन लिंग-आधारित हिंसा की पहचान करना</FeatureLabel>
             <FeatureHeadline>
-              The machine learning feature uses pattern recognition drawing from
-              previously tagged oGBV posts to detect and hide problematic posts
-              from a user’s feed.
+            यह मशीन लर्निंग फ़ीचर, पहले से टैग की गईं ऑनलाइन लिंग-आधारित
+            हिंसा (OGBV) वाली पोस्टों के आधार पर पैटर्न रिकग्निशन (पैटर्न पहचान)
+            का उपयोग करके, उपयोगकर्ता की फ़ीड से
+            समस्याग्रस्त पोस्ट का पता लगाता है और उन्हें छिपा देता है।
             </FeatureHeadline>
             <FeatureDescription>
-              Both these features are work in progress.
+            इन दोनों फ़ीचर्स पर अभी काम चल रहा है।
             </FeatureDescription>
             {/* <FeatureFollowUp>
               {t("section_feature_2_follow_up")}
@@ -166,7 +168,7 @@ const IndexPage = () => {
       </Box>
 
       <Box align="center">
-        <h1>Coming Soon</h1>
+        <h1>जल्द आ रहा है</h1>
       </Box>
 
       <Box align="center" margin={"large"}>
@@ -201,7 +203,7 @@ const IndexPage = () => {
           <Box width={"medium"} alignSelf={"center"}>
             <Box align="center">
               <SectionLableOne>संसाधन</SectionLableOne>
-              <Link to="/resources">Current Resources</Link>
+              <Link to="/resources">मौजूदा संसाधन</Link>
             </Box>
 
             <SectionCenteredBody>
