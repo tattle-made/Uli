@@ -70,7 +70,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       # :meaning,
       :categories,
       :contributor_user_id,
-      :page_url
+      # :page_url
     ])
   end
 

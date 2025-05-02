@@ -102,6 +102,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function handleMessageSlurAdded(request) {
     const slur = request.slur;
+    const page_url = request.page_url
     // log('slur added from bg', slur);
 
     // Adding Slur to IndexedDB
@@ -126,7 +127,8 @@ async function handleMessageSlurAdded(request) {
         return;
     }
     const crowdsourceData = {
-        label: slur
+        label: slur,
+        page_url: page_url
     };
     try {
         // await createSlurAndCategory(user.accessToken, crowdsourceData);
