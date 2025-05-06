@@ -102,7 +102,7 @@ userBrowserContextMenus.onClicked.addListener((info, tab) => {
             console.log('slur added');
             userBrowserTabs.sendMessage(
                 tab.id,
-                { type: 'SLUR_ADDED', slur: info.selectionText, page_url: tab.url},
+                { type: 'SLUR_ADDED', slur: info.selectionText},
                 function (response) {
                     console.log(response);
                 }
