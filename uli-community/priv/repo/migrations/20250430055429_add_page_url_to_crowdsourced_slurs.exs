@@ -3,7 +3,7 @@ defmodule UliCommunity.Repo.Migrations.AddPageUrlToCrowdsourcedSlurs do
 
   def change do
     alter table(:crowdsourced_slurs) do
-      add :page_url, :string
+      add(:page_url, :text)
     end
   end
 end

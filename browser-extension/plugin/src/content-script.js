@@ -101,6 +101,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 async function handleMessageSlurAdded(request) {
+    console.log(request);
     const slur = request.slur;
     const page_url = request.page_url
     // log('slur added from bg', slur);
