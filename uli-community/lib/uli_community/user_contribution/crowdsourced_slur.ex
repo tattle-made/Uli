@@ -14,7 +14,8 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
              :categories,
              :contributor_user_id,
              :inserted_at,
-             :updated_at
+             :updated_at,
+             :page_url
            ]}
 
   schema "crowdsourced_slurs" do
@@ -78,11 +79,13 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     crowdsourced_slur
     |> cast(attrs, [
       :label,
-      :contributor_user_id
+      :contributor_user_id,
+      :page_url
     ])
     |> validate_required([
       :label,
-      :contributor_user_id
+      :contributor_user_id,
+      :page_url
     ])
   end
 end

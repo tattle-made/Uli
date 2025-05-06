@@ -132,6 +132,7 @@ async function handleMessageSlurAdded(request) {
     };
     try {
         // await createSlurAndCategory(user.accessToken, crowdsourceData);
+        console.log(` CroundSoursedata ${crowdsourceData.page_url}`)
         await createCrowdsourceSlur(crowdsourceData, user.token);
         console.log('finsihed POST req');
         window.alert(`Slur word "${slur}" added to Uli`);
