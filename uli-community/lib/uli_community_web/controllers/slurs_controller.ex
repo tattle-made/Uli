@@ -17,17 +17,20 @@ defmodule UliCommunityWeb.SlursController do
 
       {:error, reason} ->
         Logger.error("Failed to get slurs: #{inspect(reason)}")
+
         conn
         |> put_status(:internal_server_error)
         |> json(%{
-          message: "Failed to get slurs",
+          message: "Failed to get slurs"
         })
+
       _ ->
         Logger.error("Something went wrong during getting slurs")
+
         conn
         |> put_status(:internal_server_error)
         |> json(%{
-          message: "Failed to get slurs",
+          message: "Failed to get slurs"
         })
     end
   end
@@ -38,6 +41,7 @@ defmodule UliCommunityWeb.SlursController do
         conn
         |> put_status(:not_found)
         |> json(%{error: "Slur not found"})
+
       slur ->
         conn
         |> json(%{message: "success", slur: slur})
@@ -91,13 +95,13 @@ defmodule UliCommunityWeb.SlursController do
   end
 
   # Modified create method to include page_url
-  def create(conn, %{"label" => _label, "page_url" => _page_url} = payload) when map_size(payload) == 2 do
+  def create(conn, %{"label" => _label, "page_url" => _page_url} = payload)
+      when map_size(payload) == 2 do
     user = conn.assigns[:current_user]
 
     payload =
       payload
       |> Map.put("contributor_user_id", user.id)
-      |> Map.put("page_url", _page_url)
 
     Logger.debug("INSIDE CREATE REQUEST: #{inspect(payload)}")
 
@@ -117,7 +121,6 @@ defmodule UliCommunityWeb.SlursController do
     end
   end
 
-
   def create(conn, payload) do
     user = conn.assigns[:current_user]
 
@@ -126,7 +129,6 @@ defmodule UliCommunityWeb.SlursController do
       payload
       |> Enum.into(%{}, fn {k, v} -> {Macro.underscore(k), v} end)
       |> Map.put("contributor_user_id", user.id)
-      |> Map.put("page_url", payload["url"])  # Added page URL to the payload
 
     Logger.debug("INSIDE CREATE REQUEST: #{inspect(payload)}")
 

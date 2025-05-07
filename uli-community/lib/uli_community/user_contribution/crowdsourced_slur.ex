@@ -70,8 +70,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       # :appropriation_context,
       # :meaning,
       :categories,
-      :contributor_user_id,
-      # :page_url
+      :contributor_user_id
     ])
   end
 
