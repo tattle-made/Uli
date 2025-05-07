@@ -8,12 +8,11 @@ defmodule UliCommunityWeb.SlursController do
     |> send_resp(200, "")
   end
 
-  def index(conn,_) do
+  def index(conn, _) do
     user = conn.assigns[:current_user]
 
     case UserContribution.get_crowdsourced_slur_by_user(user.id) do
       {:ok, slurs} ->
-        # IO.inspect(slurs, label: "SLURS: ")
         json(conn, %{message: "success", slurs: slurs})
 
       {:error, reason} ->
@@ -22,42 +21,39 @@ defmodule UliCommunityWeb.SlursController do
         conn
         |> put_status(:internal_server_error)
         |> json(%{
-          message: "Failed to get slurs",
+          message: "Failed to get slurs"
         })
-    _ ->
+
+      _ ->
         Logger.error("Something went wrong during getting slurs")
 
         conn
         |> put_status(:internal_server_error)
         |> json(%{
-          message: "Failed to get slurs",
+          message: "Failed to get slurs"
         })
     end
   end
 
   def show(conn, %{"id" => id}) do
-
     case UserContribution.get_crowdsourced_slur!(id) do
       nil ->
         conn
         |> put_status(:not_found)
         |> json(%{error: "Slur not found"})
-      slur->
+
+      slur ->
         conn
         |> json(%{message: "success", slur: slur})
-
     end
-
   end
 
   def update(conn, payload) do
-
     IO.inspect(payload, label: "RECEIVED PAYLOAD: ")
 
     payload =
       payload
       |> Enum.into(%{}, fn {k, v} -> {Macro.underscore(k), v} end)
-      # |> Map.put("contributor_user_id", user.id)
 
     slur = UserContribution.get_crowdsourced_slur!(payload["id"])
 
@@ -98,8 +94,9 @@ defmodule UliCommunityWeb.SlursController do
     end
   end
 
-
-  def create(conn, %{"label" => _label} = payload) when map_size(payload) == 1 do
+  # Modified create method to include page_url
+  def create(conn, %{"label" => _label, "page_url" => _page_url} = payload)
+      when map_size(payload) == 2 do
     user = conn.assigns[:current_user]
 
     payload =
@@ -107,7 +104,6 @@ defmodule UliCommunityWeb.SlursController do
       |> Map.put("contributor_user_id", user.id)
 
     Logger.debug("INSIDE CREATE REQUEST: #{inspect(payload)}")
-    # Logger.debug("USER IS: #{inspect(user)}")
 
     case UserContribution.create_crowdsourced_slur_with_label(payload) do
       {:ok, slur} ->
@@ -128,13 +124,13 @@ defmodule UliCommunityWeb.SlursController do
   def create(conn, payload) do
     user = conn.assigns[:current_user]
 
+    # Add page_url to payload for saving URL
     payload =
       payload
       |> Enum.into(%{}, fn {k, v} -> {Macro.underscore(k), v} end)
       |> Map.put("contributor_user_id", user.id)
 
     Logger.debug("INSIDE CREATE REQUEST: #{inspect(payload)}")
-    # Logger.debug("USER IS: #{inspect(user)}")
 
     case UserContribution.create_crowdsourced_slur(payload) do
       {:ok, slur} ->
