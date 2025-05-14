@@ -34,7 +34,6 @@ defmodule UliCommunityWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    get "/dashboard", PageController, :dashboard
   end
 
   # Other scopes may use custom stacks.
@@ -148,6 +147,7 @@ defmodule UliCommunityWeb.Router do
       live "/gentoken", TokenGeneratorLive, :index
       live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
       live "/plugin-metadata/:slur_label", PluginMetadataSlurLive, :index
+      get "/dashboard", PageController, :dashboard
     end
   end
 
