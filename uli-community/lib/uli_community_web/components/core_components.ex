@@ -521,7 +521,6 @@ defmodule UliCommunityWeb.CoreComponents do
     """
   end
 
-
   @doc """
   Renders a data list.
 

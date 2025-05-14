@@ -129,7 +129,31 @@
   Crowdsource Contributions
 </.header>
 
-<.slur_metadata_table
-  slurs_metadata_list={@slurs_metadata_list}
-  user_role={@user_role}
-/>
+<.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
+  <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
+  <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
+  <:col :let={slur} label="Is Casual?">
+    <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
+  </:col>
+
+  <:col :let={slur} label="Is Appropriated?">
+    <%= if is_nil(slur.appropriated), do: "-", else: (slur.appropriated == true && "Yes") || "No" %>
+  </:col>
+  <:col :let={slur} label="Appropriation Context">
+    <%= if is_nil(slur.appropriation_context),
+      do: "-",
+      else: (slur.appropriation_context == true && "Yes") || "No" %>
+  </:col>
+
+  <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
+  <:col :let={slur} label="Categories"><%= Enum.join(slur.categories || ["-"], ",") %></:col>
+  <:action :let={slur}>
+    <%= if @user_role == :admin do %>
+      <.button phx-click={
+        JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
+      }>
+        Add
+      </.button>
+    <% end %>
+  </:action>
+</.table>
