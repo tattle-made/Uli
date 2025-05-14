@@ -87,4 +87,22 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       :page_url
     ])
   end
+
+  def changeset_seed(crowdsourced_slur, attrs) do
+    crowdsourced_slur
+    |> cast(attrs, [
+      :label,
+      :level_of_severity,
+      :casual,
+      :appropriated,
+      :appropriation_context,
+      :meaning,
+      :categories,
+      :contributor_user_id,
+      :page_url
+    ])
+    |> validate_required([
+      :label
+    ])
+  end
 end
