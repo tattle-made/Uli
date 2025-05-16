@@ -5,7 +5,4 @@ defmodule UliCommunityWeb.PageController do
     render(conn, :home, layout: false)
   end
 
-  def dashboard(conn, _params) do
-    render(conn, :dashboard)
-  end
 end
