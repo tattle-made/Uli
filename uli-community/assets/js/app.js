@@ -21,6 +21,8 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import * as d3 from "d3";
+
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -53,4 +55,10 @@ window.addEventListener("phx:copy", (event) => {
       copyBtn.innerHTML = "Copy 📋";
     }, 1000);
   });
+});
+
+import { drawPieChart } from "./pie_chart";
+
+window.addEventListener("DOMContentLoaded", () => {
+  drawPieChart();
 });
