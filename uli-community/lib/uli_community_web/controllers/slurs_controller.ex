@@ -102,6 +102,7 @@ defmodule UliCommunityWeb.SlursController do
     payload =
       payload
       |> Map.put("contributor_user_id", user.id)
+      |> Map.put("source", :plugin)
 
     Logger.debug("INSIDE CREATE REQUEST: #{inspect(payload)}")
 
@@ -129,6 +130,7 @@ defmodule UliCommunityWeb.SlursController do
       payload
       |> Enum.into(%{}, fn {k, v} -> {Macro.underscore(k), v} end)
       |> Map.put("contributor_user_id", user.id)
+      |> Map.put("source", :plugin)
 
     Logger.debug("INSIDE CREATE REQUEST: #{inspect(payload)}")
 

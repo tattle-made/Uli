@@ -62,7 +62,9 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       :meaning,
       :categories,
       :contributor_user_id,
-      :page_url
+      :page_url,
+      :source,
+      :session_id
     ])
     |> validate_required([
       :label,
@@ -72,7 +74,8 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       # :appropriation_context,
       # :meaning,
       :categories,
-      :contributor_user_id
+      :contributor_user_id,
+      :source
     ])
   end
 
@@ -81,12 +84,35 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     |> cast(attrs, [
       :label,
       :contributor_user_id,
-      :page_url
+      :page_url,
+      :source
     ])
     |> validate_required([
       :label,
       :contributor_user_id,
-      :page_url
+      :page_url,
+      :source
+    ])
+  end
+
+  def changeset_seed(crowdsourced_slur, attrs) do
+    crowdsourced_slur
+    |> cast(attrs, [
+      :label,
+      :level_of_severity,
+      :casual,
+      :appropriated,
+      :appropriation_context,
+      :meaning,
+      :categories,
+      :contributor_user_id,
+      :page_url,
+      :source,
+      :session_id
+    ])
+    |> validate_required([
+      :label,
+      :source
     ])
   end
 end
