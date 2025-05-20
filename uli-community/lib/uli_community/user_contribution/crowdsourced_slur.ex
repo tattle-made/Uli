@@ -26,6 +26,8 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     field(:appropriation_context, :boolean, default: nil)
     field(:meaning, :string)
     field(:page_url, :string)
+    field(:source, Ecto.Enum, values: [:plugin, :experts_2022, :crowdsourcing_exercise])
+    field(:session_id, :string)
 
     field(:categories, {:array, Ecto.Enum},
       values: [
