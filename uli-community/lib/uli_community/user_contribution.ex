@@ -54,16 +54,24 @@ defmodule UliCommunity.UserContribution do
     |> CrowdsourcedSlur.changeset(attrs)
     |> Repo.insert()
     |> case do
-      {:ok, slur}->
+      {:ok, slur} ->
         Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
         {:ok, slur}
-      error -> error
+
+      error ->
+        error
     end
   end
 
   def create_crowdsourced_slur_with_label(attrs \\ %{}) do
     %CrowdsourcedSlur{}
     |> CrowdsourcedSlur.changeset_only_label(attrs)
+    |> Repo.insert()
+  end
+
+  def create_crowdsourced_slur_seed(attrs \\ %{}) do
+    %CrowdsourcedSlur{}
+    |> CrowdsourcedSlur.changeset_seed(attrs)
     |> Repo.insert()
   end
 
@@ -115,7 +123,8 @@ defmodule UliCommunity.UserContribution do
   end
 
   def get_crowdsourced_slur_by_user(contributor_user_id) do
-    slurs = Repo.all(from s in CrowdsourcedSlur, where: s.contributor_user_id == ^contributor_user_id)
+    slurs =
+      Repo.all(from(s in CrowdsourcedSlur, where: s.contributor_user_id == ^contributor_user_id))
 
     {:ok, slurs}
   end
