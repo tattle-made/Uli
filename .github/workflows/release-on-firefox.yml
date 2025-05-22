@@ -28,6 +28,8 @@ jobs:
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: "Build and Test"
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
         run: |
           cd browser-extension/plugin
           ls
