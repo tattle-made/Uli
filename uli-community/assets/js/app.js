@@ -57,8 +57,11 @@ window.addEventListener("phx:copy", (event) => {
   });
 });
 
-import { drawPieChart } from "./pie_chart";
 
-window.addEventListener("DOMContentLoaded", () => {
-  drawPieChart();
+import { drawPieChart } from "./pie_chart.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  drawPieChart(window.pieChartData);
 });
+
+

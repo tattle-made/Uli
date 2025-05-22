@@ -3,3 +3,9 @@
   
   <div id="pie-chart" phx-update="ignore" class="inline-block"></div>
 </div>
+
+<script>
+  window.pieChartData = <%= raw Jason.encode!(@pie_data) %>;
+</script>
+
+<script src="/assets/app.js"></script>
