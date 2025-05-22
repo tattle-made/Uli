@@ -10,7 +10,7 @@ defmodule UliCommunityWeb.DashboardController do
       %{label: "Green", value: 60},
       %{label: "Black", value: 70},
       %{label: "Purple", value: 90},
-      %{label: "Orange", value: 120}
+      %{label: "Orange", value: 20}
     ]
 
     render(conn, :index, pie_data: pie_data, layout: false)

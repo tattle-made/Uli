@@ -21,7 +21,7 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
-import * as d3 from "d3";
+import { drawPieChart } from "./pie_chart.js";
 
 
 let csrfToken = document
@@ -57,11 +57,8 @@ window.addEventListener("phx:copy", (event) => {
   });
 });
 
-
-import { drawPieChart } from "./pie_chart.js";
-
 document.addEventListener("DOMContentLoaded", () => {
-  drawPieChart(window.pieChartData);
+  drawPieChart();
 });
 
 

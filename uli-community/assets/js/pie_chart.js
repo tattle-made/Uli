@@ -1,6 +1,9 @@
 import * as d3 from "d3";
 
-export function drawPieChart(data) {
+export function drawPieChart() {
+  const container = document.querySelector("#pie-chart");
+  const data = JSON.parse(container.dataset.pie)
+
   if (!data || data.length === 0) return;
   d3.select("#pie-chart").select("svg").remove();
 
