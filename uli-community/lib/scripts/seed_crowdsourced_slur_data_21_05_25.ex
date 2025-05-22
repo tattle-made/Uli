@@ -2,7 +2,10 @@ defmodule Scripts.SeedCrowdsourcedSlurData210525 do
   alias UliCommunity.UserContribution
 
   def run do
-    path = Path.join(["priv", "crowdsourced-21-14-2025", "slur_metadata.json"])
+    path =
+      :uli_community
+      |> :code.priv_dir()
+      |> Path.join("crowdsourced-21-14-2025/slur_metadata.json")
 
     case File.read(path) do
       {:ok, json_string} ->
