@@ -20,7 +20,7 @@ defmodule UliCommunity.MediaProcessing.VidVecRepClip do
     - `{:ok, embedding}` on success where embedding is a list of floats
     - `{:error, reason}` on failure
   """
-  def get_embedding(file_path) when is_binary(file_path) do
+  def get_embedding(file_path) do
     case Python.start(python_path: @python_path) do
       {:ok, py} ->
         try do
