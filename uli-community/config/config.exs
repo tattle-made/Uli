@@ -28,6 +28,9 @@ config :uli_community, UliCommunityWeb.Endpoint,
   pubsub_server: UliCommunity.PubSub,
   live_view: [signing_salt: "4Xf27Zts"]
 
+# pg vector
+config :uli_community, UliCommunity.Repo, types: UliCommunity.PostgrexTypes
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
