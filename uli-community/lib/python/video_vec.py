@@ -10,6 +10,34 @@ from feluda.models.media_factory import VideoFactory
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Singleton instance
+_feluda_instance = None
+
+def _get_feluda():
+    global _feluda_instance
+    if _feluda_instance is None:
+        config = {
+            "operators": {
+                "label": "Operators",
+                "parameters": [
+                    {
+                        "name": "video vector",
+                        "type": "vid_vec_rep_clip",
+                        "parameters": {"index_name": "video"},
+                    }
+                ],
+            }
+        }
+
+        with tempfile.NamedTemporaryFile(suffix=".yml", mode="w", delete=True) as temp_file:
+            yaml.dump(config, temp_file)
+            temp_file.flush()
+            
+            _feluda_instance = Feluda(temp_file.name)
+            _feluda_instance.setup()
+    
+    return _feluda_instance
+
 def get_avg_vec(file_path: Union[str, bytes]) -> List[float]:
     """
     Get the average vector representation of a video file.
@@ -32,36 +60,17 @@ def get_avg_vec(file_path: Union[str, bytes]) -> List[float]:
 
         logger.info(f"Processing video from path: {file_path_str}")
 
-        config = {
-            "operators": {
-                "label": "Operators",
-                "parameters": [
-                    {
-                        "name": "video vector",
-                        "type": "vid_vec_rep_clip",
-                        "parameters": {"index_name": "video"},
-                    }
-                ],
-            }
-        }
-
-        with tempfile.NamedTemporaryFile(suffix=".yml", mode="w", delete=True) as temp_file:
-            yaml.dump(config, temp_file)
-            temp_file.flush()
+        feluda = _get_feluda()
+        video_object = VideoFactory.make_from_url(file_path_str)
+        operator = feluda.operators.get()["vid_vec_rep_clip"]
+        video_vec = operator.run(video_object)
+        
+        avg_vec = next((vec for vec in video_vec if vec["is_avg"]), None)
+        if not avg_vec:
+            raise RuntimeError("No average vector found in video processing results")
             
-            feluda = Feluda(temp_file.name)
-            feluda.setup()
-
-            video_object = VideoFactory.make_from_url(file_path_str)
-            operator = feluda.operators.get()["vid_vec_rep_clip"]
-            video_vec = operator.run(video_object)
-            
-            avg_vec = next((vec for vec in video_vec if vec["is_avg"]), None)
-            if not avg_vec:
-                raise RuntimeError("No average vector found in video processing results")
-                
-            return avg_vec["vid_vec"]
-            
+        return avg_vec["vid_vec"]
+        
     except Exception as e:
         logger.error(f"Error processing video: {str(e)}")
         raise RuntimeError(f"Failed to process video: {str(e)}")
