@@ -61,7 +61,10 @@ defmodule UliCommunity.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:corsica, "~>2.1.3"},
-      {:gen_smtp, "~> 1.0"}
+      {:gen_smtp, "~> 1.0"},
+      {:pgvector, "~> 0.3.0"},
+      {:erlport, "~> 0.11.0"},
+      {:export, "~> 0.1.0"}
     ]
   end
 
