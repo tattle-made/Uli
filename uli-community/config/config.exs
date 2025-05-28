@@ -7,6 +7,12 @@
 # General application configuration
 import Config
 
+config :uli_community, Oban,
+  engine: Oban.Engines.Basic,
+  notifier: Oban.Notifiers.Postgres,
+  queues: [default: 10],
+  repo: UliCommunity.Repo
+
 config :uli_community,
   ecto_repos: [UliCommunity.Repo],
   generators: [timestamp_type: :utc_datetime]
