@@ -64,7 +64,9 @@ defmodule UliCommunity.MixProject do
       {:gen_smtp, "~> 1.0"},
       {:pgvector, "~> 0.3.0"},
       {:erlport, "~> 0.11.0"},
-      {:export, "~> 0.1.0"}
+      {:export, "~> 0.1.0"},
+      {:oban, "~> 2.19"},
+      {:igniter, "~> 0.5", only: [:dev]}
     ]
   end
 
