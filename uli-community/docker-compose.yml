@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:14.10
+    image: pgvector/pgvector:pg14
     restart: always
     environment:
       - POSTGRES_USER=uli_community

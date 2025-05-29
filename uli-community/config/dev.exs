@@ -83,3 +83,8 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# setup python venv paths
+config :uli_community, :python,
+  python: Path.join([File.cwd!(), "lib", "python", ".venv", "bin", "python"]),
+  python_path: Path.join([File.cwd!(), "lib", "python"])

@@ -7,6 +7,12 @@
 # General application configuration
 import Config
 
+config :uli_community, Oban,
+  engine: Oban.Engines.Basic,
+  notifier: Oban.Notifiers.Postgres,
+  queues: [index: 1],
+  repo: UliCommunity.Repo
+
 config :uli_community,
   ecto_repos: [UliCommunity.Repo],
   generators: [timestamp_type: :utc_datetime]
@@ -21,6 +27,9 @@ config :uli_community, UliCommunityWeb.Endpoint,
   ],
   pubsub_server: UliCommunity.PubSub,
   live_view: [signing_salt: "4Xf27Zts"]
+
+# pg vector
+config :uli_community, UliCommunity.Repo, types: UliCommunity.PostgrexTypes
 
 # Configures the mailer
 #

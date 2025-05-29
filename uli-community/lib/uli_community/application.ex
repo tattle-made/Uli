@@ -11,6 +11,7 @@ defmodule UliCommunity.Application do
       UliCommunityWeb.Telemetry,
       UliCommunity.Repo,
       {DNSCluster, query: Application.get_env(:uli_community, :dns_cluster_query) || :ignore},
+      {Oban, Application.fetch_env!(:uli_community, Oban)},
       {Phoenix.PubSub, name: UliCommunity.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: UliCommunity.Finch},
