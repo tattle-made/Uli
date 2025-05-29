@@ -128,4 +128,14 @@ defmodule UliCommunity.UserContribution do
 
     {:ok, slurs}
   end
+
+  def get_top_5_slurs do
+  CrowdsourcedSlur
+  |> group_by([s], s.label)
+  |> select([s], %{label: s.label, count: count(s.id)})
+  |> order_by([s], desc: count(s.id))
+  |> limit(5)
+  |> Repo.all()
+end
+
 end

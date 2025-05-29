@@ -25,7 +25,7 @@ export function drawPieChart() {
       "#b2d8b2", "#d9d9d9", "#d1b3ff", "#ffd699"
     ]);
 
-  const pie = d3.pie().value(d => d.value);
+  const pie = d3.pie().value(d => d.count);
   const arc = d3.arc().innerRadius(0).outerRadius(radius);
 
   svg.selectAll("path")
