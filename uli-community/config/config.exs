@@ -10,7 +10,7 @@ import Config
 config :uli_community, Oban,
   engine: Oban.Engines.Basic,
   notifier: Oban.Notifiers.Postgres,
-  queues: [index: 10],
+  queues: [index: 1],
   repo: UliCommunity.Repo
 
 config :uli_community,
