@@ -25,7 +25,7 @@ export function drawPieChart() {
       "#b2d8b2", "#d9d9d9", "#d1b3ff", "#ffd699"
     ]);
 
-  const pie = d3.pie().value(d => d.value);
+  const pie = d3.pie().value(d => d.count);
   const arc = d3.arc().innerRadius(0).outerRadius(radius);
 
   svg.selectAll("path")
@@ -38,11 +38,28 @@ export function drawPieChart() {
     .style("stroke-width", "2px");
 
   svg.selectAll("text")
-    .data(pie(data))
-    .enter()
-    .append("text")
-    .text(d => d.data.label)
-    .attr("transform", d => `translate(${arc.centroid(d)})`)
-    .style("text-anchor", "middle")
-    .style("font-size", "14px");
+  .data(pie(data))
+  .enter()
+  .append("text")
+  .attr("transform", d => `translate(${arc.centroid(d)})`)
+  .style("text-anchor", "middle")
+  .style("font-size", "14px")
+  .style("fill", "#333")
+  .each(function(d) {
+    const text = d3.select(this);
+    
+    // Line 1: Label
+    text.append("tspan")
+      .attr("x", 0)
+      .attr("dy", "0em")
+      .text(d.data.label);
+
+    // Line 2: Count
+    text.append("tspan")
+      .attr("x", 0)
+      .attr("dy", "1.2em")
+      .style("font-size", "12px")
+      .style("fill", "#555")
+      .text(`(${d.data.count})`);
+  });
 }
