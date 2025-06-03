@@ -136,7 +136,7 @@ defmodule UliCommunityWeb.Router do
   scope "/", UliCommunityWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/dashboard", DashboardController, :index
+    # get "/dashboard", DashboardController, :index
 
     live_session :require_authenticated_user,
       on_mount: [
@@ -149,6 +149,7 @@ defmodule UliCommunityWeb.Router do
       live "/gentoken", TokenGeneratorLive, :index
       live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
       live "/plugin-metadata/:slur_label", PluginMetadataSlurLive, :index
+      live "/dashboard", DashboardLive
     end
   end
 
