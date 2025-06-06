@@ -37,7 +37,7 @@ This documentation not only has a guide through installation but also a basic tu
 
 The first one was wishing to host a basic server on the web, for which I had to firstly understand the basic structure of any copilot application which consists of a list of services, each of which are deployed on various environments and are one of four services namely a Load Balanced Web Service, a Request Driven Web Service, a Worker service and a Backend service. The first two often face the public web whereas the last two are private. These basic concepts are very well explained in the documentation itself, however they sometimes miss some important caveats such as how to deploy in custom environments and how does the local file structure of the application affect the services. What I found more helpful are a couple of videos from AWS events itself, which not only explain the structure well but also answer a few FAQs that I had. I strongly suggest going through both of them if you are just starting out and have only gone through the preliminary pages of the documentation:
 
-[](https://www.youtube.com/watch?v=EqW--TKQ_PQ)
+[AWS Copilot Basics - YouTube](https://www.youtube.com/watch?v=EqW--TKQ_PQ)
 
 [](https://www.youtube.com/watch?v=drYy_V7X1BU)
 
@@ -45,7 +45,7 @@ The first one was wishing to host a basic server on the web, for which I had to 
 
 The next thing I wanted to try out is deploying two services in the same environment that can talk to each other. Turns out, co-pilot offers a much more elegant solution to it rather than the traditional way of them sending each other communication on the web. AWS has a feature known as service discovery, which gives a unique identity to each service allowing them to communicate within the VPC without ever having to expose themselves to the web. A basic explanation of this is given under the "Developing" section of the documentation bunched up with a lot of other services you may wish to use:
 
-[Service Discovery - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/developing/service-discovery/ "Service Discovery - AWS Copilot CLI")
+[Service Discovery - AWS Copilot CLI](https://aws.github.io/copilot-cli/docs/concepts/services/#service-discovery)
 
 However, the best and most practical explanation of service discovery for co-pilot that I found on the web is on the following website; which in on itself is also another great resource apart from the official documentation to get some hands on practice on the basic features of co-pilot:
 
@@ -63,7 +63,7 @@ The most useful thing however, is the website taking you through what is essenti
 
 Next, I want to talk about a topic that I personally briefly touched upon in my journey through learning co-pilot is running specific commands in the running instance of a container, which can be done by the "exec" command which allows for further optimization where you can run specific tasks in a container only when the need arises for it. The flexibility is vast since it allows you to open a bash session as a part of the service. The reference to the same can be found here:
 
-[](https://www.youtube.com/watch?v=Evrl9Vux31k)
+[AWS Copilot Exec Tutorial - YouTube](https://www.youtube.com/watch?v=Evrl9Vux31k)
 
 Next, I tackled the other few components that are a part of the full deployment of an application. First of which is jobs, which, simply put, are tasks running as a part of the CloudFormation structure. These are usually much more automated and are useful for debugging purposes since you can track their logs and find exact points of failure and resolve them accordingly. Use the following command if needed for the same:
 
