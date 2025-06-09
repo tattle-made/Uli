@@ -8,7 +8,8 @@ defmodule UliCommunity.MediaProcessing.VidVecRepClip do
   use Export.Python
   require Logger
 
-  @python_path Path.expand("lib/python")
+  @python_path Application.compile_env(:uli_community, [:python, :python_path])
+  @python_executable Application.compile_env(:uli_community, [:python, :python])
 
   @doc """
   Gets the embedding vector for a video file.
@@ -21,7 +22,7 @@ defmodule UliCommunity.MediaProcessing.VidVecRepClip do
     - `{:error, reason}` on failure
   """
   def get_embedding(file_path) do
-    case Python.start(python_path: @python_path) do
+    case Python.start(python_path: @python_path, python: @python_executable) do
       {:ok, py} ->
         try do
           embedding = Python.call(py, "video_vec", "get_avg_vec", [file_path])

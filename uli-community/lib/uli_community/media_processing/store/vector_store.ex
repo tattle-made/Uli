@@ -1,4 +1,4 @@
-defmodule UliCommunity.MediaStore.VectorStore do
+defmodule UliCommunity.MediaProcessing.Store.VectorStore do
   use Ecto.Schema
   import Ecto.Changeset
 

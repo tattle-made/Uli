@@ -4,7 +4,7 @@ defmodule UliCommunity.Workers.VideoEmbeddingWorker do
     max_attempts: 3
 
   alias UliCommunity.MediaProcessing.VidVecRepClip
-  alias UliCommunity.MediaStore.VectorStore
+  alias UliCommunity.MediaProcessing.Store.VectorStore
   alias UliCommunity.Repo
 
   @impl Oban.Worker
