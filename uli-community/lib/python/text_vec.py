@@ -14,23 +14,15 @@ def _get_model():
         _model_instance = SentenceTransformer("krutrim-ai-labs/vyakyarth")
     return _model_instance
 
-def get_embedding(text: str) -> list:
-    """
-    Get the vector embedding for a given text.
-    
-    Args:
-        text: The input text to get embedding for
-        
-    Returns:
-        List of floats representing the text embedding
-        
-    Raises:
-        RuntimeError: If text processing fails
-    """
+def get_embedding(text: str):
+    if isinstance(text, bytes):
+        text_str = text.decode("utf-8")
+    else:
+        text_str = text
     try:
-        logger.info(f"Processing text: {text}")
+        logger.info(f"Processing text: {text_str}")
         model = _get_model()
-        embedding = model.encode(text, show_progress_bar=False)
+        embedding = model.encode(text_str, show_progress_bar=True)
         return embedding.tolist()
     except Exception as e:
         logger.error(f"Error processing text: {str(e)}")
