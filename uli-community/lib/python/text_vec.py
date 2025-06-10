@@ -1,5 +1,6 @@
-from sentence_transformers import SentenceTransformer
 import logging
+
+from sentence_transformers import SentenceTransformer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -8,11 +9,13 @@ logger = logging.getLogger(__name__)
 # Singleton instance
 _model_instance = None
 
+
 def _get_model():
     global _model_instance
     if _model_instance is None:
         _model_instance = SentenceTransformer("krutrim-ai-labs/vyakyarth")
     return _model_instance
+
 
 def get_embedding(text: str):
     if isinstance(text, bytes):
@@ -27,6 +30,7 @@ def get_embedding(text: str):
     except Exception as e:
         logger.error(f"Error processing text: {str(e)}")
         raise RuntimeError(f"Failed to process text: {str(e)}")
+
 
 if __name__ == "__main__":
     # Example usage
