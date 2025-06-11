@@ -56,6 +56,7 @@ defmodule UliCommunity.UserContribution do
     |> case do
       {:ok, slur} ->
         Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
         {:ok, slur}
 
       error ->
@@ -67,6 +68,15 @@ defmodule UliCommunity.UserContribution do
     %CrowdsourcedSlur{}
     |> CrowdsourcedSlur.changeset_only_label(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, slur} ->
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
+        {:ok, slur}
+
+      error ->
+        error
+    end
   end
 
   def create_crowdsourced_slur_seed(attrs \\ %{}) do
@@ -130,12 +140,11 @@ defmodule UliCommunity.UserContribution do
   end
 
   def get_top_slurs(n) when is_integer(n) and n > 0 do
-  CrowdsourcedSlur
-  |> group_by([s], s.label)
-  |> select([s], %{label: s.label, count: count(s.id)})
-  |> order_by([s], desc: count(s.id))
-  |> limit(^n)
-  |> Repo.all()
-end
-
+    CrowdsourcedSlur
+    |> group_by([s], fragment("lower(?)", s.label))
+    |> select([s], %{label: fragment("lower(?)", s.label), count: count(s.id)})
+    |> order_by([_s], desc: count(fragment("lower(?)", ^"label")))
+    |> limit(^n)
+    |> Repo.all()
+  end
 end

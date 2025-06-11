@@ -22,14 +22,21 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import { drawPieChart } from "./pie_chart.js";
+import { PieChartHook } from "./hooks/pie_chart_hook";
+
 
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
+
+let Hooks = {};
+Hooks.PieChartHook = PieChartHook;
+
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
+  hooks: Hooks
 });
 
 // Show progress bar on live navigation and form submits
@@ -57,8 +64,5 @@ window.addEventListener("phx:copy", (event) => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  drawPieChart();
-});
 
 

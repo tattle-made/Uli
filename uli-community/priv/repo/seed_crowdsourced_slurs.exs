@@ -92,6 +92,24 @@ slurs = [
     source: :crowdsourcing_exercise
   },
   %{
+    label: "ray",
+    page_url: "https://example.com/ray",
+    contributor_user_id: "1",
+    source: :crowdsourcing_exercise
+  },
+  %{
+    label: "ray",
+    page_url: "https://example.com/ray",
+    contributor_user_id: "1",
+    source: :crowdsourcing_exercise
+  },
+  %{
+    label: "ray",
+    page_url: "https://example.com/ray",
+    contributor_user_id: "1",
+    source: :crowdsourcing_exercise
+  },
+  %{
     label: "drift",
     page_url: "https://example.com/drift",
     contributor_user_id: "1",
