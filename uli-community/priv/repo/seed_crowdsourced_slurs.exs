@@ -73,7 +73,6 @@ slurs = [
     contributor_user_id: "1",
     source: :crowdsourcing_exercise
   },
-
   %{
     label: "ray",
     page_url: "https://example.com/ray",
