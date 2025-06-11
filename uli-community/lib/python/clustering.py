@@ -41,6 +41,17 @@ def _get_feluda():
     return _feluda_instance
 
 
+def decode_bytes(obj):
+    if isinstance(obj, dict):
+        return {decode_bytes(k): decode_bytes(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [decode_bytes(i) for i in obj]
+    elif isinstance(obj, bytes):
+        return obj.decode("utf-8")
+    else:
+        return obj
+
+
 def get_clusters(operator_parameters: List[Dict[str, Any]]) -> Any:
     """
     Run clustering on a list of embedding payloads using Feluda's cluster_embeddings operator.
@@ -57,6 +68,8 @@ def get_clusters(operator_parameters: List[Dict[str, Any]]) -> Any:
         raise ValueError("No operator parameters provided for clustering")
 
     try:
+        operator_parameters = decode_bytes(operator_parameters)
+
         feluda = _get_feluda()
         cluster_operator = feluda.operators.get().get("cluster_embeddings")
 
