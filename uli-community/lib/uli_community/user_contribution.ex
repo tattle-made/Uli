@@ -56,6 +56,7 @@ defmodule UliCommunity.UserContribution do
     |> case do
       {:ok, slur} ->
         Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
         {:ok, slur}
 
       error ->

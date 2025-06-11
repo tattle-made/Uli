@@ -136,8 +136,6 @@ defmodule UliCommunityWeb.Router do
   scope "/", UliCommunityWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    # get "/dashboard", DashboardController, :index
-
     live_session :require_authenticated_user,
       on_mount: [
         {UliCommunityWeb.UserAuth, :ensure_authenticated},
