@@ -1,14 +1,15 @@
-defmodule UliCommunity.TextProcessor do
+defmodule Scripts.ExtractCrowdsourcedSlurEmbedding do
   alias UliCommunity.Workers.TextEmbeddingWorker
   alias UliCommunity.UserContribution.CrowdsourcedSlur
   alias UliCommunity.MediaProcessing.Store.TextVecStoreVyakyarth
   alias UliCommunity.Repo
   import Ecto.Query
+  import Logger
 
   @doc """
   Enqueues a single text for embedding processing.
   """
-  def enqueue_text(label, crowdsourced_slur_id) do
+  defp enqueue_text(label, crowdsourced_slur_id) do
     %{label: label, crowdsourced_slur_id: crowdsourced_slur_id}
     |> TextEmbeddingWorker.new()
     |> Oban.insert()
@@ -29,6 +30,7 @@ defmodule UliCommunity.TextProcessor do
 
     # Get all unprocessed slurs
     unprocessed_slurs = Repo.all(unprocessed_slurs_query)
+    Logger.info("Enqueueing #{length(unprocessed_slurs)} unprocessed slurs")
 
     # Enqueue each unprocessed slur
     Enum.each(unprocessed_slurs, fn {slur_id, label} ->
