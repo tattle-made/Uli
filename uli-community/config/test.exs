@@ -39,3 +39,8 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+# setup python venv paths
+config :uli_community, :python,
+  python: Path.join([File.cwd!(), "lib", "python", ".venv", "bin", "python"]),
+  python_path: Path.join([File.cwd!(), "lib", "python"])
