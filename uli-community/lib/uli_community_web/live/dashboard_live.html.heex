@@ -1,9 +1,8 @@
 <div class="p-4">
-  <h2 class="text-xl font-bold mb-4">Dashboard</h2>
-
-  <div id="pie-chart"
-       phx-hook="PieChartHook"
-       data-pie={Jason.encode!(@slurs)}
-       class="w-full h-96">
-  </div>
+     <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+     <div id="bar-chart"
+          phx-hook="BarChartHook"
+          data-bar={Jason.encode!(@slurs)}
+          class="w-full h-96 mt-10">
+     </div>
 </div>

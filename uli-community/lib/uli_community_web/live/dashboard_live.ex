@@ -6,12 +6,12 @@ defmodule UliCommunityWeb.DashboardLive do
 
   def mount(_params, _session, socket) do
     if connected?(socket), do: Phoenix.PubSub.subscribe(UliCommunity.PubSub, @topic)
-    slurs = UserContribution.get_top_slurs(5)
+    slurs = UserContribution.get_top_slurs(10)
     {:ok, assign(socket, slurs: slurs)}
   end
 
   def handle_info(:slur_changed, socket) do
-    slurs = UserContribution.get_top_slurs(5)
+    slurs = UserContribution.get_top_slurs(10)
     {:noreply, assign(socket, slurs: slurs)}
   end
 end
