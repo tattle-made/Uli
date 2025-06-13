@@ -117,6 +117,15 @@ defmodule UliCommunity.UserContribution do
   """
   def delete_crowdsourced_slur(%CrowdsourcedSlur{} = crowdsourced_slur) do
     Repo.delete(crowdsourced_slur)
+    |> case do
+      {:ok, slur} ->
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:deleted_slur, slur})
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
+        {:ok, slur}
+
+      error ->
+        error
+    end
   end
 
   @doc """
