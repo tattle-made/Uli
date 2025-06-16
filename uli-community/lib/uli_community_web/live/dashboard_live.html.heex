@@ -1,8 +1,17 @@
 <div class="p-4">
-     <h2 class="text-xl font-bold mb-4">Dashboard</h2>
-     <div id="bar-chart"
-          phx-hook="BarChartHook"
-          data-bar={Jason.encode!(@slurs)}
-          class="w-full h-96 mt-10">
-     </div>
+  <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+
+  <div class="text-center">
+    <div class="inline-block align-top w-full lg:w-[48%] h-96 mr-2"
+         id="bar-chart"
+         phx-hook="BarChartHook"
+         data-bar={Jason.encode!(@slurs)}>
+    </div>
+
+    <div class="inline-block align-top w-full lg:w-[48%] h-96"
+         id="pie-chart"
+         phx-hook="PieChartHook"
+         data-severity={Jason.encode!(@severity_data)}>
+    </div>
+  </div>
 </div>
