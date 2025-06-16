@@ -13,8 +13,8 @@ export function drawPieChart() {
 
   d3.select("#pie-chart").select("svg").remove();
 
-  const width = 600;
-  const height = 600;
+  const width = 500;
+  const height = 500;
   const radius = width / 2;
 
   const svg = d3.select("#pie-chart")

@@ -1,17 +1,23 @@
 <div class="p-4">
   <h2 class="text-xl font-bold mb-4">Dashboard</h2>
 
-  <div class="text-center">
-    <div class="inline-block align-top w-full lg:w-[48%] h-96 mr-2"
-         id="bar-chart"
-         phx-hook="BarChartHook"
-         data-bar={Jason.encode!(@slurs)}>
+  <div class="flex flex-col lg:flex-row text-center">
+    <div class="flex-1">
+      <h3 class="text-lg font-semibold mb-2">Top 10 Contributed Slurs</h3>
+      <div class="inline-block align-top w-full h-96"
+           id="bar-chart"
+           phx-hook="BarChartHook"
+           data-bar={Jason.encode!(@slurs)}>
+      </div>
     </div>
 
-    <div class="inline-block align-top w-full lg:w-[48%] h-96"
-         id="pie-chart"
-         phx-hook="PieChartHook"
-         data-severity={Jason.encode!(@severity_data)}>
+    <div class="flex-1">
+      <h3 class="text-lg font-semibold mb-2">Severity Distribution</h3>
+      <div class="inline-block align-top h-96"
+           id="pie-chart"
+           phx-hook="PieChartHook"
+           data-severity={Jason.encode!(@severity_data)}>
+      </div>
     </div>
   </div>
 </div>
