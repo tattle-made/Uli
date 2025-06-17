@@ -2,36 +2,37 @@
   <h2 class="text-xl font-bold mb-4">Dashboard</h2>
 
   <div class="flex flex-col lg:flex-row text-center">
-
     <!-- Slurs Chart -->
     <div class="flex-1">
       <h3 class="text-lg font-semibold mb-2">Top 10 Contributed Slurs</h3>
 
       <%= if @slurs do %>
-        <div class="inline-block align-top w-full h-96"
-             id="bar-chart"
-             phx-hook="BarChartHook"
-             data-bar={Jason.encode!(@slurs)}>
+        <div
+          class="inline-block align-top w-full h-96"
+          id="bar-chart"
+          phx-hook="BarChartHook"
+          data-bar={Jason.encode!(@slurs)}
+        >
         </div>
       <% else %>
         <p class="text-red-600">Unable to load slur data</p>
       <% end %>
     </div>
-
     <!-- Severity Chart -->
     <div class="flex-1">
       <h3 class="text-lg font-semibold mb-2">Severity Distribution</h3>
 
       <%= if @severity_data do %>
-        <div class="inline-block align-top h-96"
-             id="pie-chart"
-             phx-hook="PieChartHook"
-             data-severity={Jason.encode!(@severity_data)}>
+        <div
+          class="inline-block align-top h-96"
+          id="pie-chart"
+          phx-hook="PieChartHook"
+          data-severity={Jason.encode!(@severity_data)}
+        >
         </div>
       <% else %>
         <p class="text-red-600">Unable to load severity data</p>
       <% end %>
     </div>
-
   </div>
 </div>

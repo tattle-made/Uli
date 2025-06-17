@@ -56,7 +56,6 @@ defmodule UliCommunity.UserContribution do
     |> case do
       {:ok, slur} ->
         Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
-        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
         {:ok, slur}
 
       error ->
@@ -71,7 +70,6 @@ defmodule UliCommunity.UserContribution do
     |> case do
       {:ok, slur} ->
         Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
-        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
         {:ok, slur}
 
       error ->
@@ -120,7 +118,6 @@ defmodule UliCommunity.UserContribution do
     |> case do
       {:ok, slur} ->
         Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:deleted_slur, slur})
-        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "slur_updates", :slur_changed)
         {:ok, slur}
 
       error ->
@@ -158,10 +155,9 @@ defmodule UliCommunity.UserContribution do
   end
 
   def get_severity_distribution do
-  UliCommunity.UserContribution.CrowdsourcedSlur
-  |> group_by([s], s.level_of_severity)
-  |> select([s], %{label: s.level_of_severity, count: count(s.id)})
-  |> Repo.all()
-end
-
+    UliCommunity.UserContribution.CrowdsourcedSlur
+    |> group_by([s], s.level_of_severity)
+    |> select([s], %{label: s.level_of_severity, count: count(s.id)})
+    |> Repo.all()
+  end
 end
