@@ -26,7 +26,7 @@ defmodule UliCommunity.UserContribution do
   """
   def list_crowdsourced_slurs_with_filters(search_params) do
     page_num = Keyword.get(search_params, :page_num, 1)
-    per_page = 20
+    per_page = 30
     offset = (page_num - 1) * per_page
 
     query = build_filtered_query(search_params)
@@ -49,6 +49,7 @@ defmodule UliCommunity.UserContribution do
 
   defp build_filtered_query(search_params) do
     CrowdsourcedSlur
+    |> filter_by_search(search_params)
     |> filter_by_level_of_severity(search_params)
     |> filter_by_casual(search_params)
     |> filter_by_appropriated(search_params)
@@ -154,6 +155,17 @@ defmodule UliCommunity.UserContribution do
       query
     else
       from(s in query, where: fragment("? && ?", s.categories, ^categories))
+    end
+  end
+
+  defp filter_by_search(query, search_params) do
+    search_term = Keyword.get(search_params, :search, "")
+
+    if search_term == "" do
+      query
+    else
+      search_pattern = "%#{search_term}%"
+      from(s in query, where: ilike(s.label, ^search_pattern))
     end
   end
 

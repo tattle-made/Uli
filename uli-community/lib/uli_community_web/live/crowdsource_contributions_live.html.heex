@@ -125,17 +125,37 @@
   </.simple_form>
 </.modal>
 
-<.header class="text-center">
+<.header class="text-center text-4xl">
   Crowdsource Contributions
 </.header>
 
-<div class="text-xl font-normal text-slate-900 mb-2">
-  <h1><%= "Showing all #{@query_count} contributions" %></h1>
-  <.link href={
-    ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
-  }>
-    <p class="text-gray-400 text-sm">clear filters</p>
-  </.link>
+<div class="flex justify-between items-center mb-4">
+  <div class="text-xl font-normal text-slate-900">
+    <h1><%= "Showing all #{@query_count} contributions" %></h1>
+    <.link href={
+      ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
+    }>
+      <p class="text-gray-400 text-sm">clear filters</p>
+    </.link>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <form phx-submit="search" class="relative flex">
+      <input
+        type="text"
+        name="search"
+        placeholder="Search slurs..."
+        value={Keyword.get(@search_params, :search, "")}
+        class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
+      <button
+        type="submit"
+        class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center border border-zinc-400 rounded-md bg-white hover:bg-zinc-100 transition"
+      >
+        <.icon name="hero-magnifying-glass" class="h-4 w-4 text-gray-500" />
+      </button>
+    </form>
+  </div>
 </div>
 
 <div class="flex flex-col sm:flex-row">

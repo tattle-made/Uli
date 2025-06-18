@@ -61,7 +61,16 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     search_params = socket.assigns.search_params
 
     new_search_params =
-      CrowdsourceContributionsSearchParams.update_search_param(search_params, value)
+      case value do
+        %{"name" => "search", "value" => search_value} ->
+          Keyword.put(search_params, :search, search_value)
+
+        %{"name" => _name, "value" => _val} ->
+          CrowdsourceContributionsSearchParams.update_search_param(search_params, value)
+
+        _ ->
+          search_params
+      end
 
     {:noreply,
      socket
@@ -69,6 +78,20 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      |> push_navigate(
        to:
          "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(new_search_params)}"
+     )}
+  end
+
+  def handle_event("search", %{"search" => search_value}, socket) do
+    search_params = socket.assigns.search_params
+    new_search_params = Keyword.put(search_params, :search, search_value)
+
+    {:noreply,
+     socket
+     |> assign(:search_params, new_search_params)
+     |> push_navigate(
+       to:
+         "/crowdsource-contributions?" <>
+           CrowdsourceContributionsSearchParams.search_param_string(new_search_params)
      )}
   end
 

@@ -8,7 +8,8 @@ defmodule UliCommunityWeb.CrowdsourceContributionsSearchParams do
     "sort",
     "from",
     "to",
-    "categories"
+    "categories",
+    "search"
   ]
 
   def params_to_keyword_list(params) do
@@ -21,7 +22,8 @@ defmodule UliCommunityWeb.CrowdsourceContributionsSearchParams do
       source: "all",
       from: "2024-01-01",
       to: Date.to_iso8601(Date.utc_today()),
-      categories: []
+      categories: [],
+      search: ""
     ]
 
     {:ok, params} =
@@ -90,6 +92,9 @@ defmodule UliCommunityWeb.CrowdsourceContributionsSearchParams do
           end
 
         Keyword.put(search_params, :categories, new_categories)
+
+      "search" ->
+        Keyword.put(search_params, :search, value["value"])
 
       _ ->
         search_params
