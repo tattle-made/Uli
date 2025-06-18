@@ -25,11 +25,19 @@ defmodule UliCommunityWeb.DashboardLive do
         _ -> nil
       end
 
+    weekly_submissions_data =
+      try do
+        UserContribution.get_weekly_submission_counts()
+      rescue
+        _ -> nil
+      end
+
     {:ok,
      assign(socket,
        slurs: slurs,
        severity_data: severity_data,
-       source_data: source_data
+       source_data: source_data,
+       weekly_submissions_data: weekly_submissions_data
      )}
   end
 end

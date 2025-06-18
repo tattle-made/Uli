@@ -13,8 +13,7 @@
           phx-hook="BarChartHook"
           data-bar={Jason.encode!(@slurs)}
           class="inline-block align-top w-full h-96"
-        >
-        </div>
+        ></div>
       <% else %>
         <p class="text-red-600">Unable to load slur data</p>
       <% end %>
@@ -29,27 +28,44 @@
           phx-hook="PieChartHook"
           data-severity={Jason.encode!(@severity_data)}
           class="inline-block align-top w-full h-96"
-        >
-        </div>
+        ></div>
       <% else %>
         <p class="text-red-600">Unable to load severity data</p>
       <% end %>
     </div>
   </div>
 
-  <!-- Second Row: Source Contribution Chart -->
-  <div class="mt-8 p-4">
-    <h3 class="text-lg font-semibold mb-2">Slur Contributions by Source</h3>
-    <%= if @source_data do %>
-      <div
-        id="source-bar-chart"
-        phx-hook="SourceBarChartHook"
-        data-source={Jason.encode!(@source_data)}
-        class="inline-block align-top w-full h-96"
-      >
-      </div>
-    <% else %>
-      <p class="text-red-600 text-center">Unable to load source data</p>
-    <% end %>
+  <!-- Second Row: Source Chart + Weekly Submissions -->
+  <div class="flex flex-col lg:flex-row text-center gap-4 mt-8">
+    
+    <!-- Source Contribution Chart -->
+    <div class="flex-1 p-4">
+      <h3 class="text-lg font-semibold mb-2">Slur Contributions by Source</h3>
+      <%= if @source_data do %>
+        <div
+          id="source-bar-chart"
+          phx-hook="SourceBarChartHook"
+          data-source={Jason.encode!(@source_data)}
+          class="inline-block align-top w-full h-96 mt-20"
+        ></div>
+      <% else %>
+        <p class="text-red-600 text-center">Unable to load source data</p>
+      <% end %>
+    </div>
+
+    <!-- Weekly Slur Submissions Line Chart -->
+    <div class="flex-1 p-4 mt-5">
+      <h3 class="text-lg font-semibold mb-2">Weekly Slur Submissions</h3>
+      <%= if @weekly_submissions_data do %>
+        <div
+          id="weekly-line-chart"
+          phx-hook="WeeklyLineChartHook"
+          data-weekly={Jason.encode!(@weekly_submissions_data)}
+          class="inline-block align-top w-full h-96"
+        ></div>
+      <% else %>
+        <p class="text-red-600 text-center">Unable to load weekly submission data</p>
+      <% end %>
+    </div>
   </div>
 </div>
