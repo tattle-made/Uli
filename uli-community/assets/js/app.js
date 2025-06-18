@@ -24,6 +24,7 @@ import topbar from "../vendor/topbar";
 import { drawPieChart } from "./pie_chart.js";
 import { PieChartHook } from "./hooks/pie_chart_hook";
 import { BarChartHook } from "./hooks/bar_chart_hook.js";
+import { SourceBarChartHook } from "./hooks/source_bar_chart_hook.js";
 
 
 
@@ -34,6 +35,7 @@ let csrfToken = document
 let Hooks = {};
 Hooks.PieChartHook = PieChartHook;
 Hooks.BarChartHook = BarChartHook
+Hooks.SourceBarChartHook = SourceBarChartHook
 
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

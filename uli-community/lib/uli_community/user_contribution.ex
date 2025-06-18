@@ -160,4 +160,11 @@ defmodule UliCommunity.UserContribution do
     |> select([s], %{label: s.level_of_severity, count: count(s.id)})
     |> Repo.all()
   end
+
+  def get_source_distribution do
+    CrowdsourcedSlur
+    |> group_by([s], s.source)
+    |> select([s], %{source: s.source, count: count(s.id)})
+    |> Repo.all()
+  end
 end
