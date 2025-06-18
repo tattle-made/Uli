@@ -132,10 +132,14 @@
 <div class="flex justify-between items-center mb-4">
   <div class="text-xl font-normal text-slate-900">
     <h1><%= "Showing all #{@query_count} contributions" %></h1>
-    <.link href={
-      ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
-    }>
-      <p class="text-gray-400 text-sm">clear filters</p>
+    <.link
+      href={
+        ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
+      }
+      class="mt-4 inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+    >
+      <.icon name="hero-x-circle" class="w-4 h-4" />
+      <span>Clear All Filters</span>
     </.link>
   </div>
 
