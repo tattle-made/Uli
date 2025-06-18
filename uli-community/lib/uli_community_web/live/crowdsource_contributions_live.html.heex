@@ -426,13 +426,13 @@
   </div>
 
   <div class="w-full sm:w-4/5 gap-4">
-    <div class="flex flex-row items-center gap-2 w-full p-2 border-2 border-green-100 rounded-md">
+    <div class="flex flex-row items-center gap-2 w-full p-2 border-2 border-black-200 rounded-md">
       <div :if={Keyword.get(@search_params, :page_num) - 1 > 0}>
         <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_previous_page(@search_params)}"}>
           <.icon name="hero-arrow-left" class="h-5 w-5" />
         </.link>
       </div>
-      <div class="rounded-full p-2 bg-zinc-100">
+      <div class="rounded-full p-2 bg-zinc-100 border border-gray-300">
         <p><%= Keyword.get(@search_params, :page_num) %></p>
       </div>
 
