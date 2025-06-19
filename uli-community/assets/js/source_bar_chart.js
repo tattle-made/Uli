@@ -50,7 +50,7 @@ export function drawSourceBarChart() {
     .attr("y", d => y(d.count))
     .attr("width", x.bandwidth())
     .attr("height", d => height - y(d.count))
-    .attr("fill", "#70234B");
+    .attr("fill", "#de8821");
 
   svg.selectAll(".label")
     .data(data)

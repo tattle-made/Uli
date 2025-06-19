@@ -27,7 +27,7 @@ export function drawPieChart() {
   // Color mapping based on severity level
   const color = d3.scaleOrdinal()
     .domain(["low", "medium", "high"])
-    .range(["#FCBFA4", "#F4C6D7", "#F39695"]); 
+    .range(["#f2a24a", "#e58224", "#de8821"]); 
 
   const pie = d3.pie().value(d => d.count);
   const arc = d3.arc().innerRadius(0).outerRadius(radius);

@@ -44,7 +44,7 @@ export function drawWeeklyLineChart() {
   svg.append("path")
     .datum(data)
     .attr("fill", "none")
-    .attr("stroke", "#4D5182")
+    .attr("stroke", "#e58224")
     .attr("stroke-width", 3)
     .attr("d", line);
 
@@ -70,5 +70,5 @@ export function drawWeeklyLineChart() {
     .attr("cx", d => xScale(d.label))
     .attr("cy", d => yScale(d.count))
     .attr("r", 4)
-    .attr("fill", "#020637");
+    .attr("fill", "#212121");
 }

@@ -41,7 +41,7 @@ export function drawBarChart() {
     .attr("x", 0)
     .attr("height", y.bandwidth())
     .attr("width", d => x(d.count))
-    .attr("fill", "#252653");
+    .attr("fill", "#212121");
 
   svg.selectAll("text.bar-label")
     .data(data)
