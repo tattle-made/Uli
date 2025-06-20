@@ -1,0 +1,11 @@
+[project]
+name = "project"
+version = "0.0.0"
+requires-python = ">=3.10"
+dependencies = [
+    "feluda==0.9.4",
+    "feluda-vid-vec-rep-clip==0.1.4",
+    "feluda-cluster-embeddings==0.1.4",
+    "ruff==0.11.11",
+    "sentence-transformers==4.1.0"
+]

@@ -1,4 +1,5 @@
 import Config
+config :uli_community, Oban, testing: :manual
 
 # Only in tests, remove the complexity from the password hashing algorithm
 config :bcrypt_elixir, :log_rounds, 1
@@ -38,3 +39,8 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+# setup python venv paths
+config :uli_community, :python,
+  python: Path.join([File.cwd!(), "lib", "python", ".venv", "bin", "python"]),
+  python_path: Path.join([File.cwd!(), "lib", "python"])
