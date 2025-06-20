@@ -40,7 +40,6 @@ Hooks.WeeklyLineChartHook = WeeklyLineChartHook
 Hooks.DateSelector = DateSelectorHook;
 
 let liveSocket = new LiveSocket("/live", Socket, {
-  hooks: Hooks,
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
   hooks: Hooks
