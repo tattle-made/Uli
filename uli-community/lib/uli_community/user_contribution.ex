@@ -215,6 +215,14 @@ defmodule UliCommunity.UserContribution do
     %CrowdsourcedSlur{}
     |> CrowdsourcedSlur.changeset_only_label(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, slur} ->
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:new_slur, slur})
+        {:ok, slur}
+
+      error ->
+        error
+    end
   end
 
   def create_crowdsourced_slur_seed(attrs \\ %{}) do
@@ -255,6 +263,14 @@ defmodule UliCommunity.UserContribution do
   """
   def delete_crowdsourced_slur(%CrowdsourcedSlur{} = crowdsourced_slur) do
     Repo.delete(crowdsourced_slur)
+    |> case do
+      {:ok, slur} ->
+        Phoenix.PubSub.broadcast(UliCommunity.PubSub, "crowdsourced_slurs", {:deleted_slur, slur})
+        {:ok, slur}
+
+      error ->
+        error
+    end
   end
 
   @doc """
@@ -276,4 +292,56 @@ defmodule UliCommunity.UserContribution do
 
     {:ok, slurs}
   end
+
+  def get_top_slurs(n) when is_integer(n) and n > 0 do
+    CrowdsourcedSlur
+    |> group_by([s], fragment("lower(?)", s.label))
+    |> select([s], %{label: fragment("lower(?)", s.label), count: count(s.id)})
+    |> order_by([_s], desc: count(fragment("lower(?)", ^"label")))
+    |> limit(^n)
+    |> Repo.all()
+  end
+
+  def get_severity_distribution do
+    UliCommunity.UserContribution.CrowdsourcedSlur
+    |> group_by([s], s.level_of_severity)
+    |> select([s], %{label: s.level_of_severity, count: count(s.id)})
+    |> Repo.all()
+  end
+
+  def get_source_distribution do
+    CrowdsourcedSlur
+    |> group_by([s], s.source)
+    |> select([s], %{source: s.source, count: count(s.id)})
+    |> Repo.all()
+  end
+
+ def get_weekly_submission_counts do
+  weekly_data =
+    Repo.all(
+      from(cs in CrowdsourcedSlur,
+        where: not is_nil(cs.inserted_at),
+        group_by: fragment("date_trunc('week', ?)", cs.inserted_at),
+        order_by: fragment("date_trunc('week', ?)", cs.inserted_at),
+        select: %{
+          week_start: fragment("date_trunc('week', ?)", cs.inserted_at),
+          count: count(cs.id)
+        }
+      )
+    )
+
+  Enum.map(weekly_data, fn %{week_start: week_start, count: count} ->
+    %{
+      week_start_date: to_iso_date(week_start),
+      count: count
+    }
+  end)
+end
+
+defp to_iso_date(naive_date) do
+  naive_date
+  |> NaiveDateTime.to_date()
+  |> Date.to_iso8601()
+end
+
 end
