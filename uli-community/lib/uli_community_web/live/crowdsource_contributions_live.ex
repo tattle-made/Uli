@@ -3,10 +3,11 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   alias UliCommunity.PublicDataset
   use UliCommunityWeb, :live_view
   import UliCommunityWeb.CoreComponents
-  alias UliCommunity.PublicDataset.PluginSlurMetadata
+  alias UliCommunityWeb.CrowdsourceContributionsSearchParams
 
   alias UliCommunity.UserContribution
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     # IO.inspect(slurs_metadata_list, label: "LIST OF SLURS METADATA: ")
 
@@ -14,28 +15,39 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
       Phoenix.PubSub.subscribe(UliCommunity.PubSub, "crowdsourced_slurs")
     end
 
-    slurs_metadata_list = UserContribution.list_crowdsourced_slurs()
-
-    slurs_metadata_list =
-      Enum.sort(slurs_metadata_list, fn a, b ->
-        DateTime.compare(a.inserted_at, b.inserted_at) == :gt
-      end)
-
-    form = to_form(%{}, as: "slur_form")
-
     user_role = socket.assigns.current_user.role
 
     {:ok,
      assign(socket,
-       slurs_metadata_list: slurs_metadata_list,
+       slurs_metadata_list: [],
        selected_slur: nil,
-       slur_form: form,
+       slur_form: to_form(%{}, as: "slur_form"),
        slur_already_added?: false,
        approve_type: "only-slur",
        already_present_metadata_freq: 0,
-       user_role: user_role
-       #  temporary_assigns: [slur_form: form]
+       user_role: user_role,
+       search_params: [],
+       query_count: 0
      )}
+  end
+
+  @doc """
+    feed : :common, :my_feed
+    sort: :newest, :oldest, :repetition_count
+  """
+  @impl Phoenix.LiveView
+  def handle_params(params, _uri, socket) do
+    search_params = CrowdsourceContributionsSearchParams.params_to_keyword_list(params)
+
+    {count, results} = UserContribution.list_crowdsourced_slurs_with_filters(search_params)
+
+    socket =
+      socket
+      |> assign(:search_params, search_params)
+      |> assign(:query_count, count)
+      |> assign(:slurs_metadata_list, results)
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView
@@ -43,6 +55,44 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply,
      assign(socket, slurs_metadata_list: [slur | socket.assigns.slurs_metadata_list])
      |> put_flash(:info, "New Contribution Added!")}
+  end
+
+  def handle_event("change-search", value, socket) do
+    search_params = socket.assigns.search_params
+
+    new_search_params =
+      case value do
+        %{"name" => "search", "value" => search_value} ->
+          Keyword.put(search_params, :search, search_value)
+
+        %{"name" => _name, "value" => _val} ->
+          CrowdsourceContributionsSearchParams.update_search_param(search_params, value)
+
+        _ ->
+          search_params
+      end
+
+    {:noreply,
+     socket
+     |> assign(:search_params, new_search_params)
+     |> push_navigate(
+       to:
+         "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(new_search_params)}"
+     )}
+  end
+
+  def handle_event("search", %{"search" => search_value}, socket) do
+    search_params = socket.assigns.search_params
+    new_search_params = Keyword.put(search_params, :search, search_value)
+
+    {:noreply,
+     socket
+     |> assign(:search_params, new_search_params)
+     |> push_navigate(
+       to:
+         "/crowdsource-contributions?" <>
+           CrowdsourceContributionsSearchParams.search_param_string(new_search_params)
+     )}
   end
 
   def handle_event("open-add-slur-modal", %{"slur" => slur}, socket) do
@@ -74,7 +124,6 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply, socket}
   end
 
-  @impl Phoenix.LiveView
   def handle_event("add-only-slur", params, socket) do
     slur_label = String.downcase(params["label"])
     lang = params["language"]
@@ -99,7 +148,6 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     end
   end
 
-  @impl Phoenix.LiveView
   def handle_event("add-slur-metadata", params, socket) do
     IO.inspect(params, label: "PAYLOAD FROM THE FORM")
 
@@ -158,7 +206,6 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply, socket}
   end
 
-  @impl Phoenix.LiveView
   def handle_event("close-modal", _unsigned_params, socket) do
     IO.puts("INSIDE CLOSE MODAL")
     {:noreply, reset_form(socket)}

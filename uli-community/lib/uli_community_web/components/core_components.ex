@@ -675,4 +675,67 @@ defmodule UliCommunityWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  @doc """
+  Renders a radio input with label.
+  """
+  attr :name, :string, required: true
+  attr :id, :string, required: true
+  attr :value, :string, required: true
+  attr :label, :string, required: true
+  attr :selection, :any, default: nil
+  attr :disabled, :boolean, default: false
+  attr :rest, :global
+
+  def input_radio(assigns) do
+    ~H"""
+    <div class="flex items-center gap-2">
+      <input
+        type="radio"
+        id={@id}
+        name={@name}
+        value={@value}
+        checked={@selection == @value}
+        disabled={@disabled}
+        phx-click="change-search"
+        phx-value-name={@name}
+        phx-value-value={@value}
+        class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+        {@rest}
+      />
+      <label for={@id} class="text-sm text-zinc-600"><%= @label %></label>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a checkbox input with label.
+  """
+  attr :id, :string, required: true
+  attr :group, :string, required: true
+  attr :label, :string, required: true
+  attr :selection, :list, default: []
+  attr :disabled, :boolean, default: false
+  attr :rest, :global
+
+  def checkbox(assigns) do
+    ~H"""
+    <div class="flex items-center gap-2">
+      <input
+        type="checkbox"
+        id={@id}
+        name={@group}
+        value={@id}
+        checked={@id in @selection}
+        disabled={@disabled}
+        phx-click="change-search"
+        phx-value-name="categories"
+        phx-value-value={@id}
+        class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+        {@rest}
+      />
+      <label for={@id} class="text-sm text-zinc-600"><%= @label %></label>
+    </div>
+    """
+  end
 end
