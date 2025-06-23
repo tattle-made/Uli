@@ -32,12 +32,20 @@ defmodule UliCommunityWeb.DashboardLive do
         _ -> nil
       end
 
+    unique_slur_count =
+      try do
+        UserContribution.get_unique_slur_count()
+      rescue
+        _ -> nil
+      end
+
     {:ok,
      assign(socket,
        slurs: slurs,
        severity_data: severity_data,
        source_data: source_data,
-       weekly_submissions_data: weekly_submissions_data
+       weekly_submissions_data: weekly_submissions_data,
+       unique_slur_count: unique_slur_count
      )}
   end
 end
