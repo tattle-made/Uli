@@ -316,32 +316,39 @@ defmodule UliCommunity.UserContribution do
     |> Repo.all()
   end
 
- def get_weekly_submission_counts do
-  weekly_data =
-    Repo.all(
+  def get_weekly_submission_counts do
+    weekly_data =
+      Repo.all(
+        from(cs in CrowdsourcedSlur,
+          where: not is_nil(cs.inserted_at),
+          group_by: fragment("date_trunc('week', ?)", cs.inserted_at),
+          order_by: fragment("date_trunc('week', ?)", cs.inserted_at),
+          select: %{
+            week_start: fragment("date_trunc('week', ?)", cs.inserted_at),
+            count: count(cs.id)
+          }
+        )
+      )
+
+    Enum.map(weekly_data, fn %{week_start: week_start, count: count} ->
+      %{
+        week_start_date: to_iso_date(week_start),
+        count: count
+      }
+    end)
+  end
+
+  defp to_iso_date(naive_date) do
+    naive_date
+    |> NaiveDateTime.to_date()
+    |> Date.to_iso8601()
+  end
+
+  def get_unique_slur_count do
+    Repo.one(
       from(cs in CrowdsourcedSlur,
-        where: not is_nil(cs.inserted_at),
-        group_by: fragment("date_trunc('week', ?)", cs.inserted_at),
-        order_by: fragment("date_trunc('week', ?)", cs.inserted_at),
-        select: %{
-          week_start: fragment("date_trunc('week', ?)", cs.inserted_at),
-          count: count(cs.id)
-        }
+        select: count(fragment("DISTINCT lower(?)", cs.label))
       )
     )
-
-  Enum.map(weekly_data, fn %{week_start: week_start, count: count} ->
-    %{
-      week_start_date: to_iso_date(week_start),
-      count: count
-    }
-  end)
-end
-
-defp to_iso_date(naive_date) do
-  naive_date
-  |> NaiveDateTime.to_date()
-  |> Date.to_iso8601()
-end
-
+  end
 end

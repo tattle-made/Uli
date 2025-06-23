@@ -1,5 +1,8 @@
 <div class="p-4">
   <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+  <p class="text-lg font-semibold mb-4">
+    Total Unique Slurs: <%= @unique_slur_count || "Loading..." %>
+  </p>
 
   <!-- First Row: Slurs Chart + Severity Chart -->
   <div class="flex flex-col lg:flex-row text-center gap-4">
