@@ -30,6 +30,32 @@ def get_embedding(text: str):
     except Exception as e:
         logger.error(f"Error processing text: {str(e)}")
         raise RuntimeError(f"Failed to process text: {str(e)}")
+    
+def decode_bytes(obj):
+    if isinstance(obj, dict):
+        return {decode_bytes(k): decode_bytes(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [decode_bytes(i) for i in obj]
+    elif isinstance(obj, bytes):
+        return obj.decode("utf-8")
+    else:
+        return obj
+
+def get_embeddings(items):
+    """
+    items: list of dicts, each with 'id' and 'label'
+    Returns: list of dicts, each with 'id' and 'embedding'
+    """
+    items_decoded = decode_bytes(items)
+    try:
+        texts = [item['label'] for item in items_decoded]
+        ids = [item['id'] for item in items_decoded]
+        model = _get_model()
+        embeddings = model.encode(texts, show_progress_bar=True)
+        return [{"id": id_, "embedding": emb.tolist()} for id_, emb in zip(ids, embeddings)]
+    except Exception as e:
+        logger.error(f"Error processing batch: {str(e)}")
+        raise RuntimeError(f"Failed to process batch: {str(e)}")
 
 
 if __name__ == "__main__":

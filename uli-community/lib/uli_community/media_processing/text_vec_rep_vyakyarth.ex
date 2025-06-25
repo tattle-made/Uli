@@ -39,4 +39,24 @@ defmodule UliCommunity.MediaProcessing.TextVecRepVyakyarth do
         {:error, "Failed to initialize Python environment: #{inspect(reason)}"}
     end
   end
+
+  def get_embeddings(items) do
+    case Python.start(python_path: @python_path, python: @python_executable) do
+      {:ok, py} ->
+        try do
+          embeddings = Python.call(py, "text_vec", "get_embeddings", [items])
+          {:ok, embeddings}
+        rescue
+          e ->
+            Logger.error("Failed to process batch: #{inspect(e)}")
+            {:error, "Batch processing failed: #{inspect(e)}"}
+        after
+          Python.stop(py)
+        end
+
+      {:error, reason} ->
+        Logger.error("Failed to start Python process: #{inspect(reason)}")
+        {:error, "Failed to initialize Python environment: #{inspect(reason)}"}
+    end
+  end
 end
