@@ -52,6 +52,7 @@ def get_embeddings(items):
         ids = [item['id'] for item in items_decoded]
         model = _get_model()
         embeddings = model.encode(texts, show_progress_bar=True)
+        logger.info(f"Processed {len(items)} Text Words")
         return [{"id": id_, "embedding": emb.tolist()} for id_, emb in zip(ids, embeddings)]
     except Exception as e:
         logger.error(f"Error processing batch: {str(e)}")

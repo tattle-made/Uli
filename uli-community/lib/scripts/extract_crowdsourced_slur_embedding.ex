@@ -4,37 +4,35 @@ defmodule Scripts.ExtractCrowdsourcedSlurEmbedding do
   alias UliCommunity.MediaProcessing.Store.TextVecStoreVyakyarth
   alias UliCommunity.Repo
   import Ecto.Query
-  import Logger
-
-  @doc """
-  Enqueues a single text for embedding processing.
-  """
-  defp enqueue_text(label, crowdsourced_slur_id) do
-    %{label: label, crowdsourced_slur_id: crowdsourced_slur_id}
-    |> TextEmbeddingWorker.new()
-    |> Oban.insert()
-  end
+  require Logger
 
   @doc """
   Enqueues all unprocessed words from crowdsourced_slurs table.
   A word is considered unprocessed if it doesn't have a corresponding embedding i.e. an entry in text_vec_store_vyakyarth table
   """
-  def enqueue_unprocessed_texts do
-    # Find all crowdsourced slurs that don't have vector embeddings yet
+  def enqueue_unprocessed_texts_batch do
     unprocessed_slurs_query =
       from s in CrowdsourcedSlur,
         left_join: v in TextVecStoreVyakyarth,
         on: v.crowdsourced_slur_id == s.id,
         where: is_nil(v.id),
-        select: {s.id, s.label}
+        group_by: fragment("LOWER(TRIM(?))", s.label),
+        select: %{
+          id: min(s.id),
+          label: fragment("LOWER(TRIM(?))", min(s.label))
+        }
 
-    # Get all unprocessed slurs
     unprocessed_slurs = Repo.all(unprocessed_slurs_query)
-    Logger.info("Enqueueing #{length(unprocessed_slurs)} unprocessed slurs")
+    Logger.info("Enqueueing #{length(unprocessed_slurs)} unique unprocessed slurs")
 
-    # Enqueue each unprocessed slur
-    Enum.each(unprocessed_slurs, fn {slur_id, label} ->
-      enqueue_text(label, slur_id)
+    batch_size = 256
+
+    unprocessed_slurs
+    |> Enum.chunk_every(batch_size)
+    |> Enum.each(fn batch ->
+      %{"items" => batch}
+      |> TextEmbeddingWorker.new()
+      |> Oban.insert()
     end)
 
     {:ok, length(unprocessed_slurs)}
