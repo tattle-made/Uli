@@ -132,6 +132,7 @@
 <div class="flex justify-between items-center mb-4">
   <div class="text-xl font-normal text-slate-900">
     <h1><%= "Showing all #{@query_count} contributions" %></h1>
+
     <.link
       href={
         ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
@@ -141,6 +142,19 @@
       <.icon name="hero-x-circle" class="w-4 h-4" />
       <span>Clear All Filters</span>
     </.link>
+
+    <form phx-change="toggle-advanced-search" class="flex items-center mt-4 text-sm text-zinc-600">
+      <input
+        type="checkbox"
+        name="advanced_search"
+        id="advanced_search"
+        checked={@advanced_search}
+        class="h-4 w-4 rounded border-gray-300 text-zinc-600 focus:ring-zinc-500"
+      />
+      <label for="advanced_search" class="ml-2 text-zinc-800 font-medium text-base">
+        Enable Advanced Search
+      </label>
+    </form>
   </div>
 
   <div class="flex items-center gap-2">
@@ -150,7 +164,7 @@
         name="search"
         placeholder="Search slurs..."
         value={Keyword.get(@search_params, :search, "")}
-        class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
       />
       <button
         type="submit"
@@ -467,35 +481,54 @@
 
     <div class="h-2" />
 
-    <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
-      <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
-      <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
-      <:col :let={slur} label="Is Casual?">
-        <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
-      </:col>
+    <%= if @vector_search_loading do %>
+      <div class="flex flex-col items-center justify-center py-12">
+        <svg
+          class="animate-spin h-8 w-8 text-zinc-600 mb-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12 4a8 8 0 0 1 8 8h2a10 10 0 1 0-10 10v-2a8 8 0 0 1 0-16z"
+          />
+        </svg>
+        <span class="text-lg text-zinc-700 font-medium">Searching...</span>
+      </div>
+    <% else %>
+      <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
+        <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
+        <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
+        <:col :let={slur} label="Is Casual?">
+          <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
+        </:col>
 
-      <:col :let={slur} label="Is Appropriated?">
-        <%= if is_nil(slur.appropriated),
-          do: "-",
-          else: (slur.appropriated == true && "Yes") || "No" %>
-      </:col>
-      <:col :let={slur} label="Appropriation Context">
-        <%= if is_nil(slur.appropriation_context),
-          do: "-",
-          else: (slur.appropriation_context == true && "Yes") || "No" %>
-      </:col>
+        <:col :let={slur} label="Is Appropriated?">
+          <%= if is_nil(slur.appropriated),
+            do: "-",
+            else: (slur.appropriated == true && "Yes") || "No" %>
+        </:col>
+        <:col :let={slur} label="Appropriation Context">
+          <%= if is_nil(slur.appropriation_context),
+            do: "-",
+            else: (slur.appropriation_context == true && "Yes") || "No" %>
+        </:col>
 
-      <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
-      <:col :let={slur} label="Categories"><%= Enum.join(slur.categories || ["-"], ",") %></:col>
-      <:action :let={slur}>
-        <%= if @user_role == :admin do %>
-          <.button phx-click={
-            JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
-          }>
-            Add
-          </.button>
-        <% end %>
-      </:action>
-    </.table>
+        <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
+        <:col :let={slur} label="Categories">
+          <%= Enum.join(slur.categories || ["-"], ",") %>
+        </:col>
+        <:action :let={slur}>
+          <%= if @user_role == :admin do %>
+            <.button phx-click={
+              JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
+            }>
+              Add
+            </.button>
+          <% end %>
+        </:action>
+      </.table>
+    <% end %>
   </div>
 </div>

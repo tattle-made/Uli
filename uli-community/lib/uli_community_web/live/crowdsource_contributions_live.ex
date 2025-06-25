@@ -27,7 +27,9 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
        already_present_metadata_freq: 0,
        user_role: user_role,
        search_params: [],
-       query_count: 0
+       query_count: 0,
+       advanced_search: false,
+       vector_search_loading: false
      )}
   end
 
@@ -81,18 +83,38 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      )}
   end
 
-  def handle_event("search", %{"search" => search_value}, socket) do
-    search_params = socket.assigns.search_params
-    new_search_params = Keyword.put(search_params, :search, search_value)
-
+  def handle_event("toggle-advanced-search", params, socket) do
     {:noreply,
-     socket
-     |> assign(:search_params, new_search_params)
-     |> push_navigate(
-       to:
-         "/crowdsource-contributions?" <>
-           CrowdsourceContributionsSearchParams.search_param_string(new_search_params)
+     assign(socket,
+       advanced_search: Map.has_key?(params, "advanced_search"),
+       vector_search_loading: false
      )}
+  end
+
+  def handle_event("search", %{"search" => search_value}, socket) do
+    if socket.assigns.advanced_search do
+      send(self(), {:vector_search, search_value})
+      {:noreply, assign(socket, vector_search_loading: true)}
+    else
+      search_params = socket.assigns.search_params
+      new_search_params = Keyword.put(search_params, :search, search_value)
+
+      {:noreply,
+       socket
+       |> assign(:search_params, new_search_params)
+       |> push_navigate(
+         to:
+           "/crowdsource-contributions?" <>
+             UliCommunityWeb.CrowdsourceContributionsSearchParams.search_param_string(
+               new_search_params
+             )
+       )}
+    end
+  end
+
+  def handle_info({:vector_search, search_value}, socket) do
+    results = UliCommunity.MediaProcessing.VectorSearch.search_similar_slurs(search_value)
+    {:noreply, assign(socket, slurs_metadata_list: results, vector_search_loading: false)}
   end
 
   def handle_event("open-add-slur-modal", %{"slur" => slur}, socket) do
