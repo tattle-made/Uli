@@ -6,7 +6,7 @@ defmodule UliCommunity.MediaProcessing.VectorSearch do
   alias UliCommunity.MediaProcessing.TextVecRepVyakyarth
 
   # Returns top N most similar slurs to the query string
-  def search_similar_slurs(query, top_n \\ 25) do
+  def search_similar_slurs(query, top_n \\ 10) do
     with {:ok, embedding} <- TextVecRepVyakyarth.get_embedding(query) do
       # Fetch top N similar base entries (distinct, normalized)
       base_query =
