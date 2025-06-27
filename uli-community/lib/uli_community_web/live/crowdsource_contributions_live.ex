@@ -92,21 +92,24 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   end
 
   def handle_event("search", %{"search" => search_value}, socket) do
+    search_params = Keyword.put(socket.assigns.search_params, :search, search_value)
+
     if socket.assigns.advanced_search do
       send(self(), {:vector_search, search_value})
-      {:noreply, assign(socket, vector_search_loading: true)}
-    else
-      search_params = socket.assigns.search_params
-      new_search_params = Keyword.put(search_params, :search, search_value)
 
       {:noreply,
        socket
-       |> assign(:search_params, new_search_params)
+       |> assign(:vector_search_loading, true)
+       |> assign(:search_params, search_params)}
+    else
+      {:noreply,
+       socket
+       |> assign(:search_params, search_params)
        |> push_navigate(
          to:
            "/crowdsource-contributions?" <>
              UliCommunityWeb.CrowdsourceContributionsSearchParams.search_param_string(
-               new_search_params
+               search_params
              )
        )}
     end
