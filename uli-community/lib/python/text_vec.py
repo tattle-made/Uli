@@ -6,32 +6,14 @@ from sentence_transformers import SentenceTransformer
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Singleton instance
-_model_instance = None
 
+def initialize():
+    global model
+    logger.info("Loading Vyakyarth model...")
+    model = SentenceTransformer("krutrim-ai-labs/vyakyarth")
+    logger.info("Model loaded successfully.")
 
-def _get_model():
-    global _model_instance
-    if _model_instance is None:
-        _model_instance = SentenceTransformer("krutrim-ai-labs/vyakyarth")
-    return _model_instance
-
-
-def get_embedding(text: str):
-    if isinstance(text, bytes):
-        text_str = text.decode("utf-8")
-    else:
-        text_str = text
-    try:
-        logger.info(f"Processing text: {text_str}")
-        model = _get_model()
-        embedding = model.encode(text_str, show_progress_bar=True)
-        return embedding.tolist()
-    except Exception as e:
-        logger.error(f"Error processing text: {str(e)}")
-        raise RuntimeError(f"Failed to process text: {str(e)}")
-    
-def decode_bytes(obj):
+def decode_bytes( obj):
     if isinstance(obj, dict):
         return {decode_bytes(k): decode_bytes(v) for k, v in obj.items()}
     elif isinstance(obj, list):
@@ -41,6 +23,20 @@ def decode_bytes(obj):
     else:
         return obj
 
+def get_embedding(text: str):
+    if isinstance(text, bytes):
+        text_str = text.decode("utf-8")
+    else:
+        text_str = text
+    try:
+        logger.info(f"Processing text: {text_str}")
+        embedding = model.encode(text_str, show_progress_bar=False)
+        return embedding.tolist()
+    except Exception as e:
+        logger.error(f"Error processing text: {str(e)}")
+        raise RuntimeError(f"Failed to process text: {str(e)}")
+
+
 def get_embeddings(items):
     """
     items: list of dicts, each with 'id' and 'label'
@@ -48,22 +44,31 @@ def get_embeddings(items):
     """
     items_decoded = decode_bytes(items)
     try:
-        texts = [item['label'] for item in items_decoded]
-        ids = [item['id'] for item in items_decoded]
-        model = _get_model()
-        embeddings = model.encode(texts, show_progress_bar=True)
+        texts = [item["label"] for item in items_decoded]
+        ids = [item["id"] for item in items_decoded]
+        embeddings = model.encode(texts, show_progress_bar=False)
         logger.info(f"Processed {len(items)} Text Words")
-        return [{"id": id_, "embedding": emb.tolist()} for id_, emb in zip(ids, embeddings)]
+        return [
+            {"id": id_, "embedding": emb.tolist()} for id_, emb in zip(ids, embeddings)
+        ]
     except Exception as e:
         logger.error(f"Error processing batch: {str(e)}")
         raise RuntimeError(f"Failed to process batch: {str(e)}")
 
 
+# For testing purposes
 if __name__ == "__main__":
-    # Example usage
-    test_text = "temp temp temp temp"
     try:
+        test_text = "temp temp temp temp"
         result = get_embedding(test_text)
         print(f"Successfully processed text. Vector length: {len(result)}")
+
+        test_batch = [
+            {"id": 1, "label": "hello world"},
+            {"id": 2, "label": "this is a test"},
+        ]
+        batch_result = get_embeddings(test_batch)
+        print(f"Successfully processed batch. Result: {batch_result}")
+
     except Exception as e:
         print(f"Error: {str(e)}")
