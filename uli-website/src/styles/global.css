@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+pre {
+    overflow-x: auto;
+    white-space: pre;
+    word-break: normal;
+  }

@@ -28,9 +28,11 @@ const ContentPageShell = ({ children }) => {
             h1: HeadingOne,
             h2: HeadingTwo,
             h3: HeadingThree,
-            code: (props) => <CustomCodeBlock {...props} />,
+            pre: CustomCodeBlock,
+            // code: (props) => <CustomCodeBlock {...props} />,
           }}
         >
+
           <Box width={"large"}>{children}</Box>
         </MDXProvider>
       </Box>
