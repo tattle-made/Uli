@@ -41,15 +41,24 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   def handle_params(params, _uri, socket) do
     search_params = CrowdsourceContributionsSearchParams.params_to_keyword_list(params)
 
-    {count, results} = UserContribution.list_crowdsourced_slurs_with_filters(search_params)
+    if Keyword.get(search_params, :advanced_search) do
+      # Skip fetching anything vector search will populate list
+      {:noreply,
+       socket
+       |> assign(:search_params, search_params)
+       |> assign(:slurs_metadata_list, [])
+       |> assign(:advanced_search, true)
+       |> assign(:query_count, 0)}
+    else
+      {count, results} = UserContribution.list_crowdsourced_slurs_with_filters(search_params)
 
-    socket =
-      socket
-      |> assign(:search_params, search_params)
-      |> assign(:query_count, count)
-      |> assign(:slurs_metadata_list, results)
-
-    {:noreply, socket}
+      {:noreply,
+       socket
+       |> assign(:search_params, search_params)
+       |> assign(:query_count, count)
+       |> assign(:slurs_metadata_list, results)
+       |> assign(:advanced_search, false)}
+    end
   end
 
   @impl Phoenix.LiveView
