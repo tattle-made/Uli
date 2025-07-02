@@ -41,3 +41,4 @@ npm-debug.log
 .venv/
 **__pycache__/
 **uv.lock
+**env.prod

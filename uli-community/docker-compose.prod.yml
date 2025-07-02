@@ -1,0 +1,35 @@
+services:
+  db:
+    image: pgvector/pgvector:pg14
+    restart: always
+    environment:
+      - POSTGRES_USER=uli_community
+      - POSTGRES_PASSWORD=weak_password
+      - POSTGRES_DB=uli_community_dev
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ~/data/uli_community_dev/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  db_gui:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  uli_community_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./env.prod
+    ports:
+      - 4000:4000
