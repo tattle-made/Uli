@@ -25,7 +25,7 @@ defmodule Scripts.ExtractCrowdsourcedSlurEmbedding do
     unprocessed_slurs = Repo.all(unprocessed_slurs_query)
     Logger.info("Enqueueing #{length(unprocessed_slurs)} unique unprocessed slurs")
 
-    batch_size = 256
+    batch_size = 128
 
     unprocessed_slurs
     |> Enum.chunk_every(batch_size)

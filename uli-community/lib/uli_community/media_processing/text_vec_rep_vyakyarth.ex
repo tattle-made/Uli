@@ -21,7 +21,7 @@ defmodule UliCommunity.MediaProcessing.TextVecRepVyakyarth do
   end
 
   def get_embeddings(items) do
-    GenServer.call(@server_name, {:get_embeddings, items})
+    GenServer.call(@server_name, {:get_embeddings, items}, 30_000)
   end
 
   @impl true
