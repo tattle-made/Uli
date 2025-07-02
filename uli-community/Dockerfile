@@ -23,7 +23,10 @@ FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git npm \
+  python3.10 python3.10-venv python3.10-dev curl \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # prepare build dir
 WORKDIR /app
@@ -52,6 +55,12 @@ COPY lib lib
 
 COPY assets assets
 
+# Use uv to install dependencies and set up the venv
+WORKDIR /app/lib/python
+RUN uv sync
+ENV PATH="/app/lib/python/.venv/bin:$PATH"
+WORKDIR /app
+
 RUN npm install --prefix assets
 
 # compile assets
@@ -72,6 +81,7 @@ FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
   apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  python3.10 python3.10-venv python3.10-dev \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
@@ -90,6 +100,16 @@ ENV MIX_ENV="prod"
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/uli_community ./
 
+# Copy the Python virtual environment from builder stage
+COPY --from=builder --chown=nobody:root /app/lib/python /app/lib/python
+
+# Create cache directories for Hugging Face
+RUN mkdir -p /app/.cache/huggingface && \
+    chown -R nobody:root /app/.cache
+# Set Hugging Face cache environment variables
+ENV HOME=/app
+ENV HF_HOME=/app/.cache/huggingface
+
 USER nobody
 
 # If using an environment that doesn't automatically reap zombie processes, it is
@@ -97,4 +117,4 @@ USER nobody
 # above and adding an entrypoint. See https://github.com/krallin/tini for details
 # ENTRYPOINT ["/tini", "--"]
 
-CMD ["/app/bin/server"]
+CMD ["./bin/uli_community", "start"]
