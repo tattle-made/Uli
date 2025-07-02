@@ -17,6 +17,7 @@ defmodule UliCommunity.Application do
       {Finch, name: UliCommunity.Finch},
       # Start a worker by calling: UliCommunity.Worker.start_link(arg)
       # {UliCommunity.Worker, arg},
+      UliCommunity.MediaProcessing.TextVecRepVyakyarth,
       # Start to serve requests, typically the last entry
       UliCommunityWeb.Endpoint
     ]

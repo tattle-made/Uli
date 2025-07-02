@@ -132,6 +132,7 @@
 <div class="flex justify-between items-center mb-4">
   <div class="text-xl font-normal text-slate-900">
     <h1><%= "Showing all #{@query_count} contributions" %></h1>
+
     <.link
       href={
         ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
@@ -141,6 +142,19 @@
       <.icon name="hero-x-circle" class="w-4 h-4" />
       <span>Clear All Filters</span>
     </.link>
+
+    <form phx-change="toggle-advanced-search" class="flex items-center mt-4 text-sm text-zinc-600">
+      <input
+        type="checkbox"
+        name="advanced_search"
+        id="advanced_search"
+        checked={@advanced_search}
+        class="h-4 w-4 rounded border-gray-300 text-zinc-600 focus:ring-zinc-500"
+      />
+      <label for="advanced_search" class="ml-2 text-zinc-800 font-medium text-base">
+        Enable Advanced Search
+      </label>
+    </form>
   </div>
 
   <div class="flex items-center gap-2">
@@ -150,7 +164,7 @@
         name="search"
         placeholder="Search slurs..."
         value={Keyword.get(@search_params, :search, "")}
-        class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
       />
       <button
         type="submit"
@@ -164,338 +178,367 @@
 
 <div class="flex flex-col sm:flex-row">
   <div class="h-fit w-full sm:w-1/5 sm:h-fit flex flex-row gap-12 sm:gap-4 sm:flex-col mr-4 border-e border-zinc-200">
-    <div>
-      <p class="py-2">Date</p>
-      <div id="date-range-selector" phx-hook="DateSelector" class="flex-row gap-2 flex-wrap">
-        <div class="flex flex-row gap-2 text-xs items-center">
-          <label for="from">from&nbsp;&nbsp;</label>
-          <input
-            class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
-            type="date"
-            id="from"
-            name="from"
-            value={Keyword.get(@search_params, :from)}
-            phx-change="change-search"
-            phx-value-name="date-range"
-            phx-value-type="start"
+    <%= unless @advanced_search do %>
+      <div>
+        <p class="py-2">Date</p>
+        <div id="date-range-selector" phx-hook="DateSelector" class="flex-row gap-2 flex-wrap">
+          <div class="flex flex-row gap-2 text-xs items-center">
+            <label for="from">from&nbsp;&nbsp;</label>
+            <input
+              class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
+              type="date"
+              id="from"
+              name="from"
+              value={Keyword.get(@search_params, :from)}
+              phx-change="change-search"
+              phx-value-name="date-range"
+              phx-value-type="start"
+            />
+          </div>
+          <div class="flex flex-row gap-2 text-xs items-center">
+            <label for="to"> to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+            <input
+              class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
+              type="date"
+              id="to"
+              name="to"
+              value={Keyword.get(@search_params, :to)}
+              phx-change="change-search"
+              phx-value-name="date-range"
+              phx-value-type="end"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="py-2">Level of Severity</p>
+        <div>
+          <.input_radio
+            name="level_of_severity"
+            id="low"
+            value="low"
+            label="Low"
+            selection={Keyword.get(@search_params, :level_of_severity)}
+          />
+          <.input_radio
+            name="level_of_severity"
+            id="medium"
+            value="medium"
+            label="Medium"
+            selection={Keyword.get(@search_params, :level_of_severity)}
+          />
+          <.input_radio
+            name="level_of_severity"
+            id="high"
+            value="high"
+            label="High"
+            selection={Keyword.get(@search_params, :level_of_severity)}
+          />
+          <.input_radio
+            name="level_of_severity"
+            id="all"
+            value="all"
+            label="All"
+            selection={Keyword.get(@search_params, :level_of_severity)}
           />
         </div>
-        <div class="flex flex-row gap-2 text-xs items-center">
-          <label for="to"> to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
-          <input
-            class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
-            type="date"
-            id="to"
-            name="to"
-            value={Keyword.get(@search_params, :to)}
-            phx-change="change-search"
-            phx-value-name="date-range"
-            phx-value-type="end"
+      </div>
+
+      <div>
+        <p class="py-2">Is Casual?</p>
+        <div>
+          <.input_radio
+            name="casual"
+            id="casual_true"
+            value="true"
+            label="Yes"
+            selection={Keyword.get(@search_params, :casual)}
+          />
+          <.input_radio
+            name="casual"
+            id="casual_false"
+            value="false"
+            label="No"
+            selection={Keyword.get(@search_params, :casual)}
+          />
+          <.input_radio
+            name="casual"
+            id="casual_all"
+            value="all"
+            label="All"
+            selection={Keyword.get(@search_params, :casual)}
           />
         </div>
       </div>
-    </div>
 
-    <div>
-      <p class="py-2">Level of Severity</p>
       <div>
-        <.input_radio
-          name="level_of_severity"
-          id="low"
-          value="low"
-          label="Low"
-          selection={Keyword.get(@search_params, :level_of_severity)}
-        />
-        <.input_radio
-          name="level_of_severity"
-          id="medium"
-          value="medium"
-          label="Medium"
-          selection={Keyword.get(@search_params, :level_of_severity)}
-        />
-        <.input_radio
-          name="level_of_severity"
-          id="high"
-          value="high"
-          label="High"
-          selection={Keyword.get(@search_params, :level_of_severity)}
-        />
-        <.input_radio
-          name="level_of_severity"
-          id="all"
-          value="all"
-          label="All"
-          selection={Keyword.get(@search_params, :level_of_severity)}
-        />
+        <p class="py-2">Is Appropriated?</p>
+        <div>
+          <.input_radio
+            name="appropriated"
+            id="appropriated_true"
+            value="true"
+            label="Yes"
+            selection={Keyword.get(@search_params, :appropriated)}
+          />
+          <.input_radio
+            name="appropriated"
+            id="appropriated_false"
+            value="false"
+            label="No"
+            selection={Keyword.get(@search_params, :appropriated)}
+          />
+          <.input_radio
+            name="appropriated"
+            id="appropriated_all"
+            value="all"
+            label="All"
+            selection={Keyword.get(@search_params, :appropriated)}
+          />
+        </div>
       </div>
-    </div>
 
-    <div>
-      <p class="py-2">Is Casual?</p>
       <div>
-        <.input_radio
-          name="casual"
-          id="casual_true"
-          value="true"
-          label="Yes"
-          selection={Keyword.get(@search_params, :casual)}
-        />
-        <.input_radio
-          name="casual"
-          id="casual_false"
-          value="false"
-          label="No"
-          selection={Keyword.get(@search_params, :casual)}
-        />
-        <.input_radio
-          name="casual"
-          id="casual_all"
-          value="all"
-          label="All"
-          selection={Keyword.get(@search_params, :casual)}
-        />
+        <p class="py-2">Source</p>
+        <div>
+          <.input_radio
+            name="source"
+            id="plugin"
+            value="plugin"
+            label="Plugin"
+            selection={Keyword.get(@search_params, :source)}
+          />
+          <.input_radio
+            name="source"
+            id="experts_2022"
+            value="experts_2022"
+            label="Experts 2022"
+            selection={Keyword.get(@search_params, :source)}
+          />
+          <.input_radio
+            name="source"
+            id="crowdsourcing_exercise"
+            value="crowdsourcing_exercise"
+            label="Crowdsourcing Exercise"
+            selection={Keyword.get(@search_params, :source)}
+          />
+          <.input_radio
+            name="source"
+            id="source_all"
+            value="all"
+            label="All"
+            selection={Keyword.get(@search_params, :source)}
+          />
+        </div>
       </div>
-    </div>
 
-    <div>
-      <p class="py-2">Is Appropriated?</p>
       <div>
-        <.input_radio
-          name="appropriated"
-          id="appropriated_true"
-          value="true"
-          label="Yes"
-          selection={Keyword.get(@search_params, :appropriated)}
-        />
-        <.input_radio
-          name="appropriated"
-          id="appropriated_false"
-          value="false"
-          label="No"
-          selection={Keyword.get(@search_params, :appropriated)}
-        />
-        <.input_radio
-          name="appropriated"
-          id="appropriated_all"
-          value="all"
-          label="All"
-          selection={Keyword.get(@search_params, :appropriated)}
-        />
+        <p class="py-2">Categories</p>
+        <div>
+          <.checkbox
+            id="gendered"
+            group="categories"
+            label="Gendered"
+            selection={
+              if "gendered" in Keyword.get(@search_params, :categories, []),
+                do: ["gendered"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="sexualized"
+            group="categories"
+            label="Sexualized"
+            selection={
+              if "sexualized" in Keyword.get(@search_params, :categories, []),
+                do: ["sexualized"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="religion"
+            group="categories"
+            label="Religion"
+            selection={
+              if "religion" in Keyword.get(@search_params, :categories, []),
+                do: ["religion"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="ethnicity"
+            group="categories"
+            label="Ethnicity"
+            selection={
+              if "ethnicity" in Keyword.get(@search_params, :categories, []),
+                do: ["ethnicity"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="political_affiliation"
+            group="categories"
+            label="Political Affiliation"
+            selection={
+              if "political_affiliation" in Keyword.get(@search_params, :categories, []),
+                do: ["political_affiliation"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="caste"
+            group="categories"
+            label="Caste"
+            selection={
+              if "caste" in Keyword.get(@search_params, :categories, []),
+                do: ["caste"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="class"
+            group="categories"
+            label="Class"
+            selection={
+              if "class" in Keyword.get(@search_params, :categories, []),
+                do: ["class"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="body_shaming"
+            group="categories"
+            label="Body Shaming"
+            selection={
+              if "body_shaming" in Keyword.get(@search_params, :categories, []),
+                do: ["body_shaming"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="ableist"
+            group="categories"
+            label="Ableist"
+            selection={
+              if "ableist" in Keyword.get(@search_params, :categories, []),
+                do: ["ableist"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="sexual_identity"
+            group="categories"
+            label="Sexual Identity"
+            selection={
+              if "sexual_identity" in Keyword.get(@search_params, :categories, []),
+                do: ["sexual_identity"],
+                else: [""]
+            }
+          />
+          <.checkbox
+            id="other"
+            group="categories"
+            label="Other"
+            selection={
+              if "other" in Keyword.get(@search_params, :categories, []),
+                do: ["other"],
+                else: [""]
+            }
+          />
+        </div>
       </div>
-    </div>
 
-    <div>
-      <p class="py-2">Source</p>
       <div>
-        <.input_radio
-          name="source"
-          id="plugin"
-          value="plugin"
-          label="Plugin"
-          selection={Keyword.get(@search_params, :source)}
-        />
-        <.input_radio
-          name="source"
-          id="experts_2022"
-          value="experts_2022"
-          label="Experts 2022"
-          selection={Keyword.get(@search_params, :source)}
-        />
-        <.input_radio
-          name="source"
-          id="crowdsourcing_exercise"
-          value="crowdsourcing_exercise"
-          label="Crowdsourcing Exercise"
-          selection={Keyword.get(@search_params, :source)}
-        />
-        <.input_radio
-          name="source"
-          id="source_all"
-          value="all"
-          label="All"
-          selection={Keyword.get(@search_params, :source)}
-        />
+        <p class="py-2">Sort</p>
+        <div>
+          <.input_radio
+            name="sort-by"
+            id="newest"
+            value="newest"
+            label="Newest first"
+            selection={Keyword.get(@search_params, :sort)}
+          />
+          <.input_radio
+            name="sort-by"
+            id="oldest"
+            value="oldest"
+            label="Oldest first"
+            selection={Keyword.get(@search_params, :sort)}
+          />
+        </div>
       </div>
-    </div>
-
-    <div>
-      <p class="py-2">Categories</p>
-      <div>
-        <.checkbox
-          id="gendered"
-          group="categories"
-          label="Gendered"
-          selection={
-            if "gendered" in Keyword.get(@search_params, :categories, []),
-              do: ["gendered"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="sexualized"
-          group="categories"
-          label="Sexualized"
-          selection={
-            if "sexualized" in Keyword.get(@search_params, :categories, []),
-              do: ["sexualized"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="religion"
-          group="categories"
-          label="Religion"
-          selection={
-            if "religion" in Keyword.get(@search_params, :categories, []),
-              do: ["religion"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="ethnicity"
-          group="categories"
-          label="Ethnicity"
-          selection={
-            if "ethnicity" in Keyword.get(@search_params, :categories, []),
-              do: ["ethnicity"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="political_affiliation"
-          group="categories"
-          label="Political Affiliation"
-          selection={
-            if "political_affiliation" in Keyword.get(@search_params, :categories, []),
-              do: ["political_affiliation"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="caste"
-          group="categories"
-          label="Caste"
-          selection={
-            if "caste" in Keyword.get(@search_params, :categories, []), do: ["caste"], else: [""]
-          }
-        />
-        <.checkbox
-          id="class"
-          group="categories"
-          label="Class"
-          selection={
-            if "class" in Keyword.get(@search_params, :categories, []), do: ["class"], else: [""]
-          }
-        />
-        <.checkbox
-          id="body_shaming"
-          group="categories"
-          label="Body Shaming"
-          selection={
-            if "body_shaming" in Keyword.get(@search_params, :categories, []),
-              do: ["body_shaming"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="ableist"
-          group="categories"
-          label="Ableist"
-          selection={
-            if "ableist" in Keyword.get(@search_params, :categories, []),
-              do: ["ableist"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="sexual_identity"
-          group="categories"
-          label="Sexual Identity"
-          selection={
-            if "sexual_identity" in Keyword.get(@search_params, :categories, []),
-              do: ["sexual_identity"],
-              else: [""]
-          }
-        />
-        <.checkbox
-          id="other"
-          group="categories"
-          label="Other"
-          selection={
-            if "other" in Keyword.get(@search_params, :categories, []), do: ["other"], else: [""]
-          }
-        />
-      </div>
-    </div>
-
-    <div>
-      <p class="py-2">Sort</p>
-      <div>
-        <.input_radio
-          name="sort-by"
-          id="newest"
-          value="newest"
-          label="Newest first"
-          selection={Keyword.get(@search_params, :sort)}
-        />
-        <.input_radio
-          name="sort-by"
-          id="oldest"
-          value="oldest"
-          label="Oldest first"
-          selection={Keyword.get(@search_params, :sort)}
-        />
-      </div>
-    </div>
+    <% end %>
   </div>
 
   <div class="w-full sm:w-4/5 gap-4">
-    <div class="flex flex-row items-center gap-2 w-full p-2 border-2 border-black-200 rounded-md">
-      <div :if={Keyword.get(@search_params, :page_num) - 1 > 0}>
-        <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_previous_page(@search_params)}"}>
-          <.icon name="hero-arrow-left" class="h-5 w-5" />
+    <%= unless @advanced_search do %>
+      <div class="flex flex-row items-center gap-2 w-full p-2 border-2 border-black-200 rounded-md">
+        <div :if={Keyword.get(@search_params, :page_num) - 1 > 0}>
+          <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_previous_page(@search_params)}"}>
+            <.icon name="hero-arrow-left" class="h-5 w-5" />
+          </.link>
+        </div>
+        <div class="rounded-full p-2 bg-zinc-100 border border-gray-300">
+          <p><%= Keyword.get(@search_params, :page_num) %></p>
+        </div>
+
+        <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_next_page(@search_params)}"}>
+          <.icon name="hero-arrow-right" class="h-5 w-5" />
         </.link>
       </div>
-      <div class="rounded-full p-2 bg-zinc-100 border border-gray-300">
-        <p><%= Keyword.get(@search_params, :page_num) %></p>
-      </div>
-
-      <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_next_page(@search_params)}"}>
-        <.icon name="hero-arrow-right" class="h-5 w-5" />
-      </.link>
-    </div>
+    <% end %>
 
     <div class="h-2" />
 
-    <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
-      <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
-      <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
-      <:col :let={slur} label="Is Casual?">
-        <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
-      </:col>
+    <%= if @vector_search_loading do %>
+      <div class="flex flex-col items-center justify-center py-12">
+        <svg
+          class="animate-spin h-8 w-8 text-zinc-600 mb-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12 4a8 8 0 0 1 8 8h2a10 10 0 1 0-10 10v-2a8 8 0 0 1 0-16z"
+          />
+        </svg>
+        <span class="text-lg text-zinc-700 font-medium">Searching...</span>
+      </div>
+    <% else %>
+      <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
+        <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
+        <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
+        <:col :let={slur} label="Is Casual?">
+          <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
+        </:col>
 
-      <:col :let={slur} label="Is Appropriated?">
-        <%= if is_nil(slur.appropriated),
-          do: "-",
-          else: (slur.appropriated == true && "Yes") || "No" %>
-      </:col>
-      <:col :let={slur} label="Appropriation Context">
-        <%= if is_nil(slur.appropriation_context),
-          do: "-",
-          else: (slur.appropriation_context == true && "Yes") || "No" %>
-      </:col>
+        <:col :let={slur} label="Is Appropriated?">
+          <%= if is_nil(slur.appropriated),
+            do: "-",
+            else: (slur.appropriated == true && "Yes") || "No" %>
+        </:col>
+        <:col :let={slur} label="Appropriation Context">
+          <%= if is_nil(slur.appropriation_context),
+            do: "-",
+            else: (slur.appropriation_context == true && "Yes") || "No" %>
+        </:col>
 
-      <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
-      <:col :let={slur} label="Categories"><%= Enum.join(slur.categories || ["-"], ",") %></:col>
-      <:action :let={slur}>
-        <%= if @user_role == :admin do %>
-          <.button phx-click={
-            JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
-          }>
-            Add
-          </.button>
-        <% end %>
-      </:action>
-    </.table>
+        <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
+        <:col :let={slur} label="Categories">
+          <%= Enum.join(slur.categories || ["-"], ",") %>
+        </:col>
+        <:action :let={slur}>
+          <%= if @user_role == :admin do %>
+            <.button phx-click={
+              JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
+            }>
+              Add
+            </.button>
+          <% end %>
+        </:action>
+      </.table>
+    <% end %>
   </div>
 </div>
