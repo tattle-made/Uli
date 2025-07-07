@@ -20,3 +20,6 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+
+# text vec genserver for prod setup
+config :uli_community, :enable_text_vec_rep_vyakyarth, true
