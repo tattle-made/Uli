@@ -7,8 +7,19 @@ defmodule UliCommunity.UserContributionTest do
     alias UliCommunity.UserContribution.CrowdsourcedSlur
 
     import UliCommunity.UserContributionFixtures
+    import UliCommunity.AccountsFixtures, only: [user_fixture: 0]
 
-    @invalid_attrs %{label: nil, category: nil, level_of_severity: nil, casual: nil, appropriated: nil, appropriation_context: nil, meaning: nil}
+    @invalid_attrs %{
+      label: nil,
+      categories: nil,
+      level_of_severity: nil,
+      casual: nil,
+      appropriated: nil,
+      appropriation_context: nil,
+      meaning: nil,
+      source: nil,
+      contributor_user_id: nil
+    }
 
     test "list_crowdsourced_slurs/0 returns all crowdsourced_slurs" do
       crowdsourced_slur = crowdsourced_slur_fixture()
@@ -21,78 +32,111 @@ defmodule UliCommunity.UserContributionTest do
     end
 
     test "create_crowdsourced_slur/1 with valid data creates a crowdsourced_slur" do
-      valid_attrs = %{label: "some label", category: ["option1", "option2"], level_of_severity: "some level_of_severity", casual: true, appropriated: true, appropriation_context: true, meaning: "some meaning"}
+      user = user_fixture()
 
-      assert {:ok, %CrowdsourcedSlur{} = crowdsourced_slur} = UserContribution.create_crowdsourced_slur(valid_attrs)
-      assert crowdsourced_slur.label == "some label"
-      assert crowdsourced_slur.category == ["option1", "option2"]
-      assert crowdsourced_slur.level_of_severity == "some level_of_severity"
-      assert crowdsourced_slur.casual == true
-      assert crowdsourced_slur.appropriated == true
-      assert crowdsourced_slur.appropriation_context == true
-      assert crowdsourced_slur.meaning == "some meaning"
+      valid_attrs = %{
+        label: "some label",
+        categories: [:gendered],
+        level_of_severity: :medium,
+        casual: true,
+        appropriated: true,
+        appropriation_context: true,
+        meaning: "some meaning",
+        source: :plugin,
+        contributor_user_id: user.id
+      }
+
+      assert {:ok, %CrowdsourcedSlur{} = slur} =
+               UserContribution.create_crowdsourced_slur(valid_attrs)
+
+      assert slur.label == "some label"
+      assert slur.categories == [:gendered]
+      assert slur.level_of_severity == :medium
+      assert slur.casual
+      assert slur.appropriated
+      assert slur.appropriation_context
+      assert slur.meaning == "some meaning"
     end
 
     test "create_crowdsourced_slur/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = UserContribution.create_crowdsourced_slur(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               UserContribution.create_crowdsourced_slur(@invalid_attrs)
     end
 
     test "update_crowdsourced_slur/2 with valid data updates the crowdsourced_slur" do
-      crowdsourced_slur = crowdsourced_slur_fixture()
-      update_attrs = %{label: "some updated label", category: ["option1"], level_of_severity: "some updated level_of_severity", casual: false, appropriated: false, appropriation_context: false, meaning: "some updated meaning"}
+      slur = crowdsourced_slur_fixture()
 
-      assert {:ok, %CrowdsourcedSlur{} = crowdsourced_slur} = UserContribution.update_crowdsourced_slur(crowdsourced_slur, update_attrs)
-      assert crowdsourced_slur.label == "some updated label"
-      assert crowdsourced_slur.category == ["option1"]
-      assert crowdsourced_slur.level_of_severity == "some updated level_of_severity"
-      assert crowdsourced_slur.casual == false
-      assert crowdsourced_slur.appropriated == false
-      assert crowdsourced_slur.appropriation_context == false
-      assert crowdsourced_slur.meaning == "some updated meaning"
+      update_attrs = %{
+        label: "updated label",
+        categories: [:caste],
+        level_of_severity: :high,
+        casual: false,
+        appropriated: false,
+        appropriation_context: false,
+        meaning: "updated meaning"
+      }
+
+      assert {:ok, %CrowdsourcedSlur{} = updated} =
+               UserContribution.update_crowdsourced_slur(slur, update_attrs)
+
+      assert updated.label == "updated label"
+      assert updated.categories == [:caste]
+      assert updated.level_of_severity == :high
+      refute updated.casual
+      refute updated.appropriated
+      refute updated.appropriation_context
     end
 
     test "update_crowdsourced_slur/2 with invalid data returns error changeset" do
-      crowdsourced_slur = crowdsourced_slur_fixture()
-      assert {:error, %Ecto.Changeset{}} = UserContribution.update_crowdsourced_slur(crowdsourced_slur, @invalid_attrs)
-      assert crowdsourced_slur == UserContribution.get_crowdsourced_slur!(crowdsourced_slur.id)
+      slur = crowdsourced_slur_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               UserContribution.update_crowdsourced_slur(slur, @invalid_attrs)
+
+      assert slur == UserContribution.get_crowdsourced_slur!(slur.id)
     end
 
     test "delete_crowdsourced_slur/1 deletes the crowdsourced_slur" do
-      crowdsourced_slur = crowdsourced_slur_fixture()
-      assert {:ok, %CrowdsourcedSlur{}} = UserContribution.delete_crowdsourced_slur(crowdsourced_slur)
-      assert_raise Ecto.NoResultsError, fn -> UserContribution.get_crowdsourced_slur!(crowdsourced_slur.id) end
+      slur = crowdsourced_slur_fixture()
+      assert {:ok, %CrowdsourcedSlur{}} = UserContribution.delete_crowdsourced_slur(slur)
+      assert_raise Ecto.NoResultsError, fn -> UserContribution.get_crowdsourced_slur!(slur.id) end
     end
 
-    test "change_crowdsourced_slur/1 returns a crowdsourced_slur changeset" do
-      crowdsourced_slur = crowdsourced_slur_fixture()
-      assert %Ecto.Changeset{} = UserContribution.change_crowdsourced_slur(crowdsourced_slur)
+    test "change_crowdsourced_slur/1 returns a changeset" do
+      slur = crowdsourced_slur_fixture()
+      assert %Ecto.Changeset{} = UserContribution.change_crowdsourced_slur(slur)
     end
   end
 
-    # ---------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   # FILTER TESTS ------------------------------------------------------------
   # ---------------------------------------------------------------------------
   describe "filter tests" do
     import UliCommunity.UserContributionFixtures, only: [crowdsourced_slur_fixture: 1]
+    import UliCommunity.AccountsFixtures, only: [user_fixture: 0]
 
-    # Helper that merges required default attrs with whatever a test overrides.
     defp slur(attrs \\ %{}) do
+      user = user_fixture()
+
       defaults = %{
         label: "test‑slur",
-        category: ["caste"],
+        categories: [:caste],
         level_of_severity: :medium,
         casual: true,
         appropriated: false,
         appropriation_context: nil,
         meaning: "meaning",
-        source: :plugin
+        source: :plugin,
+        contributor_user_id: user.id
       }
 
       crowdsourced_slur_fixture(Map.merge(defaults, attrs))
     end
 
-    # ------------------- Severity -------------------------------------------
     test "filters by level_of_severity" do
+      # Ensure test isolation
+      Repo.delete_all(CrowdsourcedSlur)
+
       high = slur(%{level_of_severity: :high})
       _low = slur(%{level_of_severity: :low})
 
@@ -102,36 +146,33 @@ defmodule UliCommunity.UserContributionTest do
       assert slurs == [high]
     end
 
-    # ------------------- Casual / Appropriated ------------------------------
     test "filters by casual + appropriated flags" do
       only_casual = slur(%{casual: true, appropriated: false})
-      _both_false = slur(%{casual: false, appropriated: false})
+      _other = slur(%{casual: false, appropriated: false})
 
       {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(
-          casual: true,
-          appropriated: false
-        )
+        UserContribution.list_crowdsourced_slurs_with_filters(casual: true, appropriated: false)
 
       assert slurs == [only_casual]
     end
 
-    # ------------------- Source ---------------------------------------------
     test "filters by source" do
-      plugin_slur  = slur(%{source: :plugin})
-      _experts_slur = slur(%{source: :experts_2022})
+      plugin = slur(%{source: :plugin})
+      _expert = slur(%{source: :experts_2022})
 
-      {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(source: :plugin)
-
-      assert slurs == [plugin_slur]
+      {_count, slurs} = UserContribution.list_crowdsourced_slurs_with_filters(source: :plugin)
+      assert slurs == [plugin]
     end
 
-    # ------------------- Date Range -----------------------------------------
     test "filters by from/to dates" do
       ten_days_ago = Date.add(Date.utc_today(), -10)
-      old_slur     = slur(%{inserted_at: DateTime.new!(ten_days_ago, ~T[00:00:00Z])})
-      _recent_slur = slur(%{})   # now
+
+      old =
+        slur(%{
+          inserted_at: DateTime.new!(ten_days_ago, ~T[00:00:00Z]) |> DateTime.truncate(:second)
+        })
+
+      _recent = slur()
 
       {_count, slurs} =
         UserContribution.list_crowdsourced_slurs_with_filters(
@@ -139,27 +180,23 @@ defmodule UliCommunity.UserContributionTest do
           to_date: Date.utc_today()
         )
 
-      refute Enum.member?(slurs, old_slur)
+      refute Enum.member?(slurs, old)
     end
 
-    # ------------------- Categories -----------------------------------------
     test "filters by multiple categories" do
-      caste_slur = slur(%{category: ["caste"]})
-      rel_slur   = slur(%{category: ["religion"]})
-      _gender_slur = slur(%{category: ["gendered"]})
+      caste = slur(%{categories: [:caste]})
+      religion = slur(%{categories: [:religion]})
+      _gender = slur(%{categories: [:gendered]})
 
       {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(
-          category: ["caste", "religion"]
-        )
+        UserContribution.list_crowdsourced_slurs_with_filters(category: [:caste, :religion])
 
-      assert Enum.sort(slurs) == Enum.sort([caste_slur, rel_slur])
+      assert Enum.sort(slurs) == Enum.sort([caste, religion])
     end
 
-    # ------------------- Text Search ----------------------------------------
     test "filters by search term in label" do
       match = slur(%{label: "UniqueKeyword"})
-      _other = slur(%{label: "nothing"})
+      _other = slur(%{label: "something"})
 
       {_count, slurs} =
         UserContribution.list_crowdsourced_slurs_with_filters(search: "uniquekeyword")
@@ -167,7 +204,6 @@ defmodule UliCommunity.UserContributionTest do
       assert slurs == [match]
     end
 
-    # ------------------- Pagination -----------------------------------------
     test "respects page_num + page_size" do
       for i <- 1..5, do: slur(%{label: "S#{i}"})
 
@@ -178,22 +214,21 @@ defmodule UliCommunity.UserContributionTest do
         UserContribution.list_crowdsourced_slurs_with_filters(page_num: 2, page_size: 2)
 
       refute page1 == page2
-      assert Enum.count(page1) == 2
-      assert Enum.count(page2) == 2
+      assert length(page1) == 2
+      assert length(page2) == 2
     end
 
-    # ------------------- Sort ------------------------------------------------
     test "sort newest first" do
       old =
         slur()
-        |> Ecto.Changeset.change(inserted_at: DateTime.add(DateTime.utc_now(), -86_400 * 5))
+        |> Ecto.Changeset.change(
+          inserted_at: DateTime.add(DateTime.utc_now(), -86_400 * 5) |> DateTime.truncate(:second)
+        )
         |> UliCommunity.Repo.update!()
 
       new = slur()
 
-      {_count, [first | _]} =
-        UserContribution.list_crowdsourced_slurs_with_filters(sort: :newest)
-
+      {_count, [first | _]} = UserContribution.list_crowdsourced_slurs_with_filters(sort: :newest)
       assert first == new
       refute first == old
     end
