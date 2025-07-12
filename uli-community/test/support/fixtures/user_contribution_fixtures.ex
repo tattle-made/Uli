@@ -4,28 +4,35 @@ defmodule UliCommunity.UserContributionFixtures do
   entities via the `UliCommunity.UserContribution` context.
   """
 
-  def crowdsourced_slur_fixture(attrs \\ %{}) do
-    # Create a user to associate with the slur
-    user = UliCommunity.AccountsFixtures.user_fixture()
+  alias UliCommunity.UserContribution
+  alias UliCommunity.AccountsFixtures
 
-    # Valid attributes required by the schema
+  def crowdsourced_slur_fixture(attrs \\ %{}) do
+    attrs =
+      case Map.get(attrs, :contributor_user_id) do
+        nil ->
+          user = AccountsFixtures.user_fixture()
+          Map.put(attrs, :contributor_user_id, user.id)
+
+        _ ->
+          attrs
+      end
+
     valid_attrs = %{
-      appropriated: true,
-      appropriation_context: true,
+      appropriated: false,
+      appropriation_context: nil,
       casual: true,
-      label: "some label",
+      label: "test-slur",
       level_of_severity: :medium,
       meaning: "some meaning",
-      categories: [:gendered],
-      contributor_user_id: user.id,
+      categories: [:other],
       source: :plugin
     }
 
-    # Merge any custom overrides from test
     {:ok, crowdsourced_slur} =
       attrs
       |> Enum.into(valid_attrs)
-      |> UliCommunity.UserContribution.create_crowdsourced_slur()
+      |> UserContribution.create_crowdsourced_slur()
 
     crowdsourced_slur
   end

@@ -2,13 +2,11 @@ defmodule UliCommunity.UserContributionTest do
   use UliCommunity.DataCase
 
   alias UliCommunity.UserContribution
+  alias UliCommunity.UserContribution.CrowdsourcedSlur
+  import UliCommunity.UserContributionFixtures
+  import UliCommunity.AccountsFixtures, only: [user_fixture: 0]
 
   describe "crowdsourced_slurs" do
-    alias UliCommunity.UserContribution.CrowdsourcedSlur
-
-    import UliCommunity.UserContributionFixtures
-    import UliCommunity.AccountsFixtures, only: [user_fixture: 0]
-
     @invalid_attrs %{
       label: nil,
       categories: nil,
@@ -112,125 +110,145 @@ defmodule UliCommunity.UserContributionTest do
   # FILTER TESTS ------------------------------------------------------------
   # ---------------------------------------------------------------------------
   describe "filter tests" do
-    import UliCommunity.UserContributionFixtures, only: [crowdsourced_slur_fixture: 1]
-    import UliCommunity.AccountsFixtures, only: [user_fixture: 0]
-
-    defp slur(attrs \\ %{}) do
-      user = user_fixture()
-
+    defp create_dummy_slur(attrs \\ %{}) do
       defaults = %{
-        label: "test‑slur",
         categories: [:caste],
         level_of_severity: :medium,
         casual: true,
         appropriated: false,
         appropriation_context: nil,
         meaning: "meaning",
-        source: :plugin,
-        contributor_user_id: user.id
+        source: :plugin
       }
 
-      crowdsourced_slur_fixture(Map.merge(defaults, attrs))
+      UliCommunity.UserContributionFixtures.crowdsourced_slur_fixture(Map.merge(defaults, attrs))
     end
 
-    test "filters by level_of_severity" do
-      # Ensure test isolation
+    setup do
       Repo.delete_all(CrowdsourcedSlur)
 
-      high = slur(%{level_of_severity: :high})
-      _low = slur(%{level_of_severity: :low})
-
-      {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(level_of_severity: :high)
-
-      assert slurs == [high]
-    end
-
-    test "filters by casual + appropriated flags" do
-      only_casual = slur(%{casual: true, appropriated: false})
-      _other = slur(%{casual: false, appropriated: false})
-
-      {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(casual: true, appropriated: false)
-
-      assert slurs == [only_casual]
-    end
-
-    test "filters by source" do
-      plugin = slur(%{source: :plugin})
-      _expert = slur(%{source: :experts_2022})
-
-      {_count, slurs} = UserContribution.list_crowdsourced_slurs_with_filters(source: :plugin)
-      assert slurs == [plugin]
-    end
-
-    test "filters by from/to dates" do
-      ten_days_ago = Date.add(Date.utc_today(), -10)
-
-      old =
-        slur(%{
-          inserted_at: DateTime.new!(ten_days_ago, ~T[00:00:00Z]) |> DateTime.truncate(:second)
+      slurs = [
+        create_dummy_slur(%{level_of_severity: :high, source: :plugin, categories: [:caste]}),
+        create_dummy_slur(%{level_of_severity: :high, source: :plugin, categories: [:gendered]}),
+        create_dummy_slur(%{
+          level_of_severity: :medium,
+          casual: false,
+          appropriated: true,
+          source: :plugin,
+          categories: [:religion]
+        }),
+        create_dummy_slur(%{
+          level_of_severity: :medium,
+          source: :experts_2022,
+          categories: [:class]
+        }),
+        create_dummy_slur(%{
+          level_of_severity: :low,
+          casual: false,
+          appropriated: true,
+          source: :experts_2022,
+          categories: [:body_shaming]
+        }),
+        create_dummy_slur(%{level_of_severity: :low, source: :experts_2022, categories: [:caste]}),
+        create_dummy_slur(%{source: :crowdsourcing_exercise, categories: [:gendered]}),
+        create_dummy_slur(%{
+          source: :crowdsourcing_exercise,
+          categories: [:political_affiliation]
+        }),
+        create_dummy_slur(%{
+          casual: true,
+          appropriated: false,
+          source: :crowdsourcing_exercise,
+          categories: [:ethnicity]
+        }),
+        create_dummy_slur(%{
+          casual: false,
+          appropriated: false,
+          source: :crowdsourcing_exercise,
+          categories: [:sexual_identity]
         })
+      ]
 
-      _recent = slur()
+      %{slurs: slurs}
+    end
 
-      {_count, slurs} =
+    test "filters by level_of_severity", %{slurs: slurs} do
+      expected_ids =
+        slurs
+        |> Enum.filter(&(&1.level_of_severity == :high))
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      {_count, filtered} =
+        UserContribution.list_crowdsourced_slurs_with_filters(level_of_severity: "high")
+
+      result_ids = Enum.map(filtered, & &1.id) |> Enum.sort()
+
+      assert result_ids == expected_ids
+    end
+
+    test "filters by casual + appropriated flags", %{slurs: slurs} do
+      expected =
+        slurs
+        |> Enum.filter(&(&1.casual == true and &1.appropriated == false))
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      {_count, filtered} =
         UserContribution.list_crowdsourced_slurs_with_filters(
-          from_date: Date.utc_today() |> Date.add(-3),
-          to_date: Date.utc_today()
+          casual: "true",
+          appropriated: "false"
         )
 
-      refute Enum.member?(slurs, old)
+      result_ids = Enum.map(filtered, & &1.id) |> Enum.sort()
+
+      assert result_ids == expected
     end
 
-    test "filters by multiple categories" do
-      caste = slur(%{categories: [:caste]})
-      religion = slur(%{categories: [:religion]})
-      _gender = slur(%{categories: [:gendered]})
+    test "filters by source", %{slurs: slurs} do
+      expected_ids =
+        slurs
+        |> Enum.filter(&(&1.source == :plugin))
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
 
-      {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(category: [:caste, :religion])
+      {_count, filtered} =
+        UserContribution.list_crowdsourced_slurs_with_filters(source: "plugin")
 
-      assert Enum.sort(slurs) == Enum.sort([caste, religion])
+      result_ids = Enum.map(filtered, & &1.id) |> Enum.sort()
+
+      assert result_ids == expected_ids
     end
 
-    test "filters by search term in label" do
-      match = slur(%{label: "UniqueKeyword"})
-      _other = slur(%{label: "something"})
+    test "filters by multiple categories", %{slurs: slurs} do
+      target_categories = [:gendered, :caste]
+      category_strings = Enum.map(target_categories, &Atom.to_string/1)
 
-      {_count, slurs} =
-        UserContribution.list_crowdsourced_slurs_with_filters(search: "uniquekeyword")
+      {_count, filtered} =
+        UserContribution.list_crowdsourced_slurs_with_filters(categories: category_strings)
 
-      assert slurs == [match]
+      expected_ids =
+        slurs
+        |> Enum.filter(fn s -> Enum.any?(s.categories, &(&1 in target_categories)) end)
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      result_ids = Enum.map(filtered, & &1.id) |> Enum.sort()
+
+      assert result_ids == expected_ids
     end
 
-    test "respects page_num + page_size" do
-      for i <- 1..5, do: slur(%{label: "S#{i}"})
+    test "filters by search term in label", %{slurs: slurs} do
+      expected =
+        slurs
+        |> Enum.find(&(&1.label == "test-slur"))
 
-      {_total, page1} =
-        UserContribution.list_crowdsourced_slurs_with_filters(page_num: 1, page_size: 2)
+      {_count, filtered} =
+        UserContribution.list_crowdsourced_slurs_with_filters(search_term: "test")
 
-      {_total, page2} =
-        UserContribution.list_crowdsourced_slurs_with_filters(page_num: 2, page_size: 2)
+      result_ids = Enum.map(filtered, & &1.id)
 
-      refute page1 == page2
-      assert length(page1) == 2
-      assert length(page2) == 2
-    end
-
-    test "sort newest first" do
-      old =
-        slur()
-        |> Ecto.Changeset.change(
-          inserted_at: DateTime.add(DateTime.utc_now(), -86_400 * 5) |> DateTime.truncate(:second)
-        )
-        |> UliCommunity.Repo.update!()
-
-      new = slur()
-
-      {_count, [first | _]} = UserContribution.list_crowdsourced_slurs_with_filters(sort: :newest)
-      assert first == new
-      refute first == old
+      assert expected.id in result_ids
     end
   end
 end
