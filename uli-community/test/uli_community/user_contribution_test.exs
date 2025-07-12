@@ -106,9 +106,6 @@ defmodule UliCommunity.UserContributionTest do
     end
   end
 
-  # ---------------------------------------------------------------------------
-  # FILTER TESTS ------------------------------------------------------------
-  # ---------------------------------------------------------------------------
   describe "filter tests" do
     defp create_dummy_slur(attrs \\ %{}) do
       defaults = %{
