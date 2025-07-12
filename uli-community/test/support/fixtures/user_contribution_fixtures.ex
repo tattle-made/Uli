@@ -7,6 +7,9 @@ defmodule UliCommunity.UserContributionFixtures do
   alias UliCommunity.UserContribution
   alias UliCommunity.AccountsFixtures
 
+  @doc """
+  Generate a crowdsourced_slur.
+  """
   def crowdsourced_slur_fixture(attrs \\ %{}) do
     attrs =
       case Map.get(attrs, :contributor_user_id) do
