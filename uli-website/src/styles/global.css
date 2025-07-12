@@ -2,8 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-pre {
-    overflow-x: auto;
-    white-space: pre;
-    word-break: normal;
-  }
+/* pre {
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+} */
+
+pre>code {
+  background: #FFF2DC;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 6px;
+  padding: 1rem;
+  display: block;
+  overflow-x: auto;
+}
