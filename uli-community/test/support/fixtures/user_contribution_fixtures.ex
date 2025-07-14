@@ -4,22 +4,38 @@ defmodule UliCommunity.UserContributionFixtures do
   entities via the `UliCommunity.UserContribution` context.
   """
 
+  alias UliCommunity.UserContribution
+  alias UliCommunity.AccountsFixtures
+
   @doc """
   Generate a crowdsourced_slur.
   """
   def crowdsourced_slur_fixture(attrs \\ %{}) do
+    attrs =
+      case Map.get(attrs, :contributor_user_id) do
+        nil ->
+          user = AccountsFixtures.user_fixture()
+          Map.put(attrs, :contributor_user_id, user.id)
+
+        _ ->
+          attrs
+      end
+
+    valid_attrs = %{
+      appropriated: false,
+      appropriation_context: nil,
+      casual: true,
+      label: "test-slur",
+      level_of_severity: :medium,
+      meaning: "some meaning",
+      categories: [:other],
+      source: :plugin
+    }
+
     {:ok, crowdsourced_slur} =
       attrs
-      |> Enum.into(%{
-        appropriated: true,
-        appropriation_context: true,
-        casual: true,
-        category: ["option1", "option2"],
-        label: "some label",
-        level_of_severity: "some level_of_severity",
-        meaning: "some meaning"
-      })
-      |> UliCommunity.UserContribution.create_crowdsourced_slur()
+      |> Enum.into(valid_attrs)
+      |> UserContribution.create_crowdsourced_slur()
 
     crowdsourced_slur
   end
