@@ -30,6 +30,10 @@ defmodule UliCommunityWeb.Router do
     plug UliCommunityWeb.Plugs.AuthenticateAccessToken
   end
 
+  pipeline :authenticated_app_api do
+    plug UliCommunityWeb.Plugs.AuthenticateAppAccessToken
+  end
+
   scope "/", UliCommunityWeb do
     pipe_through :browser
 
@@ -117,6 +121,12 @@ defmodule UliCommunityWeb.Router do
     get "/hi", AccessTokenController, :say_hi
   end
 
+  ## Auth routes for App Access Token
+  scope "/api/app", UliCommunityWeb do
+    pipe_through [:api, :authenticated_app_api]
+    get "/hi", AccessTokenController, :say_hi
+  end
+
   ## Authentication routes
 
   scope "/", UliCommunityWeb do
@@ -148,6 +158,12 @@ defmodule UliCommunityWeb.Router do
       live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
       live "/plugin-metadata/:slur_label", PluginMetadataSlurLive, :index
       live "/dashboard", DashboardLive
+
+      scope "/app", UserApp do
+        live "/create", CreateUserAppLive, :index
+        live "/my-apps", DisplayAllUserAppsLive, :index
+        live "/my-apps/:app_id", DisplaySingleUserAppLive, :index
+      end
     end
   end
 
