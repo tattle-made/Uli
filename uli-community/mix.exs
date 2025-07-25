@@ -66,7 +66,8 @@ defmodule UliCommunity.MixProject do
       {:erlport, "~> 0.11.0"},
       {:export, "~> 0.1.0"},
       {:oban, "~> 2.19"},
-      {:igniter, "~> 0.5", only: [:dev]}
+      {:igniter, "~> 0.5", only: [:dev]},
+      {:timex, "~> 3.7"}
     ]
   end
 
