@@ -49,7 +49,7 @@ defmodule UliCommunityWeb.UserApp.CreateUserAppLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col lg:w-[50%] mx-auto">
+    <div class="flex flex-col lg:w-[30%] mx-auto">
       <.header class="text-center">Create a new User App</.header>
       <.simple_form for={@app_form} phx-submit="submit" class="!bg-[#fdf6ed]">
         <.input required field={@app_form[:app_name]} label="App Name" />
