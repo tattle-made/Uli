@@ -49,14 +49,16 @@ defmodule UliCommunityWeb.UserApp.CreateUserAppLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.header class="text-center">Create a new User App</.header>
-    <.simple_form for={@app_form} phx-submit="submit" class="!bg-[#fdf6ed]">
-      <.input required field={@app_form[:app_name]} label="App Name" />
-      <.input required field={@app_form[:webhook_endpoint]} label="Webhook URL" />
-      <:actions>
-        <.button class="mx-auto">Create New App</.button>
-      </:actions>
-    </.simple_form>
+    <div class="flex flex-col lg:w-[50%] mx-auto">
+      <.header class="text-center">Create a new User App</.header>
+      <.simple_form for={@app_form} phx-submit="submit" class="!bg-[#fdf6ed]">
+        <.input required field={@app_form[:app_name]} label="App Name" />
+        <.input required field={@app_form[:webhook_endpoint]} label="Webhook URL" />
+        <:actions>
+          <.button class="mx-auto">Create New App</.button>
+        </:actions>
+      </.simple_form>
+    </div>
     """
   end
 end

@@ -133,7 +133,7 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
     attrs = %{
       user_application_id: socket.assigns.app.id,
       token_name: params["token_name"],
-      access_level: params["access_level"],
+      # scope: params["scope"],
       expiry: params["expiry"]
     }
 
@@ -144,7 +144,7 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
           :id,
           :token_id,
           :token_name,
-          :access_level,
+          :scope,
           :expiry,
           :user_application_id,
           :inserted_at,
@@ -152,9 +152,11 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
         ])
 
       updated_tokens = [new_entry | socket.assigns.app_tokens]
+      # Reset form with explicit empty values
+      token_form = to_form(%{"token_name" => "", "expiry" => ""}, as: "app_token")
 
       socket =
-        assign(socket, token_modal: %{token: token, open?: true}, app_tokens: updated_tokens)
+        assign(socket, token_form: token_form, token_modal: %{token: token, open?: true}, app_tokens: updated_tokens)
 
       socket = put_flash(socket, :info, "Token Generated Successfully!")
       {:noreply, socket}
@@ -192,7 +194,24 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.header class="text-center">App Details</.header>
+    <.link
+      navigate="/app/my-apps"
+      class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-900 transition-colors"
+    >
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        >
+        </path>
+      </svg>
+      Back to My Apps
+    </.link>
+
+    <.header class="text-center mb-4">App Details</.header>
+
     <%= if @app do %>
       <%= if @edit_mode do %>
         <.simple_form for={@app_form} phx-submit="save" phx-change="validate" class="max-w-lg mx-auto">
@@ -204,34 +223,58 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
           </:actions>
         </.simple_form>
       <% else %>
-        <h2 class="text-2xl font-bold mb-2"><%= @app.app_name %></h2>
-        <p class="mb-1">
-          <span class="font-semibold">Webhook Endpoint:</span> <%= @app.webhook_endpoint %>
-        </p>
-        <p class="mb-1"><span class="font-semibold">Created By:</span> <%= @user && @user.email %></p>
-        <p class="mb-1">
-          <span class="font-semibold">Created At (IST):</span> <%= @ist_inserted_at &&
-            Timex.format!(@ist_inserted_at, "%Y-%m-%d %H:%M:%S", :strftime) %>
-        </p>
-        <p class="mb-1">
-          <span class="font-semibold">Updated At (IST):</span> <%= @ist_updated_at &&
-            Timex.format!(@ist_updated_at, "%Y-%m-%d %H:%M:%S", :strftime) %>
-        </p>
-        <div class="flex gap-2 mt-4">
-          <button phx-click="edit" class="px-4 py-2 bg-blue-600 text-white rounded">Edit</button>
-          <button
-            phx-click={show_modal("delete-app-modal")}
-            class="px-4 py-2 bg-red-600 text-white rounded"
-          >
-            Delete
-          </button>
+        <div class="border border-gray-200 rounded-lg p-6 bg-white shadow-sm max-w-3xl">
+          <h2 class="text-2xl font-bold mb-4 text-gray-800"><%= @app.app_name %></h2>
+          <div class="space-y-3">
+            <p class="border-b border-gray-100 pb-2">
+              <span class="font-semibold text-gray-700">Webhook Endpoint:</span>
+              <span class="text-gray-600 break-all"><%= @app.webhook_endpoint %></span>
+            </p>
+            <p class="border-b border-gray-100 pb-2">
+              <span class="font-semibold text-gray-700">Created By:</span>
+              <span class="text-gray-600"><%= @user && @user.email %></span>
+            </p>
+            <p class="border-b border-gray-100 pb-2">
+              <span class="font-semibold text-gray-700">Created At (IST):</span>
+              <span class="text-gray-600">
+                <%= @ist_inserted_at &&
+                  Timex.format!(@ist_inserted_at, "%Y-%m-%d %H:%M:%S", :strftime) %>
+              </span>
+            </p>
+            <p class="pb-2">
+              <span class="font-semibold text-gray-700">Updated At (IST):</span>
+              <span class="text-gray-600">
+                <%= @ist_updated_at &&
+                  Timex.format!(@ist_updated_at, "%Y-%m-%d %H:%M:%S", :strftime) %>
+              </span>
+            </p>
+          </div>
+          <div class="flex gap-2 mt-6 pt-4 border-t border-gray-200">
+            <button
+              phx-click="edit"
+              class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+              Edit
+            </button>
+            <button
+              phx-click={show_modal("delete-app-modal")}
+              class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+            >
+              Delete
+            </button>
+          </div>
         </div>
-        <button><.link navigate="/app/my-apps">Back to My Apps</.link></button>
       <% end %>
       <.header class="text-center mt-10">App Tokens</.header>
       <.table id="app-tokens-table" rows={@app_tokens}>
         <:col :let={token} label="Token's Name"><%= token.token_name %></:col>
-        <:col :let={token} label="Access Level"><%= token.access_level %></:col>
+        <:col :let={token} label="Scope">
+          <%= if is_nil(token.scope) do
+            "N/A"
+          else
+            Enum.join(token.scope, ", ")
+          end %>
+        </:col>
         <:col :let={token} label="Created">
           <%= token.inserted_at && DateTime.to_date(token.inserted_at) %>
         </:col>
@@ -246,12 +289,12 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
           </button>
         </:col>
       </.table>
-      <.simple_form for={@token_form} phx-submit="gen_app_token" phx-update="ignore" class="mt-6">
-        <.input field={@token_form[:token_name]} label="Token Name" />
+      <.simple_form for={@token_form} phx-submit="gen_app_token" class="mt-6">
+        <.input field={@token_form[:token_name]} label="Token Name" placeholder= "Enter token name" />
         <.input type="date" min={Date.utc_today()} field={@token_form[:expiry]} label="Set Expiry" />
         <%!-- <.input
           type="select"
-          field={@token_form[:access_level]}
+          field={@token_form[:scope]}
           label="Access Level"
           options={@access_levels}
         /> --%>

@@ -23,10 +23,12 @@ defmodule UliCommunityWeb.Components.TokenModal do
   """
   def token_modal(assigns) do
     ~H"""
-    <div id={@id} class={"fixed inset-0 z-50 flex items-center justify-center  " <> if @show, do: "block", else: "hidden"}>
+    <div
+      id={@id}
+      class={"fixed inset-0 z-50 flex items-center justify-center xl:max-w-[60%] mx-auto  " <> if @show, do: "block", else: "hidden"}
+    >
       <!-- Overlay -->
       <div class="fixed inset-0 bg-black bg-opacity-50"></div>
-
       <!-- Modal Content -->
       <div class="relative bg-white w-3/4 rounded shadow-lg">
         <!-- Modal Header -->
@@ -34,14 +36,14 @@ defmodule UliCommunityWeb.Components.TokenModal do
           <h2 class="text-lg font-semibold">
             <%= render_slot(@title) %>
           </h2>
-          <button type="button" phx-click="close-modal" class="text-gray-500 hover:text-gray-700">&times;</button>
+          <button type="button" phx-click="close-modal" class="text-gray-500 hover:text-gray-700">
+            &times;
+          </button>
         </div>
-
         <!-- Modal Body -->
         <div class="p-4 break-words ">
           <%= render_slot(@body) %>
         </div>
-
         <!-- Modal Footer -->
         <div class="p-4 border-t">
           <%= render_slot(@footer) %>
