@@ -22,8 +22,8 @@ defmodule UliCommunity.Api.Token do
   """
   @spec verify(String.t()) :: {:ok, any()} | {:error, :unauthenticated}
   def verify(token) do
-    case Phoenix.Token.verify(UliCommunityWeb.Endpoint, @signing_salt, token,
-             max_age: @token_age_secs
+    case Phoenix.Token.verify(UliCommunityWeb.Endpoint, @signing_salt, token
+            #  max_age: @token_age_secs
            ) do
       {:ok, data} ->
 
