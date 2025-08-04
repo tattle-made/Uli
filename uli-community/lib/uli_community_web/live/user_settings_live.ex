@@ -18,7 +18,7 @@ defmodule UliCommunityWeb.UserSettingsLive do
           phx-submit="update_email"
           phx-change="validate_email"
         >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
+          <.input field={@email_form[:email]} type="email" label="Email" required class="w-full" />
           <.input
             field={@email_form[:current_password]}
             name="current_password"
@@ -27,6 +27,7 @@ defmodule UliCommunityWeb.UserSettingsLive do
             label="Current password"
             value={@email_form_current_password}
             required
+            class="w-full"
           />
           <:actions>
             <.button phx-disable-with="Changing...">Change Email</.button>
@@ -49,11 +50,18 @@ defmodule UliCommunityWeb.UserSettingsLive do
             id="hidden_user_email"
             value={@current_email}
           />
-          <.input field={@password_form[:password]} type="password" label="New password" required />
+          <.input
+            field={@password_form[:password]}
+            type="password"
+            label="New password"
+            required
+            class="w-full"
+          />
           <.input
             field={@password_form[:password_confirmation]}
             type="password"
             label="Confirm new password"
+            class="w-full"
           />
           <.input
             field={@password_form[:current_password]}
@@ -63,6 +71,7 @@ defmodule UliCommunityWeb.UserSettingsLive do
             id="current_password_for_password"
             value={@current_password}
             required
+            class="w-full"
           />
           <:actions>
             <.button phx-disable-with="Changing...">Change Password</.button>
