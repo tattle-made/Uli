@@ -215,8 +215,8 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
     <%= if @app do %>
       <%= if @edit_mode do %>
         <.simple_form for={@app_form} phx-submit="save" phx-change="validate" class="max-w-lg mx-auto">
-          <.input required field={@app_form[:app_name]} label="App Name" />
-          <.input required field={@app_form[:webhook_endpoint]} label="Webhook URL" />
+          <.input required field={@app_form[:app_name]} label="App Name" class="w-full"/>
+          <.input required field={@app_form[:webhook_endpoint]} label="Webhook URL" class="w-full"/>
           <:actions>
             <.button class="mr-2">Save</.button>
             <.button type="button" phx-click="cancel_edit" class="bg-gray-400">Cancel</.button>
@@ -289,9 +289,10 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
           </button>
         </:col>
       </.table>
+      <.header class="text-center mt-10">Generate a New Token</.header>
       <.simple_form for={@token_form} phx-submit="gen_app_token" class="mt-6">
-        <.input field={@token_form[:token_name]} label="Token Name" placeholder= "Enter token name" />
-        <.input type="date" min={Date.utc_today()} field={@token_form[:expiry]} label="Set Expiry" />
+        <.input field={@token_form[:token_name]} label="Token Name" placeholder= "Enter token name" class="w-full lg:w-[40%]"/>
+        <.input type="date" min={Date.utc_today()} field={@token_form[:expiry]} label="Set Expiry" class="w-full lg:w-[40%]"/>
         <%!-- <.input
           type="select"
           field={@token_form[:scope]}

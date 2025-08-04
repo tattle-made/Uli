@@ -23,7 +23,11 @@ defmodule UliCommunityWeb.UserApp.CreateUserAppLive do
 
       case Apps.create_user_app(params) do
         {:ok, created_app} ->
-          socket = socket |> put_flash(:info, "User App created successfully!") |> push_navigate(to: "/app/my-apps")
+          socket =
+            socket
+            |> put_flash(:info, "User App created successfully!")
+            |> push_navigate(to: "/app/my-apps")
+
           IO.inspect(created_app, label: "Created app: ")
           {:noreply, socket}
 
@@ -37,7 +41,6 @@ defmodule UliCommunityWeb.UserApp.CreateUserAppLive do
           socket = socket |> put_flash(:error, "Something went wrong!")
           {:noreply, socket}
       end
-
     else
       # add action to the changeset to display field error.
       IO.inspect(changeset, label: "Changeset: ")
@@ -51,9 +54,9 @@ defmodule UliCommunityWeb.UserApp.CreateUserAppLive do
     ~H"""
     <div class="flex flex-col lg:w-[30%] mx-auto">
       <.header class="text-center">Create a new User App</.header>
-      <.simple_form for={@app_form} phx-submit="submit" class="!bg-[#fdf6ed]">
-        <.input required field={@app_form[:app_name]} label="App Name" />
-        <.input required field={@app_form[:webhook_endpoint]} label="Webhook URL" />
+      <.simple_form for={@app_form} phx-submit="submit">
+        <.input required field={@app_form[:app_name]} label="App Name" class="w-full" />
+        <.input required field={@app_form[:webhook_endpoint]} label="Webhook URL" class="w-full" />
         <:actions>
           <.button class="mx-auto">Create New App</.button>
         </:actions>
