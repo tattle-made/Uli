@@ -1,5 +1,7 @@
 import React from "react";
 import { CodeBlock, CopyBlock } from "react-code-blocks";
+import styled from "styled-components";
+
 
 const CustomCodeBlock = (props) => {
     const { className, copy, children } = props;
@@ -45,17 +47,24 @@ const CustomCodeBlock = (props) => {
         functionColor: "#6272a4",
         numberColor: "#bd93f9",
     }
-    return copy ? (
-        <CopyBlock
-            text={trimmedCode}
-            language={language}
-            theme={myCustomTheme}
-            wrapLines
-            codeBlock
-        />
-    ) : (
-        <CodeBlock text={trimmedCode} language={language} theme={myCustomTheme} wrapLines />
+    return (
+        <Wrapper>
+            <CopyBlock
+                text={trimmedCode}
+                language={language}
+                theme={myCustomTheme}
+                wrapLines
+                showLineNumbers={true}
+                codeBlock
+            />
+        </Wrapper>
     );
 };
 
 export default CustomCodeBlock
+const Wrapper = styled.div`
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: "monospace";
+`;
