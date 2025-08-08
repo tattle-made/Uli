@@ -512,9 +512,9 @@ defmodule UliCommunityWeb.CoreComponents do
                 </span>
               </div>
             </td>
-            <td :if={@action != []} class="relative w-14 p-0">
+            <td :if={@action != []} class="relative w-14 p-0 group-hover:bg-slate-200 sm:rounded-r-xl">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-slate-200 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px -right-4 left-0" />
                 <span
                   :for={action <- @action}
                   class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
