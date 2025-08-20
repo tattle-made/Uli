@@ -28,8 +28,7 @@ const ContentPageShell = ({ children }) => {
             h1: HeadingOne,
             h2: HeadingTwo,
             h3: HeadingThree,
-            pre: CustomCodeBlock,
-            // code: (props) => <CustomCodeBlock {...props} />,
+            code: (props) => <CustomCodeBlock {...props} />,
           }}
         >
 
