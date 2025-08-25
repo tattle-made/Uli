@@ -8,7 +8,9 @@ date: 2023-09-07
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 ## The Evolution of Uli
 
@@ -30,5 +32,3 @@ The tasks for the next few months are cut out. There is plenty to be done and yo
 
 It is worth mentioning that many reports have come out over the last few months documenting the challenge and scale of online/facilitated gender based violence. A report by [Center for International Governance Innovation](https://www.cigionline.org/articles/tech-facilitated-gender-based-violence-is-an-international-human-rights-concern-finds-new-research/) reports on experiences of online harms in 18 different countries. [Another report](https://www.sddirect.org.uk/resource/technology-facilitated-gender-based-violence-preliminary-landscape-analysis) commissioned by the Global Partnership for Action on Gender-Based Online Harassment provides a landscape analysis for a coherent research agenda. Reading these reports, alongside user-research, has been quite interesting. One of the things we noted from the focus group discussions in 2021 was the [everyday-ness](https://uli.tattle.co.in/blog/making-of-dec-2021) of gendered abuse, and its manifestation as fatigue. The everyday-ness, beyond the doxxing and cyber-stalking that get noted in FIRs and media, continues to echo through our conversations this year. To make visible something that has become mundane and to de-normalize it- that remains a key goal for us. We have some ideas brewing (beyond building specific features in Uli), but if you are working on creative projects or solutions towards the same goals, we would love to exchange notes and brainstorm together. Please email us uli_support@tattle.co.in.
 
-
-</ContentPageShell>

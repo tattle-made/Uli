@@ -9,7 +9,9 @@ tags:
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
   
 The majority of machine learning investment on online platforms still happens in English. 
 As Tarunima Prabhakar [commented to Rest of World](https://restofworld.org/2021/newsletter-south-asia-facebooks-language-problem/) back in 2021, there is hardly any prioritisation of other languages. For a country like India, abusive and hateful slurs also happen in vernacular languages. Yet, the lack of a list of these commonly used terms makes it harder to protect people from gendered abuse. 
@@ -20,4 +22,3 @@ Thanks to the work led by Aakash from Citizen Digital Foundation, 50 new slurs w
 It has been an immense collective effort that now contains over 630 words across the four languages, over 300 of which have been annotated. One of the annotators involved in the process also pointed out that given the number of alphabets that exist in other languages (as opposed to English), creating the lexicon for slur lists is even harder. As people learn to trick the system, the number of spelling and tweaking possibilities means consistently trying to keep up. 
 The slur list is available on [Tattle’s GitHub](https://restofworld.org/2021/newsletter-south-asia-facebooks-language-problem/) under the Open Data License for use by interested researchers and activists, or Trust and Safety teams.
 
-</ContentPageShell>

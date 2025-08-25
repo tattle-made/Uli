@@ -8,7 +8,9 @@ date: 2024-04-17
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 We're continuing by taking a look at how cross-platform abuse operates on federated and centralised platforms, and the kind of solutions they must test and implement to tackle cross-platform abuse. 
 The most popular decentralised/federated social media platform is Mastodon; Threads and Bluesky have also followed suit into adopting federation protocols for social media platforms. 
@@ -48,5 +50,4 @@ However, when it comes to cross-platform abuse, the issue of, say, a journalist 
 This combined with singular, platform-based reporting adds to the fatigue experienced by them. 
 Addressing the issue by testing out tools as suggested in the context of the fediverse may prove useful if implemented by centralised platforms to enable better detection of abusive content amongst each other and also the fediverse; 
 further, implementation of standardised reporting methods/ signal sharing methods will reduce the burden on users, who will not need to relive an unpleasant experience each time they must report content on an instance/platform.              
-              
-</ContentPageShell>
+

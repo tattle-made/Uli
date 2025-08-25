@@ -8,9 +8,11 @@ date: 2021-08-01
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
-** This is one of the earliest articulations of the project vision and approach, written in the July/August 2021 **
+**This is one of the earliest articulations of the project vision and approach, written in the July/August 2021**
 
 The graphic narrative titled ‘Personal (Cyber) Space’ published in 2016 by Parthasarthy and Malhotra narrates an experience of a young internet user. The animated short comic hosted by Kadak, a South Asian women collective, asks: ‘If one says something, there’s the fear of hateful response. But if one doesn’t say something, isn’t that silence counterproductive?’ only to end with the question, ‘so what does one say?’
 
@@ -18,7 +20,7 @@ Violence, abuse, and hate speech on web 2.0 has become pervasive to one’s expe
 
 Funded by [Omidyar Network India](https://www.omidyarnetwork.in/) as part of their Digital Society Challenge grant, the [Centre for Internet and Society](https://cis-india.org/) and Tattle Civic Tech are building a free-to-use user-facing web plugin. The plug-in will help users to moderate instances of online violence in Indian languages with a focus on the experience of persons situated at the margins of gender, caste, religion and sexuality.
 
-## Approach
+### Approach
 
 The project borrows from feminist approaches to Machine Learning technology and aims to intervene into the ongoing debate around content moderation. The existing algorithmic approaches to automated content moderation strategies are generally biased towards English-language content paying very limited attention to social, cultural and linguistic diversity elsewhere. Moreover, the existing approaches understand moderation through a binary logic of: leave content up or remove it. With multiple political and legal implications emerging from these biases, the existing approaches threaten to pose more problems rather than solving them. With this tool, the project aims to redress these problems and find creative ways in which moderation can empower multiple users, especially the ones that are most affected.
 
@@ -33,7 +35,7 @@ The moderation decisions of social media platforms often make international news
 Machine learning tools can also be designed to reflect the values of those at the forefront of tackling violence, to protect those who will be at the receiving end of the violence. This is precisely the goal of our project. 
 
 
-## Stakeholders
+### Stakeholders
 In 2021, we ran workshops with gender rights activists and researchers and identified the following stakeholders:
 
 <img src="/OGBV_stakeholders_2.png" alt="OGBV Stakeholders" />
@@ -43,5 +45,3 @@ The first three stakeholders are those who are at the receiving end of online ge
 In 2021, we conducted focus group discussions and interviews. We cataloged the request for features we heard at the time, [here](https://docs.google.com/document/d/e/2PACX-1vQ29pzrZtFOxgb5yPgA1a-y_0LZbGRureUx0E0LZvRx2VgqANOYrAvDNuqYHQMpVcQPgH3ql-52YSu9/pub).
 
 We prioritized features based on their perceived importance and the level of effort required in developing them. 
-
-</ContentPageShell>

@@ -9,7 +9,9 @@ tags:
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
   
 While hosted and led by Tattle Civic Tech, the evolution of Uli over the last 3 years has been a collective journey. 
 The pilot stage was supported by the Digital Society Challenge grant provided to the Centre for Internet and Society. We have also been supported by GitHub’s DPG Open Source Community Manager Program. Most recently, we were supported by [Mozilla Foundation’s](https://foundation.mozilla.org/en/blog/expanded-indian-language-data-set-mitigates-hate-speech-online-in-india-elsewhere/) 2023 Data Future’s Lab Cohort. 
@@ -23,4 +25,3 @@ If you are interested in collaborating with us on the research or technical side
 
 Let’s keep chiselling away at the problem of online gender-based violence together!
 
-</ContentPageShell>

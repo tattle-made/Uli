@@ -8,7 +8,9 @@ date: 2023-12-22
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 ## Updates from Uli: November/December 2023
 
@@ -20,5 +22,3 @@ Between the Hacktoberfest contributions for translating the content on the websi
 
 Tattle also had its [in-person work sprint](https://tattle.co.in/blog/2023-12-17-sprint-dmm) in the last week of November. We devoted the sprint to coming up with a roadmap on action against digitally manipulated videos and images. Over the last few months we've seen an increase in the use of AI to generate sexualized morphed videos of women. These are often reported in media as deepfakes. The goal of the sprint was to come up with a year long agenda on: "How can Tattle increase civic agency against Digitally Manipulated Media?" Digitally Manipulated Media (DMM) is an umbrella term for the entire spectrum of shallow fakes to deepfakes. Through the sprint we tested existing open source digital forensic tools, discussed where regulation would be appropriate, the importance of a taxonomy for DMMs, and other ideas. [This wiki](https://github.com/tattle-made/Uli/wiki/Mitigating-Harms-of-Digitally-Manipulated-Media "Mitigating Harms of Digitally Manipulated Media") summarizes the discussions in the week. One concrete outcome of the sprint was the creation of a database of reported DMMs in India: [DMM Dataset Public](https://docs.google.com/spreadsheets/d/1zPkhJLuKMeiry6UfWXR6PYcnL1wtE9IVxnqn_7tN5J4/edit?usp=sharing "DMM Dataset_ Public").
 
-
-</ContentPageShell>

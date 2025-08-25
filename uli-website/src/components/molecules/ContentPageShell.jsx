@@ -31,6 +31,7 @@ const ContentPageShell = ({ children }) => {
             code: (props) => <CustomCodeBlock {...props} />,
           }}
         >
+
           <Box width={"large"}>{children}</Box>
         </MDXProvider>
       </Box>
