@@ -9,7 +9,9 @@ const CustomCodeBlock = (props) => {
         ? className.match(/(?<=language-)(\w.*?)\b/)[0]
         : "javascript";
 
-    const trimmedCode = children.trim()
+    // const trimmedCode = children.trim()
+    const trimmedCode = React.Children.toArray(children).join("").trim();
+
 
     const myCustomTheme = {
         lineNumberColor: "#6272a4",

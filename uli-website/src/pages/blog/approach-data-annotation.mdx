@@ -9,7 +9,9 @@ tags:
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 **Our Approach to Data Annotation**
   
@@ -52,4 +54,3 @@ There are considerations to be made when recognising this work- for instance, wh
 
 Our attempt to understand monetary compensation did not extend beyond ‘at least minimum wage’, but various strategies to protect the interests of the data workers surfaced. Efforts have also been undertaken to engage in the creation of datasets in a responsible manner, which reflects a commitment to prevailing inequities in this process. We are interested in building a framework based on these ongoing efforts, to inform how data annotation work may be equitably recognised and valued. We will be attempting to answer this question by engaging with data workers’ perspectives themselves.
 
-</ContentPageShell>
