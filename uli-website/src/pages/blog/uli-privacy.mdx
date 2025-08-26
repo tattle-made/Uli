@@ -12,18 +12,18 @@ export default function Layout({ children }) {
   return <ContentPageShell>{children}</ContentPageShell>;
 }
 
-# Privacy Preserving Features of Uli
+**Privacy Preserving Features of Uli**
 
 - Authors: Denny George and Sudeep Duggal \*
 
 We believe we've built Uli thoughtfully in a way that users can get value out of it without giving any of their personal data to us. For all the features, whenever possible, we have built a version of the feature that allows it to be used locally. What we mean by ‘locally’ is that unless users opt in, the processing required for a feature, happens on the user’s machine and no data is sent to us. For features where data is sent to us, we’ve tried to minimize any storage of PII. PII like email when stored is stored encrypted. The server source code is open source and can be audited here.
 
-## Slur Detection and Blurring
+**Slur Detection and Blurring**
 
 The code for detecting exact and approximate matches for the slurs present in our slur list runs completely on the client side. Exact matching of slurs use standard RegEx while for approximate matches we use Levenshtein distances[1]. When the plugin is running it has access to the text within the tweets on your screen but this data is not sent to our servers.
 There is an opt-in improvement to this feature which detects whether a tweet would qualify as an instance of Online Gender Based Violence. Currently this feature does not work locally[2] and requires data to be sent to our server where we use Machine Learning to classify the tweet. In this instance as well, we don’t store the tweet text[3].
 
-## Archive Tweets
+**Archive Tweets**
 
 Unless users opt in by providing an email id, this feature allows you to store screenshots of problematic tweets on your machine itself. In this case no data - tweet screenshot or tweet metadata is sent to our servers.
 
@@ -31,13 +31,13 @@ Even when users opt in to remote archiving by providing their email ids, their p
 
 We’ve taken measures to ensure the tweets you archive are stored securely, protected from others. We would still advise that the tool be used with discretion . Uli is a tool meant to foster a community to fight online abuse, you must consider the feature as being intended to create a community repository of problematic content and not to be used for personal data archiving. At any point if you feel like you would like to remove some content you archived remotely you can reach out to us on uli-support@tattle.co.in. The plugin also provides a “Reset Account” option that will delete your account from our servers along with any data you might have archived allowing you to be “forgotten” from our system.
 
-## Invoke Network
+**Invoke Network**
 
 This feature is meant to find support against problematic content directed towards you by reaching out to your network or community organizations. By its very nature this feature can’t run locally. This is intended as a fully opt-in feature however and the same privacy preserving actions mentioned in the section above apply here. Given the potential of abuse we have not included it in the current iteration. We are exploring strategies to minimize the room for abuse.
 
 If you find any flaws in our approach, have suggestions for improvements or spot any vulnerabilities, please disclose them at uli-support@tattle.co.in
 
-## Footnotes :
+**Footnotes :**
 
 [1] This code was prototyped in python and then ported to run on web browsers using the pyodide project. Code can be studied [here](https://github.com/tattle-made/OGBV/commit/35ce9e15e230e7a2aa247b7fc448bd733a831a85).
 [2] There is currently an [open issue](https://github.com/tattle-made/OGBV/issues/141) on our github repository tracking progress on this. Feel free to participate there if you wish to get further clarification or have any input on how we could achieve this functionality locally.
