@@ -17,6 +17,18 @@ This project is a Phoenix template designed to streamline the setting up of a Ph
 
 ## Start Development
 
+### Setup Python and Install relevant dependencies
+1. Install [`uv`](https://docs.astral.sh/uv/). We use `uv` as the pacakge manager for python. 
+2. Setup a virtural enviroment inside `lib/python` folder
+```sh
+cd lib/python
+uv venv
+```
+This will create a `.venv` folder
+3. Run `uv pip install -r pyproject.toml` to installl Python related dependencies inside the `lib/python/` folder.
+
+### Phoenix Server
+
 To start your Phoenix server:
 
   * Run `docker compose up`
@@ -26,6 +38,16 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check the deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+
+## Steps to Seed Slur data and Setup Vector Search
+### Seed Crowdsourced Slur Data
+1. Update all entries in the [`priv/crowdsourced-21-14-2025/slur_metadata.json`](https://github.com/tattle-made/Uli/blob/main/uli-community/priv/crowdsourced-21-14-2025/slur_metadata.json) file by setting the value of the `contributor_user_id` field to `1` for every object in the JSON array. So replace all `"contributor_user_id": 15,` with `"contributor_user_id": 1,`
+2. Now inside the elixir repl `iex -S mix`, Run `Scripts.SeedCrowdsourcedSlurData210525.run`
+This will seed crowdsourced slurs data into the DB
+
+### Extract Embeddings for all Slur Data and Store in the Vector DB
+Inside the elixir repl `iex -S mix`
+* Run `Scripts.ExtractCrowdsourcedSlurEmbedding.enqueue_unprocessed_texts_batch` to extract embeddings of all slurs and store them in the DB.
 
 ## Authentication in Web App itself
 
