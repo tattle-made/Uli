@@ -1,7 +1,9 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 import { Box } from "grommet";
 
-<ContentPageShell>
+export default function Layout({ children }) {
+    return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 # FAQ
 
@@ -94,5 +96,3 @@ Since the ML model is a work in progress, we understand that it can feel clunky 
 ## You have the custom slur feature, why was ML needed at all for this tool?
 
 We wanted to develop this model as a proof of concept which can be used to demand responsible algorithmic designs that take into account the concerns of the communities and make a case for more investment from social media companies in non-English languages.
-
-</ContentPageShell>

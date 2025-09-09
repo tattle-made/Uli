@@ -1,6 +1,8 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 ## Uli for Trust and Safety Teams
 
@@ -31,5 +33,3 @@ Seperately, we are also working on a framework that could guide us on compensati
 
 Some versions of the slur list are open access, and available on our Github [repo](https://github.com/tattle-made/Uli/tree/1760d01660dc5e7c20453edbe580e9315382c691/browser-extension/plugin/scripts). 
 However, this list is continuously iterated on by detecting spelling variations, adding metadata, and expanding languages. Please reach out to kaustubha@tattle.co.in and tarunima@tattle.co.in if you would like to access the most up to date version.
-
-</ContentPageShell>

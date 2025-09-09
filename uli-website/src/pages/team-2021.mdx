@@ -1,7 +1,9 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 import MultiLingualAbout from "../components/atoms/MultiLingualAbout";
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 ## The pilot
 
@@ -41,5 +43,3 @@ The dataset of nearly 24000 tweets that drives the abuse redaction feature was a
   **Dharini Priscilla** : Gender Consultant/Researcher  
   **[@iThamizhi](https://twitter.com/iThamizhi)**  
   **Grace Banu** : Trans Rights Now Collective
-
-</ContentPageShell>
