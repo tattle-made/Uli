@@ -1,7 +1,9 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx";
 import { Box, Text } from "grommet";
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 # Research
 
@@ -39,4 +41,3 @@ The project started as an exploration of building AI aligned with (feminist prin
   </Box>
 </Box>
 
-</ContentPageShell>

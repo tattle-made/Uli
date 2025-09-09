@@ -1,6 +1,8 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+    return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 # Resources
 
@@ -15,5 +17,3 @@ import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 
 3. The Crowdsourced List of Slurs in Hindi, Tamil and Indian English:
 - [On GitHub](https://github.com/tattle-made/OGBV/blob/main/browser-extension/plugin/scripts/slur-list.txt)
-
-</ContentPageShell>
