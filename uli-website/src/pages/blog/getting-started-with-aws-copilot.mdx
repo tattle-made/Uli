@@ -8,7 +8,9 @@ date: 2022-08-28
 
 import ContentPageShell from "../../components/molecules/ContentPageShell.jsx"
 
-<ContentPageShell>
+export default function Layout({ children }) {
+  return <ContentPageShell>{children}</ContentPageShell>;
+}
 
 Around a few days ago, I was introduced to, what is, from the time of writing a relatively new framework for hosting containers in the cloud, known as AWS co-pilot. This blog post serves as a collection of all that I've learnt and more regarding the usage of co-pilot, a potential way to deploy and host Uli, using copilot and relevant resources which were useful to me in learning about co-pilot and its various use cases.
 
@@ -203,4 +205,3 @@ This will automatically create a bucked for when the frontend service is created
 
 These wold be most of the commands required to get started with copilot and its features relevant to ULI, I shall update this blog later if more commands come to my mind.
 
-</ContentPageShell>
