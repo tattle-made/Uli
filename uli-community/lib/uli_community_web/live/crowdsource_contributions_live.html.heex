@@ -836,7 +836,7 @@
       <% end %>
     </div>
 
-    <!-- Apply / Clear -->
+    <!-- Clear -->
     <div class="flex justify-between mt-6">
       <!-- Clear Filters behaves like desktop Clear All -->
       <.link
@@ -847,17 +847,6 @@
       >
         Clear Filters
       </.link>
-
-      <button
-        phx-click={
-        JS.hide(to: "#mobile-filters")
-        |> JS.remove_class("hidden", to: "#mobile-filter-button")
-        }
-        class="px-4 py-2 rounded-lg"
-        style="background-color: rgb(231, 109, 103); color: rgb(81, 78, 128);"
-        >
-        Apply
-      </button>
     </div>
   </div>
 </div>
