@@ -136,7 +136,6 @@
     <h1 class="text-base sm:text-lg md:text-xl font-normal truncate">
       <%= "Showing all #{@query_count} contributions" %>
     </h1>
-
     <!-- Clear Filters (only tablet/laptop and larger) -->
     <.link
       href={
@@ -147,7 +146,6 @@
       <.icon name="hero-x-circle" class="w-4 h-4" />
       <span>Clear All Filters</span>
     </.link>
-
     <!-- Advanced Search -->
     <form phx-change="toggle-advanced-search" class="flex items-center mt-4 text-sm text-zinc-600">
       <input
@@ -162,7 +160,6 @@
       </label>
     </form>
   </div>
-
   <!-- Right Side (Search bar) -->
   <div class="w-full md:w-auto flex items-center gap-2">
     <form phx-submit="search" class="relative w-full md:w-64 flex">
@@ -182,7 +179,6 @@
     </form>
   </div>
 </div>
-
 
 <div class="flex flex-col sm:flex-row">
   <div class="hidden lg:flex h-fit w-full lg:w-1/5 lg:h-fit flex-col mr-4 border-e border-zinc-200">
@@ -478,378 +474,340 @@
       </div>
     <% end %>
   </div>
-
-<!-- Floating Filter Button (Mobile/Tablet only) -->
-<button
-  id="mobile-filter-button"
-  phx-click={
-    JS.add_class("hidden", to: "#mobile-filter-button")
-    |> JS.show(to: "#mobile-filters")
-  }
-  class="lg:hidden fixed bottom-6 right-6 p-4 rounded-full shadow-lg z-50"
-  style="background-color: rgb(231, 109, 103); color: rgb(81, 78, 128);"
->
-  <!-- filter icon -->
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 13.414V19a1 1 0 01-.447.832l-4 2.5A1 1 0 019 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
-  </svg>
-</button>
-
-<!-- Mobile Filter Drawer -->
-<div
-  id="mobile-filters"
-  class="lg:hidden hidden fixed inset-0 z-40"
->
-  <!-- Overlay -->
-  <div
-    class="absolute inset-0 bg-black/50"
+  <!-- Floating Filter Button (Mobile/Tablet only) -->
+  <button
+    id="mobile-filter-button"
     phx-click={
-      JS.hide(to: "#mobile-filters")
-      |> JS.exec("setTimeout(()=>{ document.getElementById('mobile-filter-button').classList.remove('hidden') }, 200)")
+      JS.add_class("hidden", to: "#mobile-filter-button")
+      |> JS.show(to: "#mobile-filters")
     }
-    phx-transition-enter="transition-opacity ease-out duration-300"
-    phx-transition-enter-from="opacity-0"
-    phx-transition-enter-to="opacity-100"
-    phx-transition-leave="transition-opacity ease-in duration-200"
-    phx-transition-leave-from="opacity-100"
-    phx-transition-leave-to="opacity-0"
+    class="lg:hidden fixed bottom-6 right-6 p-4 rounded-full shadow-lg z-50"
+    style="background-color: rgb(231, 109, 103); color: rgb(81, 78, 128);"
   >
-  </div>
-
-  <!-- Sliding Drawer -->
-  <div
-    class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto shadow-lg"
-    phx-transition-enter="transform transition ease-out duration-300"
-    phx-transition-enter-from="translate-y-full"
-    phx-transition-enter-to="translate-y-0"
-    phx-transition-leave="transform transition ease-in duration-200"
-    phx-transition-leave-from="translate-y-0"
-    phx-transition-leave-to="translate-y-full"
-  >
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold">Filter By</h2>
-      <button
-        phx-click={
-          JS.hide(to: "#mobile-filters")
-          |> JS.remove_class("hidden", to: "#mobile-filter-button")
-        }
-        class="text-gray-500 hover:text-gray-800"
-      >
-        ✕
-      </button>
+    <!-- filter icon -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 13.414V19a1 1 0 01-.447.832l-4 2.5A1 1 0 019 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+      />
+    </svg>
+  </button>
+  <!-- Mobile Filter Drawer -->
+  <div id="mobile-filters" class="lg:hidden hidden fixed inset-0 z-40">
+    <!-- Overlay -->
+    <div
+      class="absolute inset-0 bg-black/50"
+      phx-click={
+        JS.hide(to: "#mobile-filters")
+        |> JS.exec(
+          "setTimeout(()=>{ document.getElementById('mobile-filter-button').classList.remove('hidden') }, 200)"
+        )
+      }
+      phx-transition-enter="transition-opacity ease-out duration-300"
+      phx-transition-enter-from="opacity-0"
+      phx-transition-enter-to="opacity-100"
+      phx-transition-leave="transition-opacity ease-in duration-200"
+      phx-transition-leave-from="opacity-100"
+      phx-transition-leave-to="opacity-0"
+    >
     </div>
-
-    <!-- 👇 Filters for Mobile (your existing filters) -->
-    <div class="space-y-4">
-      <%= unless @advanced_search do %>
-        <div>
-        <p class="py-2">Date</p>
-        <div id="date-range-selector" phx-hook="DateSelector" class="flex-row gap-2 flex-wrap">
-          <div class="flex flex-row gap-2 text-xs items-center">
-            <label for="from">from&nbsp;&nbsp;</label>
-            <input
-              class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
-              type="date"
-              id="from"
-              name="from"
-              value={Keyword.get(@search_params, :from)}
-              phx-change="change-search"
-              phx-value-name="date-range"
-              phx-value-type="start"
-            />
+    <!-- Sliding Drawer -->
+    <div
+      class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto shadow-lg"
+      phx-transition-enter="transform transition ease-out duration-300"
+      phx-transition-enter-from="translate-y-full"
+      phx-transition-enter-to="translate-y-0"
+      phx-transition-leave="transform transition ease-in duration-200"
+      phx-transition-leave-from="translate-y-0"
+      phx-transition-leave-to="translate-y-full"
+    >
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold">Filter By</h2>
+        <button
+          phx-click={
+            JS.hide(to: "#mobile-filters")
+            |> JS.remove_class("hidden", to: "#mobile-filter-button")
+          }
+          class="text-gray-500 hover:text-gray-800"
+        >
+          ✕
+        </button>
+      </div>
+      <!-- 👇 Filters for Mobile (Multi-select ready) -->
+      <div class="space-y-4">
+        <.form for={%{}} phx-submit="apply-mobile-filters">
+          <!-- Date Range -->
+          <div>
+            <p class="py-2">Date</p>
+            <div id="date-range-selector" phx-hook="DateSelector" class="flex-row gap-2 flex-wrap">
+              <div class="flex flex-row gap-2 text-xs items-center">
+                <label for="from">from&nbsp;&nbsp;</label>
+                <input
+                  class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
+                  type="date"
+                  id="from"
+                  name="filters[from]"
+                  value={Keyword.get(@search_params, :from)}
+                />
+              </div>
+              <div class="flex flex-row gap-2 text-xs items-center">
+                <label for="to">to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input
+                  class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
+                  type="date"
+                  id="to"
+                  name="filters[to]"
+                  value={Keyword.get(@search_params, :to)}
+                />
+              </div>
+            </div>
           </div>
-          <div class="flex flex-row gap-2 text-xs items-center">
-            <label for="to"> to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
-            <input
-              class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
-              type="date"
-              id="to"
-              name="to"
-              value={Keyword.get(@search_params, :to)}
-              phx-change="change-search"
-              phx-value-name="date-range"
-              phx-value-type="end"
-            />
+          <!-- Level of Severity -->
+          <div>
+            <p class="py-2">Level of Severity</p>
+            <div>
+              <.input_radio
+                name="filters[level_of_severity]"
+                id="low"
+                value="low"
+                label="Low"
+                selection={Keyword.get(@search_params, :level_of_severity)}
+              />
+              <.input_radio
+                name="filters[level_of_severity]"
+                id="medium"
+                value="medium"
+                label="Medium"
+                selection={Keyword.get(@search_params, :level_of_severity)}
+              />
+              <.input_radio
+                name="filters[level_of_severity]"
+                id="high"
+                value="high"
+                label="High"
+                selection={Keyword.get(@search_params, :level_of_severity)}
+              />
+              <.input_radio
+                name="filters[level_of_severity]"
+                id="all"
+                value="all"
+                label="All"
+                selection={Keyword.get(@search_params, :level_of_severity)}
+              />
+            </div>
           </div>
-        </div>
-      </div>
+          <!-- Is Casual -->
+          <div>
+            <p class="py-2">Is Casual?</p>
+            <div>
+              <.input_radio
+                name="filters[casual]"
+                id="casual_true"
+                value="true"
+                label="Yes"
+                selection={Keyword.get(@search_params, :casual)}
+              />
+              <.input_radio
+                name="filters[casual]"
+                id="casual_false"
+                value="false"
+                label="No"
+                selection={Keyword.get(@search_params, :casual)}
+              />
+              <.input_radio
+                name="filters[casual]"
+                id="casual_all"
+                value="all"
+                label="All"
+                selection={Keyword.get(@search_params, :casual)}
+              />
+            </div>
+          </div>
+          <!-- Is Appropriated -->
+          <div>
+            <p class="py-2">Is Appropriated?</p>
+            <div>
+              <.input_radio
+                name="filters[appropriated]"
+                id="appropriated_true"
+                value="true"
+                label="Yes"
+                selection={Keyword.get(@search_params, :appropriated)}
+              />
+              <.input_radio
+                name="filters[appropriated]"
+                id="appropriated_false"
+                value="false"
+                label="No"
+                selection={Keyword.get(@search_params, :appropriated)}
+              />
+              <.input_radio
+                name="filters[appropriated]"
+                id="appropriated_all"
+                value="all"
+                label="All"
+                selection={Keyword.get(@search_params, :appropriated)}
+              />
+            </div>
+          </div>
+          <!-- Source -->
+          <div>
+            <p class="py-2">Source</p>
+            <div>
+              <.input_radio
+                name="filters[source]"
+                id="plugin"
+                value="plugin"
+                label="Plugin"
+                selection={Keyword.get(@search_params, :source)}
+              />
+              <.input_radio
+                name="filters[source]"
+                id="experts_2022"
+                value="experts_2022"
+                label="Experts 2022"
+                selection={Keyword.get(@search_params, :source)}
+              />
+              <.input_radio
+                name="filters[source]"
+                id="crowdsourcing_exercise"
+                value="crowdsourcing_exercise"
+                label="Crowdsourcing Exercise"
+                selection={Keyword.get(@search_params, :source)}
+              />
+              <.input_radio
+                name="filters[source]"
+                id="source_all"
+                value="all"
+                label="All"
+                selection={Keyword.get(@search_params, :source)}
+              />
+            </div>
+          </div>
+          <!-- Categories -->
+          <div>
+            <p class="py-2">Categories</p>
+            <div>
+              <.checkbox
+                id="gendered"
+                group="filters[categories]"
+                label="Gendered"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="sexualized"
+                group="filters[categories]"
+                label="Sexualized"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="religion"
+                group="filters[categories]"
+                label="Religion"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="ethnicity"
+                group="filters[categories]"
+                label="Ethnicity"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="political_affiliation"
+                group="filters[categories]"
+                label="Political Affiliation"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="caste"
+                group="filters[categories]"
+                label="Caste"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="class"
+                group="filters[categories]"
+                label="Class"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="body_shaming"
+                group="filters[categories]"
+                label="Body Shaming"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="ableist"
+                group="filters[categories]"
+                label="Ableist"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="sexual_identity"
+                group="filters[categories]"
+                label="Sexual Identity"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+              <.checkbox
+                id="other"
+                group="filters[categories]"
+                label="Other"
+                selection={Keyword.get(@search_params, :categories, [])}
+              />
+            </div>
+          </div>
+          <!-- Sort -->
+          <div>
+            <p class="py-2">Sort</p>
+            <div>
+              <.input_radio
+                name="filters[sort]"
+                id="newest"
+                value="newest"
+                label="Newest first"
+                selection={Keyword.get(@search_params, :sort)}
+              />
+              <.input_radio
+                name="filters[sort]"
+                id="oldest"
+                value="oldest"
+                label="Oldest first"
+                selection={Keyword.get(@search_params, :sort)}
+              />
+            </div>
+          </div>
+          <!-- Apply & Clear -->
+          <div class="flex justify-between mt-6">
+            <.link
+              href={
+                ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
+              }
+              class="px-4 py-2 rounded-lg bg-gray-200 text-center"
+            >
+              Clear Filters
+            </.link>
 
-      <div>
-        <p class="py-2">Level of Severity</p>
-        <div>
-          <.input_radio
-            name="level_of_severity"
-            id="low"
-            value="low"
-            label="Low"
-            selection={Keyword.get(@search_params, :level_of_severity)}
-          />
-          <.input_radio
-            name="level_of_severity"
-            id="medium"
-            value="medium"
-            label="Medium"
-            selection={Keyword.get(@search_params, :level_of_severity)}
-          />
-          <.input_radio
-            name="level_of_severity"
-            id="high"
-            value="high"
-            label="High"
-            selection={Keyword.get(@search_params, :level_of_severity)}
-          />
-          <.input_radio
-            name="level_of_severity"
-            id="all"
-            value="all"
-            label="All"
-            selection={Keyword.get(@search_params, :level_of_severity)}
-          />
-        </div>
+            <button
+              type="submit"
+              class="text-white px-4 py-2 rounded-lg font-medium"
+              style="background-color: rgb(231, 109, 103); color: rgb(81, 78, 128);"
+            >
+              Apply Filters
+            </button>
+          </div>
+        </.form>
       </div>
-
-      <div>
-        <p class="py-2">Is Casual?</p>
-        <div>
-          <.input_radio
-            name="casual"
-            id="casual_true"
-            value="true"
-            label="Yes"
-            selection={Keyword.get(@search_params, :casual)}
-          />
-          <.input_radio
-            name="casual"
-            id="casual_false"
-            value="false"
-            label="No"
-            selection={Keyword.get(@search_params, :casual)}
-          />
-          <.input_radio
-            name="casual"
-            id="casual_all"
-            value="all"
-            label="All"
-            selection={Keyword.get(@search_params, :casual)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <p class="py-2">Is Appropriated?</p>
-        <div>
-          <.input_radio
-            name="appropriated"
-            id="appropriated_true"
-            value="true"
-            label="Yes"
-            selection={Keyword.get(@search_params, :appropriated)}
-          />
-          <.input_radio
-            name="appropriated"
-            id="appropriated_false"
-            value="false"
-            label="No"
-            selection={Keyword.get(@search_params, :appropriated)}
-          />
-          <.input_radio
-            name="appropriated"
-            id="appropriated_all"
-            value="all"
-            label="All"
-            selection={Keyword.get(@search_params, :appropriated)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <p class="py-2">Source</p>
-        <div>
-          <.input_radio
-            name="source"
-            id="plugin"
-            value="plugin"
-            label="Plugin"
-            selection={Keyword.get(@search_params, :source)}
-          />
-          <.input_radio
-            name="source"
-            id="experts_2022"
-            value="experts_2022"
-            label="Experts 2022"
-            selection={Keyword.get(@search_params, :source)}
-          />
-          <.input_radio
-            name="source"
-            id="crowdsourcing_exercise"
-            value="crowdsourcing_exercise"
-            label="Crowdsourcing Exercise"
-            selection={Keyword.get(@search_params, :source)}
-          />
-          <.input_radio
-            name="source"
-            id="source_all"
-            value="all"
-            label="All"
-            selection={Keyword.get(@search_params, :source)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <p class="py-2">Categories</p>
-        <div>
-          <.checkbox
-            id="gendered"
-            group="categories"
-            label="Gendered"
-            selection={
-              if "gendered" in Keyword.get(@search_params, :categories, []),
-                do: ["gendered"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="sexualized"
-            group="categories"
-            label="Sexualized"
-            selection={
-              if "sexualized" in Keyword.get(@search_params, :categories, []),
-                do: ["sexualized"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="religion"
-            group="categories"
-            label="Religion"
-            selection={
-              if "religion" in Keyword.get(@search_params, :categories, []),
-                do: ["religion"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="ethnicity"
-            group="categories"
-            label="Ethnicity"
-            selection={
-              if "ethnicity" in Keyword.get(@search_params, :categories, []),
-                do: ["ethnicity"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="political_affiliation"
-            group="categories"
-            label="Political Affiliation"
-            selection={
-              if "political_affiliation" in Keyword.get(@search_params, :categories, []),
-                do: ["political_affiliation"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="caste"
-            group="categories"
-            label="Caste"
-            selection={
-              if "caste" in Keyword.get(@search_params, :categories, []),
-                do: ["caste"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="class"
-            group="categories"
-            label="Class"
-            selection={
-              if "class" in Keyword.get(@search_params, :categories, []),
-                do: ["class"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="body_shaming"
-            group="categories"
-            label="Body Shaming"
-            selection={
-              if "body_shaming" in Keyword.get(@search_params, :categories, []),
-                do: ["body_shaming"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="ableist"
-            group="categories"
-            label="Ableist"
-            selection={
-              if "ableist" in Keyword.get(@search_params, :categories, []),
-                do: ["ableist"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="sexual_identity"
-            group="categories"
-            label="Sexual Identity"
-            selection={
-              if "sexual_identity" in Keyword.get(@search_params, :categories, []),
-                do: ["sexual_identity"],
-                else: [""]
-            }
-          />
-          <.checkbox
-            id="other"
-            group="categories"
-            label="Other"
-            selection={
-              if "other" in Keyword.get(@search_params, :categories, []),
-                do: ["other"],
-                else: [""]
-            }
-          />
-        </div>
-      </div>
-
-      <div>
-        <p class="py-2">Sort</p>
-        <div>
-          <.input_radio
-            name="sort-by"
-            id="newest"
-            value="newest"
-            label="Newest first"
-            selection={Keyword.get(@search_params, :sort)}
-          />
-          <.input_radio
-            name="sort-by"
-            id="oldest"
-            value="oldest"
-            label="Oldest first"
-            selection={Keyword.get(@search_params, :sort)}
-          />
-        </div>
-      </div>
-      <% end %>
-    </div>
-
-    <!-- Clear -->
-    <div class="flex justify-between mt-6">
-      <!-- Clear Filters behaves like desktop Clear All -->
-      <.link
-        href={
-          ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
-        }
-        class="px-4 py-2 rounded-lg bg-gray-200 text-center"
-      >
-        Clear Filters
-      </.link>
     </div>
   </div>
-</div>
 
   <div class="w-full sm:w-4/5 gap-4">
     <%= unless @advanced_search do %>
