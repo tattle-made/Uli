@@ -256,7 +256,8 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   def handle_event("apply-mobile-filters", %{"filters" => filters_params}, socket) do
     IO.inspect(filters_params, label: "Selected Filters")
 
-    # filters_params को query string में convert करो
+    # Example: convert filters to query string (optional)
+
     query_string =
       UliCommunityWeb.CrowdsourceContributionsSearchParams.search_param_string(filters_params)
 
@@ -266,15 +267,4 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      |> push_patch(to: "/crowdsource-contributions?" <> query_string)}
   end
 
-  def handle_event("apply-filters", %{"filters" => filters}, socket) do
-    IO.inspect(filters, label: "Selected Filters")
-
-    # Example: convert filters to query string (optional)
-    query =
-      URI.encode_query(filters)
-
-    {:noreply,
-     socket
-     |> push_patch(to: "/crowdsource-contributions?" <> query)}
-  end
 end
