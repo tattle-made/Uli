@@ -265,4 +265,16 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      |> assign(:search_params, filters_params)
      |> push_patch(to: "/crowdsource-contributions?" <> query_string)}
   end
+
+  def handle_event("apply-filters", %{"filters" => filters}, socket) do
+    IO.inspect(filters, label: "Selected Filters")
+
+    # Example: convert filters to query string (optional)
+    query =
+      URI.encode_query(filters)
+
+    {:noreply,
+     socket
+     |> push_patch(to: "/crowdsource-contributions?" <> query)}
+  end
 end
