@@ -252,4 +252,19 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
       slur_form: %{"approve_type" => "only-slur"}
     )
   end
+
+  def handle_event("apply-mobile-filters", %{"filters" => filters_params}, socket) do
+    IO.inspect(filters_params, label: "Selected Filters")
+
+    # Example: convert filters to query string (optional)
+
+    query_string =
+      UliCommunityWeb.CrowdsourceContributionsSearchParams.search_param_string(filters_params)
+
+    {:noreply,
+     socket
+     |> assign(:search_params, filters_params)
+     |> push_patch(to: "/crowdsource-contributions?" <> query_string)}
+  end
+
 end
