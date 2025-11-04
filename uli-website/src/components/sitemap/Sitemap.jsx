@@ -79,7 +79,7 @@ export default function Sitemap() {
           )}
 
           {hasChildren && (
-            <ul style={{ marginLeft: "1.5rem", listStyleType: "disc" }}>
+            <ul style={{listStyleType: "disc" }}>
               {renderTree(value.__children, fullPath)}
             </ul>
           )}
