@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Heading } from "grommet";
 import { Link, useStaticQuery, graphql } from "gatsby";
+import generateDisplayName from "../../utils/generateDisplayName"; 
 
 export default function Sitemap() {
   // Fetch all site pages
@@ -17,47 +18,42 @@ export default function Sitemap() {
     }
   `);
 
-  // Build tree structure and skip empty intermediate folders
+  // Paths to ignore
+  const ignoredPaths = [
+    "/404/",
+    "/404.html",
+    "/dev-404-page/",
+    "/offline-plugin-app-shell-fallback/",
+  ];
+
+  // Build tree structure
   const buildTree = (pages) => {
     const root = {};
 
-    // Build a nested tree of paths
     pages.forEach(({ path }) => {
+      if (ignoredPaths.includes(path)) return; // skip ignored pages
+
+      // Skip nested blog pages (keep only /blog)
+      if (path.startsWith("/blog/") && path !== "/blog/") return;
+
       const parts = path.split("/").filter(Boolean);
       let current = root;
 
       parts.forEach((part, index) => {
         if (!current[part]) current[part] = { __children: {}, __isPage: false };
         if (index === parts.length - 1) {
-          current[part].__isPage = true; // mark as page only for actual file
+          current[part].__isPage = true;
         }
         current = current[part].__children;
       });
     });
 
-    // Remove folders that don't contain pages
-    const pruneEmpty = (node) => {
-      const pruned = {};
-      Object.entries(node).forEach(([key, value]) => {
-        const prunedChildren = pruneEmpty(value.__children);
-        const hasChildren = Object.keys(prunedChildren).length > 0;
-
-        if (value.__isPage || hasChildren) {
-          pruned[key] = {
-            ...value,
-            __children: prunedChildren,
-          };
-        }
-      });
-      return pruned;
-    };
-
-    return pruneEmpty(root);
+    return root;
   };
 
   const tree = buildTree(data.allSitePage.nodes);
 
-  // Recursive renderer for list
+  // Recursive renderer
   const renderTree = (node, base = "") =>
     Object.entries(node).map(([key, value]) => {
       const fullPath = `${base}/${key}`;
@@ -65,23 +61,23 @@ export default function Sitemap() {
 
       return (
         <li key={fullPath} style={{ marginBottom: "6px", lineHeight: "1.8rem" }}>
-          {/* Link if page exists */}
           {value.__isPage ? (
             <Link
               to={fullPath}
               style={{
                 textDecoration: "none",
-                color: "#5A4230", // same as Uli nav link color
+                color: "#5A4230",
                 fontWeight: "bold",
               }}
             >
-              {key}
+              {generateDisplayName(key)}
             </Link>
           ) : (
-            <span style={{ color: "#5A4230", fontWeight: "600" }}>{key}</span>
+            <span style={{ color: "#5A4230", fontWeight: "600" }}>
+              {generateDisplayName(key)}
+            </span>
           )}
 
-          {/* Render children recursively */}
           {hasChildren && (
             <ul style={{ marginLeft: "1.5rem", listStyleType: "disc" }}>
               {renderTree(value.__children, fullPath)}
@@ -93,7 +89,7 @@ export default function Sitemap() {
 
   return (
     <Box
-      background="##FCF3E8" // same as Uli main background color
+      background="#FCF3E8" // fixed small typo (double ##)
       pad={{ vertical: "large" }}
       align="center"
     >
