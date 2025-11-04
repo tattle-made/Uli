@@ -29,6 +29,9 @@ export default function Footer() {
         <NavLink to="https://github.com/tattle-made/OGBV/tree/main/uli-website">
           GitHub
         </NavLink>
+        <NavLink to="/sitemap">
+          SiteMap
+        </NavLink>
       </Box>
     </Box>
   );

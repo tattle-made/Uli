@@ -89,7 +89,6 @@ export default function Sitemap() {
 
   return (
     <Box
-      background="#FCF3E8" // fixed small typo (double ##)
       pad={{ vertical: "large" }}
       align="center"
     >
