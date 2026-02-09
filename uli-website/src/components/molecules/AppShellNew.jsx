@@ -3,7 +3,7 @@ import { Grommet, Box } from "grommet";
 import { Helmet } from "react-helmet";
 import { Theme } from "../atoms/UliCore";
 import NavBarNew from "./NavBarNew";
-import Footer from "./Footer";
+import FooterNew from "./FooterNew";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "@reach/router";
 import Projects from "./Projects";
@@ -67,7 +67,7 @@ export default function AppShellNew({ children }) {
         <Box flex="grow">{children}</Box>
         <Projects/>
         {/* FOOTER */}
-        <Footer />
+        <FooterNew/>
       </main>
     </Grommet>
   );
