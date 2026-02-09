@@ -5,7 +5,11 @@ module.exports = {
     "./src/components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        labrada: ["Labrada","monospace", "serif"]
+      }
+    },
   },
   important: "#app",
   plugins: [],
