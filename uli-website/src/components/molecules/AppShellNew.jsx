@@ -7,6 +7,8 @@ import FooterNew from "./FooterNew";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "@reach/router";
 import Projects from "./Projects";
+import UpdatesSection from "./UpdatesSection";
+import ResourcesSection from "./ResourcesSection";
 
 export default function AppShellNew({ children }) {
   const { i18n } = useTranslation();
@@ -66,6 +68,8 @@ export default function AppShellNew({ children }) {
         {/* PAGE CONTENT */}
         <Box flex="grow">{children}</Box>
         <Projects/>
+        <UpdatesSection/>
+        <ResourcesSection/>
         {/* FOOTER */}
         <FooterNew/>
       </main>
