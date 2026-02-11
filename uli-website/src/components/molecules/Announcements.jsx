@@ -12,7 +12,7 @@ function AnnouncementBanner({ children }) {
     border-solid
     border-[1.5em]
     px-2
-    [border-image-source:url('/announcement-long-div.svg')]
+    [border-image-source:url('/announcement-bg.svg')]
     [border-image-slice:33%_4%_fill]
     [border-image-repeat:round]>
     ">
