@@ -59,7 +59,7 @@ export default function AppShellNew({ children }) {
         </Helmet>
 
         <NavBarNew />
-        <Box flex="grow">{children}</Box>
+        <Box flex="grow" className="font-labrada">{children}</Box>
         <FooterNew />
       </main>
     </Grommet>

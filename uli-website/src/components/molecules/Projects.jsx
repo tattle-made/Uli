@@ -6,6 +6,7 @@ import {
   SectionBorderSides,
 } from "./SectionBorders";
 import React from "react";
+import DashedButton from "../atoms/DashedButton";
 
 const projectsConfig = [
   {
@@ -71,8 +72,10 @@ export default function Projects() {
 function ProjectCard({ title, content, buttons, order = 0 }) {
   return (
     <Box
-      className={`w-[70%]
-            2xl:w-[45%]
+      className={`
+            w-full
+            lg:w-[70%]
+            2xl:w-[40%]
             min-h-72
             mx-auto
             border-solid
@@ -80,33 +83,30 @@ function ProjectCard({ title, content, buttons, order = 0 }) {
             [border-image-source:url('/project-card-bg.svg')]
             [border-image-slice:0%_fill]
             [border-image-repeat:round]
-            px-20
+            md:px-20
             py-10
-            items-center          
-            gap-3
+            items-center      
+            gap-9    
+            md:gap-3
             2xl:gap-6
             flex
-            ${order % 2 == 0 ? "flex-row" : "flex-row-reverse"}  `}
+            flex-col-reverse
+            ${order % 2 == 0 ? "md:flex-row" : "md:flex-row-reverse"}  `}
     >
       <Box
-        className={`flex flex-col w-[60%] 2xl:w-[70%] gap-7 ${order % 2 != 0 ? "pl-6" : ""}`}
+        className={`flex flex-col w-[90%] md:w-[60%] 2xl:w-[70%] gap-10  md:gap-7 ${order % 2 != 0 ? "md:pl-6" : ""}`}
       >
-        <Text size="xxlarge">{title}</Text>
-        <Text>{content}</Text>
-        <div className="flex gap-4">
+        <Text  className="text-5xl mx-auto md:mx-0">{title}</Text>
+        <Text size="large">{content}</Text>
+        <div className="flex flex-col md:flex-row gap-4">
           {buttons.map((btn, idx) => {
             return (
-              <button
+              <DashedButton
                 key={idx}
-                className="
-                px-16 py-3 bg-transparent cursor-pointer border-1 border-solid
-                [border-image-source:url('/dashed-btn-bg.png')]
-                [border-image-slice:0%_fill]
-                [border-image-repeat:round]"
+                className=" px-16 py-3 text-xl w-[90%] mx-auto"
+                content={btn.content}
                 onClick={() => navigate(btn.url)}
-              >
-                {btn.content}
-              </button>
+              />
             );
           })}
         </div>
@@ -118,4 +118,3 @@ function ProjectCard({ title, content, buttons, order = 0 }) {
     </Box>
   );
 }
-

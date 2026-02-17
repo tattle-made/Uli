@@ -19,3 +19,15 @@ pre>code {
   display: block;
   overflow-x: auto;
 }
+
+/* Keyframes for fadeUp animation used via Tailwind arbitrary animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

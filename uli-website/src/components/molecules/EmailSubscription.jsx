@@ -8,10 +8,9 @@ export default function EmailSubscription() {
 
   return (
     <Box
-      pad={"large"}
-      className="bg-[#2D2D2D] text-white text-center flex flex-col items-center gap-10 "
+      className="bg-[#2D2D2D] pt-28 px-2 md:px-6  text-white text-center flex flex-col items-center gap-10 "
     >
-      <Text size="5xl">Stay Updated</Text>
+      <Text className="text-6xl lg:text-8xl">Stay Updated</Text>
       <Text className="w-full lg:w-[50%] 2xl:w-[30%]">
         Short Statement about what Uli isUse Uli to redact slurs and abusive
         content, archive problematic content, and collectively push back against
@@ -19,7 +18,7 @@ export default function EmailSubscription() {
       </Text>
       <form action="#" className="w-full flex justify-center">
         <div
-          className="w-[50%] 2xl:w-[30%] 
+          className="w-full lg:w-[50%] 2xl:w-[30%] 
             border-1
             border-solid 
             [border-image-source:url('/subscribe-bar-bg.svg')]
@@ -37,7 +36,7 @@ export default function EmailSubscription() {
             type="text"
             className="w-full h-12 px-4 outline-none border-none bg-transparent"
           />
-          <button className="border-0 px-6 h-8 text-white bg-[url(/subscribe-btn-bg.png)] cursor-pointer"><Text size="small">Subscribe</Text></button>
+          <button className="border-0 px-6 h-8 text-white bg-[url(/subscribe-btn-bg.png)] cursor-pointer font-labrada"><Text size="small">Subscribe</Text></button>
         </div>
       </form>
     </Box>
