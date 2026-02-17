@@ -25,8 +25,8 @@ export function SectionBorderTop({ title }) {
         }}
       />
       <Text
-        size="large"
-        margin={{ horizontal: "small" }}
+        className="text-3xl lg:text-4xl"
+        margin={{ horizontal: "small", bottom: "small" }}
         style={{ color: "black" }}
       >
         {title}
@@ -49,6 +49,7 @@ export function SectionBorderSidesBottom() {
     <>
       {/* LEFT BORDER */}
       <Box
+        className="hidden lg:block"
         style={{
           position: "absolute",
           top: 20,
@@ -62,6 +63,7 @@ export function SectionBorderSidesBottom() {
       />
       {/* RIGHT BORDER */}
       <Box
+        className="hidden lg:block"
         style={{
           position: "absolute",
           top: 20,
@@ -73,7 +75,7 @@ export function SectionBorderSidesBottom() {
           backgroundSize: "20px auto",
         }}
       />
-      {/* Bottom BORDER */ }
+      {/* Bottom BORDER */}
       <Box
         style={{
           position: "absolute",
@@ -95,6 +97,7 @@ export function SectionBorderSides() {
     <>
       {/* LEFT BORDER */}
       <Box
+        className="hidden lg:block"
         style={{
           position: "absolute",
           top: 20,
@@ -109,6 +112,7 @@ export function SectionBorderSides() {
 
       {/* RIGHT BORDER */}
       <Box
+        className="hidden lg:block"
         style={{
           position: "absolute",
           top: 20,

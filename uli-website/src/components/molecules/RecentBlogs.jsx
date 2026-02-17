@@ -95,18 +95,18 @@ export default function RecentBlogs() {
             return (
               <Box
                 key={idx}
-                className="mx-auto border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 flex flex-row gap-8 w-[70%] 2xl:w-[50%]  pb-3"
+                className="mx-auto border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 flex flex-col lg:flex-row gap-1 lg:gap-8 w-full lg:w-[70%] 2xl:w-[50%]  pb-3"
               >
-                <Text className="min-w-[7em]">
+                <Text className="min-w-[7em] text-sm lg:text-lg">
                   {formatDate(blog.frontmatter.date)}
                 </Text>
                 <Box className="cursor-pointer" style={{ textAlign: "start" }}>
-                  <Text onClick={() => navigate(blog.fields.slug)}>
+                  <Text onClick={() => navigate(blog.fields.slug)} className="font-semibold lg:font-normal">
                     {blog.frontmatter.name}
                   </Text>
                 </Box>
-                <Box style={{ textAlign: "end", minWidth: "7em", flexGrow: 1 }}>
-                  <Text>{formatAuthor(blog.frontmatter.author)}</Text>
+                <Box className="lg:text-end" style={{ minWidth: "7em", flexGrow: 1 }}>
+                  <Text className="text-base lg:text-lg">{formatAuthor(blog.frontmatter.author)}</Text>
                 </Box>
               </Box>
             );

@@ -7,9 +7,9 @@ export default function FooterNew() {
   // const size = useContext(ResponsiveContext);
 
   return (
-    <Box pad={"large"} className="bg-[#2D2D2D] text-white flex flex-row justify-between">
+    <Box pad={{top: "large", bottom: "xlarge", horizontal:"xlarge"}} className="bg-[#2D2D2D] font-labrada text-white flex flex-col-reverse items-center gap-7 lg:flex-row justify-between">
 
-      <Box className="flex flex-col">
+      <Box className="flex flex-col items-center lg:items-start">
         <Text size="large">Uli by Tattle</Text>
         <Text size="small">Email & Other contents</Text>
       </Box>
