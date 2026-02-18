@@ -83,7 +83,8 @@ function ProjectCard({ title, content, buttons, order = 0 }) {
             [border-image-source:url('/project-card-bg.svg')]
             [border-image-slice:0%_fill]
             [border-image-repeat:round]
-            md:px-20
+            md:px-10
+            lg:px-20
             py-10
             items-center      
             gap-9    
@@ -94,7 +95,7 @@ function ProjectCard({ title, content, buttons, order = 0 }) {
             ${order % 2 == 0 ? "md:flex-row" : "md:flex-row-reverse"}  `}
     >
       <Box
-        className={`flex flex-col w-[90%] md:w-[60%] 2xl:w-[70%] gap-10  md:gap-7 ${order % 2 != 0 ? "md:pl-6" : ""}`}
+        className={`flex flex-col w-[90%] md:w-[60%] 2xl:w-[70%] gap-10  md:gap-7 ${order % 2 != 0 ? "lg:pl-6" : ""}`}
       >
         <Text  className="text-5xl mx-auto md:mx-0">{title}</Text>
         <Text size="large">{content}</Text>
