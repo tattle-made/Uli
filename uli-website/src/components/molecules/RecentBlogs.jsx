@@ -95,7 +95,8 @@ export default function RecentBlogs() {
             return (
               <Box
                 key={idx}
-                className="mx-auto border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 flex flex-col lg:flex-row gap-1 lg:gap-8 w-full lg:w-[70%] 2xl:w-[50%]  pb-3"
+                className=" mx-auto border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 flex flex-col lg:flex-row gap-1 lg:gap-8 w-full lg:w-[70%] 2xl:w-[50%] pb-3 hover:bg-[#FFE7D9] active:bg-[#FFC8A6] focus:outline-none focus:ring-0 hover:scale-103 transition-transform duration-300 ease-in-out"
+                onClick={() => navigate(blog.fields.slug)}
               >
                 <Text className="min-w-[7em] text-sm lg:text-lg">
                   {formatDate(blog.frontmatter.date)}

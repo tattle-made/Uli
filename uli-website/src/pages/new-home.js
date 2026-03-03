@@ -19,7 +19,7 @@ const NewHome = () => {
             text-center
             text-6xl
             lg:text-9xl
-            xl:text-[200px] xl:leading-[90%] xl:tracking-[-5]
+            xl:text-[9rem] xl:leading-[85%] xl:tracking-[-5]
             animate-[fadeUp_0.8s_ease-out_forwards]
             "
           >

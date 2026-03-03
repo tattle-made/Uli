@@ -106,12 +106,13 @@ export default function Resources() {
                 <Box className="min-w-[25%]">
                   <Text size="large">{resource.category}</Text>
                 </Box>
-                <Box className="flex w-full lg:w-[50%] flex-col gap-5">
+                <Box className="flex w-full lg:w-[50%] flex-col gap-5 ">
                   {resource.resources.map((r, id) => {
                     return (
                       <Box
                         key={id}
-                        className=" flex flex-row lg:justify-between pb-[6px] pr-3 grow  border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30"
+                        className=" cursor-pointer flex flex-row lg:justify-between pb-[6px] pr-3 grow  border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 hover:bg-[#FFE7D9] active:bg-[#FFC8A6] focus:outline-none focus:ring-0 hover:scale-100 transition-transform duration-100 ease-in-out"
+                        onClick={() => navigate(r.url)}
                       >
                         <Text className="w-[30%] md:w-[15%] lg:w-auto">{r.type}</Text>
                         <Text

@@ -18,6 +18,8 @@ function AnnouncementBanner({ children }) {
     [border-image-source:url('/announcement-bg.svg')]
     [border-image-slice:33%_4%_fill]
     [border-image-repeat:round]>
+    animate-[fadeUp_1.2s_ease-out_forwards]
+  
     "
     >
       {children}
