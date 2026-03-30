@@ -20,7 +20,7 @@ We are actively looking to work with more partner organisations as well to conti
 
 **🧭 How to navigate the slur list:**
 
-All the metadata annotations and a few new slur contributions are present in the [data.csv](https://github.com/tattle-made/Uli/blob/1760d01660dc5e7c20453edbe580e9315382c691/browser-extension/plugin/scripts/2023-12-21-slur-metadata/data.csv#L4) file, under an Open Data Licence. These categories of metadata which have been annotated under are the following columns of the [data.csv](https://github.com/tattle-made/Uli/blob/1760d01660dc5e7c20453edbe580e9315382c691/browser-extension/plugin/scripts/2023-12-21-slur-metadata/data.csv#L4) file:
+All the metadata annotations and a few new slur contributions are present in the [data.csv](https://github.com/tattle-made/Uli/blob/1760d01660dc5e7c20453edbe580e9315382c691/browser-extension/plugin/scripts/2023-12-21-slur-metadata/data.csv#L4) file, under an [Open Database Licence](https://opendatacommons.org/licenses/odbl/). These categories of metadata which have been annotated under are the following columns of the [data.csv](https://github.com/tattle-made/Uli/blob/1760d01660dc5e7c20453edbe580e9315382c691/browser-extension/plugin/scripts/2023-12-21-slur-metadata/data.csv#L4) file:
 
 Slur Word
 
