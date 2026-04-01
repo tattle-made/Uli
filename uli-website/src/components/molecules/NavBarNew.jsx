@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Box, ResponsiveContext, Text } from "grommet";
 import { NavLink } from "../atoms/UliCore";
 import { navigate } from "gatsby";
@@ -7,15 +7,31 @@ import { NavLinkNew } from "../atoms/NavLinkNew";
 export default function NavBarNew() {
   const [open, setOpen] = useState(false);
   const size = useContext(ResponsiveContext);
+  const borderRef = useRef(null);
 
-  useEffect(()=>{
-    console.log(size)
-    console.log(open)
-  },[size, open])
+  // Scroll-driven border animation: shifts background-position-x as user scrolls
+  useEffect(() => {
+    let rafId;
+    const handleScroll = () => {
+      rafId = requestAnimationFrame(() => {
+        if (borderRef.current) {
+          const scrollY = window.scrollY || window.pageYOffset;
+          // Slow drift: 0.3x scroll speed
+          borderRef.current.style.backgroundPositionX = `${scrollY * 0.3}px`;
+        }
+      });
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   return (
     <Box
-      className={`font-labrada lg:bg-inherit transition-colors duration-300 ${open && "bg-[#FFE7D9]"}`}
+      ref={borderRef}
+      className={`font-labrada lg:bg-inherit transition-colors duration-300 border-animate-x ${open && "bg-[#FFE7D9]"}`}
       align="center"
       pad={"medium"}
       style={{
@@ -27,7 +43,7 @@ export default function NavBarNew() {
       <Box width="full" direction="row" align="center" className=" mt-4 lg:mt-0">
         <Box flex align="start">
           <NavLink to="/">
-            <Text className="text-xl font-semibold">Tattle</Text>
+            <Text className="text-[16px] font-semibold">Tattle</Text>
           </NavLink>
         </Box>
 
@@ -35,7 +51,7 @@ export default function NavBarNew() {
           <img
             src="/Uli_Logo.png"
             alt="Uli Logo"
-            style={{ height: "40px", cursor: "pointer" }}
+            style={{ height: "32px", cursor: "pointer" }}
             onClick={() => navigate("/")}
           />
         </Box>
@@ -44,13 +60,13 @@ export default function NavBarNew() {
 
         <Box flex direction="row" gap="medium" justify="end" className="hidden lg:flex">
           <NavLinkNew to="#">
-            <Text className="text-xl font-medium">Contact</Text>
+            <Text className="text-[16px] font-medium">Contact</Text>
           </NavLinkNew>
           <NavLinkNew to="/about">
-            <Text className="text-xl font-medium">About us</Text>
+            <Text className="text-[16px] font-medium">About us</Text>
           </NavLinkNew>
           <NavLinkNew to="#">
-            <Text className="text-xl font-medium">Data Y</Text>
+            <Text className="text-[16px] font-medium">Data Y</Text>
           </NavLinkNew>
         </Box>
       </Box>
@@ -58,13 +74,13 @@ export default function NavBarNew() {
       <Box className={`bg-[#FFE7D9] w-full text-center overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-96 opacity-100 mt-9 mb-4" : "max-h-0 opacity-0"} lg:hidden`}>
         <Box className="flex flex-col gap-5 py-6">
           <NavLinkNew to="#">
-            <Text className="text-xl font-medium">Contact</Text>
+            <Text className="text-[16px] font-medium">Contact</Text>
           </NavLinkNew>
           <NavLinkNew to="/about">
-            <Text className="text-xl font-medium">About us</Text>
+            <Text className="text-[16px] font-medium">About us</Text>
           </NavLinkNew>
           <NavLinkNew to="#">
-            <Text className="text-xl font-medium">Data Y</Text>
+            <Text className="text-[16px] font-medium">Data Y</Text>
           </NavLinkNew>
         </Box>
 

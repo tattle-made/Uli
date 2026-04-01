@@ -12,20 +12,21 @@ export function SectionBorderTop({ title }) {
         top: 0,
         left: 0,
         right: 0,
-        height: 20,
+        height: 16,
       }}
     >
       <Box
         flex
+        className="border-animate-x-delay"
         style={{
           backgroundImage: 'url("/section-border.svg")',
           backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 20px",
-          height: 20,
+          backgroundSize: "auto 16px",
+          height: 16,
         }}
       />
       <Text
-        className="text-3xl lg:text-4xl"
+        className="text-2xl lg:text-[30px]"
         margin={{ horizontal: "small", bottom: "small" }}
         style={{ color: "black" }}
       >
@@ -33,11 +34,12 @@ export function SectionBorderTop({ title }) {
       </Text>
       <Box
         flex
+        className="border-animate-x-delay"
         style={{
           backgroundImage: 'url("/section-border.svg")',
           backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 20px",
-          height: 20,
+          backgroundSize: "auto 16px",
+          height: 16,
         }}
       />
     </Box>
@@ -49,43 +51,44 @@ export function SectionBorderSidesBottom() {
     <>
       {/* LEFT BORDER */}
       <Box
-        className="hidden lg:block"
+        className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 20,
+          top: 16,
           left: 0,
-          bottom: 20,
-          width: 20,
+          bottom: 16,
+          width: 16,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "20px auto",
+          backgroundSize: "16px auto",
         }}
       />
       {/* RIGHT BORDER */}
       <Box
-        className="hidden lg:block"
+        className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 20,
+          top: 16,
           right: 0,
-          bottom: 20,
-          width: 20,
+          bottom: 16,
+          width: 16,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "20px auto",
+          backgroundSize: "16px auto",
         }}
       />
       {/* Bottom BORDER */}
       <Box
+        className="border-animate-x-delay"
         style={{
           position: "absolute",
           left: 0,
           right: 0,
           bottom: 0,
-          height: 20,
+          height: 16,
           backgroundImage: 'url("/section-border.svg")',
           backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 20px",
+          backgroundSize: "auto 16px",
         }}
       />
     </>
@@ -97,31 +100,31 @@ export function SectionBorderSides() {
     <>
       {/* LEFT BORDER */}
       <Box
-        className="hidden lg:block"
+        className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 20,
+          top: 16,
           left: 0,
           bottom: 0,
-          width: 20,
+          width: 16,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "20px auto",
+          backgroundSize: "16px auto",
         }}
       />
 
       {/* RIGHT BORDER */}
       <Box
-        className="hidden lg:block"
+        className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 20,
+          top: 16,
           right: 0,
           bottom: 0,
-          width: 20,
+          width: 16,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "20px auto",
+          backgroundSize: "16px auto",
         }}
       />
     </>

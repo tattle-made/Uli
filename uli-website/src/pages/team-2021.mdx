@@ -1,8 +1,8 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 import MultiLingualAbout from "../components/atoms/MultiLingualAbout";
 
-export default function Layout({ children }) {
-  return <ContentPageShell>{children}</ContentPageShell>;
+export default function Layout(props) {
+  return <ContentPageShell {...props}>{props.children}</ContentPageShell>;
 }
 
 ## The pilot

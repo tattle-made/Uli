@@ -2,6 +2,7 @@ import { Box, Text } from "grommet";
 import React from "react";
 import { SectionBorderSides, SectionBorderTop } from "./SectionBorders";
 import { graphql, useStaticQuery, navigate } from "gatsby";
+import { useStaggerReveal } from "../../hooks/useScrollReveal";
 
 function formatDate(input) {
   if (!input) return "";
@@ -18,10 +19,6 @@ function formatDate(input) {
     timeZone: "Asia/Kolkata",
   });
 }
-
-/**
- * @param {string} author
- */
 
 /**
  * Formats the author string to show abbreviated form (e.g., "John Doe et al.").
@@ -79,35 +76,36 @@ export default function RecentBlogs() {
     }
   `);
   console.log(data);
+  const staggerRef = useStaggerReveal({ threshold: 0.05 });
 
   return (
     <Box
       style={{
         position: "relative",
-        paddingTop: "3em",
+        paddingTop: "2.4em",
       }}
     >
       <SectionBorderTop title={"Recent Blogs"} />
       <SectionBorderSides />
       <Box pad={"large"}>
-        <Box className="flex flex-col gap-8">
+        <Box ref={staggerRef} className="flex flex-col gap-6 reveal-stagger">
           {data.latestBlogs.nodes.map((blog, idx) => {
             return (
               <Box
                 key={idx}
-                className=" mx-auto border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 flex flex-col lg:flex-row gap-1 lg:gap-8 w-full lg:w-[70%] 2xl:w-[50%] pb-3 hover:bg-[#FFE7D9] active:bg-[#FFC8A6] focus:outline-none focus:ring-0 hover:scale-103 transition-transform duration-300 ease-in-out"
+                className=" mx-auto border-t-0 border-r-0 border-l-0 border-b-2 border-dashed border-black/30 flex flex-col lg:flex-row gap-1 lg:gap-6 w-full lg:w-[70%] 2xl:w-[50%] pb-2 hover:bg-[#FFE7D9] active:bg-[#FFC8A6] focus:outline-none focus:ring-0 hover:scale-103 transition-transform duration-300 ease-in-out"
                 onClick={() => navigate(blog.fields.slug)}
               >
-                <Text className="min-w-[7em] text-sm lg:text-lg">
+                <Text className="min-w-[7em] text-xs lg:text-[14px]">
                   {formatDate(blog.frontmatter.date)}
                 </Text>
                 <Box className="cursor-pointer" style={{ textAlign: "start" }}>
-                  <Text onClick={() => navigate(blog.fields.slug)} className="font-semibold lg:font-normal">
+                  <Text onClick={() => navigate(blog.fields.slug)} className="font-semibold lg:font-normal text-[14px] lg:text-[16px]">
                     {blog.frontmatter.name}
                   </Text>
                 </Box>
                 <Box className="lg:text-end" style={{ minWidth: "7em", flexGrow: 1 }}>
-                  <Text className="text-base lg:text-lg">{formatAuthor(blog.frontmatter.author)}</Text>
+                  <Text className="text-[13px] lg:text-[14px]">{formatAuthor(blog.frontmatter.author)}</Text>
                 </Box>
               </Box>
             );

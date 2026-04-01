@@ -13,27 +13,29 @@ const NewHome = () => {
     <AppShellNew>
       <Box align="center" margin={{ horizontal: "large", vertical: "small" }}>
         <Announcements />
-        <Box className="flex flex-col items-center pb-12 gap-14 mt-8">
+        <Box className="flex flex-col items-center pb-10 gap-10 mt-6 smooth-layout">
           <Text
             className="
             text-center
-            text-6xl
-            lg:text-9xl
-            xl:text-[9rem] xl:leading-[85%] xl:tracking-[-5]
+            text-[4rem] leading-[90%] font-semibold
+            lg:text-[8rem] lg:leading-[90%] lg:font-medium
             animate-[fadeUp_0.8s_ease-out_forwards]
+            smooth-layout
             "
           >
             Reclaim your <br className="" /> online space
           </Text>
 
-          <Text className="lg:w-[30%] text-center mt-2 lg:mt-8">
-            Short Statement about what Uli isUse Uli to redact slurs and abusive
-            content, archive problematic content, and collectively push back
-            against online gender based violence.
+          <Text className="lg:w-[40%] text-center mt-2 lg:mt-8 text-base lg:text-[16px] lg:leading-[120%] animate-[fadeUp_1s_ease-out_0.3s_both] smooth-layout">
+            An endeavour to build safer online spaces in India by collectivizing women and gender minorities for:
           </Text>
+          <ul className="list-disc text-left lg:w-[40%] text-base lg:text-[16px] lg:leading-[120%] pl-6 -mt-6 animate-[fadeUp_1s_ease-out_0.5s_both] smooth-layout">
+            <li>creating representative data and tools for detection of online abuse.</li>
+            <li>supporting each other in times of need</li>
+          </ul>
 
-          <Box className="flex flex-row gap-8 font-bold">
-            
+          <Box className="flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
+
             <NavLinkNew to="#">Our Process</NavLinkNew>
             <NavLinkNew to="/about">About Us</NavLinkNew>
           </Box>
