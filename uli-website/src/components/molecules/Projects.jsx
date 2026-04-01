@@ -11,9 +11,9 @@ import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 const projectsConfig = [
   {
-    title: "Title",
+    title: "Datasets",
     content:
-      "Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence",
+      "Through participatory workshops, we create datasets on abuse in Indian languages. The flagship dataset is a dataset on online misogyny. We also maintain a dataset on slurs and abusive phrases in Indian languages.",
     buttons: [
       {
         content: "install",
@@ -26,9 +26,24 @@ const projectsConfig = [
     ],
   },
   {
-    title: "Title",
+    title: "Workshops",
     content:
-      "Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence",
+      "A pedagogical track to engage with young people upwards of 14 years in interactive sessions discussing forms of OGBV with a special focus on language-based abuse rampant on social media.",
+    buttons: [
+      {
+        content: "install",
+        url: "/#",
+      },
+      {
+        content: "install",
+        url: "/#",
+      },
+    ],
+  },
+  {
+    title: "User-Facing Tools",
+    content:
+      "Tattle builds tools to reduce the toxicity from people’s social media feeds to provide timely response. In 2022 we built a browser plugin. With support from UNICEF’s Femtech Venture Fund, we will build a tool to monitor users’ social media feeds to identify abuse and connect them to support networks.",
     buttons: [
       {
         content: "install",
@@ -49,7 +64,7 @@ export default function Projects() {
         position: "relative",
       }}
     >
-      <SectionBorderTop title={"Projects"} />
+      <SectionBorderTop title={"Tracks"} />
       <SectionBorderSides />
 
       {/* CONTENT */}
@@ -98,10 +113,10 @@ function ProjectCard({ title, content, buttons, order = 0 }) {
             ${order % 2 == 0 ? "md:flex-row" : "md:flex-row-reverse"}  `}
     >
       <Box
-        className={`flex flex-col w-[90%] md:w-[60%] 2xl:w-[70%] gap-8  md:gap-5 ${order % 2 != 0 ? "lg:pl-5" : ""}`}
+        className={`flex flex-col w-[90%] md:w-[60%] 2xl:w-[70%] gap-10  md:gap-7 ${order % 2 != 0 ? "lg:pl-5" : ""}`}
       >
         <Text className="text-[38px] mx-auto md:mx-0">{title}</Text>
-        <Text className="text-[16px] leading-[100%]">{content}</Text>
+        <Text className="text-[16px] leading-[133%]">{content}</Text>
         <div className="flex flex-col md:flex-row gap-3">
           {buttons.map((btn, idx) => {
             return (
