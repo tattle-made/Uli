@@ -5,7 +5,8 @@ import { Box, Text } from "grommet";
 import Projects from "../components/molecules/Projects";
 import RecentBlogs from "../components/molecules/RecentBlogs";
 import Resources from "../components/molecules/Resources";
-import EmailSubscription from "../components/molecules/EmailSubscription";
+import SupportUs from "../components/molecules/SupportUs";
+// import Resources from "../components/molecules/Resources";
 import { NavLinkNew } from "../components/atoms/NavLinkNew";
 
 const NewHome = () => {
@@ -43,8 +44,10 @@ const NewHome = () => {
       </Box>
       <Projects />
       <RecentBlogs />
-      <Resources />
-      <EmailSubscription />
+      {/* <Resources /> */}
+
+      <SupportUs />
+
     </AppShellNew>
   );
 };

@@ -100,7 +100,7 @@ export default function RecentBlogs() {
                   {formatDate(blog.frontmatter.date)}
                 </Text>
                 <Box className="cursor-pointer" style={{ textAlign: "start" }}>
-                  <Text onClick={() => navigate(blog.fields.slug)} className="font-semibold lg:font-normal text-[14px] lg:text-[16px]">
+                  <Text onClick={() => navigate(blog.fields.slug)} className="font-semibold lg:font-semibold text-[14px] lg:text-[16px]">
                     {blog.frontmatter.name}
                   </Text>
                 </Box>
