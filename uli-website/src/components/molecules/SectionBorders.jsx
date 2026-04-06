@@ -28,7 +28,7 @@ export function SectionBorderTop({ title }) {
       <Text
         className="text-2xl lg:text-[30px]"
         margin={{ horizontal: "small", bottom: "small" }}
-        style={{ color: "black" }}
+        style={{ color: "black", fontFamily: "'Eenvoudige Batik', sans-serif" }}
       >
         {title}
       </Text>

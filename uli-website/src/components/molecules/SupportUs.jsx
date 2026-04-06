@@ -123,10 +123,10 @@ function AccordionItem({ item, isOpen, onToggle }) {
         <div className="flex justify-center flex-shrink-0">
           <MaskIcon url={item.iconUrl} color={textColor} size={34} />
         </div>
-        <div className="min-w-0 overflow-hidden flex items-center">
+        <div className="flex-1 min-w-0">
           <span
             className="text-[19px] md:text-[34px] leading-[1.1em] break-words block w-full"
-            style={{ color: textColor, fontFamily: "'Eenvoudige Batik', sans-serif" }}
+            style={{ color: textColor, fontFamily: "'XStitch', sans-serif" }}
           >
             {item.title}
           </span>
@@ -177,7 +177,7 @@ export default function SupportUs() {
       <div className="flex flex-col items-center gap-3">
         <Text
           className="text-center text-[40px] md:text-[64px] leading-[1.14em]"
-          style={{ fontFamily: "'MixStitch', sans-serif", fontWeight: 500 }}
+          style={{ fontFamily: "'Eenvoudige Batik', sans-serif" }}
         >
           Support Our Work
         </Text>
