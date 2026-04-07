@@ -29,7 +29,7 @@ Uli is a browser plugin that :
 It is an attempt to invert the top-down logics of platform moderation and center the experiences of those subject to online gender-based violence. 
 
 <h1 align="center">🎉 Contribution Pathways 🎉</h1>
-We cherish diversity of experiences and perspectives. It adds value to our work. To this end, we strongly encourage candidates who find alignment with the project and are driven to learn, to contribute to Uli. There are both code and no-code issues that you can contribute to.
+We cherish diversity of experiences and perspectives. It adds value to our work. To this end, we strongly encourage candidates who find alignment with the project and are driven to learn, to contribute to Uli. There are both code and no-code issues that you can contribute to. 
 
 To contribute effectively, we recommend doing some of these:
 - Peruse our [Wiki](https://github.com/tattle-made/Uli/wiki). It will help you navigate our repository, and adhere to our standards for contributions.
@@ -113,4 +113,4 @@ The pilot of the project was managed by the [Centre for Internet and Society](ht
 
 ## Website
 
-Visit the Uli website at https://uli.tattle.co.in/
+Visit the Uli website at https://uli.tattle.co.in/ !
