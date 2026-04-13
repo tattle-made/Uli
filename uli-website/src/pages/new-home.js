@@ -8,6 +8,8 @@ import Resources from "../components/molecules/Resources";
 import SupportUs from "../components/molecules/SupportUs";
 // import Resources from "../components/molecules/Resources";
 import { NavLinkNew } from "../components/atoms/NavLinkNew";
+import MailchimpSubscribeForm from "../components/molecules/MailchimpSubscribeForm";
+import { SectionBorderTop } from "../components/molecules/SectionBorders";
 
 const NewHome = () => {
   return (
@@ -43,6 +45,10 @@ const NewHome = () => {
       {/* <Resources /> */}
 
       <SupportUs />
+
+      <Box className="bg-inherit pt-32 pb-20 px-4 md:px-5 text-slate-900 flex flex-col items-center gap-12 smooth-layout">
+        <MailchimpSubscribeForm />
+      </Box>
 
     </AppShellNew>
   );
