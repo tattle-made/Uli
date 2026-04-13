@@ -1,28 +1,51 @@
-import * as React from "react"
-import AppShell from "../components/molecules/AppShell"
-import AnnouncementBanner from "../components/molecules/AnnouncementBanner"
-import { Box, Text } from "grommet"
-
+import * as React from "react";
+import AppShellNew from "../components/molecules/AppShellNew";
+import Announcements from "../components/molecules/Announcements";
+import { Box, Text } from "grommet";
+import Projects from "../components/molecules/Projects";
+import RecentBlogs from "../components/molecules/RecentBlogs";
+import Resources from "../components/molecules/Resources";
+import SupportUs from "../components/molecules/SupportUs";
+// import Resources from "../components/molecules/Resources";
+import { NavLinkNew } from "../components/atoms/NavLinkNew";
 
 const NewHome = () => {
   return (
-    <AppShell>
-      <main style={{ padding: "2rem" }}>
+    <AppShellNew>
+      <Box align="center" margin={{ horizontal: "large", vertical: "small" }}>
+        <Announcements />
+        <Box className="flex flex-col items-center pb-10 gap-10 mt-6 smooth-layout">
+          <Text
+            className="
+            text-center
+            text-[4rem] leading-[90%] font-semibold
+            lg:text-[8rem] lg:leading-[90%] lg:font-medium
+            animate-[fadeUp_0.8s_ease-out_forwards]
+            smooth-layout
+            "
+          >
+            Reclaim your <br className="" /> online space
+          </Text>
 
-        <AnnouncementBanner>
-          <Box>
-            <Text size="xlarge">Announcement</Text>
-            <br />
-            <Box>That white background would typically be a solid fill with border radius, and using Auto Layout <br /> would be able to grow and shrink based on the label overrides per instance.</Box>
-            <button className="border border-1 border-dashed bg-inherit px-4 py-2 w-fit self-center mt-5 cursor-pointer"> <Text>Learn more</Text></button>
+          <Text className="lg:w-[40%] text-center mt-2 lg:mt-8 text-base lg:text-[16px] lg:leading-[120%] animate-[fadeUp_1s_ease-out_0.3s_both] smooth-layout">
+            An endeavour to build safer online spaces in India by collectivizing women and gender minorities. Uli creates representative data and tools for detection of online abuse and connects to support in times of need.
+          </Text>
+
+          <Box className="flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
+
+            <NavLinkNew to="/process">Our Process</NavLinkNew>
+            <NavLinkNew to="/about">About Us</NavLinkNew>
           </Box>
+        </Box>
+      </Box>
+      <Projects />
+      <RecentBlogs />
+      {/* <Resources /> */}
 
-        </AnnouncementBanner>
-        <h1>New Home</h1>
-        <p>This is a temporary placeholder for the new homepage design.</p>
-      </main>
-    </AppShell >
-  )
-}
+      <SupportUs />
 
-export default NewHome
+    </AppShellNew>
+  );
+};
+
+export default NewHome;

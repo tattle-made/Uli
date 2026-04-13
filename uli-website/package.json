@@ -16,6 +16,7 @@
     "deploy": "gatsby-plugin-s3 deploy --yes"
   },
   "dependencies": {
+    "@chenglou/pretext": "^0.0.4",
     "@mdx-js/react": "3.0.0",
     "babel-plugin-styled-components": "2.1.4",
     "gatsby": "5.12.9",
