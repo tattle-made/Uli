@@ -12,39 +12,31 @@ import { useScrollReveal } from "../../hooks/useScrollReveal";
 const projectsConfig = [
   {
     title: "Datasets",
-    icon: "/track%20icons/Database.png",
+    icon: "/track_icons/Database.png",
     content:
       "Through participatory workshops, we create datasets on abuse in Indian languages. The flagship dataset is a dataset on online misogyny. We also maintain a dataset on slurs and abusive phrases in Indian languages.",
     buttons: [
       {
-        content: "install",
-        url: "/#",
-      },
-      {
-        content: "install",
-        url: "https://google.com",
-      },
+        content: "View Dataset Snapshot",
+        url: "https://github.com/tattle-made/Uli/blob/main/browser-extension/plugin/scripts/slur-list.txt",
+      }
     ],
   },
   {
     title: "Workshops",
-    icon: "/track%20icons/Workshops.png",
+    icon: "/track_icons/Workshops.png",
     content:
       "A pedagogical track to engage with young people upwards of 14 years in interactive sessions discussing forms of OGBV with a special focus on language-based abuse rampant on social media.",
     buttons: [
       {
-        content: "install",
-        url: "/#",
-      },
-      {
-        content: "install",
-        url: "/#",
+        content: "Read workshop reflection",
+        url: "https://tattle.co.in/blog/uli-coimbatore-workshop-retrospective/",
       },
     ],
   },
   {
     title: "User-Facing Tools",
-    icon: "/track%20icons/Tools.png",
+    icon: "/track_icons/Tools.png",
     content:
       "Tattle builds tools to reduce the toxicity from people’s social media feeds to provide timely response. In 2022 we built a browser plugin. With support from UNICEF’s Femtech Venture Fund, we will build a tool to monitor users’ social media feeds to identify abuse and connect them to support networks.",
     buttons: [

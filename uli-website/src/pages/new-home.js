@@ -28,12 +28,8 @@ const NewHome = () => {
           </Text>
 
           <Text className="lg:w-[40%] text-center mt-2 lg:mt-8 text-base lg:text-[16px] lg:leading-[120%] animate-[fadeUp_1s_ease-out_0.3s_both] smooth-layout">
-            An endeavour to build safer online spaces in India by collectivizing women and gender minorities for:
+            An endeavour to build safer online spaces in India by collectivizing women and gender minorities. Uli creates representative data and tools for detection of online abuse and connects to support in times of need.
           </Text>
-          <ul className="list-disc text-left lg:w-[40%] text-base lg:text-[16px] lg:leading-[120%] pl-6 -mt-6 animate-[fadeUp_1s_ease-out_0.5s_both] smooth-layout">
-            <li>creating representative data and tools for detection of online abuse.</li>
-            <li>supporting each other in times of need</li>
-          </ul>
 
           <Box className="flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
 

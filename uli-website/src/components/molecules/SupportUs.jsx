@@ -185,7 +185,7 @@ export default function SupportUs() {
           className="text-center text-[20px]"
           style={{ fontFamily: "'Labrada', serif", color: "#FFF6E8" }}
         >
-          You can support Ulis' work in the following ways.
+          You can support Uli's work in the following ways.
         </Text>
       </div>
 
