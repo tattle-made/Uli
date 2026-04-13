@@ -28,25 +28,25 @@ const items = [
     title: "Contribute to the Dataset",
     description: "You can contribute to the dataset as an individual through the Uli Community Page. You can also conduct a crowdsourcing workshop with your language/regional community. Please reach out to poorvi@tattle.co.in",
     buttonText: "",
-    iconUrl: "/Database.svg"
+    iconUrl: "/support_icons/database.svg"
   },
   {
     title: "Host a workshop on OGBV",
     description: "If you would like us to conduct a workshop with your students or your organization on OGBV or online safety, please email poorvi@tattle.co.in",
     buttonText: "Email Us",
-    iconUrl: "/Workshop.svg"
+    iconUrl: "/support_icons/workshop.svg"
   },
   {
     title: "Sponsor a track",
     description: "We are looking for funders who can help grow the three tracks: datasets, workshops and abuse response. Each track has a different roadmap. If you are a funder working on online safety, please reach out to admin@tattle.co.in",
     buttonText: "",
-    iconUrl: "/Support.svg"
+    iconUrl: "/support_icons/support.svg"
   },
   {
     title: "Sponsor us on Github",
     description: "If you are an individual who wants to support the overall project, consider becoming a GitHub sponsor. The GitHub sponsor's money is pooled and may be used for any of the three tracks. All sponsors will be added to the Uli mailing list for periodic updates on the project.",
     buttonText: "Github Sponsors",
-    iconUrl: "/Github.svg",
+    iconUrl: "/support_icons/github.svg",
     url: "https://github.com/sponsors/tattle-made"
   }
 ];

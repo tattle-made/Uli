@@ -1,5 +1,6 @@
 import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
 import MultiLingualAbout from "../components/atoms/MultiLingualAbout";
+import { Box, Text } from "grommet";
 
 export default function Layout(props) {
   return <ContentPageShell {...props}>{props.children}</ContentPageShell>;
@@ -15,7 +16,29 @@ Uli was born from the collective labour of journalists, activists, community inf
 
 The project started as an exploration of building datasets and AI aligned with [feminist principles](https://uli.tattle.co.in/blog/approach/). There are many terms- such as responsible, ethical, trustworthy, participatory, feminist- to describe better or alternative visions of AI (and technology). Core to these ideas is the principle of centering the communities who are most impacted by the technology. In our case it is women and marginalized genders at the receiving end of OGBV.  
 
-The Uli project contributes unique insights on the nuts and bolts of participatory data and AI. This presentation describes the challenges of converting feminist principles to practice: (insert video currently in research section)
+The Uli project contributes unique insights on the nuts and bolts of participatory data and AI. This presentation describes the challenges of converting feminist principles to practice: 
+
+<Box>
+  <Box>
+    <Text style={{ fontSize: "1.4em" }} margin={{ bottom: "0.8em" }}>
+      {" "}
+      Building Participatory AI
+    </Text>
+    <Box fill>
+      <iframe
+        width="100%"
+        height="400"
+        src="https://www.youtube.com/embed/Zt088nILmDM"
+        title="A New Thing Under the Sun? Alternative Visions for Tech in the Age of AI"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </Box>
+  </Box>
+</Box>
+
 
 With every iteration we learn something new. The methodology of building the flagship dataset on misogyny in India languages with experts with lived experience of abuse is documented here. The paper won the outstanding paper award at the Workshop on Online Abuse and Harms at NAACL, 2024. In another paper on participation in AI we introduce the concept of horizontal and vertical translation of expertise for effective participation. When building out AI safety benchmarks for MLCommons, we learnt where lived expertise could interplay with synthetic/ at scale dataset creation. 
 

@@ -41,13 +41,13 @@ const projectsConfig = [
       "Tattle builds tools to reduce the toxicity from people’s social media feeds to provide timely response. In 2022 we built a browser plugin. With support from UNICEF’s Femtech Venture Fund, we will build a tool to monitor users’ social media feeds to identify abuse and connect them to support networks.",
     buttons: [
       {
-        content: "install",
-        url: "/#",
+        content: "Browser Extension",
+        url: "/",
       },
-      {
-        content: "install",
-        url: "/#",
-      },
+      // {
+      //   content: "install",
+      //   url: "/#",
+      // },
     ],
   },
 ];
