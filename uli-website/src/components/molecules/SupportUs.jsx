@@ -94,9 +94,9 @@ function AccordionItem({ item, isOpen, onToggle }) {
     borderColor = "#000000";
     textColor = "#000000";
   } else if (isHover) {
-    bg = "#B44E0F";
+    bg = "#FFF6E8";
     borderColor = "#FFF6E8";
-    textColor = "#FFF6E8";
+    textColor = "#000000";
   }
 
   const dashedBorderStyle = {
@@ -138,10 +138,9 @@ function AccordionItem({ item, isOpen, onToggle }) {
         </div>
       </div>
 
-      <div 
+      {isOpen && <div 
         style={{ 
           maxHeight: isOpen ? '450px' : '0px', 
-          opacity: isOpen ? 1 : 0,
           transition: 'max-height 0.4s ease-in-out, opacity 0.3s ease-in-out',
           padding: isOpen ? '0 22px 30px 22px' : '0 22px'
         }}
@@ -156,7 +155,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
                 window.location.href = `mailto:${item.description.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi)?.[0] || 'admin@tattle.co.in'}`;
               }
               if (item.url){
-                navigate(item.url)
+                window.location.href = item.url
               }
             }}
           >
@@ -168,7 +167,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
           
 
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
