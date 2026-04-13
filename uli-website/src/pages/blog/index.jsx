@@ -18,20 +18,20 @@ const BlogIndex = ({ data }) => {
       <Box align="center" margin={"large"}>
         <Box width={"large"}>
           <Heading level={2}>Blog</Heading>
-          <Box class="bg-red-200 p-2 mb-80">
+          <Box>
             {blogs.map((blog) => {
               return (
-                <Box key={blog.fields.slug} margin={{ bottom: "medium" }}>
+                <Box key={blog.fields.slug} className="mb-8">
                   <NavLink to={`${blog.fields.slug}`}>
                     <Paragraph fill margin="none">
                       <Text size={"xlarge"}>{blog.frontmatter.name}</Text>,
                       <Text> {blog.frontmatter.author}</Text>
                     </Paragraph>
-                    {/* Publish date ko yahan display kiya gaya hai */}
+             
                     <Text size="small"
-                      color="grey"
+                      color="text-slate-50"
                       margin={{ top: "xxsmall" }}>
-                      Published on: {formatDate(blog.frontmatter.date)}
+                      {formatDate(blog.frontmatter.date)}
                     </Text>
                   </NavLink>
                 </Box>
