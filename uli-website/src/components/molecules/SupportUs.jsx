@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Text } from "grommet";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
+import { navigate } from "gatsby";
 
 const MaskIcon = ({ url, color, size = 34, className }) => (
   <div 
@@ -26,7 +27,7 @@ const items = [
   {
     title: "Contribute to the Dataset",
     description: "You can contribute to the dataset as an individual through the Uli Community Page. You can also conduct a crowdsourcing workshop with your language/regional community. Please reach out to poorvi@tattle.co.in",
-    buttonText: "Uli Community",
+    buttonText: "",
     iconUrl: "/Database.svg"
   },
   {
@@ -38,14 +39,15 @@ const items = [
   {
     title: "Sponsor a track",
     description: "We are looking for funders who can help grow the three tracks: datasets, workshops and abuse response. Each track has a different roadmap. If you are a funder working on online safety, please reach out to admin@tattle.co.in",
-    buttonText: "Contact Us",
+    buttonText: "",
     iconUrl: "/Support.svg"
   },
   {
     title: "Sponsor us on Github",
     description: "If you are an individual who wants to support the overall project, consider becoming a GitHub sponsor. The GitHub sponsor's money is pooled and may be used for any of the three tracks. All sponsors will be added to the Uli mailing list for periodic updates on the project.",
-    buttonText: "Uli Github",
-    iconUrl: "/Github.svg"
+    buttonText: "Github Sponsors",
+    iconUrl: "/Github.svg",
+    url: "https://github.com/sponsors/tattle-made"
   }
 ];
 
@@ -146,19 +148,25 @@ function AccordionItem({ item, isOpen, onToggle }) {
       >
         <div className="flex flex-col gap-[20px] pt-2 border-t border-black/10">
           <HighlightedDescription text={item.description} />
-          <button 
+          {item.buttonText.length!=0 && <button 
             className="bg-black py-[12px] px-[24px] w-max mt-4 border-none outline-none cursor-pointer hover:bg-[#333333] transition-colors active:scale-95 transform"
             onClick={(e) => {
               e.stopPropagation();
               if (item.buttonText.toLowerCase().includes('email')) {
                 window.location.href = `mailto:${item.description.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi)?.[0] || 'admin@tattle.co.in'}`;
               }
+              if (item.url){
+                navigate(item.url)
+              }
             }}
           >
             <span className="text-[16px] md:text-[20px] leading-[1.2em] text-white" style={{ fontFamily: "'Labrada', serif" }}>
               {item.buttonText}
             </span>
-          </button>
+          </button>}
+          
+          
+
         </div>
       </div>
     </div>

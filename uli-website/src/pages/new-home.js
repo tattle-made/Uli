@@ -33,7 +33,7 @@ const NewHome = () => {
 
           <Box className="flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
 
-            <NavLinkNew to="#">Our Process</NavLinkNew>
+            <NavLinkNew to="/process">Our Process</NavLinkNew>
             <NavLinkNew to="/about">About Us</NavLinkNew>
           </Box>
         </Box>

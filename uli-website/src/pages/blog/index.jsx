@@ -18,7 +18,7 @@ const BlogIndex = ({ data }) => {
       <Box align="center" margin={"large"}>
         <Box width={"large"}>
           <Heading level={2}>Blog</Heading>
-          <Box>
+          <Box class="bg-red-200 p-2 mb-80">
             {blogs.map((blog) => {
               return (
                 <Box key={blog.fields.slug} margin={{ bottom: "medium" }}>
