@@ -88,6 +88,7 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
       ref={revealRef}
       className={`reveal smooth-layout
             w-full
+<<<<<<< HEAD
             max-w-[800px]
             mx-auto
             border-solid
@@ -95,6 +96,16 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
             [border-image-source:url('/project-card-bg.svg')]
             [border-image-slice:0%_fill]
             [border-image-repeat:stretch]
+=======
+            lg:w-[75%]
+            2xl:w-[45%]
+            mx-auto
+            border-solid
+            border-[0.5em]
+            [border-image-source:url('/project-card-bg.svg')]
+            [border-image-slice:0%_fill]
+            [border-image-repeat:round]
+>>>>>>> main
             px-6
             md:px-12
             lg:px-20
