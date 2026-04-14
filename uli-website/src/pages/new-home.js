@@ -50,7 +50,7 @@ const NewHome = () => {
         <MailchimpSubscribeForm />
       </Box>
 
-    </AppShellNew>
+    </AppShellNew >
   );
 };
 

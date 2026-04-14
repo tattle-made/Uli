@@ -124,7 +124,7 @@ const SimpleTitleText = styled.h1`
 
 const DecorativeBorder = styled.div`
   width: 100%;
-  border-bottom: 16px solid transparent;
+  border-bottom: 21px solid transparent;
   border-image-source: url("/ResourceBorder.png");
   border-image-slice: 33%;
   border-image-repeat: round;

@@ -4,7 +4,7 @@ import { useScrollReveal } from "../../hooks/useScrollReveal";
 import { navigate } from "gatsby";
 
 const MaskIcon = ({ url, color, size = 34, className }) => (
-  <div 
+  <div
     className={className}
     style={{
       width: size,
@@ -27,8 +27,9 @@ const items = [
   {
     title: "Contribute to the Dataset",
     description: "You can contribute to the dataset as an individual through the Uli Community Page. You can also conduct a crowdsourcing workshop with your language/regional community. Please reach out to poorvi@tattle.co.in",
-    buttonText: "",
-    iconUrl: "/support_icons/database.svg"
+    buttonText: "Uli Community",
+    iconUrl: "/support_icons/database.svg",
+    url: "https://uli-community.tattle.co.in/"
   },
   {
     title: "Host a workshop on OGBV",
@@ -52,10 +53,10 @@ const items = [
 ];
 
 const PixelatedArrow = ({ color, isOpen }) => (
-  <MaskIcon 
-    url="/Arrow.svg" 
-    color={color} 
-    size={24} 
+  <MaskIcon
+    url="/Arrow.svg"
+    color={color}
+    size={24}
     className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
   />
 );
@@ -63,14 +64,14 @@ const PixelatedArrow = ({ color, isOpen }) => (
 const HighlightedDescription = ({ text }) => {
   const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
   const parts = text.split(emailRegex);
-  
+
   return (
     <div className="text-[15px] md:text-[18px] leading-[1.2em] w-full mt-2" style={{ color: "#000000", fontFamily: "'Labrada', serif" }}>
-      {parts.map((part, i) => 
+      {parts.map((part, i) =>
         emailRegex.test(part) ? (
-          <a 
-            key={i} 
-            href={`mailto:${part}`} 
+          <a
+            key={i}
+            href={`mailto:${part}`}
             className="underline font-bold hover:opacity-60 transition-opacity"
             onClick={(e) => e.stopPropagation()}
           >
@@ -100,7 +101,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
   }
 
   const dashedBorderStyle = {
-    backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='${encodeURIComponent(borderColor)}' stroke-width='2' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
+    backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='${encodeURIComponent(borderColor)}' stroke-width='2.6' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
     backgroundPosition: 'center',
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat'
@@ -118,7 +119,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
         minHeight: '82px'
       }}
     >
-      <div 
+      <div
         className="grid grid-cols-[44px_1fr_32px] md:grid-cols-[44px_1fr_40px] items-center w-full p-[22px] gap-4 md:gap-6"
         style={{ boxSizing: 'border-box' }}
       >
@@ -138,23 +139,23 @@ function AccordionItem({ item, isOpen, onToggle }) {
         </div>
       </div>
 
-      {isOpen && <div 
-        style={{ 
-          maxHeight: isOpen ? '450px' : '0px', 
+      {isOpen && <div
+        style={{
+          maxHeight: isOpen ? '450px' : '0px',
           transition: 'max-height 0.4s ease-in-out, opacity 0.3s ease-in-out',
           padding: isOpen ? '0 22px 30px 22px' : '0 22px'
         }}
       >
         <div className="flex flex-col gap-[20px] pt-2 border-t border-black/10">
           <HighlightedDescription text={item.description} />
-          {item.buttonText.length!=0 && <button 
+          {item.buttonText.length != 0 && <button
             className="bg-black py-[12px] px-[24px] w-max mt-4 border-none outline-none cursor-pointer hover:bg-[#333333] transition-colors active:scale-95 transform"
             onClick={(e) => {
               e.stopPropagation();
               if (item.buttonText.toLowerCase().includes('email')) {
                 window.location.href = `mailto:${item.description.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi)?.[0] || 'admin@tattle.co.in'}`;
               }
-              if (item.url){
+              if (item.url) {
                 window.location.href = item.url
               }
             }}
@@ -163,8 +164,8 @@ function AccordionItem({ item, isOpen, onToggle }) {
               {item.buttonText}
             </span>
           </button>}
-          
-          
+
+
 
         </div>
       </div>}
@@ -188,7 +189,7 @@ export default function SupportUs() {
         >
           Support Our Work
         </Text>
-        <Text 
+        <Text
           className="text-center text-[20px]"
           style={{ fontFamily: "'Labrada', serif", color: "#FFF6E8" }}
         >
@@ -196,11 +197,11 @@ export default function SupportUs() {
         </Text>
       </div>
 
-      <div className="flex flex-col gap-6 mt-8 w-full items-center max-w-[660px]">
+      <div className="flex flex-col gap-6 mt-8 w-full items-center max-w-[800px]">
         {items.map((item, idx) => (
-          <AccordionItem 
-            key={idx} 
-            item={item} 
+          <AccordionItem
+            key={idx}
+            item={item}
             isOpen={activeIndex === idx}
             onToggle={() => setActiveIndex(activeIndex === idx ? null : idx)}
           />

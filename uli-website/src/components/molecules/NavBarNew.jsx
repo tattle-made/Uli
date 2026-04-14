@@ -42,7 +42,7 @@ export default function NavBarNew() {
     >
       <Box width="full" direction="row" align="center" className=" mt-4 lg:mt-0">
         <Box flex align="start">
-          <NavLink to="/">
+          <NavLink as="a" href="https://tattle.co.in/">
             <Text className="text-[16px] font-semibold">Tattle</Text>
           </NavLink>
         </Box>
@@ -56,7 +56,7 @@ export default function NavBarNew() {
           />
         </Box>
 
-        <Box flex direction="row" gap="medium" justify="end" align="end" className="lg:hidden" ><button className="bg-inherit m-0 p-0 border-none transition-transform duration-300" onClick={()=>{setOpen(prev => !prev)}}><img src={open ? "/cross-icon.svg" :"/hamburger-icon.svg"} alt="" className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`} /></button></Box>
+        <Box flex direction="row" gap="medium" justify="end" align="end" className="lg:hidden" ><button className="bg-inherit m-0 p-0 border-none transition-transform duration-300" onClick={() => { setOpen(prev => !prev) }}><img src={open ? "/cross-icon.svg" : "/hamburger-icon.svg"} alt="" className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`} /></button></Box>
 
         <Box flex direction="row" gap="medium" justify="end" className="hidden lg:flex">
           {/* <NavLinkNew to="#">
