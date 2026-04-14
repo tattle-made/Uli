@@ -196,7 +196,7 @@ export default function SupportUs() {
         </Text>
       </div>
 
-      <div className="flex flex-col gap-6 mt-8 w-full items-center max-w-[660px]">
+      <div className="flex flex-col gap-6 mt-8 w-full items-center max-w-[800px]">
         {items.map((item, idx) => (
           <AccordionItem 
             key={idx} 

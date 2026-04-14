@@ -10,13 +10,14 @@ function AnnouncementBanner({ children }) {
       className="
         w-fit
         mx-auto
+        max-w-[800px]
         text-center
         border-solid
         border-[1.2em]
         px-2
         [border-image-source:url('/announcement-bg.svg')]
         [border-image-slice:33%_4%_fill]
-        [border-image-repeat:round]>
+        [border-image-repeat:round]
         animate-[fadeUp_1.2s_ease-out_forwards]
     "
     >

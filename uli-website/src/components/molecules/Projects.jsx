@@ -88,8 +88,7 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
       ref={revealRef}
       className={`reveal smooth-layout
             w-full
-            lg:w-[75%]
-            2xl:w-[45%]
+            max-w-[800px]
             mx-auto
             border-solid
             border-[0.5em]
