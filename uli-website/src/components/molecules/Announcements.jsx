@@ -13,7 +13,7 @@ function AnnouncementBanner({ children }) {
         max-w-[800px]
         text-center
         border-solid
-        border-[1.2em]
+        border-[1.6em]
         px-2
         [border-image-source:url('/announcement-bg.svg')]
         [border-image-slice:33%_4%_fill]

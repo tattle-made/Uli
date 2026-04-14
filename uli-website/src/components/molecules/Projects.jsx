@@ -91,10 +91,10 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
             max-w-[800px]
             mx-auto
             border-solid
-            border-[0.5em]
+            border-[0.65em]
             [border-image-source:url('/project-card-bg.svg')]
             [border-image-slice:0%_fill]
-            [border-image-repeat:round]
+            [border-image-repeat:stretch]
             px-6
             md:px-12
             lg:px-20

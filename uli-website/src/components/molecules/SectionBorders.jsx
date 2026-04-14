@@ -12,7 +12,7 @@ export function SectionBorderTop({ title }) {
         top: 0,
         left: 0,
         right: 0,
-        height: 16,
+        height: 21,
       }}
     >
       <Box
@@ -21,8 +21,8 @@ export function SectionBorderTop({ title }) {
         style={{
           backgroundImage: 'url("/section-border.svg")',
           backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 16px",
-          height: 16,
+          backgroundSize: "auto 21px",
+          height: 21,
         }}
       />
       <Text
@@ -38,8 +38,8 @@ export function SectionBorderTop({ title }) {
         style={{
           backgroundImage: 'url("/section-border.svg")',
           backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 16px",
-          height: 16,
+          backgroundSize: "auto 21px",
+          height: 21,
         }}
       />
     </Box>
@@ -54,13 +54,13 @@ export function SectionBorderSidesBottom() {
         className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 16,
+          top: 21,
           left: 0,
-          bottom: 16,
-          width: 16,
+          bottom: 21,
+          width: 21,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "16px auto",
+          backgroundSize: "21px auto",
         }}
       />
       {/* RIGHT BORDER */}
@@ -68,13 +68,13 @@ export function SectionBorderSidesBottom() {
         className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 16,
+          top: 21,
           right: 0,
-          bottom: 16,
-          width: 16,
+          bottom: 21,
+          width: 21,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "16px auto",
+          backgroundSize: "21px auto",
         }}
       />
       {/* Bottom BORDER */}
@@ -85,10 +85,10 @@ export function SectionBorderSidesBottom() {
           left: 0,
           right: 0,
           bottom: 0,
-          height: 16,
+          height: 21,
           backgroundImage: 'url("/section-border.svg")',
           backgroundRepeat: "repeat-x",
-          backgroundSize: "auto 16px",
+          backgroundSize: "auto 21px",
         }}
       />
     </>
@@ -103,13 +103,13 @@ export function SectionBorderSides() {
         className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 16,
+          top: 21,
           left: 0,
           bottom: 0,
-          width: 16,
+          width: 21,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "16px auto",
+          backgroundSize: "21px auto",
         }}
       />
 
@@ -118,13 +118,13 @@ export function SectionBorderSides() {
         className="hidden lg:block border-animate-y-delay"
         style={{
           position: "absolute",
-          top: 16,
+          top: 21,
           right: 0,
           bottom: 0,
-          width: 16,
+          width: 21,
           backgroundImage: 'url("/section-border-vertical.svg")',
           backgroundRepeat: "repeat-y",
-          backgroundSize: "16px auto",
+          backgroundSize: "21px auto",
         }}
       />
     </>

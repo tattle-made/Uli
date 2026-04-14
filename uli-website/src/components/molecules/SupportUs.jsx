@@ -27,8 +27,9 @@ const items = [
   {
     title: "Contribute to the Dataset",
     description: "You can contribute to the dataset as an individual through the Uli Community Page. You can also conduct a crowdsourcing workshop with your language/regional community. Please reach out to poorvi@tattle.co.in",
-    buttonText: "",
-    iconUrl: "/support_icons/database.svg"
+    buttonText: "Uli Community",
+    iconUrl: "/support_icons/database.svg",
+    url: "https://uli-community.tattle.co.in/"
   },
   {
     title: "Host a workshop on OGBV",
@@ -100,7 +101,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
   }
 
   const dashedBorderStyle = {
-    backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='${encodeURIComponent(borderColor)}' stroke-width='2' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
+    backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='${encodeURIComponent(borderColor)}' stroke-width='2.6' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
     backgroundPosition: 'center',
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat'
