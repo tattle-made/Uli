@@ -2,11 +2,11 @@ import { Grommet, Box } from "grommet";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { Colors, NavLink, Theme } from "../atoms/UliCore";
-import NavBar from "./NavBar";
+import NavBarNew from "./NavBarNew";
 import i18n from "../atoms/i18n";
 import { useTranslation } from "react-i18next";
-import Footer from "./Footer";
 import { useLocation } from "@reach/router";
+import FooterNew from "./FooterNew";
 
 export default function AppShell({ children }) {
   const { t, i18n } = useTranslation();
@@ -58,16 +58,9 @@ export default function AppShell({ children }) {
           ></script>
         </Helmet>
 
-        <NavBar />
-        <Box flex="grow">{children}</Box>
-        {/* <Box align="center" pad={"medium"}>
-          <Box direction="row" gap={"medium"}>
-            <NavLink to={"/privacy-policy"}>Privacy Policy</NavLink>
-            <NavLink to={"/blog"}>Blog</NavLink>
-            <NavLink to={"/about"}>About</NavLink>
-          </Box>
-        </Box> */}
-        <Footer />
+        <NavBarNew />
+        <Box flex="grow" className="font-labrada">{children}</Box>
+        <FooterNew />
       </main>
     </Grommet>
   );

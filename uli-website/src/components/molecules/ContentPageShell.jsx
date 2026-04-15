@@ -229,7 +229,6 @@ const StyledLink = styled.a`
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  word-break: break-all;
   border-radius: 2px;
   padding: 0 2px;
   margin: 0 -2px;

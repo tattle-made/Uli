@@ -3,6 +3,7 @@ import { Box, ResponsiveContext, Text } from "grommet";
 import { NavLink } from "../atoms/UliCore";
 import { navigate } from "gatsby";
 import { NavLinkNew } from "../atoms/NavLinkNew";
+import TattleLogo from "../atoms/TattleLogo";
 
 export default function NavBarNew() {
   const [open, setOpen] = useState(false);
@@ -43,9 +44,10 @@ export default function NavBarNew() {
       <Box width="full" direction="row" align="center" className=" mt-4 lg:mt-0">
         <Box flex align="start">
           <NavLink as="a" href="https://tattle.co.in/">
-            <Text className="text-[16px] font-semibold">Tattle</Text>
+            <TattleLogo data={{scale: 0.8}} />
           </NavLink>
         </Box>
+        
 
         <Box align="center">
           <img
@@ -62,9 +64,9 @@ export default function NavBarNew() {
           {/* <NavLinkNew to="#">
             <Text className="text-[16px] font-medium">Contact</Text>
           </NavLinkNew> */}
-          <NavLinkNew to="/about">
+          {/* <NavLinkNew to="/about">
             <Text className="text-[16px] font-medium">About us</Text>
-          </NavLinkNew>
+          </NavLinkNew> */}
           <NavLinkNew to="/blog">
             <Text className="text-[16px] font-medium">Blog</Text>
           </NavLinkNew>
@@ -73,9 +75,9 @@ export default function NavBarNew() {
 
       <Box className={`bg-[#FFE7D9] w-full text-center overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-96 opacity-100 mt-9 mb-4" : "max-h-0 opacity-0"} lg:hidden`}>
         <Box className="flex flex-col gap-5 py-6">
-          <NavLinkNew to="/about">
+          {/* <NavLinkNew to="/about">
             <Text className="text-[16px] font-medium">About us</Text>
-          </NavLinkNew>
+          </NavLinkNew> */}
           <NavLinkNew to="/blog">
             <Text className="text-[16px] font-medium">Blog</Text>
           </NavLinkNew>

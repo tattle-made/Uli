@@ -1,0 +1,32 @@
+import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
+import MultiLingualAbout from "../components/atoms/MultiLingualAbout";
+import {Box} from 'grommet';
+
+export default function Layout(props) {
+  return <ContentPageShell {...props}>{props.children}</ContentPageShell>;
+}
+
+## User Facing Tools
+
+The Uli project started with the intention of empowering internet users, especially women and gender minorities, to respond to online gender based abuse. But to do so, we need to first detect the abuse. 
+
+One tool that we built was the Uli plugin.  
+<Box width={"26em"}>
+  <img src={"/HeroIllustration.gif"}></img>
+</Box>
+
+Some of the features of the plugin are:
+
+1. Redacting abusive words in your language: By enabling the plugin, you can automatically redact words in Indian English, Hindi, Tamil and Malayalam. If you’d like to expand the scope of redaction, you can add custom slurs in your languages and dialects in the plugin. These will only be redacted on your browser.
+
+2. Learn and educate: By enabling ‘Slur Metadata’, you can now hover on a slur as it shows on your page to learn more about the context of its usage. If you’re an educator, you can use it in classrooms for an engaging learning experience.
+
+3. Contribute to the database of crowdsourced slurs in India: By adding slurs through the plugin, you will be expanding a crowdsourced community-focused dataset for India, and enabling safe experiences for all users of the plugin.
+
+
+## Reaching Mobile First Users
+From user testing we know that the browser plugin does not address most social media user journeys that are tied to mobile apps.
+
+We are now working on building a tool to monitor users’ social media feeds to identify abuse and connect them to support networks. This tool is designed around the idea of consensual social media scanning and data sharing. This work is currently supported by the UNICEF Femtech Venture Fund. 
+
+To learn more about the roadmap for our user facing tools, please email admin@tattle.co.in.

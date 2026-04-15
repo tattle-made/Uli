@@ -1,0 +1,27 @@
+import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
+import MultiLingualAbout from "../components/atoms/MultiLingualAbout";
+
+export default function Layout(props) {
+  return <ContentPageShell {...props}>{props.children}</ContentPageShell>;
+}
+
+## Datasets
+
+Tattle builds and maintains dataset pertaining to misogyny and online safety in Indian languages. The dataset process is entirely participatory, involving members of marginalized communities. You can read more about the process [here](https://docs.google.com/document/d/1XYC_YzscmnPqyJpMJkEtH6joWnKITwA_BBpzUXvZy2Y/edit?tab=t.on4nnfbuqmdl). In 2021, their contributions allowed us to create a dataset of gendered abuse in Indian languages, and also a list of slurs with contextual information. 
+
+### The Uli Gendered Abuse Dataset:
+This dataset comprises 24000 tweets- 6000 in Tamil, Hindi and Indian English each- annotated by 18 experts. The dataset contains annotations on whether the post is explicit, gendered abuse and gendered abuse when specifically targeted at gender minorities. The dataset is available under the open database license. It can be accessed [here](https://aclanthology.org/2024.woah-1.16/)
+
+
+In recognition of the participatory methodology, this dataset won the outstanding paper award at the [Workshop on Online Abuse and Harms](https://aclanthology.org/events/woah-2024/) at NAACL, 2024. 
+
+
+### The Uli Slur list
+Built alongside the Uli dataset on gendered abuse, the slur list is now continually updated and maintained. While we call it the Uli slur list, it is more accurately a dataset of slurs, offensive phrases as well as the metadata such as what makes the word problematic, whether it has been reclaimed and the identity groups targeted. It contains terms in Hindi, Indian English, Tamil, Malayalam and Bengali. 
+
+A basic list is available for anyone to access on [Github](https://github.com/tattle-made/Uli/tree/license/browser-extension/plugin/scripts/2023-12-21-slur-metadata). The [Uli community dashboard](https://uli-community.tattle.co.in/crowdsource-contributions) contains a more up to date dataset and options to filter and browse the dataset. You can also add to the dataset through the Uli dashboard! 
+
+In case you are a company looking for a customized list of keywords in Indian languages and/or taxonomy for your Trust and Safety needs, Tattle can provide that at a cost. Please send an email to admin@tattle.co.in.
+
+### Custom Datasets
+The Uli model presents an non-exploitative model for building high quality datasets in low resource languages. The participatory approach with experts was also used to build the [AI Safety Benchmark Dataset](https://drive.google.com/file/d/1OKpZ7qqT6hjbzaeUC7UnBF1oCTn7c70z/view) with [MLCommons](https://mlcommons.org/ailuminate/safety-methodology/). The license for this data lies with MLCommons

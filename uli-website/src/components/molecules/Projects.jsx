@@ -17,6 +17,10 @@ const projectsConfig = [
       "Through participatory workshops, we create datasets on abuse in Indian languages. The flagship dataset is a dataset on online misogyny. We also maintain a dataset on slurs and abusive phrases in Indian languages.",
     buttons: [
       {
+        content: "Read More",
+        url: "/dataset",
+      },
+      {
         content: "View Dataset Snapshot",
         url: "https://github.com/tattle-made/Uli/blob/main/browser-extension/plugin/scripts/slur-list.txt",
       }
@@ -41,13 +45,13 @@ const projectsConfig = [
       "Tattle builds tools to reduce the toxicity from people’s social media feeds to provide timely response. In 2022 we built a browser plugin. With support from UNICEF’s Femtech Venture Fund, we will build a tool to monitor users’ social media feeds to identify abuse and connect them to support networks.",
     buttons: [
       {
+        content: "Read More",
+        url: "/user-facing-tools/",
+      },
+      {
         content: "Browser Extension",
         url: "/",
-      },
-      // {
-      //   content: "install",
-      //   url: "/#",
-      // },
+      }
     ],
   },
 ];
@@ -88,7 +92,6 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
       ref={revealRef}
       className={`reveal smooth-layout
             w-full
-<<<<<<< HEAD
             max-w-[800px]
             mx-auto
             border-solid
@@ -96,16 +99,6 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
             [border-image-source:url('/project-card-bg.svg')]
             [border-image-slice:0%_fill]
             [border-image-repeat:stretch]
-=======
-            lg:w-[75%]
-            2xl:w-[45%]
-            mx-auto
-            border-solid
-            border-[0.5em]
-            [border-image-source:url('/project-card-bg.svg')]
-            [border-image-slice:0%_fill]
-            [border-image-repeat:round]
->>>>>>> main
             px-6
             md:px-12
             lg:px-20
@@ -123,7 +116,7 @@ function ProjectCard({ title, icon, content, buttons, order = 0 }) {
       >
         <Text className="text-[38px] mx-auto md:mx-0" style={{ fontFamily: "'XStitch', sans-serif" }}>{title}</Text>
         <Text className="text-[16px] leading-[150%]">{content}</Text>
-        <div className="flex flex-col md:flex-row gap-4 mt-4">
+        <div className="flex flex-col gap-4 mt-4">
           {buttons.map((btn, idx) => {
             return (
               <DashedButton
