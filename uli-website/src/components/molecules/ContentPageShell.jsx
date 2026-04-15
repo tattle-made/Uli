@@ -227,12 +227,18 @@ const StyledLink = styled.a`
   font-size: inherit;
   color: #b44e0f;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
   word-break: break-all;
-  transition: color 0.15s ease;
+  border-radius: 2px;
+  padding: 0 2px;
+  margin: 0 -2px;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     color: #f28948;
+    background-color: rgba(242, 137, 72, 0.1);
+    text-decoration-thickness: 2px;
   }
   &:visited {
     color: #b44e0f;
