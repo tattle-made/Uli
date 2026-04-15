@@ -1,0 +1,57 @@
+import ContentPageShell from "../components/molecules/ContentPageShell.jsx"
+
+export default function Layout(props) {
+  return <ContentPageShell {...props}>{props.children}</ContentPageShell>;
+}
+
+# H1 Page Heading Example
+
+This is a standard paragraph. This page is designed to test out all globally implemented typography scaling and design choices inside `ContentPageShell.jsx`. Testing inline `code elements` along with some **bold text highlighting** and maybe some *italicized text elements*.
+
+## H2 Section Opening 
+
+Here is some body context continuing past an H2 section. Below, we've nested a block quote that should draw styling from our custom implementation.
+
+> "We have been working to come up with a set of annotation guidelines that would define what oGBV is in a “standard” manner for an algorithmic model."
+
+### H3 Sub Section 
+
+Now, let's explore an unordered list. It should show the custom SVG Figma bullet and bottom borders.
+
+* First bullet point example text
+* Second bullet point exploring a longer text wrapping scenario where the text will move to the next line dynamically when spacing falls short down below on mobile/desktop screens.
+* Third bullet point text here.
+
+Let's test an ordered list as well.
+
+1. First priority option
+2. Second priority option
+3. Third priority option
+
+#### H4 Sub Sub Section
+
+Testing out a link embedded inside the content block. [Click here to view Tattle Website](https://tattle.co.in) to test out the `#b44e0f` typography hover styling.
+
+##### H5 Sub Sub Sub Section
+
+Let's do a multiple line standard codeblock with syntax. It should have the new beige background.
+
+```javascript
+import React from 'react';
+
+function HelloWorld() {
+  return <h1>Code snippet rendering test</h1>;
+}
+```
+
+###### H6 Section Let's Test It!
+
+Now let's finally test the customized Accordion component syntax. It should open a dropdown menu sliding smoothly downward without the global bullet point SVG breaking into the structure!
+
+<Details>
+<Summary>Collapsible Sample Tab</Summary>
+
+* List item inside an accordion
+* Another item inside accordion that shouldn't show global styles but should retain standard text layouts.
+
+</Details>
