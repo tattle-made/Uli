@@ -1,25 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createConwaySketch } from "./sketches/conwaySketch";
+import { createGlobeSketch } from "./sketches/globeSketch";
+
+import { DEFAULT_SKETCH_SETTINGS } from "./sketches/sketchConfig";
 
 const BlueprintBackground = () => {
   const containerRef = useRef(null);
 
   // Debug UI State
   const [showDebug, setShowDebug] = useState(false);
-  const [settings, setSettings] = useState({
-    globeSize: 751,
-    textSize: 16,
-    density: '.:-=+*#%@',
-    alpha: 255,
-    baseRotSpeed: 0.001,
-    tiltX: 1.73,
-    tiltY: 0,
-    pushRadius: 0,
-    pushForce: 164,
-    resolution: 35,
-    textColor: '#f08953',
-    hoverRadius: 80,
-    hoverChar: '█▉▊▋▌▍▎▏'
-  });
+  const [settings, setSettings] = useState(DEFAULT_SKETCH_SETTINGS);
 
   const settingsRef = useRef(settings);
 
@@ -27,230 +17,123 @@ const BlueprintBackground = () => {
     settingsRef.current = settings;
   }, [settings]);
 
+  const interactionRef = useRef({ mx: -1000, my: -1000, isDragging: false, targetUserRotX: 0, targetUserRotY: 0, userRotX: 0, userRotY: 0 });
+
   useEffect(() => {
     let p5Instance;
-    let mx = -1000;
-    let my = -1000;
+    let lastClientX = 0;
+    let lastClientY = 0;
 
-    if (typeof window !== "undefined") {
-      mx = window.innerWidth / 2;
-      my = window.innerHeight / 2;
+    if (typeof window !== "undefined" && interactionRef.current.mx === -1000) {
+      interactionRef.current.mx = window.innerWidth / 2;
+      interactionRef.current.my = window.innerHeight / 2;
     }
 
     const handleMouseMove = (e) => {
-      mx = e.clientX;
-      my = e.clientY;
+      interactionRef.current.mx = e.clientX;
+      interactionRef.current.my = e.clientY;
+      if (interactionRef.current.isDragging) {
+        const deltaX = e.clientX - lastClientX;
+        const deltaY = e.clientY - lastClientY;
+        interactionRef.current.targetUserRotY += deltaX * settingsRef.current.dragSensitivity;
+        interactionRef.current.targetUserRotX += deltaY * settingsRef.current.dragSensitivity;
+        lastClientX = e.clientX;
+        lastClientY = e.clientY;
+      }
     };
     
     const handleTouchMove = (e) => {
       if (e.touches && e.touches.length > 0) {
-        mx = e.touches[0].clientX;
-        my = e.touches[0].clientY;
+        interactionRef.current.mx = e.touches[0].clientX;
+        interactionRef.current.my = e.touches[0].clientY;
+        if (interactionRef.current.isDragging) {
+          const deltaX = interactionRef.current.mx - lastClientX;
+          const deltaY = interactionRef.current.my - lastClientY;
+          interactionRef.current.targetUserRotY += deltaX * settingsRef.current.dragSensitivity;
+          interactionRef.current.targetUserRotX += deltaY * settingsRef.current.dragSensitivity;
+          lastClientX = interactionRef.current.mx;
+          lastClientY = interactionRef.current.my;
+        }
       }
+    };
+
+    const handleMouseDown = (e) => {
+      interactionRef.current.isDragging = true;
+      lastClientX = e.clientX;
+      lastClientY = e.clientY;
+      if (typeof document !== "undefined") {
+        document.body.style.userSelect = 'none';
+        document.body.style.webkitUserSelect = 'none';
+      }
+    };
+
+    const handleMouseUp = () => {
+      interactionRef.current.isDragging = false;
+      if (typeof document !== "undefined") {
+        document.body.style.userSelect = '';
+        document.body.style.webkitUserSelect = '';
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        interactionRef.current.isDragging = true;
+        lastClientX = e.touches[0].clientX;
+        lastClientY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      interactionRef.current.isDragging = false;
+    };
+
+    const handleWheel = (e) => {
+      // Use logical OR with some factor to support trackpads natively or big wheel scrolls reasonably
+      interactionRef.current.targetUserRotY -= e.deltaX * settingsRef.current.scrollSensitivity;
+      interactionRef.current.targetUserRotX -= e.deltaY * settingsRef.current.scrollSensitivity;
     };
 
     if (typeof window !== "undefined") {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("touchmove", handleTouchMove, { passive: true });
+      window.addEventListener("mousedown", handleMouseDown);
+      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("touchstart", handleTouchStart, { passive: true });
+      window.addEventListener("touchend", handleTouchEnd);
+      window.addEventListener("wheel", handleWheel, { passive: true });
     }
 
     // Dynamic import to avoid SSR issues with p5
     import("p5").then((p5Module) => {
       const p5 = p5Module.default;
 
-      const sketch = (p) => {
-        let canvas;
-        let cachedGeometry = [];
-        let lastRes = -1;
-        let lastGlobeSize = -1;
-
-        p.setup = () => {
-          // Canvas will just be the size of the container
-          const w = containerRef.current ? containerRef.current.clientWidth : p.windowWidth;
-          const h = containerRef.current ? containerRef.current.clientHeight : p.windowHeight;
-          canvas = p.createCanvas(w, h);
-          canvas.style("display", "block");
-          p.noFill();
-        };
-
-        p.windowResized = () => {
-          if (containerRef.current) {
-            p.resizeCanvas(containerRef.current.clientWidth, containerRef.current.clientHeight);
-          } else {
-            p.resizeCanvas(p.windowWidth, p.windowHeight);
-          }
-        };
-
-        p.draw = () => {
-          p.clear();
-          p.stroke(0, 0, 0, 50);
-          p.strokeWeight(1);
-
-          // --- ASCII GLOBE ANIMATION ---
-          const s = settingsRef.current;
-          
-          p.push();
-          const globeSize = s.globeSize; 
-          const res = s.resolution; 
-
-          if (res !== lastRes || globeSize !== lastGlobeSize) {
-             cachedGeometry = [];
-             for (let lat = 0; lat < Math.PI; lat += Math.PI / res) {
-               for (let lon = 0; lon < Math.PI * 2; lon += Math.PI / res) {
-                  cachedGeometry.push({
-                    x: globeSize * Math.sin(lat) * Math.cos(lon),
-                    y: globeSize * Math.sin(lat) * Math.sin(lon),
-                    z: globeSize * Math.cos(lat)
-                  });
-               }
-             }
-             lastRes = res;
-             lastGlobeSize = globeSize;
-          }
-
-          const posX = p.width / 2;
-          const posY = p.height / 2.2; 
-
-          p.translate(posX, posY);
-          p.textFont('monospace');
-          p.textSize(s.textSize); 
-          p.textAlign(p.CENTER, p.CENTER);
-          
-          p.fill(p.color(s.textColor + Math.floor(s.alpha).toString(16).padStart(2, '0'))); 
-          p.noStroke();
-
-          const density = s.density || ' ';
-          
-          const rotSpin = p.frameCount * s.baseRotSpeed;
-          const rotTiltX = s.tiltX + Math.sin(p.frameCount * 0.001) * 0.1;
-          const rotTiltY = s.tiltY + Math.cos(p.frameCount * 0.0012) * 0.1;
-          
-          const cosSpin = Math.cos(rotSpin);
-          const sinSpin = Math.sin(rotSpin);
-          const cosTx = Math.cos(rotTiltX);
-          const sinTx = Math.sin(rotTiltX);
-          const cosTy = Math.cos(rotTiltY);
-          const sinTy = Math.sin(rotTiltY);
-
-          // Fetch the container's viewport-relative position to correct for scrolling
-          const containerRect = containerRef.current ? containerRef.current.getBoundingClientRect() : { left: 0, top: 0 };
-
-          // Mouse position relative to center of globe, adjusted for container scroll offset
-          const localMouseX = mx - containerRect.left;
-          const localMouseY = my - containerRect.top;
-          const relMouseX = localMouseX - posX;
-          const relMouseY = localMouseY - posY;
-          // Setup unified point repellors array
-          const repellors = [];
-
-          // DOM Repellors (form smooth pill shapes by creating a line of point repellors)
-          const pushEls = document.querySelectorAll(".push-globe");
-          pushEls.forEach((el) => {
-             const r = el.getBoundingClientRect();
-             const localLeft = r.left - containerRect.left;
-             const localRight = r.right - containerRect.left;
-             const localTop = r.top - containerRect.top;
-             const localBottom = r.bottom - containerRect.top;
-             
-             const width = localRight - localLeft;
-             const height = localBottom - localTop;
-             
-             const cy = localTop + height / 2 - posY;
-             
-             // Base radius on element height, but make sure it pushes characters far enough
-             const repRadius = Math.max(height * 2.5, s.pushRadius * 0.8);
-             const repRadiusSq = repRadius * repRadius;
-             const repForce = s.pushForce * 1.5; // Slightly stronger than mouse for clarity
-             
-             // Chain repellors horizontally if the text element is wide
-             const numRepellors = Math.max(1, Math.ceil(width / (repRadius * 0.6)));
-             const step = width / numRepellors;
-             
-             for (let i = 0; i < numRepellors; i++) {
-                let rx = localLeft + step/2 + i * step - posX;
-                repellors.push({ 
-                   x: rx, 
-                   y: cy, 
-                   radiusSq: repRadiusSq, 
-                   radius: repRadius, 
-                   force: repForce 
-                });
-             }
-          });
-
-          for (let i = 0; i < cachedGeometry.length; i++) {
-              let pt = cachedGeometry[i];
-              let x = pt.x, y = pt.y, z = pt.z;
-
-              // Spin around poles (Z axis)
-              let x1 = x * cosSpin - y * sinSpin;
-              let y1 = x * sinSpin + y * cosSpin;
-              let z1 = z;
-
-              // Tilt along X axis
-              let y2 = y1 * cosTx - z1 * sinTx;
-              let z2 = y1 * sinTx + z1 * cosTx;
-              let x2 = x1;
-
-              // Tilt along Y axis
-              let x3 = x2 * cosTy - z2 * sinTy;
-              let z3 = x2 * sinTy + z2 * cosTy;
-              let y3 = y2;
-              
-              if (z3 < -30) continue; // Early culling for pure backface characters
-
-              // Projection (simple orthographic)
-              let drawX = x3;
-              let drawY = y3;
-
-              // Apply all Repellors
-              for (let j = 0; j < repellors.length; j++) {
-                  const rep = repellors[j];
-                  let dxRep = drawX - rep.x;
-                  let dyRep = drawY - rep.y;
-                  let dSq = dxRep * dxRep + dyRep * dyRep;
-                  
-                  if (dSq < rep.radiusSq && dSq > 0) {
-                    let d = Math.sqrt(dSq);
-                    let pushMag = Math.pow((rep.radius - d) / rep.radius, 2) * rep.force; 
-                    let forceRatio = pushMag / d;
-                    drawX += dxRep * forceRatio;
-                    drawY += dyRep * forceRatio;
-                  }
-              }
-
-              // Check Mouse Hover Effect
-              let dxMouse = drawX - relMouseX;
-              let dyMouse = drawY - relMouseY;
-              let isHovered = (dxMouse * dxMouse + dyMouse * dyMouse) < (s.hoverRadius * s.hoverRadius);
-              
-              // Use Z for "lighting" density
-              if (density.length > 0) {
-                let char;
-                if (isHovered && s.hoverChar) {
-                   char = s.hoverChar;
-                } else {
-                   const dIndex = Math.floor(p.map(z3, -globeSize, globeSize, 0, density.length - 1));
-                   char = density[p.constrain(dIndex, 0, density.length - 1)];
-                }
-                p.text(char, drawX, drawY);
-              }
-          }
-          p.pop();
-        };
-      };
+      let sketch;
+      if (settingsRef.current.sketchType == 'conway') {
+         sketch = createConwaySketch(settingsRef, containerRef, interactionRef);
+      } else {
+         sketch = createGlobeSketch(settingsRef, containerRef, interactionRef);
+      }
 
       p5Instance = new p5(sketch, containerRef.current);
     });
 
     return () => {
+      if (typeof document !== "undefined") {
+        document.body.style.userSelect = '';
+        document.body.style.webkitUserSelect = '';
+      }
       if (typeof window !== "undefined") {
         window.removeEventListener("mousemove", handleMouseMove);
         window.removeEventListener("touchmove", handleTouchMove);
+        window.removeEventListener("mousedown", handleMouseDown);
+        window.removeEventListener("mouseup", handleMouseUp);
+        window.removeEventListener("touchstart", handleTouchStart);
+        window.removeEventListener("touchend", handleTouchEnd);
+        window.removeEventListener("wheel", handleWheel);
       }
       if (p5Instance) p5Instance.remove();
     };
-  }, []);
+  }, [settings.sketchType]);
 
   return (
     <>
@@ -265,60 +148,148 @@ const BlueprintBackground = () => {
 
       {/* Debug Panel */}
       {showDebug && (
-        <div style={{ position: "fixed", bottom: 60, right: 20, background: 'rgba(255,255,255,0.95)', padding: '15px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', zIndex: 1000, width: '300px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', fontFamily: 'monospace' }}>
-          <h3 style={{ margin: 0, paddingBottom: '8px', borderBottom: '1px solid #ccc' }}>Globe Settings</h3>
+        <div style={{ position: 'fixed', bottom: 60, right: 20, background: 'rgba(255,255,255,0.95)', padding: '15px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', zIndex: 1000, width: '320px', maxHeight: '80vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px', fontSize: '13px', fontFamily: 'monospace' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h3 style={{ margin: 0 }}>Blueprint Settings</h3>
+              <button 
+                onClick={() => navigator.clipboard.writeText(JSON.stringify(settings, null, 2))}
+                style={{ padding: '4px 8px', fontSize: '11px', cursor: 'pointer', background: '#ececec', border: '1px solid #ccc', borderRadius: '4px' }}
+              >
+                Copy JSON
+              </button>
+          </div>
           
-          <label>Globe Size: {settings.globeSize}
-            <input type="range" min="50" max="800" value={settings.globeSize} onChange={(e) => setSettings({...settings, globeSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#e0e0e0', padding: '10px', borderRadius: '6px', marginBottom: '4px' }}>
+             <strong style={{ fontSize: '14px', borderBottom: '1px solid #ccc', paddingBottom: '4px' }}>Active Sketch</strong>
+             <select value={settings.sketchType} onChange={(e) => setSettings({...settings, sketchType: e.target.value})} style={{ width: '100%', padding: '4px' }}>
+                <option value="globe">ASCII Globe</option>
+                <option value="conway">Conway's Game of Life</option>
+             </select>
+          </div>
 
-          <label>Text Size: {settings.textSize}
-            <input type="range" min="4" max="30" value={settings.textSize} onChange={(e) => setSettings({...settings, textSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
+          {settings.sketchType === 'globe' ? (
+             <>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#f5f5f5', padding: '10px', borderRadius: '6px' }}>
+                   <strong style={{ fontSize: '14px', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>1. Appearance</strong>
+                   <label>Globe Size: {settings.globeSize}
+                     <input type="range" min="50" max="800" value={settings.globeSize} onChange={(e) => setSettings({...settings, globeSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Grid Density (Resolution): {settings.resolution}
+                     <input type="range" min="6" max="150" value={settings.resolution} onChange={(e) => setSettings({...settings, resolution: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Text Size: {settings.textSize}
+                     <input type="range" min="4" max="30" value={settings.textSize} onChange={(e) => setSettings({...settings, textSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Density Chars:
+                     <input type="text" value={settings.density} onChange={(e) => setSettings({...settings, density: e.target.value})} style={{ width: '100%', padding: '4px' }} />
+                   </label>
+                   <label>Alpha (Opacity): {settings.alpha}
+                     <input type="range" min="0" max="255" value={settings.alpha} onChange={(e) => setSettings({...settings, alpha: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Base Text Color:
+                     <input type="color" value={settings.textColor} onChange={(e) => setSettings({...settings, textColor: e.target.value})} style={{ width: '100%', height: '30px', cursor: 'pointer' }} />
+                   </label>
+                </div>
 
-          <label>Density Chars:
-            <input type="text" value={settings.density} onChange={(e) => setSettings({...settings, density: e.target.value})} style={{ width: '100%', padding: '4px' }} />
-          </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#f5f5f5', padding: '10px', borderRadius: '6px' }}>
+                   <strong style={{ fontSize: '14px', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>2. Interaction & Hover</strong>
+                   <label>Hover Radius: {settings.hoverRadius}
+                     <input type="range" min="0" max="400" value={settings.hoverRadius} onChange={(e) => setSettings({...settings, hoverRadius: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Hover Char:
+                     <input type="text" value={settings.hoverChar} onChange={(e) => setSettings({...settings, hoverChar: e.target.value})} style={{ width: '100%', padding: '4px' }} />
+                   </label>
+                   <label>Hover Force: {settings.hoverForce}
+                     <input type="range" min="0" max="100" value={settings.hoverForce} onChange={(e) => setSettings({...settings, hoverForce: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Hover Color:
+                     <input type="color" value={settings.hoverColor} onChange={(e) => setSettings({...settings, hoverColor: e.target.value})} style={{ width: '100%', height: '30px', cursor: 'pointer' }} />
+                   </label>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                     <input type="checkbox" checked={settings.renderWords} onChange={(e) => setSettings({...settings, renderWords: e.target.checked})} />
+                     Render Random Words
+                   </label>
+                </div>
 
-          <label>Alpha (Opacity): {settings.alpha}
-            <input type="range" min="0" max="255" value={settings.alpha} onChange={(e) => setSettings({...settings, alpha: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Rotation Speed: {settings.baseRotSpeed}
-            <input type="range" min="0" max="0.05" step="0.001" value={settings.baseRotSpeed} onChange={(e) => setSettings({...settings, baseRotSpeed: parseFloat(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Axis Tilt X: {settings.tiltX}
-            <input type="range" min="-3.14" max="3.14" step="0.01" value={settings.tiltX} onChange={(e) => setSettings({...settings, tiltX: parseFloat(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Axis Tilt Y: {settings.tiltY}
-            <input type="range" min="-3.14" max="3.14" step="0.01" value={settings.tiltY} onChange={(e) => setSettings({...settings, tiltY: parseFloat(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Push Radius: {settings.pushRadius}
-            <input type="range" min="0" max="400" value={settings.pushRadius} onChange={(e) => setSettings({...settings, pushRadius: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Push Force: {settings.pushForce}
-            <input type="range" min="0" max="300" value={settings.pushForce} onChange={(e) => setSettings({...settings, pushForce: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Hover Radius: {settings.hoverRadius}
-            <input type="range" min="0" max="400" value={settings.hoverRadius} onChange={(e) => setSettings({...settings, hoverRadius: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Hover Char:
-            <input type="text" value={settings.hoverChar} onChange={(e) => setSettings({...settings, hoverChar: e.target.value})} style={{ width: '100%', padding: '4px' }} />
-          </label>
-
-          <label>Grid Density (Resolution): {settings.resolution}
-            <input type="range" min="6" max="150" value={settings.resolution} onChange={(e) => setSettings({...settings, resolution: parseInt(e.target.value)})} style={{ width: '100%' }} />
-          </label>
-
-          <label>Text Color:
-            <input type="color" value={settings.textColor} onChange={(e) => setSettings({...settings, textColor: e.target.value})} style={{ width: '100%', height: '30px' }} />
-          </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#f5f5f5', padding: '10px', borderRadius: '6px' }}>
+                   <strong style={{ fontSize: '14px', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>3. Physics & Input</strong>
+                   <label>Drag Sensitivity: {settings.dragSensitivity}
+                     <input type="range" min="0" max="0.02" step="0.001" value={settings.dragSensitivity} onChange={(e) => setSettings({...settings, dragSensitivity: parseFloat(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Scroll Sensitivity: {settings.scrollSensitivity}
+                     <input type="range" min="0" max="0.01" step="0.0005" value={settings.scrollSensitivity} onChange={(e) => setSettings({...settings, scrollSensitivity: parseFloat(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Rotation Speed: {settings.baseRotSpeed}
+                     <input type="range" min="0" max="0.05" step="0.001" value={settings.baseRotSpeed} onChange={(e) => setSettings({...settings, baseRotSpeed: parseFloat(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Axis Tilt X: {settings.tiltX}
+                     <input type="range" min="-3.14" max="3.14" step="0.01" value={settings.tiltX} onChange={(e) => setSettings({...settings, tiltX: parseFloat(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>Axis Tilt Y: {settings.tiltY}
+                     <input type="range" min="-3.14" max="3.14" step="0.01" value={settings.tiltY} onChange={(e) => setSettings({...settings, tiltY: parseFloat(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>DOM Push Radius: {settings.pushRadius}
+                     <input type="range" min="0" max="400" value={settings.pushRadius} onChange={(e) => setSettings({...settings, pushRadius: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                   <label>DOM Push Force: {settings.pushForce}
+                     <input type="range" min="0" max="300" value={settings.pushForce} onChange={(e) => setSettings({...settings, pushForce: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                   </label>
+                </div>
+             </>
+          ) : (
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#f5f5f5', padding: '10px', borderRadius: '6px' }}>
+               <strong style={{ fontSize: '14px', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>Conway Settings</strong>
+               <label>Grid Size (px): {settings.conwayGridSize}
+                 <input type="range" min="3" max="50" value={settings.conwayGridSize} onChange={(e) => setSettings({...settings, conwayGridSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
+               </label>
+               <label>Gap Size (px): {settings.conwayGap}
+                 <input type="range" min="0" max="15" value={settings.conwayGap} onChange={(e) => setSettings({...settings, conwayGap: parseInt(e.target.value)})} style={{ width: '100%' }} />
+               </label>
+               <label>Speed (Generations/sec): {settings.conwaySpeed}
+                 <input type="range" min="1" max="60" value={settings.conwaySpeed} onChange={(e) => setSettings({...settings, conwaySpeed: parseInt(e.target.value)})} style={{ width: '100%' }} />
+               </label>
+               <label>Cell Color:
+                 <input type="color" value={settings.conwayColor} onChange={(e) => setSettings({...settings, conwayColor: e.target.value})} style={{ width: '100%', height: '30px', cursor: 'pointer' }} />
+               </label>
+               <label>Alpha (Opacity): {settings.alpha}
+                 <input type="range" min="0" max="255" value={settings.alpha} onChange={(e) => setSettings({...settings, alpha: parseInt(e.target.value)})} style={{ width: '100%' }} />
+               </label>
+               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                 <input type="checkbox" checked={settings.conwayMultiColor} onChange={(e) => setSettings({...settings, conwayMultiColor: e.target.checked})} />
+                 Multicolor Rainbow Mode
+               </label>
+               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                 <input type="checkbox" checked={settings.conwaySmooth} onChange={(e) => setSettings({...settings, conwaySmooth: e.target.checked})} />
+                 Smooth Fade Transitions
+               </label>
+               <div style={{ marginTop: '8px', padding: '8px', background: '#ececec', borderRadius: '4px' }}>
+                 <strong style={{ fontSize: '13px', display: 'block', marginBottom: '4px' }}>Overlay Map</strong>
+                 <label style={{ display: 'block', marginBottom: '4px' }}>Map Type:
+                   <select value={settings.conwayMapType} onChange={(e) => setSettings({...settings, conwayMapType: e.target.value})} style={{ width: '100%', padding: '2px', marginTop: '2px' }}>
+                      <option value="none">None</option>
+                      <option value="voronoi">Voronoi Mesh</option>
+                      <option value="treemap">Treemap (K-D)</option>
+                   </select>
+                 </label>
+                 {settings.conwayMapType === 'voronoi' && (
+                    <label style={{ display: 'block' }}>Voronoi Max Items: {settings.voronoiGridSize}
+                      <input type="range" min="2" max="100" value={settings.voronoiGridSize} onChange={(e) => setSettings({...settings, voronoiGridSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                    </label>
+                 )}
+                 {settings.conwayMapType === 'treemap' && (
+                    <label style={{ display: 'block' }}>Treemap Min Threshold: {settings.treemapMinSize}
+                      <input type="range" min="1" max="50" value={settings.treemapMinSize} onChange={(e) => setSettings({...settings, treemapMinSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
+                    </label>
+                 )}
+                 {settings.conwayMapType !== 'none' && (
+                    <label style={{ display: 'block', marginTop: '4px' }}>Stitch Color:
+                      <input type="color" value={settings.voronoiColor} onChange={(e) => setSettings({...settings, voronoiColor: e.target.value})} style={{ width: '100%', height: '30px', cursor: 'pointer' }} />
+                    </label>
+                 )}
+               </div>
+               <p style={{ marginTop: '8px', fontSize: '11px', color: '#666' }}>Click the mouse to drop a flower into the grid.</p>
+             </div>
+          )}
         </div>
       )}
     </>
