@@ -249,8 +249,8 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
            if (!a.matched) {
                activeSites.splice(i, 1);
            } else {
-               a.x += (a.tx - a.x) * 0.15;
-               a.y += (a.ty - a.y) * 0.15;
+               a.x += (a.tx - a.x) * 0.3;
+               a.y += (a.ty - a.y) * 0.3;
            }
        }
        
@@ -312,7 +312,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
       for (let j = 0; j < conwayRows; j++) {
         
         if (s.conwaySmooth) {
-          conwayAnimGrid[i][j] += (conwayGrid[i][j] - conwayAnimGrid[i][j]) * 0.15;
+          conwayAnimGrid[i][j] += (conwayGrid[i][j] - conwayAnimGrid[i][j]) * 0.3;
         } else {
           conwayAnimGrid[i][j] = conwayGrid[i][j];
         }
@@ -333,7 +333,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
           }
           
           if (s.conwaySmooth && animVal < 0.99) {
-            p.textSize(size * 1.5 * (0.5 + animVal * 0.5));
+            p.textSize(size * 1.5 * (0.2 + animVal * 0.8));
           } else {
             p.textSize(size * 1.5);
           }
