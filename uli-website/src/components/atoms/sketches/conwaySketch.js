@@ -43,20 +43,51 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
       conwayNextGrid = new Array(conwayCols).fill(0).map(() => new Array(conwayRows).fill(0));
       conwayAnimGrid = new Array(conwayCols).fill(0).map(() => new Float32Array(conwayRows));
       
-      // Spawn two starting flowers (left and right)
-      let leftCol = Math.floor(conwayCols * 0.25);
-      let rightCol = Math.floor(conwayCols * 0.75);
-      let midRow = Math.floor(conwayRows * 0.5);
-      let flowerPattern = [[0,-1], [-1,0], [0,0], [1,0], [0,1]];
+      // Spawn complex seeds around the screen
+      const spawnPattern = (pat, ox, oy) => {
+        for (let pt of pat) {
+          let cx = (ox + pt[0] + conwayCols) % conwayCols;
+          let cy = (oy + pt[1] + conwayRows) % conwayRows;
+          conwayGrid[cx][cy] = 1;
+        }
+      };
+
+      const GOSPER_GUN = [
+        [1, 5], [2, 5], [1, 6], [2, 6], [11, 5], [11, 6], [11, 7], [12, 4], [12, 8], [13, 3], [13, 9], [14, 3], [14, 9], [15, 6], [16, 4], [16, 8], [17, 5], [17, 6], [17, 7], [18, 6], [21, 3], [21, 4], [21, 5], [22, 3], [22, 4], [22, 5], [23, 2], [23, 6], [25, 1], [25, 2], [25, 6], [25, 7], [35, 3], [35, 4], [36, 3], [36, 4]
+      ];
+      const ACORN = [[1, 0], [3, 1], [0, 2], [1, 2], [4, 2], [5, 2], [6, 2]];
+
+      // Balanced quadrant-based seeding
+      const SYMBOLS = {
+        GOSPER_GUN: [
+          [1, 5], [2, 5], [1, 6], [2, 6], [11, 5], [11, 6], [11, 7], [12, 4], [12, 8], [13, 3], [13, 9], [14, 3], [14, 9], [15, 6], [16, 4], [16, 8], [17, 5], [17, 6], [17, 7], [18, 6], [21, 3], [21, 4], [21, 5], [22, 3], [22, 4], [22, 5], [23, 2], [23, 6], [25, 1], [25, 2], [25, 6], [25, 7], [35, 3], [35, 4], [36, 3], [36, 4]
+        ],
+        ACORN: [[1, 0], [3, 1], [0, 2], [1, 2], [4, 2], [5, 2], [6, 2]],
+        FLOWER: [[0, -1], [-1, 0], [0, 0], [1, 0], [0, 1]],
+        GLIDER: [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]],
+        PULSAR_HUB: [[2, 0], [3, 0], [4, 0], [0, 2], [5, 2], [0, 3], [5, 3], [0, 4], [5, 4], [2, 5], [3, 5], [4, 5]], // One quadrant of a pulsar
+        SHIP: [[1, 0], [4, 0], [0, 1], [0, 2], [4, 2], [0, 3], [1, 3], [2, 3], [3, 3]]
+      };
+
+      const keys = Object.keys(SYMBOLS);
+
+      // 1. Guaranteed Top-Left: Glider Gun
+      spawnPattern(SYMBOLS.GOSPER_GUN, Math.floor(p.random(0, conwayCols * 0.15)), Math.floor(p.random(0, conwayRows * 0.15)));
       
-      for(let pt of flowerPattern) {
-        let lcx = (leftCol + pt[0] + conwayCols) % conwayCols;
-        let lcy = (midRow + pt[1] + conwayRows) % conwayRows;
-        conwayGrid[lcx][lcy] = 1;
-        
-        let rcx = (rightCol + pt[0] + conwayCols) % conwayCols;
-        let rcy = (midRow + pt[1] + conwayRows) % conwayRows;
-        conwayGrid[rcx][rcy] = 1;
+      // 2. Guaranteed Mid-Right: Acorn
+      spawnPattern(SYMBOLS.ACORN, Math.floor(p.random(conwayCols * 0.6, conwayCols * 0.8)), Math.floor(p.random(conwayRows * 0.3, conwayRows * 0.6)));
+      
+      // 3. Spawn 8-12 more random patterns from the library across the screen
+      const numPatterns = Math.floor(p.random(8, 12));
+      for (let i = 0; i < numPatterns; i++) {
+          const randKey = keys[Math.floor(p.random(keys.length))];
+          const pattern = SYMBOLS[randKey];
+          // Skip Gosper Gun for random scatter to avoid overwhelming the screen
+          if (randKey === 'GOSPER_GUN' && Math.random() > 0.2) continue;
+          
+          let rx = Math.floor(p.random(conwayCols));
+          let ry = Math.floor(p.random(conwayRows));
+          spawnPattern(pattern, rx, ry);
       }
       
       lastConwayGridSize = size;
@@ -116,18 +147,19 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
     wasDraggingConway = iRef.isDragging;
 
     if (p.frameCount % 30 === 1 || !cachedPushEls) {
-      cachedPushEls = document.querySelectorAll(".push-globe");
+      cachedPushEls = document.querySelectorAll(".push-globe, .clear-sketch");
     }
     cachedPushEls.forEach((el) => {
       const r = el.getBoundingClientRect();
       if (r.width === 0 || r.height === 0) return;
       
+      const isTight = el.classList.contains("clear-sketch-tight");
       const localLeft = r.left - containerRect.left;
       const localRight = r.right - containerRect.left;
       const localTop = r.top - containerRect.top;
       const localBottom = r.bottom - containerRect.top;
       
-      const padding = Math.max(30, s.pushRadius * 0.5); 
+      const padding = isTight ? 8 : Math.max(20, s.pushRadius * 0.5); 
       
       let colStart = Math.max(0, Math.floor((localLeft - padding) / step));
       let colEnd = Math.min(conwayCols - 1, Math.floor((localRight + padding) / step));
@@ -240,7 +272,12 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
                match.ty = ns.y;
                match.matched = true;
            } else {
-               activeSites.push({ x: ns.x, y: ns.y, tx: ns.x, ty: ns.y, matched: true });
+               activeSites.push({ 
+                   x: ns.x, y: ns.y, 
+                   tx: ns.x, ty: ns.y, 
+                   seed: Math.floor(Math.random() * 1000000), 
+                   matched: true 
+               });
            }
        }
        
@@ -322,7 +359,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
         if (animVal > 0.01) {
           if (s.conwayColorByRegion && ownership && ownership[i][j] >= 0) {
               let ownerSite = sites[ownership[i][j]];
-              let hash = Math.abs(Math.floor(ownerSite.tx * 123.4) + Math.floor(ownerSite.ty * 876.5)) % parsedRGBs.length;
+              let hash = (ownerSite.seed || 0) % parsedRGBs.length;
               let c = parsedRGBs[hash];
               p.fill(c.r, c.g, c.b, animVal * s.alpha);
           } else if (s.conwayMultiColor) {
@@ -342,7 +379,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
           if (parsedShapes.length > 0) {
               if (s.conwayColorByRegion && ownership && ownership[i][j] >= 0) {
                  let ownerSite = sites[ownership[i][j]];
-                 let hashShape = Math.abs(Math.floor(ownerSite.tx * 321.4) + Math.floor(ownerSite.ty * 654.3)) % parsedShapes.length;
+                 let hashShape = ((ownerSite.seed || 0) + 7) % parsedShapes.length;
                  shape = parsedShapes[hashShape];
               } else {
                  let hashShape = (i * 37 + j * 17) % parsedShapes.length;

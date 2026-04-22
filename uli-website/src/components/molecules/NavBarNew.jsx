@@ -42,14 +42,14 @@ export default function NavBarNew() {
       }}
     >
       <Box width="full" direction="row" align="center" className=" mt-4 lg:mt-0">
-        <Box flex align="start">
+        <Box flex align="start" className="clear-sketch clear-sketch-tight">
           <NavLink as="a" href="https://tattle.co.in/">
             <TattleLogo data={{scale: 0.8}} />
           </NavLink>
         </Box>
         
 
-        <Box align="center">
+        <Box align="center" className="clear-sketch clear-sketch-tight">
           <img
             src="/Uli_Logo.png"
             alt="Uli Logo"
@@ -60,7 +60,7 @@ export default function NavBarNew() {
 
         <Box flex direction="row" gap="medium" justify="end" align="end" className="lg:hidden" ><button className="bg-inherit m-0 p-0 border-none transition-transform duration-300" onClick={() => { setOpen(prev => !prev) }}><img src={open ? "/cross-icon.svg" : "/hamburger-icon.svg"} alt="" className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`} /></button></Box>
 
-        <Box flex direction="row" gap="medium" justify="end" className="hidden lg:flex">
+        <Box flex direction="row" gap="medium" justify="end" className="hidden lg:flex clear-sketch clear-sketch-tight">
           {/* <NavLinkNew to="#">
             <Text className="text-[16px] font-medium">Contact</Text>
           </NavLinkNew> */}

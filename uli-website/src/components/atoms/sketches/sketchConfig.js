@@ -5,11 +5,11 @@ export const DEFAULT_SKETCH_SETTINGS = {
 
   // -- Conway Sketch Specifics --
   conwayGridSize: 23,
-  conwayGap: 2,
-  conwaySpeed: 2,
+  conwayGap: 1,
+  conwaySpeed: 1,
   conwayColor: "#000000",
   conwayMultiColor: false,
-  conwaySmooth: true,
+  conwaySmooth: false,
   conwayShapes: "✜,⨳,╬,⣿,❖",
 
   // -- Spatial Overlay Maps (Conway) --
@@ -17,15 +17,15 @@ export const DEFAULT_SKETCH_SETTINGS = {
   voronoiGridSize: 16,
   conwayColorByRegion: true,
   conwayRegionColors: [
-    "#c9802c",
+    "#a6763f",
     "#24897d",
     "#6570a4",
-    "#eaafef",
+    "#c6acc9",
     "#aba469",
-    "#99689c"
+    "#9c6872"
   ],
   treemapMinSize: 4,
-  voronoiColor: "#ffc8a3",
+  voronoiColor: "#ffb685",
 
   // -- Globe Sketch Specifics --
   globeSize: 800,
