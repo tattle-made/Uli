@@ -19,7 +19,7 @@ const BlueprintBackground = () => {
   }, [settings]);
 
   // Shared interaction state
-  const interactionRef = useRef({ mx: -1000, my: -1000, isDragging: false, targetUserRotX: 0, targetUserRotY: 0, userRotX: 0, userRotY: 0 });
+  const interactionRef = useRef({ mx: -1000, my: -1000, isDragging: false });
 
   useEffect(() => {
     let p5Instance;
@@ -34,64 +34,31 @@ const BlueprintBackground = () => {
     const handleMouseMove = (e) => {
       interactionRef.current.mx = e.clientX;
       interactionRef.current.my = e.clientY;
-      if (interactionRef.current.isDragging) {
-        const deltaX = e.clientX - lastClientX;
-        const deltaY = e.clientY - lastClientY;
-        interactionRef.current.targetUserRotY += deltaX * settingsRef.current.dragSensitivity;
-        interactionRef.current.targetUserRotX += deltaY * settingsRef.current.dragSensitivity;
-        lastClientX = e.clientX;
-        lastClientY = e.clientY;
-      }
     };
 
     const handleTouchMove = (e) => {
       if (e.touches && e.touches.length > 0) {
         interactionRef.current.mx = e.touches[0].clientX;
         interactionRef.current.my = e.touches[0].clientY;
-        if (interactionRef.current.isDragging) {
-          const deltaX = interactionRef.current.mx - lastClientX;
-          const deltaY = interactionRef.current.my - lastClientY;
-          interactionRef.current.targetUserRotY += deltaX * settingsRef.current.dragSensitivity;
-          interactionRef.current.targetUserRotX += deltaY * settingsRef.current.dragSensitivity;
-          lastClientX = interactionRef.current.mx;
-          lastClientY = interactionRef.current.my;
-        }
       }
     };
 
     const handleMouseDown = (e) => {
       interactionRef.current.isDragging = true;
-      lastClientX = e.clientX;
-      lastClientY = e.clientY;
-      if (typeof document !== "undefined") {
-        document.body.style.userSelect = 'none';
-        document.body.style.webkitUserSelect = 'none';
-      }
     };
 
     const handleMouseUp = () => {
       interactionRef.current.isDragging = false;
-      if (typeof document !== "undefined") {
-        document.body.style.userSelect = '';
-        document.body.style.webkitUserSelect = '';
-      }
     };
 
     const handleTouchStart = (e) => {
       if (e.touches && e.touches.length > 0) {
         interactionRef.current.isDragging = true;
-        lastClientX = e.touches[0].clientX;
-        lastClientY = e.touches[0].clientY;
       }
     };
 
     const handleTouchEnd = () => {
       interactionRef.current.isDragging = false;
-    };
-
-    const handleWheel = (e) => {
-      interactionRef.current.targetUserRotY -= e.deltaX * settingsRef.current.scrollSensitivity;
-      interactionRef.current.targetUserRotX -= e.deltaY * settingsRef.current.scrollSensitivity;
     };
 
     if (typeof window !== "undefined") {
@@ -101,7 +68,6 @@ const BlueprintBackground = () => {
       window.addEventListener("mouseup", handleMouseUp);
       window.addEventListener("touchstart", handleTouchStart, { passive: true });
       window.addEventListener("touchend", handleTouchEnd);
-      window.addEventListener("wheel", handleWheel, { passive: true });
     }
 
     // Dynamic import for p5 to handle Gatsby SSR
@@ -138,7 +104,6 @@ const BlueprintBackground = () => {
         window.removeEventListener("mouseup", handleMouseUp);
         window.removeEventListener("touchstart", handleTouchStart);
         window.removeEventListener("touchend", handleTouchEnd);
-        window.removeEventListener("wheel", handleWheel);
       }
       if (p5Instance) p5Instance.remove();
     };
@@ -225,7 +190,6 @@ const BlueprintBackground = () => {
                 <select value={settings.conwayMapType} onChange={(e) => setSettings({...settings, conwayMapType: e.target.value})} style={{ width: '100%', padding: '2px', marginTop: '2px' }}>
                   <option value="none">None</option>
                   <option value="voronoi">Voronoi Mesh</option>
-                  <option value="treemap">Treemap (K-D)</option>
                 </select>
               </label>
               {settings.conwayMapType === 'voronoi' && (
@@ -240,11 +204,7 @@ const BlueprintBackground = () => {
                   </label>
                 </>
               )}
-              {settings.conwayMapType === 'treemap' && (
-                <label style={{ display: 'block', marginTop: '4px' }}>Treemap Min Threshold: {settings.treemapMinSize}
-                  <input type="range" min="1" max="50" value={settings.treemapMinSize} onChange={(e) => setSettings({...settings, treemapMinSize: parseInt(e.target.value)})} style={{ width: '100%' }} />
-                </label>
-              )}
+
               {settings.conwayMapType !== 'none' && (
                 <label style={{ display: 'block', marginTop: '4px' }}>Stitch Color:
                   <input type="color" value={settings.voronoiColor} onChange={(e) => setSettings({...settings, voronoiColor: e.target.value})} style={{ width: '100%', height: '30px', cursor: 'pointer' }} />

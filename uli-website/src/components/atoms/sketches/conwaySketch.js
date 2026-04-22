@@ -660,30 +660,6 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
                   }
                }
              }
-          } else if (s.conwayMapType === 'treemap') {
-             const drawKDTree = (pts, x0, y0, x1, y1) => {
-                 if (pts.length === 0) return;
-                 if (pts.length === 1) {
-                     p.rect(x0 * step, y0 * step, (x1 - x0) * step, (y1 - y0) * step);
-                     return;
-                 }
-                 if (x1 - x0 > y1 - y0) {
-                     pts.sort((a,b) => a.x - b.x);
-                     let mid = Math.floor(pts.length / 2);
-                     let splitX = pts[mid].x;
-                     if (splitX <= x0 || splitX >= x1) splitX = (x0 + x1) / 2;
-                     drawKDTree(pts.slice(0, mid), x0, y0, splitX, y1);
-                     drawKDTree(pts.slice(mid), splitX, y0, x1, y1);
-                 } else {
-                     pts.sort((a,b) => a.y - b.y);
-                     let mid = Math.floor(pts.length / 2);
-                     let splitY = pts[mid].y;
-                     if (splitY <= y0 || splitY >= y1) splitY = (y0 + y1) / 2;
-                     drawKDTree(pts.slice(0, mid), x0, y0, x1, splitY);
-                     drawKDTree(pts.slice(mid), x0, splitY, x1, y1);
-                 }
-             };
-             drawKDTree(sites, 0, 0, conwayCols, conwayRows);
           }
 
 
