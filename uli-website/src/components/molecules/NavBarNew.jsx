@@ -44,10 +44,10 @@ export default function NavBarNew() {
       <Box width="full" direction="row" align="center" className=" mt-4 lg:mt-0">
         <Box flex align="start" className="clear-sketch clear-sketch-tight">
           <NavLink as="a" href="https://tattle.co.in/">
-            <TattleLogo data={{scale: 0.8}} />
+            <TattleLogo data={{ scale: 0.8 }} />
           </NavLink>
         </Box>
-        
+
 
         <Box align="center" className="clear-sketch clear-sketch-tight">
           <img

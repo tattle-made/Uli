@@ -1,20 +1,18 @@
 export const DEFAULT_SKETCH_SETTINGS = {
-  // Master Controller
-  sketchType: "conway", // 'conway' or 'globe'
-  alpha: 255,           // Shared opacity
-
-  // -- Conway Sketch Specifics --
-  conwayGridSize: 23,
-  conwayGap: 1,
+  sketchType: 'conway',
+  alpha: 255,
+  
+  // Conway Settings
+  conwayGridSize: 10,
+  conwayGap: 0,
   conwaySpeed: 1,
   conwayColor: "#000000",
   conwayMultiColor: false,
   conwaySmooth: false,
-  conwayShapes: "✜,⨳,╬,⣿,❖",
-
-  // -- Spatial Overlay Maps (Conway) --
-  conwayMapType: "voronoi", // 'none', 'voronoi', 'treemap'
-  voronoiGridSize: 16,
+  conwayShapes: "✜,⨳,╬,⣿,❖,⧻",
+  conwayMapType: "voronoi",
+  voronoiGridSize: 10,
+  voronoiMaxCells: 30,
   conwayColorByRegion: true,
   conwayRegionColors: [
     "#a6763f",
@@ -27,7 +25,7 @@ export const DEFAULT_SKETCH_SETTINGS = {
   treemapMinSize: 4,
   voronoiColor: "#ffb685",
 
-  // -- Globe Sketch Specifics --
+  // ASCII Globe Settings (Archived/Legacy)
   globeSize: 800,
   textSize: 9,
   density: ".:-=+*#%@",
