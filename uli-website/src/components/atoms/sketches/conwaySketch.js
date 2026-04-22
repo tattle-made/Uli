@@ -84,10 +84,11 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
       // 2. Guaranteed Mid-Right: Acorn
       spawnPattern(SYMBOLS.ACORN, Math.floor(p.random(conwayCols * 0.6, conwayCols * 0.8)), Math.floor(p.random(conwayRows * 0.3, conwayRows * 0.6)));
       
-      // 3. Spawn 15-20 more random patterns from the library across the screen
-      const numPatterns = Math.floor(p.random(15, 20));
+      // 3. Spawn 40-70 more random patterns from the library across the screen, heavy preference for flowers
+      const numPatterns = Math.floor(p.random(40, 70));
       for (let i = 0; i < numPatterns; i++) {
-          const randKey = keys[Math.floor(p.random(keys.length))];
+          let randKey = keys[Math.floor(p.random(keys.length))];
+          if (p.random() > 0.3) randKey = 'FLOWER'; // 70% chance of flower
           const pattern = SYMBOLS[randKey];
           if (randKey === 'GOSPER_GUN' && Math.random() > 0.15) continue;
           
@@ -129,15 +130,23 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
     
     if (iRef.isDragging && !wasDraggingConway) {
       if (mouseCol >= 0 && mouseCol < conwayCols && mouseRow >= 0 && mouseRow < conwayRows) {
-        // Spawn a large 8x8 semi-random grid around the click point
-        for (let dx = -4; dx < 4; dx++) {
-          for (let dy = -4; dy < 4; dy++) {
-            if (Math.random() > 0.6) {
-              let cx = (mouseCol + dx + conwayCols) % conwayCols;
-              let cy = (mouseRow + dy + conwayRows) % conwayRows;
-              conwayGrid[cx][cy] = 1;
-            }
-          }
+        // Spawn a large flower pattern around the click point
+        const LARGE_FLOWER = [
+            // Center ring
+            [-1, -1], [0, -1], [1, -1],
+            [-1, 0],           [1, 0],
+            [-1, 1],  [0, 1],  [1, 1],
+            // Outer pedals
+            [0, -3], [0, -4],
+            [0, 3],  [0, 4],
+            [-3, 0], [-4, 0],
+            [3, 0],  [4, 0]
+        ];
+        
+        for (let pt of LARGE_FLOWER) {
+          let cx = (mouseCol + pt[0] + conwayCols) % conwayCols;
+          let cy = (mouseRow + pt[1] + conwayRows) % conwayRows;
+          conwayGrid[cx][cy] = 1;
         }
       }
     }
@@ -342,21 +351,52 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
        if (sites.length > 0) {
            for (let i = 0; i < conwayCols; i++) ownershipGrid[i].fill(-1);
            ownership = ownershipGrid;
-           for (let i = 0; i < conwayCols; i++) {
-             for (let j = 0; j < conwayRows; j++) {
-                let minDist = Infinity;
-                let closestSite = -1;
-                for (let sx = 0; sx < sites.length; sx++) {
-                   let dx = i - sites[sx].x;
-                   let dy = j - sites[sx].y;
-                   let dSq = dx*dx + dy*dy;
-                   if (dSq < minDist) {
-                      minDist = dSq;
-                      closestSite = sx;
-                   }
-                }
-                ownership[i][j] = closestSite;
-             }
+           
+           // Jump Flooding Algorithm (JFA) Initialization
+           for (let sx = 0; sx < sites.length; sx++) {
+               let ix = Math.min(conwayCols - 1, Math.max(0, Math.round(sites[sx].x)));
+               let iy = Math.min(conwayRows - 1, Math.max(0, Math.round(sites[sx].y)));
+               ownership[ix][iy] = sx;
+           }
+
+           // JFA Logarithmic Passes
+           let stepSz = Math.max(conwayCols, conwayRows);
+           stepSz = Math.floor(stepSz / 2) || 1;
+           
+           while (stepSz >= 1) {
+               for (let i = 0; i < conwayCols; i++) {
+                 for (let j = 0; j < conwayRows; j++) {
+                    let bestSite = ownership[i][j];
+                    let bestDist = Infinity;
+                    if (bestSite !== -1) {
+                       let dx = i - sites[bestSite].x;
+                       let dy = j - sites[bestSite].y;
+                       bestDist = dx*dx + dy*dy;
+                    }
+                    for (let dx = -1; dx <= 1; dx++) {
+                       for (let dy = -1; dy <= 1; dy++) {
+                           if (dx === 0 && dy === 0) continue;
+                           let nx = i + dx * stepSz;
+                           let ny = j + dy * stepSz;
+                           if (nx >= 0 && nx < conwayCols && ny >= 0 && ny < conwayRows) {
+                               let nSite = ownership[nx][ny];
+                               if (nSite !== -1) {
+                                  let dsx = i - sites[nSite].x;
+                                  let dsy = j - sites[nSite].y;
+                                  let dSq = dsx*dsx + dsy*dsy;
+                                  if (dSq < bestDist) {
+                                     bestDist = dSq;
+                                     bestSite = nSite;
+                                  }
+                               }
+                           }
+                       }
+                    }
+                    ownership[i][j] = bestSite;
+                 }
+               }
+               if (stepSz === 1) break;
+               stepSz = Math.floor(stepSz / 2) || 1;
            }
 
            // Graph-color sites so adjacent Voronoi regions always differ in color AND shape.
