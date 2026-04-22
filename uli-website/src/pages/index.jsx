@@ -15,31 +15,33 @@ import BlueprintBackground from "../components/atoms/BlueprintBackground";
 const NewHome = () => {
   return (
     <AppShell>
-      <Box align="center" margin={{ horizontal: "large", vertical: "small" }} style={{ position: "relative" }}>
+      <Box style={{ position: "relative" }}>
         <BlueprintBackground />
-        <Box className="w-full">
-          <Announcements />
-        </Box>
-        <Box className="flex flex-col items-center pb-10 gap-10 mt-6 smooth-layout">
-          <Text
-            className="push-globe 
-            text-center
-            text-[4rem] leading-[90%] font-semibold
-            lg:text-[8rem] lg:leading-[90%] lg:font-medium
-            animate-[fadeUp_0.8s_ease-out_forwards]
-            smooth-layout
-            "
-          >
-            Reclaim your <br className="" /> online space
-          </Text>
+        <Box align="center" margin={{ horizontal: "large", vertical: "small" }} className="pt-24 lg:pt-32">
+          <Box className="w-full">
+            <Announcements />
+          </Box>
+          <Box className="flex flex-col items-center pb-10 gap-10 mt-6 smooth-layout">
+            <Text
+              className="push-globe 
+              text-center
+              text-[4rem] leading-[90%] font-semibold
+              lg:text-[8rem] lg:leading-[90%] lg:font-medium
+              animate-[fadeUp_0.8s_ease-out_forwards]
+              smooth-layout
+              "
+            >
+              Reclaim your <br className="" /> online space
+            </Text>
 
-          <Text className="push-globe lg:w-[40%] text-center mt-2 lg:mt-8 text-base lg:text-[16px] lg:leading-[120%] animate-[fadeUp_1s_ease-out_0.3s_both] smooth-layout">
-            An endeavour to build safer online spaces in India by collectivizing women and gender minorities. Uli creates representative data and tools for detection of online abuse and connects people to support in times of need.
-          </Text>
+            <Text className="push-globe lg:w-[40%] text-center mt-2 lg:mt-8 text-base lg:text-[16px] lg:leading-[120%] animate-[fadeUp_1s_ease-out_0.3s_both] smooth-layout">
+              An endeavour to build safer online spaces in India by collectivizing women and gender minorities. Uli creates representative data and tools for detection of online abuse and connects people to support in times of need.
+            </Text>
 
-          <Box className="push-globe flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
-            <NavLinkNew to="/process">Our Process</NavLinkNew>
-            {/* <NavLinkNew to="/about">About Us</NavLinkNew> */}
+            <Box className="push-globe flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
+              <NavLinkNew to="/process">Our Process</NavLinkNew>
+              {/* <NavLinkNew to="/about">About Us</NavLinkNew> */}
+            </Box>
           </Box>
         </Box>
       </Box>

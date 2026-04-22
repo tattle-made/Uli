@@ -32,7 +32,7 @@ export default function NavBarNew() {
   return (
     <Box
       ref={borderRef}
-      className={`font-labrada lg:bg-inherit transition-colors duration-300 border-animate-x ${open && "bg-[#FFE7D9]"}`}
+      className={`font-labrada lg:bg-transparent transition-colors duration-300 border-animate-x ${open && "bg-[#FFE7D9]"}`}
       align="center"
       pad={"medium"}
       style={{

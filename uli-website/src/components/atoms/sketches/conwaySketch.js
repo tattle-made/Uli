@@ -36,8 +36,8 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
     const step = size + gap;
     
     if (size !== lastConwayGridSize || conwayCols === 0) {
-      conwayCols = Math.floor(p.width / step);
-      conwayRows = Math.floor(p.height / step);
+      conwayCols = Math.ceil(p.width / step) + 1;
+      conwayRows = Math.ceil(p.height / step) + 1;
       
       conwayGrid = new Array(conwayCols).fill(0).map(() => new Array(conwayRows).fill(0));
       conwayNextGrid = new Array(conwayCols).fill(0).map(() => new Array(conwayRows).fill(0));
@@ -92,8 +92,21 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
     
     if (iRef.isDragging && !wasDraggingConway) {
       if (mouseCol >= 0 && mouseCol < conwayCols && mouseRow >= 0 && mouseRow < conwayRows) {
-        let flowerPattern = [[0,-1], [-1,0], [0,0], [1,0], [0,1]];
-        for(let pt of flowerPattern) {
+        // Generate a slightly different semi-random flower/glider structure every click
+        let dynamicPattern = [[0, 0]]; 
+        const structureCandidates = [
+            [0,-1], [-1,0], [1,0], [0,1],
+            [-1,-1], [1,-1], [-1,1], [1,1],
+            [0,-2], [0,2], [-2,0], [2,0]
+        ];
+        
+        for (let pt of structureCandidates) {
+            if (Math.random() > 0.45) {
+                dynamicPattern.push(pt);
+            }
+        }
+        
+        for (let pt of dynamicPattern) {
             let cx = (mouseCol + pt[0] + conwayCols) % conwayCols;
             let cy = (mouseRow + pt[1] + conwayRows) % conwayRows;
             conwayGrid[cx][cy] = 1;
@@ -128,48 +141,11 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
       }
     });
 
-    p.push();
-    if (s.conwayMultiColor) p.colorMode(p.HSL, 360, 100, 100, 255);
-
-    p.noStroke();
-    p.textAlign(p.CENTER, p.CENTER);
+    // 1. Generate Overlay Structure (Sites & Ownership)
+    let ownership = null;
+    let sites = activeSites;
     
-    const rC = parseInt(s.conwayColor.slice(1, 3), 16) || 0;
-    const gC = parseInt(s.conwayColor.slice(3, 5), 16) || 0;
-    const bC = parseInt(s.conwayColor.slice(5, 7), 16) || 0;
-    
-    for (let i = 0; i < conwayCols; i++) {
-      for (let j = 0; j < conwayRows; j++) {
-        
-        if (s.conwaySmooth) {
-          conwayAnimGrid[i][j] += (conwayGrid[i][j] - conwayAnimGrid[i][j]) * 0.15;
-        } else {
-          conwayAnimGrid[i][j] = conwayGrid[i][j];
-        }
-        
-        let animVal = conwayAnimGrid[i][j];
-        
-        if (animVal > 0.01) {
-          if (s.conwayMultiColor) {
-            let hue = (i * 12 + j * 6 + p.frameCount * 0.5) % 360;
-            p.fill(hue, 80, 65, animVal * s.alpha);
-          } else {
-            p.fill(rC, gC, bC, animVal * s.alpha);
-          }
-          
-          if (s.conwaySmooth && animVal < 0.99) {
-            p.textSize(size * 1.5 * (0.5 + animVal * 0.5));
-          } else {
-            p.textSize(size * 1.5);
-          }
-          
-          p.text('✿', i * step + size/2, j * step + size/2);
-        }
-      }
-    }
-
-    // 1. Find Overlay Graph Sites
-    if (s.conwayMapType !== 'none') {
+    if (s.conwayMapType !== 'none' || s.conwayColorByRegion) {
        let rawSites = [];
        let visited = new Array(conwayCols).fill(0).map(() => new Array(conwayRows).fill(false));
        
@@ -178,16 +154,12 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
            if (conwayGrid[i][j] === 1 && !visited[i][j]) {
              let stack = [[i, j]];
              visited[i][j] = true;
-             let count = 0;
-             let sumX = 0;
-             let sumY = 0;
+             let cells = [];
              
              while (stack.length > 0) {
                let pt = stack.pop();
                let cx = pt[0], cy = pt[1];
-               count++;
-               sumX += cx;
-               sumY += cy;
+               cells.push([cx, cy]);
                
                let neighbors = [ [-1,-1], [0,-1], [1,-1], [-1,0], [1,0], [-1,1], [0,1], [1,1] ];
                for (let n of neighbors) {
@@ -202,13 +174,30 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
                }
              }
              
-             if (s.conwayMapType === 'voronoi') {
-                if (count > 0 && count <= (s.voronoiGridSize || 9)) { 
-                   rawSites.push({ x: sumX / count, y: sumY / count });
+             const count = cells.length;
+             
+             if (s.conwayMapType === 'voronoi' || s.conwayColorByRegion) {
+                const chunkSize = s.voronoiGridSize || 6;
+                if (count > 0) {
+                   // Subdivide large clusters into chunks, each gets its own centroid
+                   let numChunks = Math.max(1, Math.ceil(count / chunkSize));
+                   // Spread cells into evenly-sized chunks spatially
+                   // Sort cells to get spatial locality in chunks
+                   cells.sort((a, b) => a[0] !== b[0] ? a[0] - b[0] : a[1] - b[1]);
+                   let chunkLen = Math.ceil(count / numChunks);
+                   for (let c = 0; c < numChunks; c++) {
+                      let slice = cells.slice(c * chunkLen, (c + 1) * chunkLen);
+                      if (slice.length === 0) continue;
+                      let sx = slice.reduce((s, pt) => s + pt[0], 0) / slice.length;
+                      let sy = slice.reduce((s, pt) => s + pt[1], 0) / slice.length;
+                      rawSites.push({ x: sx, y: sy });
+                   }
                 }
              } else if (s.conwayMapType === 'treemap') {
                 if (count >= (s.treemapMinSize || 4)) {
-                   rawSites.push({ x: sumX / count, y: sumY / count });
+                   let sx = cells.reduce((s, pt) => s + pt[0], 0) / count;
+                   let sy = cells.reduce((s, pt) => s + pt[1], 0) / count;
+                   rawSites.push({ x: sx, y: sy });
                 }
              }
            }
@@ -265,16 +254,115 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
            }
        }
        
-       let sites = activeSites;
-
-       // 2. Map ownership and draw boundary
+       sites = activeSites;
+       
        if (sites.length > 0) {
-          p.push();
+           ownership = new Array(conwayCols).fill(0).map(() => new Int32Array(conwayRows).fill(-1));
+           for (let i = 0; i < conwayCols; i++) {
+             for (let j = 0; j < conwayRows; j++) {
+                let minDist = Infinity;
+                let closestSite = -1;
+                for (let sx = 0; sx < sites.length; sx++) {
+                   let dx = i - sites[sx].x;
+                   let dy = j - sites[sx].y;
+                   let dSq = dx*dx + dy*dy;
+                   if (dSq < minDist) {
+                      minDist = dSq;
+                      closestSite = sx;
+                   }
+                }
+                ownership[i][j] = closestSite;
+             }
+           }
+       }
+    }
 
-          p.drawingContext.save();
-          p.drawingContext.beginPath();
-          p.drawingContext.rect(0, 0, p.width, p.height);
-          if (cachedPushEls) {
+    // 2. Draw Automata Cells
+    p.push();
+    if (s.conwayMultiColor) p.colorMode(p.HSL, 360, 100, 100, 255);
+
+    p.noStroke();
+    p.textAlign(p.CENTER, p.CENTER);
+    
+    const rC = parseInt(s.conwayColor.slice(1, 3), 16) || 0;
+    const gC = parseInt(s.conwayColor.slice(3, 5), 16) || 0;
+    const bC = parseInt(s.conwayColor.slice(5, 7), 16) || 0;
+    
+    const offX = (p.width - (conwayCols * step)) / 2;
+    const offY = (p.height - (conwayRows * step)) / 2;
+
+    let parsedRGBs = [];
+    if (s.conwayColorByRegion) {
+        parsedRGBs = (s.conwayRegionColors || []).map(c => ({
+            r: parseInt(c.slice(1, 3), 16) || 0,
+            g: parseInt(c.slice(3, 5), 16) || 0,
+            b: parseInt(c.slice(5, 7), 16) || 0
+        }));
+        if (parsedRGBs.length === 0) parsedRGBs = [{r: rC, g: gC, b: bC}];
+    }
+    
+    let parsedShapes = [];
+    if (typeof s.conwayShapes === 'string') {
+        parsedShapes = s.conwayShapes.split(',').map(ss => ss.trim()).filter(ss => ss.length > 0);
+    } else if (Array.isArray(s.conwayShapes)) {
+        parsedShapes = s.conwayShapes;
+    }
+    
+    for (let i = 0; i < conwayCols; i++) {
+      for (let j = 0; j < conwayRows; j++) {
+        
+        if (s.conwaySmooth) {
+          conwayAnimGrid[i][j] += (conwayGrid[i][j] - conwayAnimGrid[i][j]) * 0.15;
+        } else {
+          conwayAnimGrid[i][j] = conwayGrid[i][j];
+        }
+        
+        let animVal = conwayAnimGrid[i][j];
+        
+        if (animVal > 0.01) {
+          if (s.conwayColorByRegion && ownership && ownership[i][j] >= 0) {
+              let ownerSite = sites[ownership[i][j]];
+              let hash = Math.abs(Math.floor(ownerSite.tx * 123.4) + Math.floor(ownerSite.ty * 876.5)) % parsedRGBs.length;
+              let c = parsedRGBs[hash];
+              p.fill(c.r, c.g, c.b, animVal * s.alpha);
+          } else if (s.conwayMultiColor) {
+              let hue = (i * 12 + j * 6 + p.frameCount * 0.5) % 360;
+              p.fill(hue, 80, 65, animVal * s.alpha);
+          } else {
+              p.fill(rC, gC, bC, animVal * s.alpha);
+          }
+          
+          if (s.conwaySmooth && animVal < 0.99) {
+            p.textSize(size * 1.5 * (0.5 + animVal * 0.5));
+          } else {
+            p.textSize(size * 1.5);
+          }
+          
+          let shape = '✿';
+          if (parsedShapes.length > 0) {
+              if (s.conwayColorByRegion && ownership && ownership[i][j] >= 0) {
+                 let ownerSite = sites[ownership[i][j]];
+                 let hashShape = Math.abs(Math.floor(ownerSite.tx * 321.4) + Math.floor(ownerSite.ty * 654.3)) % parsedShapes.length;
+                 shape = parsedShapes[hashShape];
+              } else {
+                 let hashShape = (i * 37 + j * 17) % parsedShapes.length;
+                 shape = parsedShapes[hashShape];
+              }
+          }
+          
+          p.text(shape, i * step + size/2 + offX, j * step + size/2 + offY);
+        }
+      }
+    }
+
+    // 3. Draw Boundaries
+    if (s.conwayMapType !== 'none' && sites.length > 0) {
+       p.push();
+       
+       p.drawingContext.save();
+       p.drawingContext.beginPath();
+       p.drawingContext.rect(0, 0, p.width, p.height);
+       if (cachedPushEls) {
              const containerRect = containerRef.current ? containerRef.current.getBoundingClientRect() : { left: 0, top: 0 };
              cachedPushEls.forEach((el) => {
                 const r = el.getBoundingClientRect();
@@ -306,31 +394,14 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
           p.noFill();
 
           if (s.conwayMapType === 'voronoi' && sites.length > 1) {
-             let ownership = new Array(conwayCols).fill(0).map(() => new Int32Array(conwayRows));
-             for (let i = 0; i < conwayCols; i++) {
-               for (let j = 0; j < conwayRows; j++) {
-                  let minDist = Infinity;
-                  let closestSite = -1;
-                  for (let s = 0; s < sites.length; s++) {
-                     let dx = i - sites[s].x;
-                     let dy = j - sites[s].y;
-                     let dSq = dx*dx + dy*dy;
-                     if (dSq < minDist) {
-                        minDist = dSq;
-                        closestSite = s;
-                     }
-                  }
-                  ownership[i][j] = closestSite;
-               }
-             }
              for (let i = 0; i < conwayCols; i++) {
                for (let j = 0; j < conwayRows; j++) {
                   let myOwner = ownership[i][j];
                   if (i < conwayCols - 1 && ownership[i+1][j] !== myOwner) {
-                     p.line(i * step + step, j * step, i * step + step, j * step + step);
+                     p.line(i * step + step + offX, j * step + offY, i * step + step + offX, j * step + step + offY);
                   }
                   if (j < conwayRows - 1 && ownership[i][j+1] !== myOwner) {
-                     p.line(i * step, j * step + step, i * step + step, j * step + step);
+                     p.line(i * step + offX, j * step + step + offY, i * step + step + offX, j * step + step + offY);
                   }
                }
              }
@@ -359,12 +430,30 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
              };
              drawKDTree(sites, 0, 0, conwayCols, conwayRows);
           }
+
+          // Draw the composite intersection boundary around DOM elements
+          // By drawing padded rects with double stroke weight under the inverse clipping mask,
+          // the portions of stroke falling *inside* overlapping regions or on the inner edge are clipped out!
+          // This perfectly leaves only a 1.5px outer stitched contour around the boolean union of elements.
+          if (cachedPushEls) {
+             p.strokeWeight(3);
+             const containerRect = containerRef.current ? containerRef.current.getBoundingClientRect() : { left: 0, top: 0 };
+             cachedPushEls.forEach((el) => {
+                const r = el.getBoundingClientRect();
+                if (r.width === 0 || r.height === 0) return;
+                const pad = 20;
+                const l = r.left - containerRect.left - pad;
+                const right = r.right - containerRect.left + pad;
+                const top = r.top - containerRect.top - pad;
+                const bottom = r.bottom - containerRect.top + pad;
+                p.rect(l, top, right - l, bottom - top);
+             });
+          }
           
           p.drawingContext.setLineDash([]); 
           p.drawingContext.restore();
           p.pop();
        }
-    }
 
     p.pop();
   };

@@ -254,14 +254,36 @@ const BlueprintBackground = () => {
                <label>Alpha (Opacity): {settings.alpha}
                  <input type="range" min="0" max="255" value={settings.alpha} onChange={(e) => setSettings({...settings, alpha: parseInt(e.target.value)})} style={{ width: '100%' }} />
                </label>
-               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                 <input type="checkbox" checked={settings.conwayMultiColor} onChange={(e) => setSettings({...settings, conwayMultiColor: e.target.checked})} />
-                 Multicolor Rainbow Mode
-               </label>
-               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                 <input type="checkbox" checked={settings.conwaySmooth} onChange={(e) => setSettings({...settings, conwaySmooth: e.target.checked})} />
-                 Smooth Fade Transitions
-               </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  <input type="checkbox" checked={settings.conwayMultiColor} onChange={(e) => setSettings({...settings, conwayMultiColor: e.target.checked})} />
+                  Multicolor Rainbow Mode
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  <input type="checkbox" checked={settings.conwaySmooth} onChange={(e) => setSettings({...settings, conwaySmooth: e.target.checked})} />
+                  Smooth Fade Transitions
+                </label>
+                <div style={{ marginTop: '8px', padding: '8px', background: '#eaeaea', borderRadius: '4px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <input type="checkbox" checked={settings.conwayColorByRegion} onChange={(e) => setSettings({...settings, conwayColorByRegion: e.target.checked})} />
+                    Color Flowers By Region
+                  </label>
+                  {settings.conwayColorByRegion && (
+                    <div style={{ display: 'flex', gap: '4px', marginTop: '6px', flexWrap: 'wrap' }}>
+                      {settings.conwayRegionColors.map((c, i) => (
+                        <input key={i} type="color" value={c} onChange={(e) => {
+                          const newArr = [...settings.conwayRegionColors];
+                          newArr[i] = e.target.value;
+                          setSettings({...settings, conwayRegionColors: newArr});
+                        }} style={{ width: '30px', height: '20px', padding: 0, cursor: 'pointer', border: '1px solid #ccc' }} />
+                      ))}
+                    </div>
+                  )}
+                  <label style={{ display: 'block', marginTop: '12px' }}>Conway Shapes (comma-separated):
+                    <input type="text" value={Array.isArray(settings.conwayShapes) ? settings.conwayShapes.join(',') : (settings.conwayShapes || '')} onChange={(e) => {
+                        setSettings({...settings, conwayShapes: e.target.value});
+                    }} style={{ width: '100%', padding: '4px', boxSizing: 'border-box', marginTop: '4px' }} />
+                  </label>
+                </div>
                <div style={{ marginTop: '8px', padding: '8px', background: '#ececec', borderRadius: '4px' }}>
                  <strong style={{ fontSize: '13px', display: 'block', marginBottom: '4px' }}>Overlay Map</strong>
                  <label style={{ display: 'block', marginBottom: '4px' }}>Map Type:
