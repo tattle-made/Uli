@@ -20,6 +20,12 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
   let wasDraggingConway = false;
   let cachedPushEls = null;
   let activeSites = [];
+  let conwayStepId = 0;
+  let _cacheStepId = -1;
+  let _cachePushElsCount = -1;
+  let _cacheCanvasW = -1;
+  let _cacheCanvasH = -1;
+  let _cacheSettingsKey = null;
 
   p.setup = () => {
     const w = containerRef.current ? containerRef.current.clientWidth : p.windowWidth;
@@ -121,6 +127,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
       let temp = conwayGrid;
       conwayGrid = conwayNextGrid;
       conwayNextGrid = temp;
+      conwayStepId++;
     }
     
     const containerRect = containerRef.current ? containerRef.current.getBoundingClientRect() : { left: 0, top: 0 };
@@ -212,54 +219,56 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
     // 1. Generate Overlay Structure (Sites & Ownership)
     let ownership = null;
     let sites = activeSites;
-    
+
     if (s.conwayMapType !== 'none' || s.conwayColorByRegion) {
-       let rawSites = [];
-       for (let i = 0; i < conwayCols; i++) visitedGrid[i].fill(0);
-       let visited = visitedGrid;
-       
-       for (let i = 0; i < conwayCols; i++) {
-         for (let j = 0; j < conwayRows; j++) {
-           if (conwayGrid[i][j] === 1 && !visited[i][j]) {
-             let stack = [[i, j]];
-             visited[i][j] = true;
-             let cells = [];
-             
-             while (stack.length > 0) {
-               let pt = stack.pop();
-               let cx = pt[0], cy = pt[1];
-               cells.push([cx, cy]);
-               
-               let neighbors = [ [-1,-1], [0,-1], [1,-1], [-1,0], [1,0], [-1,1], [0,1], [1,1] ];
-               for (let n of neighbors) {
-                 let nx = cx + n[0];
-                 let ny = cy + n[1];
-                 if (nx >= 0 && nx < conwayCols && ny >= 0 && ny < conwayRows) {
+      const pushElsCount = cachedPushEls ? cachedPushEls.length : 0;
+      const settingsKey = `${s.conwayMapType}|${s.conwayColorByRegion}|${s.voronoiGridSize}|${s.voronoiMaxCells}|${s.treemapMinSize}|${JSON.stringify(s.conwayRegionColors)}|${s.conwayShapes}`;
+      const isDirty = conwayStepId !== _cacheStepId
+        || pushElsCount !== _cachePushElsCount
+        || p.width !== _cacheCanvasW
+        || p.height !== _cacheCanvasH
+        || settingsKey !== _cacheSettingsKey;
+
+      if (isDirty) {
+        let rawSites = [];
+        for (let i = 0; i < conwayCols; i++) visitedGrid[i].fill(0);
+        let visited = visitedGrid;
+
+        for (let i = 0; i < conwayCols; i++) {
+          for (let j = 0; j < conwayRows; j++) {
+            if (conwayGrid[i][j] === 1 && !visited[i][j]) {
+              let stack = [[i, j]];
+              visited[i][j] = true;
+              let cells = [];
+
+              while (stack.length > 0) {
+                let pt = stack.pop();
+                let cx = pt[0], cy = pt[1];
+                cells.push([cx, cy]);
+
+                let neighbors = [ [-1,-1], [0,-1], [1,-1], [-1,0], [1,0], [-1,1], [0,1], [1,1] ];
+                for (let n of neighbors) {
+                  let nx = cx + n[0];
+                  let ny = cy + n[1];
+                  if (nx >= 0 && nx < conwayCols && ny >= 0 && ny < conwayRows) {
                     if (conwayGrid[nx][ny] === 1 && !visited[nx][ny]) {
-                       visited[nx][ny] = true;
-                       stack.push([nx, ny]);
+                      visited[nx][ny] = true;
+                      stack.push([nx, ny]);
                     }
-                 }
-               }
-             }
-             
-             const count = cells.length;
-             
-             if (s.conwayMapType === 'voronoi' || s.conwayColorByRegion) {
-                // voronoiGridSize = min cells per region before a new Voronoi site is created.
-                // Recursive spatial bisection splits the cluster along its longer axis,
-                // guaranteeing sub-region centroids are always spatially spread apart.
+                  }
+                }
+              }
+
+              const count = cells.length;
+
+              if (s.conwayMapType === 'voronoi' || s.conwayColorByRegion) {
                 const minCellsPerRegion = s.voronoiGridSize || 16;
-                
-                // voronoiGridSize = min cluster size to create a site (smaller clusters absorbed by nearest region)
-                // voronoiMaxCells  = max cells per sub-region leaf (bisect stops here, creates one site)
                 const maxCellsPerRegion = s.voronoiMaxCells || 80;
 
                 if (count >= minCellsPerRegion) {
                   const bisect = (pts) => {
                     if (pts.length === 0) return;
                     if (pts.length <= maxCellsPerRegion) {
-                      // Leaf chunk: small enough, emit one centroid
                       let sx = 0, sy = 0;
                       for (let pt of pts) { sx += pt[0]; sy += pt[1]; }
                       rawSites.push({ x: sx / pts.length, y: sy / pts.length });
@@ -281,169 +290,169 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
                   };
                   bisect(cells);
                 }
-                
-             } else if (s.conwayMapType === 'treemap') {
+              } else if (s.conwayMapType === 'treemap') {
                 if (count >= (s.treemapMinSize || 4)) {
-                   let sx = cells.reduce((s, pt) => s + pt[0], 0) / count;
-                   let sy = cells.reduce((s, pt) => s + pt[1], 0) / count;
-                   rawSites.push({ x: sx, y: sy });
+                  let sx = cells.reduce((s, pt) => s + pt[0], 0) / count;
+                  let sy = cells.reduce((s, pt) => s + pt[1], 0) / count;
+                  rawSites.push({ x: sx, y: sy });
                 }
-             }
-           }
-         }
-       }
+              }
+            }
+          }
+        }
 
-       if (cachedPushEls) {
-          const containerRect = containerRef.current ? containerRef.current.getBoundingClientRect() : { left: 0, top: 0 };
+        if (cachedPushEls) {
           cachedPushEls.forEach((el) => {
-             const r = el.getBoundingClientRect();
-             if (r.width === 0 || r.height === 0) return;
-             const localLeft = r.left - containerRect.left;
-             const localRight = r.right - containerRect.left;
-             const localTop = r.top - containerRect.top;
-             const localBottom = r.bottom - containerRect.top;
-             let cx = (localLeft + localRight) / 2 / step;
-             let cy = (localTop + localBottom) / 2 / step;
-             rawSites.push({ x: cx, y: cy });
+            const r = el.getBoundingClientRect();
+            if (r.width === 0 || r.height === 0) return;
+            const localLeft = r.left - containerRect.left;
+            const localRight = r.right - containerRect.left;
+            const localTop = r.top - containerRect.top;
+            const localBottom = r.bottom - containerRect.top;
+            let cx = (localLeft + localRight) / 2 / step;
+            let cy = (localTop + localBottom) / 2 / step;
+            rawSites.push({ x: cx, y: cy });
           });
-       }
+        }
 
-       for (let i = 0; i < activeSites.length; i++) {
+        for (let i = 0; i < activeSites.length; i++) {
           activeSites[i].matched = false;
-       }
-       for (let ns of rawSites) {
-           let minDist = Infinity;
-           let match = null;
-           for (let a of activeSites) {
-               if (a.matched) continue;
-               let dx = a.tx - ns.x;
-               let dy = a.ty - ns.y;
-               let d = dx*dx + dy*dy;
-               if (d < minDist) {
-                   minDist = d;
-                   match = a;
-               }
-           }
-           if (match && minDist < 100) { 
-               match.tx = ns.x;
-               match.ty = ns.y;
-               match.matched = true;
-           } else {
-               activeSites.push({ 
-                   x: ns.x, y: ns.y, 
-                   tx: ns.x, ty: ns.y, 
-                   seed: Math.floor(Math.random() * 1000000), 
-                   matched: true 
-               });
-           }
-       }
-       
-       for (let i = activeSites.length - 1; i >= 0; i--) {
-           let a = activeSites[i];
-           if (!a.matched) {
-               activeSites.splice(i, 1);
-           } else {
-               a.x += (a.tx - a.x) * 0.3;
-               a.y += (a.ty - a.y) * 0.3;
-           }
-       }
-       
-       sites = activeSites;
-       
-       if (sites.length > 0) {
-           for (let i = 0; i < conwayCols; i++) ownershipGrid[i].fill(-1);
-           ownership = ownershipGrid;
-           
-           // Jump Flooding Algorithm (JFA) Initialization
-           for (let sx = 0; sx < sites.length; sx++) {
-               let ix = Math.min(conwayCols - 1, Math.max(0, Math.round(sites[sx].x)));
-               let iy = Math.min(conwayRows - 1, Math.max(0, Math.round(sites[sx].y)));
-               ownership[ix][iy] = sx;
-           }
+        }
+        for (let ns of rawSites) {
+          let minDist = Infinity;
+          let match = null;
+          for (let a of activeSites) {
+            if (a.matched) continue;
+            let dx = a.tx - ns.x;
+            let dy = a.ty - ns.y;
+            let d = dx*dx + dy*dy;
+            if (d < minDist) {
+              minDist = d;
+              match = a;
+            }
+          }
+          if (match && minDist < 100) {
+            match.tx = ns.x;
+            match.ty = ns.y;
+            match.matched = true;
+          } else {
+            activeSites.push({
+              x: ns.x, y: ns.y,
+              tx: ns.x, ty: ns.y,
+              seed: Math.floor(Math.random() * 1000000),
+              matched: true
+            });
+          }
+        }
 
-           // JFA Logarithmic Passes
-           let stepSz = Math.max(conwayCols, conwayRows);
-           stepSz = Math.floor(stepSz / 2) || 1;
-           
-           while (stepSz >= 1) {
-               for (let i = 0; i < conwayCols; i++) {
-                 for (let j = 0; j < conwayRows; j++) {
-                    let bestSite = ownership[i][j];
-                    let bestDist = Infinity;
-                    if (bestSite !== -1) {
-                       let dx = i - sites[bestSite].x;
-                       let dy = j - sites[bestSite].y;
-                       bestDist = dx*dx + dy*dy;
-                    }
-                    for (let dx = -1; dx <= 1; dx++) {
-                       for (let dy = -1; dy <= 1; dy++) {
-                           if (dx === 0 && dy === 0) continue;
-                           let nx = i + dx * stepSz;
-                           let ny = j + dy * stepSz;
-                           if (nx >= 0 && nx < conwayCols && ny >= 0 && ny < conwayRows) {
-                               let nSite = ownership[nx][ny];
-                               if (nSite !== -1) {
-                                  let dsx = i - sites[nSite].x;
-                                  let dsy = j - sites[nSite].y;
-                                  let dSq = dsx*dsx + dsy*dsy;
-                                  if (dSq < bestDist) {
-                                     bestDist = dSq;
-                                     bestSite = nSite;
-                                  }
-                               }
-                           }
-                       }
-                    }
-                    ownership[i][j] = bestSite;
-                 }
-               }
-               if (stepSz === 1) break;
-               stepSz = Math.floor(stepSz / 2) || 1;
-           }
+        for (let i = activeSites.length - 1; i >= 0; i--) {
+          if (!activeSites[i].matched) activeSites.splice(i, 1);
+        }
 
-           // Graph-color sites so adjacent Voronoi regions always differ in color AND shape.
-           const numPalette = Math.max(1, (s.conwayRegionColors || []).length);
-           const numShapePalette = Math.max(1,
-             (typeof s.conwayShapes === 'string'
-               ? s.conwayShapes.split(',').filter(x => x.trim()).length
-               : (s.conwayShapes || []).length)
-           );
-           // Build adjacency sets by scanning ownership boundaries
-           const adjSets = Array.from({ length: sites.length }, () => new Set());
-           for (let i = 0; i < conwayCols; i++) {
-             for (let j = 0; j < conwayRows; j++) {
-               const a = ownership[i][j];
-               if (a < 0) continue;
-               if (i + 1 < conwayCols) { const b = ownership[i+1][j]; if (b >= 0 && b !== a) { adjSets[a].add(b); adjSets[b].add(a); } }
-               if (j + 1 < conwayRows) { const b = ownership[i][j+1]; if (b >= 0 && b !== a) { adjSets[a].add(b); adjSets[b].add(a); } }
-             }
-           }
-           // Greedy color + shape assignment — no two adjacent sites share the same index
-           for (let si = 0; si < sites.length; si++) {
-             const usedColors = new Set();
-             const usedShapes = new Set();
-             for (const nb of adjSets[si]) {
-               if (sites[nb]._colorIdx >= 0) usedColors.add(sites[nb]._colorIdx);
-               if (sites[nb]._shapeIdx >= 0) usedShapes.add(sites[nb]._shapeIdx);
-             }
-             // Assign color: prefer the site's own hash, but find the first available to avoid neighbor collision
-             let ci = -1;
-             let colorOffset = si % numPalette;
-             for (let c = 0; c < numPalette; c++) { 
-                let checkIdx = (colorOffset + c) % numPalette;
-                if (!usedColors.has(checkIdx)) { ci = checkIdx; break; } 
-             }
-             sites[si]._colorIdx = ci >= 0 ? ci : colorOffset;
-             // Assign shape: prefer a hash offset from color, but avoid neighbor collision
-             let shi = -1;
-             let shapeOffset = (sites[si]._colorIdx + si) % numShapePalette;
-             for (let c = 0; c < numShapePalette; c++) {
-               const idx = (shapeOffset + c) % numShapePalette;
-               if (!usedShapes.has(idx)) { shi = idx; break; }
-             }
-             sites[si]._shapeIdx = shi >= 0 ? shi : shapeOffset;
-           }
-        }    }
+        if (activeSites.length > 0) {
+          for (let i = 0; i < conwayCols; i++) ownershipGrid[i].fill(-1);
+
+          for (let sx = 0; sx < activeSites.length; sx++) {
+            let ix = Math.min(conwayCols - 1, Math.max(0, Math.round(activeSites[sx].x)));
+            let iy = Math.min(conwayRows - 1, Math.max(0, Math.round(activeSites[sx].y)));
+            ownershipGrid[ix][iy] = sx;
+          }
+
+          let stepSz = Math.max(conwayCols, conwayRows);
+          stepSz = Math.floor(stepSz / 2) || 1;
+
+          while (stepSz >= 1) {
+            for (let i = 0; i < conwayCols; i++) {
+              for (let j = 0; j < conwayRows; j++) {
+                let bestSite = ownershipGrid[i][j];
+                let bestDist = Infinity;
+                if (bestSite !== -1) {
+                  let dx = i - activeSites[bestSite].x;
+                  let dy = j - activeSites[bestSite].y;
+                  bestDist = dx*dx + dy*dy;
+                }
+                for (let dx = -1; dx <= 1; dx++) {
+                  for (let dy = -1; dy <= 1; dy++) {
+                    if (dx === 0 && dy === 0) continue;
+                    let nx = i + dx * stepSz;
+                    let ny = j + dy * stepSz;
+                    if (nx >= 0 && nx < conwayCols && ny >= 0 && ny < conwayRows) {
+                      let nSite = ownershipGrid[nx][ny];
+                      if (nSite !== -1) {
+                        let dsx = i - activeSites[nSite].x;
+                        let dsy = j - activeSites[nSite].y;
+                        let dSq = dsx*dsx + dsy*dsy;
+                        if (dSq < bestDist) {
+                          bestDist = dSq;
+                          bestSite = nSite;
+                        }
+                      }
+                    }
+                  }
+                }
+                ownershipGrid[i][j] = bestSite;
+              }
+            }
+            if (stepSz === 1) break;
+            stepSz = Math.floor(stepSz / 2) || 1;
+          }
+
+          const numPalette = Math.max(1, (s.conwayRegionColors || []).length);
+          const numShapePalette = Math.max(1,
+            (typeof s.conwayShapes === 'string'
+              ? s.conwayShapes.split(',').filter(x => x.trim()).length
+              : (s.conwayShapes || []).length)
+          );
+          const adjSets = Array.from({ length: activeSites.length }, () => new Set());
+          for (let i = 0; i < conwayCols; i++) {
+            for (let j = 0; j < conwayRows; j++) {
+              const a = ownershipGrid[i][j];
+              if (a < 0) continue;
+              if (i + 1 < conwayCols) { const b = ownershipGrid[i+1][j]; if (b >= 0 && b !== a) { adjSets[a].add(b); adjSets[b].add(a); } }
+              if (j + 1 < conwayRows) { const b = ownershipGrid[i][j+1]; if (b >= 0 && b !== a) { adjSets[a].add(b); adjSets[b].add(a); } }
+            }
+          }
+          for (let si = 0; si < activeSites.length; si++) {
+            const usedColors = new Set();
+            const usedShapes = new Set();
+            for (const nb of adjSets[si]) {
+              if (activeSites[nb]._colorIdx >= 0) usedColors.add(activeSites[nb]._colorIdx);
+              if (activeSites[nb]._shapeIdx >= 0) usedShapes.add(activeSites[nb]._shapeIdx);
+            }
+            let ci = -1;
+            let colorOffset = si % numPalette;
+            for (let c = 0; c < numPalette; c++) {
+              let checkIdx = (colorOffset + c) % numPalette;
+              if (!usedColors.has(checkIdx)) { ci = checkIdx; break; }
+            }
+            activeSites[si]._colorIdx = ci >= 0 ? ci : colorOffset;
+            let shi = -1;
+            let shapeOffset = (activeSites[si]._colorIdx + si) % numShapePalette;
+            for (let c = 0; c < numShapePalette; c++) {
+              const idx = (shapeOffset + c) % numShapePalette;
+              if (!usedShapes.has(idx)) { shi = idx; break; }
+            }
+            activeSites[si]._shapeIdx = shi >= 0 ? shi : shapeOffset;
+          }
+        }
+
+        _cacheStepId = conwayStepId;
+        _cachePushElsCount = pushElsCount;
+        _cacheCanvasW = p.width;
+        _cacheCanvasH = p.height;
+        _cacheSettingsKey = settingsKey;
+      }
+
+      // Animate sites toward their targets every frame (in-between frames)
+      for (let i = 0; i < activeSites.length; i++) {
+        let a = activeSites[i];
+        a.x += (a.tx - a.x) * 0.3;
+        a.y += (a.ty - a.y) * 0.3;
+      }
+
+      sites = activeSites;
+      if (sites.length > 0) ownership = ownershipGrid;
+    }
 
 
     // Helper to compute union polygons of axis-aligned rectangles
