@@ -111,7 +111,7 @@ const BlueprintBackground = () => {
 
   return (
     <>
-      <div ref={containerRef} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: -1, overflow: "hidden" }} />
+      <div aria-hidden="true" ref={containerRef} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: -1, overflow: "hidden" }} />
 
       {/* Debug UI Toggle - Only accessible in development */}
       {process.env.NODE_ENV === 'development' && (
