@@ -23,6 +23,7 @@ const BlueprintBackground = () => {
 
   useEffect(() => {
     let p5Instance;
+    let cancelled = false;
     let lastClientX = 0;
     let lastClientY = 0;
 
@@ -30,6 +31,11 @@ const BlueprintBackground = () => {
       interactionRef.current.mx = window.innerWidth / 2;
       interactionRef.current.my = window.innerHeight / 2;
     }
+
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+     return undefined;
+    }
+   
 
     const handleMouseMove = (e) => {
       interactionRef.current.mx = e.clientX;
@@ -82,6 +88,7 @@ const BlueprintBackground = () => {
 
       try {
         const p5Module = await import("p5");
+        if (cancelled || !containerRef.current) return;
         const p5 = p5Module.default;
         // Load optimized Conway sketch (Globe is archived for deployment)
         const sketch = createConwaySketch(settingsRef, containerRef, interactionRef);
@@ -93,6 +100,7 @@ const BlueprintBackground = () => {
     loadP5();
 
     return () => {
+      cancelled = true;
       if (typeof document !== "undefined") {
         document.body.style.userSelect = '';
         document.body.style.webkitUserSelect = '';
