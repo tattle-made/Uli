@@ -16,6 +16,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
   let conwayCols = 0;
   let conwayRows = 0;
   let lastConwayGridSize = -1;
+  let lastConwayGap = -1;
   let wasDraggingConway = false;
   let cachedPushEls = null;
   let activeSites = [];
@@ -46,7 +47,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
     const gap = s.conwayGap;
     const step = size + gap;
     
-    if (size !== lastConwayGridSize || conwayCols === 0) {
+    if (size !== lastConwayGridSize || gap !== lastConwayGap || conwayCols === 0) {
       conwayCols = Math.ceil(p.width / step) + 1;
       conwayRows = Math.ceil(p.height / step) + 1;
       
@@ -98,6 +99,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
       }
       
       lastConwayGridSize = size;
+      lastConwayGap = gap;
     }
     
     if (p.frameCount % Math.max(1, Math.floor(60 / s.conwaySpeed)) === 0) {
