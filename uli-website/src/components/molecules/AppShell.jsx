@@ -34,6 +34,10 @@ export default function AppShell({ children }) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
+  const isHome =
+    fullPath === "" ||
+    ["hi", "en", "ta", "ma"].includes(fullPath.split("/").at(-1));
+
   return (
     <Grommet theme={Theme}>
       <main
@@ -41,6 +45,7 @@ export default function AppShell({ children }) {
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
+          position: "relative",
         }}
       >
         <Helmet>
@@ -58,8 +63,20 @@ export default function AppShell({ children }) {
           ></script>
         </Helmet>
 
-        <NavBarNew />
-        <Box flex="grow" className="font-labrada">{children}</Box>
+        <div
+          style={{
+            position: isHome ? "absolute" : "relative",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 10,
+          }}
+        >
+          <NavBarNew />
+        </div>
+        <Box flex="grow" className="font-labrada">
+          {children}
+        </Box>
         <FooterNew />
       </main>
     </Grommet>
