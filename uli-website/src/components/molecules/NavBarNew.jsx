@@ -70,6 +70,9 @@ export default function NavBarNew() {
           <NavLinkNew to="/blog">
             <Text className="text-[16px] font-medium">Blog</Text>
           </NavLinkNew>
+          <NavLinkNew to="/research">
+            <Text className="text-[16px] font-medium">Research</Text>
+          </NavLinkNew>
         </Box>
       </Box>
 
@@ -80,6 +83,9 @@ export default function NavBarNew() {
           </NavLinkNew> */}
           <NavLinkNew to="/blog">
             <Text className="text-[16px] font-medium">Blog</Text>
+          </NavLinkNew>
+          <NavLinkNew to="/research">
+            <Text className="text-[16px] font-medium">Research</Text>
           </NavLinkNew>
         </Box>
 
