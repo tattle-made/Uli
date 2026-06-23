@@ -57,10 +57,33 @@
           </.link>
         </li>
       <% end %>
-      <li class="text-[0.8125rem] leading-6 text-zinc-900">
-        <a href={~p"/locale/en"} class="font-semibold hover:text-zinc-700">EN</a>
-        |
-        <a href={~p"/locale/hi"} class="font-semibold hover:text-zinc-700">हिं</a>
+      <li class="relative group">
+        <button
+          class="flex items-center text-zinc-600 hover:text-zinc-900 transition-colors"
+          aria-label="Select language"
+        >
+          <.icon name="hero-language" class="w-5 h-5" />
+        </button>
+        <div class="absolute right-0 top-full pt-1 hidden group-hover:block z-50">
+          <ul class="min-w-[10rem] rounded-lg border border-zinc-200 bg-white py-1 shadow-lg text-sm text-zinc-700">
+            <li>
+              <a
+                href={~p"/locale/en"}
+                class={"block px-4 py-2 hover:bg-zinc-50 #{if assigns[:locale] == "en", do: "font-semibold text-zinc-900", else: ""}"}
+              >
+                English
+              </a>
+            </li>
+            <li>
+              <a
+                href={~p"/locale/hi"}
+                class={"block px-4 py-2 hover:bg-zinc-50 #{if assigns[:locale] == "hi", do: "font-semibold text-zinc-900", else: ""}"}
+              >
+                हिंदी
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
     <%= @inner_content %>
