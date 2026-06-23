@@ -4,7 +4,7 @@ defmodule UliCommunityWeb.UserApp.DisplayAllUserAppsLive do
 
   def mount(_params, _session, socket) do
     {all_user_apps, socket} =
-      case Apps.get_user_apps(socket.assigns.current_user.id) do
+      case Apps.get_user_apps(socket.assigns.scope) do
         entries when is_list(entries) ->
           {entries, socket}
 

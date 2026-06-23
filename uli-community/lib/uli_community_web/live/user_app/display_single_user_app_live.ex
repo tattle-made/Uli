@@ -11,7 +11,7 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
 
   @impl Phoenix.LiveView
   def mount(%{"app_id" => app_id}, _session, socket) do
-    app = Apps.get_user_app_by_id(app_id, socket.assigns.current_user.id)
+    app = Apps.get_user_app_by_id(socket.assigns.scope, app_id)
 
     IO.inspect(app, label: "APP IS: ")
     user = if app, do: Accounts.get_user!(app.user_id), else: nil
@@ -175,7 +175,7 @@ defmodule UliCommunityWeb.UserApp.DisplaySingleUserAppLive do
 
   @impl true
   def handle_event("delete_app_token", %{"token_id" => token_id}, socket) do
-    case UliCommunity.Api.delete_app_access_token_by_token_id(token_id) do
+    case UliCommunity.Api.delete_app_access_token_by_token_id(socket.assigns.scope, token_id) do
       {:ok, _deleted_token} ->
         updated_tokens =
           Enum.reject(socket.assigns.app_tokens, fn t -> t.token_id == token_id end)

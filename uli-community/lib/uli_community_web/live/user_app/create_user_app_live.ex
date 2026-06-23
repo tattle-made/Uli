@@ -13,15 +13,13 @@ defmodule UliCommunityWeb.UserApp.CreateUserAppLive do
   end
 
   def handle_event("submit", %{"user_application" => params}, socket) do
-    params = Map.put(params, "user_id", socket.assigns.current_user.id)
-
     changeset =
       UserApplication.changeset(%UserApplication{}, params)
 
     if changeset.valid? do
       IO.inspect(params, label: "VALID FORM. PARAMS: ")
 
-      case Apps.create_user_app(params) do
+      case Apps.create_user_app(socket.assigns.scope, params) do
         {:ok, created_app} ->
           socket =
             socket

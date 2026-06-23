@@ -1,23 +1,26 @@
 defmodule UliCommunity.Apps do
   alias UliCommunity.Repo
   alias UliCommunity.Apps.UserApplication
+  alias UliCommunity.Accounts.Scope
   import Ecto.Query
 
-  def create_user_app(params) do
+  def create_user_app(%Scope{} = scope, params) do
+    params = Map.put(params, "user_id", scope.user.id)
+
     %UserApplication{}
     |> UserApplication.changeset(params)
     |> Repo.insert()
   end
 
-  def get_user_apps(user_id) do
+  def get_user_apps(%Scope{} = scope) do
     UserApplication
-    |> where([ua], ua.user_id == ^user_id)
+    |> where([ua], ua.user_id == ^scope.user.id)
     |> Repo.all()
   end
 
-  def get_user_app_by_id(app_id, user_id) do
+  def get_user_app_by_id(%Scope{} = scope, app_id) do
     UserApplication
-    |> where([ua], ua.id == ^app_id and ua.user_id == ^user_id)
+    |> where([ua], ua.id == ^app_id and ua.user_id == ^scope.user.id)
     |> preload(:user)
     |> Repo.one()
   end
