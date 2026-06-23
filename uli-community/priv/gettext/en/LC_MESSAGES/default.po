@@ -1,12 +1,16 @@
-## Translations for Hindi (hi)
-##
-## Run `mix gettext.extract --merge` after adding new gettext() calls
-## to keep this file in sync with the source.
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: hi\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-## user_settings_live.ex
 #: lib/uli_community_web/live/user_settings_live.ex:9
 #, elixir-autogen, elixir-format
 msgid "Account Settings"
@@ -108,7 +112,6 @@ msgstr ""
 msgid "Log in"
 msgstr ""
 
-## user_login_live.ex
 #: lib/uli_community_web/live/user_login_live.ex:8
 #, elixir-autogen, elixir-format
 msgid "Log in to account"
@@ -117,7 +120,7 @@ msgstr ""
 #: lib/uli_community_web/components/layouts/root.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Log out"
-msgstr "लॉग आउट"
+msgstr ""
 
 #: lib/uli_community_web/live/user_login_live.ex:29
 #, elixir-autogen, elixir-format
@@ -142,7 +145,6 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-## home.html.heex
 #: lib/uli_community_web/controllers/page_html/home.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Reclaim your online space"
@@ -155,13 +157,11 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-## user_registration_live.ex
 #: lib/uli_community_web/live/user_registration_live.ex:11
 #, elixir-autogen, elixir-format
 msgid "Register for an account"
 msgstr ""
 
-## user_reset_password_live.ex
 #: lib/uli_community_web/live/user_reset_password_live.ex:9
 #: lib/uli_community_web/live/user_reset_password_live.ex:29
 #, elixir-autogen, elixir-format
@@ -178,17 +178,15 @@ msgstr ""
 msgid "Send password reset instructions"
 msgstr ""
 
-## user_forgot_password_live.ex
 #: lib/uli_community_web/live/user_forgot_password_live.ex:17
 #, elixir-autogen, elixir-format
 msgid "Sending..."
 msgstr ""
 
-## root.html.heex (nav)
 #: lib/uli_community_web/components/layouts/root.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Settings"
-msgstr "सेटिंग्स"
+msgstr ""
 
 #: lib/uli_community_web/live/user_login_live.ex:12
 #, elixir-autogen, elixir-format
