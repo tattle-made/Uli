@@ -6,7 +6,7 @@ defmodule UliCommunityWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center">
-      Account Settings
+      <%= gettext("Account Settings") %>
       <:subtitle>Manage your account email address and password settings</:subtitle>
     </.header>
 
@@ -18,19 +18,19 @@ defmodule UliCommunityWeb.UserSettingsLive do
           phx-submit="update_email"
           phx-change="validate_email"
         >
-          <.input field={@email_form[:email]} type="email" label="Email" required class="w-full" />
+          <.input field={@email_form[:email]} type="email" label={gettext("Email")} required class="w-full" />
           <.input
             field={@email_form[:current_password]}
             name="current_password"
             id="current_password_for_email"
             type="password"
-            label="Current password"
+            label={gettext("Current password")}
             value={@email_form_current_password}
             required
             class="w-full"
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
+            <.button phx-disable-with={gettext("Changing...")}><%= gettext("Change Email") %></.button>
           </:actions>
         </.simple_form>
       </div>
@@ -53,28 +53,28 @@ defmodule UliCommunityWeb.UserSettingsLive do
           <.input
             field={@password_form[:password]}
             type="password"
-            label="New password"
+            label={gettext("New password")}
             required
             class="w-full"
           />
           <.input
             field={@password_form[:password_confirmation]}
             type="password"
-            label="Confirm new password"
+            label={gettext("Confirm new password")}
             class="w-full"
           />
           <.input
             field={@password_form[:current_password]}
             name="current_password"
             type="password"
-            label="Current password"
+            label={gettext("Current password")}
             id="current_password_for_password"
             value={@current_password}
             required
             class="w-full"
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Password</.button>
+            <.button phx-disable-with={gettext("Changing...")}><%= gettext("Change Password") %></.button>
           </:actions>
         </.simple_form>
       </div>

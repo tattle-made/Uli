@@ -8,13 +8,13 @@ defmodule UliCommunityWeb.UserRegistrationLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
-        Register for an account
+        <%= gettext("Register for an account") %>
         <:subtitle>
-          Already registered?
+          <%= gettext("Already registered?") %>
           <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-            Log in
+            <%= gettext("Log in") %>
           </.link>
-          to your account now.
+          <%= gettext("to your account now.") %>
         </:subtitle>
       </.header>
 
@@ -28,14 +28,14 @@ defmodule UliCommunityWeb.UserRegistrationLive do
         method="post"
       >
         <.error :if={@check_errors}>
-          Oops, something went wrong! Please check the errors below.
+          <%= gettext("Oops, something went wrong! Please check the errors below.") %>
         </.error>
 
-        <.input field={@form[:email]} type="email" label="Email" required class="w-full" />
-        <.input field={@form[:password]} type="password" label="Password" required class="w-full" />
+        <.input field={@form[:email]} type="email" label={gettext("Email")} required class="w-full" />
+        <.input field={@form[:password]} type="password" label={gettext("Password")} required class="w-full" />
 
         <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
+          <.button phx-disable-with={gettext("Creating account...")} class="w-full"><%= gettext("Create an account") %></.button>
         </:actions>
       </.simple_form>
     </div>

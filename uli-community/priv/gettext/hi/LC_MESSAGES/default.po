@@ -1,0 +1,110 @@
+## Translations for Hindi (hi)
+##
+## Run `mix gettext.extract --merge` after adding new gettext() calls
+## to keep this file in sync with the source.
+msgid ""
+msgstr ""
+"Language: hi\n"
+
+## home.html.heex
+msgid "Reclaim your online space"
+msgstr ""
+
+msgid "View Crowdsourced Contributions"
+msgstr ""
+
+## root.html.heex (nav)
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+msgid "Log out"
+msgstr "लॉग आउट"
+
+msgid "Register"
+msgstr ""
+
+msgid "Log in"
+msgstr ""
+
+## user_login_live.ex
+msgid "Log in to account"
+msgstr ""
+
+msgid "Don't have an account?"
+msgstr ""
+
+msgid "Sign up"
+msgstr ""
+
+msgid "for an account now."
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Keep me logged in"
+msgstr ""
+
+msgid "Forgot your password?"
+msgstr ""
+
+msgid "Logging in..."
+msgstr ""
+
+## user_registration_live.ex
+msgid "Register for an account"
+msgstr ""
+
+msgid "Already registered?"
+msgstr ""
+
+msgid "to your account now."
+msgstr ""
+
+msgid "Oops, something went wrong! Please check the errors below."
+msgstr ""
+
+msgid "Creating account..."
+msgstr ""
+
+msgid "Create an account"
+msgstr ""
+
+## user_forgot_password_live.ex
+msgid "Sending..."
+msgstr ""
+
+msgid "Send password reset instructions"
+msgstr ""
+
+## user_reset_password_live.ex
+msgid "Reset Password"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "Confirm new password"
+msgstr ""
+
+msgid "Resetting..."
+msgstr ""
+
+## user_settings_live.ex
+msgid "Account Settings"
+msgstr ""
+
+msgid "Current password"
+msgstr ""
+
+msgid "Changing..."
+msgstr ""
+
+msgid "Change Email"
+msgstr ""
+
+msgid "Change Password"
+msgstr ""

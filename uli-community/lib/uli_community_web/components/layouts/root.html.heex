@@ -27,7 +27,7 @@
             href={~p"/users/settings"}
             class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
           >
-            Settings
+            <%= gettext("Settings") %>
           </.link>
         </li>
         <li>
@@ -36,7 +36,7 @@
             method="delete"
             class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
           >
-            Log out
+            <%= gettext("Log out") %>
           </.link>
         </li>
       <% else %>
@@ -45,7 +45,7 @@
             href={~p"/users/register"}
             class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
           >
-            Register
+            <%= gettext("Register") %>
           </.link>
         </li>
         <li>
@@ -53,10 +53,15 @@
             href={~p"/users/log_in"}
             class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
           >
-            Log in
+            <%= gettext("Log in") %>
           </.link>
         </li>
       <% end %>
+      <li class="text-[0.8125rem] leading-6 text-zinc-900">
+        <a href={~p"/locale/en"} class="font-semibold hover:text-zinc-700">EN</a>
+        |
+        <a href={~p"/locale/hi"} class="font-semibold hover:text-zinc-700">हिं</a>
+      </li>
     </ul>
     <%= @inner_content %>
   </body>
