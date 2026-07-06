@@ -12,6 +12,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
              :appropriation_context,
              :meaning,
              :categories,
+             :language,
              :contributor_user_id,
              :inserted_at,
              :updated_at,
@@ -21,6 +22,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
   schema "crowdsourced_slurs" do
     field(:label, :string)
     field(:level_of_severity, Ecto.Enum, values: [:low, :medium, :high])
+    field(:language, Ecto.Enum, values: [:english, :hindi, :tamil, :bengali, :malayalam])
     field(:casual, :boolean)
     field(:appropriated, :boolean)
     field(:appropriation_context, :boolean, default: nil)
@@ -56,6 +58,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     |> cast(attrs, [
       :label,
       :level_of_severity,
+      :language,
       :casual,
       :appropriated,
       :appropriation_context,
@@ -100,6 +103,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     |> cast(attrs, [
       :label,
       :level_of_severity,
+      :language,
       :casual,
       :appropriated,
       :appropriation_context,

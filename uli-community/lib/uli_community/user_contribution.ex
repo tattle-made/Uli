@@ -51,6 +51,7 @@ defmodule UliCommunity.UserContribution do
     CrowdsourcedSlur
     |> filter_by_search(search_params)
     |> filter_by_level_of_severity(search_params)
+    |> filter_by_language(search_params)
     |> filter_by_casual(search_params)
     |> filter_by_appropriated(search_params)
     |> filter_by_source(search_params)
@@ -94,6 +95,19 @@ defmodule UliCommunity.UserContribution do
       "true" -> from(s in query, where: s.appropriated == true)
       "false" -> from(s in query, where: s.appropriated == false)
       _ -> query
+    end
+  end
+
+  defp filter_by_language(query, search_params) do
+    case Keyword.get(search_params, :language) do
+      "all" ->
+        query
+
+      language when language in ["english", "hindi", "tamil", "bengali", "malayalam"] ->
+        from(s in query, where: s.language == ^String.to_existing_atom(language))
+
+      _ ->
+        query
     end
   end
 
@@ -306,6 +320,13 @@ defmodule UliCommunity.UserContribution do
     UliCommunity.UserContribution.CrowdsourcedSlur
     |> group_by([s], s.level_of_severity)
     |> select([s], %{label: s.level_of_severity, count: count(s.id)})
+    |> Repo.all()
+  end
+
+  def get_language do
+    UliCommunity.UserContribution.CrowdsourcedSlur
+    |> group_by([s], s.language)
+    |> select([s], %{label: s.language, count: count(s.id)})
     |> Repo.all()
   end
 
