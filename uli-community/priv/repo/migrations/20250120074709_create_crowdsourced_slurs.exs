@@ -3,7 +3,6 @@ defmodule UliCommunity.Repo.Migrations.CreateCrowdsourcedSlurs do
 
   def change do
     execute("CREATE TYPE level_of_severity AS ENUM ('low', 'medium', 'high')")
-    execute("CREATE TYPE language_enum AS ENUM ('hindi', 'english', 'tamil', 'bengali', 'malayalam')")
     execute("CREATE TYPE category_enum AS ENUM ('gendered',
     'sexualized',
     'religion',
@@ -24,7 +23,6 @@ defmodule UliCommunity.Repo.Migrations.CreateCrowdsourcedSlurs do
       add(:appropriation_context, :boolean, null: true)
       add(:meaning, :text)
       add(:categories, {:array, :category_enum})
-      add(:language, :language_enum)
       add(:contributor_user_id, references(:users, on_delete: :delete_all), null: false)
 
       timestamps(type: :utc_datetime)
