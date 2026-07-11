@@ -67,7 +67,8 @@ defmodule UliCommunity.MixProject do
       {:export, "~> 0.1.0"},
       {:oban, "~> 2.19"},
       {:igniter, "~> 0.5", only: [:dev]},
-      {:timex, "~> 3.7"}
+      {:timex, "~> 3.7"},
+      {:nimble_csv, "~> 1.2"}
     ]
   end
 

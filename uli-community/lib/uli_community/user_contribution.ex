@@ -242,6 +242,18 @@ defmodule UliCommunity.UserContribution do
     |> Repo.insert()
   end
 
+  def import_crowdsourced_slurs(attrs_list) when is_list(attrs_list) do
+    results =
+      Enum.map(attrs_list, fn attrs ->
+        %CrowdsourcedSlur{}
+        |> CrowdsourcedSlur.changeset_import(attrs)
+        |> Repo.insert()
+      end)
+
+    {succeeded, failed} = Enum.split_with(results, &match?({:ok, _}, &1))
+    {length(succeeded), length(failed)}
+  end
+
   @doc """
   Updates a crowdsourced_slur.
 

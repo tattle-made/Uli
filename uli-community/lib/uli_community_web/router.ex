@@ -160,6 +160,7 @@ defmodule UliCommunityWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       live "/testadmin", TestAdminRoleLive, :index
+      live "/admin/import-slurs", ImportSlursCsvLive, :index
       live "/gentoken", TokenGeneratorLive, :index
       live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
       live "/plugin-metadata/:slur_label", PluginMetadataSlurLive, :index

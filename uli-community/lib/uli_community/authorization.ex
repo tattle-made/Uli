@@ -15,6 +15,7 @@ defmodule UliCommunity.Authorization do
 
   defp can?(_role, "/", _action), do: true
   defp can?(:user, "/testadmin", _action), do: false
+  defp can?(:user, "/admin/import-slurs", _action), do: false
   defp can?(_role, _route, _action), do: true
 
   defp get_action(%{phoenix_live_view: plv}), do: elem(plv, 1)

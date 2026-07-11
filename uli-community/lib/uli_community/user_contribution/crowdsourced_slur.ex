@@ -101,6 +101,26 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     ])
   end
 
+  def changeset_import(crowdsourced_slur, attrs) do
+    crowdsourced_slur
+    |> cast(attrs, [
+      :label,
+      :level_of_severity,
+      :language,
+      :casual,
+      :appropriated,
+      :appropriation_context,
+      :meaning,
+      :categories,
+      :contributor_user_id,
+      :page_url,
+      :source,
+      :session_id
+    ])
+    |> validate_required([:label, :level_of_severity, :categories])
+    |> Languages.validate_language(:language)
+  end
+
   def changeset_seed(crowdsourced_slur, attrs) do
     crowdsourced_slur
     |> cast(attrs, [

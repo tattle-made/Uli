@@ -1,0 +1,289 @@
+<div class="max-w-7xl mx-auto p-4">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-zinc-900">Import Slurs from CSV</h1>
+    <p class="text-sm text-zinc-500 mt-1">Admin tool — only visible to administrators</p>
+  </div>
+
+  <!-- Step indicator -->
+  <div class="flex items-center gap-2 mb-8 text-sm">
+    <span class={["px-3 py-1 rounded-full font-medium", if(@step == :upload, do: "bg-zinc-900 text-white", else: "bg-zinc-100 text-zinc-500")]}>
+      1. Upload
+    </span>
+    <span class="text-zinc-400">→</span>
+    <span class={["px-3 py-1 rounded-full font-medium", if(@step == :preview, do: "bg-zinc-900 text-white", else: "bg-zinc-100 text-zinc-500")]}>
+      2. Preview &amp; Configure
+    </span>
+    <span class="text-zinc-400">→</span>
+    <span class={["px-3 py-1 rounded-full font-medium", if(@step == :done, do: "bg-zinc-900 text-white", else: "bg-zinc-100 text-zinc-500")]}>
+      3. Done
+    </span>
+  </div>
+
+  <!-- ===== STEP 1: UPLOAD ===== -->
+  <%= if @step == :upload do %>
+    <div class="max-w-2xl">
+      <!-- Format guide -->
+      <div class="border border-zinc-200 rounded-lg p-4 mb-6 bg-zinc-50">
+        <h2 class="font-semibold text-zinc-800 mb-2">Expected CSV Format</h2>
+        <div class="text-sm text-zinc-700 space-y-1">
+          <p><span class="font-medium">Required columns:</span> label, level_of_severity, categories</p>
+          <p><span class="font-medium">Optional columns:</span> source, casual, appropriated, language, meaning, page_url, appropriation_context</p>
+          <p class="text-zinc-500 text-xs">source, language, and contributor can be assigned for all rows using the override controls in step 2.</p>
+        </div>
+        <div class="mt-3 text-sm text-zinc-700 space-y-1">
+          <p><span class="font-medium">level_of_severity:</span> <code class="bg-zinc-200 px-1 rounded">low</code>, <code class="bg-zinc-200 px-1 rounded">medium</code>, or <code class="bg-zinc-200 px-1 rounded">high</code></p>
+          <p><span class="font-medium">casual / appropriated:</span> <code class="bg-zinc-200 px-1 rounded">true</code> or <code class="bg-zinc-200 px-1 rounded">false</code></p>
+          <p><span class="font-medium">categories:</span> pipe-separated — e.g. <code class="bg-zinc-200 px-1 rounded">gendered|other</code></p>
+          <p><span class="font-medium">source:</span> <code class="bg-zinc-200 px-1 rounded">plugin</code>, <code class="bg-zinc-200 px-1 rounded">experts_2022</code>, or <code class="bg-zinc-200 px-1 rounded">crowdsourcing_exercise</code> (can be overridden in step 2)</p>
+          <p><span class="font-medium">language:</span> ISO 639-3 code — e.g. <code class="bg-zinc-200 px-1 rounded">hin</code>, <code class="bg-zinc-200 px-1 rounded">tam</code> (can be overridden in step 2)</p>
+        </div>
+        <div class="mt-3 pt-3 border-t border-zinc-200">
+          <p class="text-xs text-zinc-500 font-medium mb-1">Example row:</p>
+          <code class="text-xs text-zinc-700 break-all block">label,level_of_severity,casual,appropriated,categories,source,language,meaning</code>
+          <code class="text-xs text-zinc-700 break-all block">mc,high,false,false,gendered|other,crowdsourcing_exercise,hin,an expletive</code>
+        </div>
+      </div>
+
+      <!-- Upload form -->
+      <form phx-submit="parse-csv" phx-change="validate-upload">
+        <div class="border-2 border-dashed border-zinc-300 rounded-lg p-8 text-center">
+          <svg class="mx-auto h-10 w-10 text-zinc-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <p class="text-sm text-zinc-600 mb-3">Select a CSV file to import</p>
+          <.live_file_input upload={@uploads.csv_file} class="text-sm text-zinc-500" />
+          <%= for entry <- @uploads.csv_file.entries do %>
+            <p class="mt-2 text-sm text-zinc-600"><%= entry.client_name %> (<%= trunc(entry.client_size / 1024) %> KB)</p>
+            <%= for err <- upload_errors(@uploads.csv_file, entry) do %>
+              <p class="text-rose-500 text-sm mt-1"><%= err %></p>
+            <% end %>
+          <% end %>
+        </div>
+
+        <.button type="submit" class="mt-4 w-full" disabled={Enum.empty?(@uploads.csv_file.entries)}>
+          Parse &amp; Preview
+        </.button>
+      </form>
+
+      <%= if @parse_error do %>
+        <div class="mt-4 p-4 bg-rose-50 border border-rose-200 rounded-lg">
+          <div class="flex gap-2">
+            <svg class="h-5 w-5 text-rose-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <div>
+              <p class="font-medium text-rose-800">Could not parse CSV</p>
+              <p class="text-sm text-rose-700 mt-1"><%= @parse_error %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- ===== STEP 2: PREVIEW ===== -->
+  <%= if @step == :preview do %>
+    <!-- Override controls -->
+    <div class="border border-zinc-200 rounded-lg p-4 mb-6 bg-zinc-50">
+      <h2 class="font-semibold text-zinc-800 mb-3">Override Settings</h2>
+      <form phx-change="update-overrides" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Assign user -->
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 mb-1">
+            Assign contributor user <span class="text-rose-500">*</span>
+          </label>
+          <select
+            name="user_id"
+            class="w-full border border-zinc-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-zinc-500"
+          >
+            <option value="">— Select a user (required) —</option>
+            <%= for user <- @users do %>
+              <option value={user.id} selected={@override_user_id == to_string(user.id)}>
+                <%= user.email %> (<%= user.role %>)
+              </option>
+            <% end %>
+          </select>
+          <p class="text-xs text-zinc-500 mt-1">Set as contributor for every imported row.</p>
+        </div>
+
+        <!-- Override language -->
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 mb-1">
+            Override language
+          </label>
+          <select
+            name="language"
+            class="w-full border border-zinc-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-zinc-500"
+          >
+            <option value="">— Keep each row's language —</option>
+            <%= for {name, code} <- @language_options do %>
+              <option value={code} selected={@override_language == code}>
+                <%= name %> (<%= code %>)
+              </option>
+            <% end %>
+          </select>
+          <p class="text-xs text-zinc-500 mt-1">Leave blank to use the CSV language column.</p>
+        </div>
+
+        <!-- Override source -->
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 mb-1">
+            Override source
+          </label>
+          <select
+            name="source"
+            class="w-full border border-zinc-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-zinc-500"
+          >
+            <option value="">— Keep each row's source —</option>
+            <option value="plugin" selected={@override_source == "plugin"}>Plugin</option>
+            <option value="experts_2022" selected={@override_source == "experts_2022"}>Experts 2022</option>
+            <option value="crowdsourcing_exercise" selected={@override_source == "crowdsourcing_exercise"}>Crowdsourcing Exercise</option>
+          </select>
+          <p class="text-xs text-zinc-500 mt-1">Leave blank to use the CSV source column.</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Blocking warnings -->
+    <%= if is_nil(@override_user_id) do %>
+      <div class="mb-2 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
+        <svg class="h-5 w-5 text-amber-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <p class="text-sm text-amber-800">Please select a contributor user before importing.</p>
+      </div>
+    <% end %>
+    <%= if @missing_source_count > 0 && is_nil(@override_source) do %>
+      <div class="mb-2 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
+        <svg class="h-5 w-5 text-amber-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <p class="text-sm text-amber-800">
+          <%= @missing_source_count %> <%= if @missing_source_count == 1, do: "row is", else: "rows are" %> missing a source — select a source override above or ensure every CSV row has a source value.
+        </p>
+      </div>
+    <% end %>
+
+    <!-- Summary bar -->
+    <div class="flex items-center gap-6 mb-4 text-sm text-zinc-600">
+      <span>Total: <span class="font-semibold text-zinc-900"><%= length(@validated_rows) %></span> rows</span>
+      <span>Valid: <span class="font-semibold text-emerald-700"><%= @valid_count %></span></span>
+      <%= if @invalid_count > 0 do %>
+        <span>Invalid (will be skipped): <span class="font-semibold text-rose-700"><%= @invalid_count %></span></span>
+      <% end %>
+    </div>
+
+    <!-- Preview table -->
+    <div class="overflow-x-auto rounded-lg border border-zinc-200 mb-6">
+      <table class="min-w-full text-sm">
+        <thead class="bg-zinc-50 text-zinc-500 uppercase text-xs border-b border-zinc-200">
+          <tr>
+            <th class="px-3 py-3 text-left w-8">#</th>
+            <th class="px-3 py-3 text-left">Label</th>
+            <th class="px-3 py-3 text-left">Severity</th>
+            <th class="px-3 py-3 text-left">Casual</th>
+            <th class="px-3 py-3 text-left">Appropriated</th>
+            <th class="px-3 py-3 text-left">Categories</th>
+            <th class="px-3 py-3 text-left">Source</th>
+            <th class="px-3 py-3 text-left">Language</th>
+            <th class="px-3 py-3 text-left">Meaning</th>
+            <th class="px-3 py-3 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-100 bg-white">
+          <%= for {row_data, idx} <- Enum.with_index(@validated_rows, 1) do %>
+            <tr class={if(!row_data.valid, do: "bg-rose-50")}>
+              <td class="px-3 py-2 text-zinc-400"><%= idx %></td>
+              <td class="px-3 py-2 font-medium text-zinc-900 max-w-xs truncate">
+                <%= Map.get(row_data.raw, "label", "") %>
+              </td>
+              <td class="px-3 py-2 text-zinc-600">
+                <%= Map.get(row_data.raw, "level_of_severity", "—") %>
+              </td>
+              <td class="px-3 py-2 text-zinc-600"><%= Map.get(row_data.raw, "casual", "—") %></td>
+              <td class="px-3 py-2 text-zinc-600"><%= Map.get(row_data.raw, "appropriated", "—") %></td>
+              <td class="px-3 py-2 text-zinc-600 max-w-xs">
+                <div class="flex flex-wrap gap-1">
+                  <%= for cat <- String.split(Map.get(row_data.raw, "categories", ""), "|", trim: true) do %>
+                    <span class="px-1.5 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs"><%= String.trim(cat) %></span>
+                  <% end %>
+                </div>
+              </td>
+              <td class="px-3 py-2 text-zinc-600">
+                <%= effective_source(row_data.raw, @override_source) %>
+                <%= if @override_source do %>
+                  <span class="text-xs text-zinc-400 ml-1">(override)</span>
+                <% end %>
+              </td>
+              <td class="px-3 py-2 text-zinc-600">
+                <%= language_name(effective_language(row_data.raw, @override_language)) %>
+                <%= if @override_language do %>
+                  <span class="text-xs text-zinc-400 ml-1">(override)</span>
+                <% end %>
+              </td>
+              <td class="px-3 py-2 text-zinc-500 max-w-xs truncate">
+                <%= Map.get(row_data.raw, "meaning", "") %>
+              </td>
+              <td class="px-3 py-2">
+                <%= if row_data.valid do %>
+                  <span class="text-emerald-700 text-xs font-medium">Valid</span>
+                <% else %>
+                  <ul class="text-rose-600 text-xs space-y-0.5">
+                    <%= for err <- row_data.errors do %>
+                      <li><%= err %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-4">
+      <button
+        phx-click="reset"
+        class="px-4 py-2 border border-zinc-300 text-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-50 transition-colors"
+      >
+        ← Start Over
+      </button>
+
+      <.button
+        phx-click="confirm-import"
+        disabled={is_nil(@override_user_id) || @valid_count == 0 || (@missing_source_count > 0 && is_nil(@override_source))}
+      >
+        Import <%= @valid_count %> valid <%= if @valid_count == 1, do: "row", else: "rows" %>
+        <%= if @invalid_count > 0 do %>
+          (skip <%= @invalid_count %> invalid)
+        <% end %>
+      </.button>
+    </div>
+  <% end %>
+
+  <!-- ===== STEP 3: DONE ===== -->
+  <%= if @step == :done && @import_results do %>
+    <div class="max-w-sm">
+      <div class="border border-zinc-200 rounded-xl p-8 text-center bg-white">
+        <h2 class="text-xl font-bold text-zinc-900 mb-4">Import Complete</h2>
+        <div class="text-zinc-600 space-y-2 mb-6">
+          <p>
+            <span class="font-semibold text-emerald-700"><%= @import_results.succeeded %></span>
+            <%= if @import_results.succeeded == 1, do: "slur", else: "slurs" %> imported successfully
+          </p>
+          <%= if @import_results.failed > 0 do %>
+            <p>
+              <span class="font-semibold text-rose-700"><%= @import_results.failed %></span>
+              <%= if @import_results.failed == 1, do: "row", else: "rows" %> failed to insert
+            </p>
+          <% end %>
+        </div>
+
+        <.button phx-click="reset" class="w-full">
+          Import Another File
+        </.button>
+      </div>
+    </div>
+  <% end %>
+</div>
