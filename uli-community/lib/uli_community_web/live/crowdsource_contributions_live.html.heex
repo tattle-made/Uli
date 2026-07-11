@@ -340,8 +340,10 @@
       <div>
         <p class="py-2">Language</p>
         <form phx-change="change-language">
+          <label for="language-filter" class="sr-only">Language</label>
           <select
             name="language"
+            id="language-filter"
             class="border border-gray-300 rounded p-2 text-sm w-auto"
           >
             <option value="all" selected={Keyword.get(@search_params, :language) == "all"}>
