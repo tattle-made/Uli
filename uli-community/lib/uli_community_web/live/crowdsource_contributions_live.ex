@@ -6,6 +6,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   alias UliCommunityWeb.CrowdsourceContributionsSearchParams
 
   alias UliCommunity.UserContribution
+  alias UliCommunity.Languages
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
@@ -16,7 +17,6 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     end
 
     user_role = socket.assigns.current_user.role
-
     {:ok,
      assign(socket,
        slurs_metadata_list: [],
@@ -29,7 +29,8 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
        search_params: [],
        query_count: 0,
        advanced_search: false,
-       vector_search_loading: false
+       vector_search_loading: false,
+       language_options: Languages.select_options()
      )}
   end
 
@@ -238,6 +239,18 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
       end
 
     {:noreply, socket}
+  end
+
+  def handle_event("change-language", %{"language" => code}, socket) do
+    search_params = Keyword.put(socket.assigns.search_params, :language, code)
+
+    {:noreply,
+     socket
+     |> assign(:search_params, search_params)
+     |> push_navigate(
+       to:
+         "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(search_params)}"
+     )}
   end
 
   def handle_event("close-modal", _unsigned_params, socket) do

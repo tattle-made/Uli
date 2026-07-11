@@ -40,7 +40,7 @@
         required
         label="Language"
         type="select"
-        options={[{"English", :en}, {"Hindi", :hi}, {"Tamil", :ta}]}
+        options={@language_options}
         field={@slur_form[:language]}
       />
     </div>
@@ -139,7 +139,7 @@
     <!-- Clear Filters (only tablet/laptop and larger) -->
     <.link
       href={
-        ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&casual=all&appropriated=all&source=all"
+        ~p"/crowdsource-contributions?page_num=1&sort=newest&level_of_severity=all&language=all&casual=all&appropriated=all&source=all"
       }
       class="hidden md:inline-flex mt-4 items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
     >
@@ -335,6 +335,27 @@
             selection={Keyword.get(@search_params, :source)}
           />
         </div>
+      </div>
+
+      <div>
+        <p class="py-2">Language</p>
+        <form phx-change="change-language">
+          <label for="language-filter" class="sr-only">Language</label>
+          <select
+            name="language"
+            id="language-filter"
+            class="border border-gray-300 rounded p-2 text-sm w-auto"
+          >
+            <option value="all" selected={Keyword.get(@search_params, :language) == "all"}>
+              All
+            </option>
+            <%= for {name, code} <- @language_options do %>
+              <option value={code} selected={Keyword.get(@search_params, :language) == code}>
+                <%= name %>
+              </option>
+            <% end %>
+          </select>
+        </form>
       </div>
 
       <div>
@@ -683,6 +704,7 @@
       <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
         <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
         <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
+        <:col :let={slur} label="Language"><%= slur.language || "-" %></:col>
         <:col :let={slur} label="Is Casual?">
           <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
         </:col>

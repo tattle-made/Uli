@@ -1,6 +1,7 @@
 defmodule UliCommunityWeb.CrowdsourceContributionsSearchParams do
   @allowed_filter_keys [
     "level_of_severity",
+    "language",
     "casual",
     "appropriated",
     "source",
@@ -17,6 +18,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsSearchParams do
       page_num: "1",
       sort: "newest",
       level_of_severity: "all",
+      language: "all",
       casual: "all",
       appropriated: "all",
       source: "all",
@@ -71,6 +73,9 @@ defmodule UliCommunityWeb.CrowdsourceContributionsSearchParams do
 
       "level_of_severity" ->
         Keyword.put(search_params, :level_of_severity, value["value"])
+
+      "language" ->
+        Keyword.put(search_params, :language, value["value"])
 
       "casual" ->
         Keyword.put(search_params, :casual, value["value"])

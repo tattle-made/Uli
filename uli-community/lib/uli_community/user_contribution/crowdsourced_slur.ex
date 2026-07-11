@@ -1,6 +1,7 @@
 defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
   use Ecto.Schema
   import Ecto.Changeset
+  alias UliCommunity.Languages
 
   @derive {Jason.Encoder,
            only: [
@@ -12,15 +13,18 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
              :appropriation_context,
              :meaning,
              :categories,
+             :language,
              :contributor_user_id,
              :inserted_at,
              :updated_at,
              :page_url
            ]}
 
+
   schema "crowdsourced_slurs" do
     field(:label, :string)
     field(:level_of_severity, Ecto.Enum, values: [:low, :medium, :high])
+    field(:language, :string)
     field(:casual, :boolean)
     field(:appropriated, :boolean)
     field(:appropriation_context, :boolean, default: nil)
@@ -56,6 +60,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     |> cast(attrs, [
       :label,
       :level_of_severity,
+      :language,
       :casual,
       :appropriated,
       :appropriation_context,
@@ -77,6 +82,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       :contributor_user_id,
       :source
     ])
+    |> Languages.validate_language(:language)
   end
 
   def changeset_only_label(crowdsourced_slur, attrs) do
@@ -100,6 +106,7 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
     |> cast(attrs, [
       :label,
       :level_of_severity,
+      :language,
       :casual,
       :appropriated,
       :appropriation_context,
@@ -114,5 +121,6 @@ defmodule UliCommunity.UserContribution.CrowdsourcedSlur do
       :label,
       :source
     ])
+    |> Languages.validate_language(:language)
   end
 end
