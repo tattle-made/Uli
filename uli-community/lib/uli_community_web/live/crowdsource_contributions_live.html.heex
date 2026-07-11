@@ -40,7 +40,7 @@
         required
         label="Language"
         type="select"
-        options={[{"English", :en}, {"Hindi", :hi}, {"Tamil", :ta}]}
+        options={@language_options}
         field={@slur_form[:language]}
       />
     </div>
@@ -339,50 +339,21 @@
 
       <div>
         <p class="py-2">Language</p>
-        <div>
-          <.input_radio
+        <form phx-change="change-language">
+          <select
             name="language"
-            id="english"
-            value="english"
-            label="English"
-            selection={Keyword.get(@search_params, :language)}
-          />
-          <.input_radio
-            name="language"
-            id="hindi"
-            value="hindi"
-            label="Hindi"
-            selection={Keyword.get(@search_params, :language)}
-          />
-          <.input_radio
-            name="language"
-            id="tamil"
-            value="tamil"
-            label="Tamil"
-            selection={Keyword.get(@search_params, :language)}
-          />
-          <.input_radio
-            name="language"
-            id="bengali"
-            value="bengali"
-            label="Bengali"
-            selection={Keyword.get(@search_params, :language)}
-          />
-          <.input_radio
-            name="language"
-            id="malayalam"
-            value="malayalam"
-            label="Malayalam"
-            selection={Keyword.get(@search_params, :language)}
-          />
-          <.input_radio
-            name="language"
-            id="language_all"
-            value="all"
-            label="All"
-            selection={Keyword.get(@search_params, :language)}
-          />
-        </div>
+            class="border border-gray-300 rounded p-2 text-sm w-auto"
+          >
+            <option value="all" selected={Keyword.get(@search_params, :language) == "all"}>
+              All
+            </option>
+            <%= for {name, code} <- @language_options do %>
+              <option value={code} selected={Keyword.get(@search_params, :language) == code}>
+                <%= name %>
+              </option>
+            <% end %>
+          </select>
+        </form>
       </div>
 
       <div>

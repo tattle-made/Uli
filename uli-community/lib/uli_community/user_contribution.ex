@@ -5,7 +5,7 @@ defmodule UliCommunity.UserContribution do
 
   import Ecto.Query, warn: false
   alias UliCommunity.Repo
-
+  alias UliCommunity.Languages
   alias UliCommunity.UserContribution.CrowdsourcedSlur
 
   @doc """
@@ -99,15 +99,12 @@ defmodule UliCommunity.UserContribution do
   end
 
   defp filter_by_language(query, search_params) do
-    case Keyword.get(search_params, :language) do
-      "all" ->
-        query
+    language = Keyword.get(search_params, :language)
 
-      language when language in ["english", "hindi", "tamil", "bengali", "malayalam"] ->
-        from(s in query, where: s.language == ^String.to_existing_atom(language))
-
-      _ ->
-        query
+    cond do
+      language == "all" -> query
+      language in Languages.valid_codes() -> from(s in query, where: s.language == ^language)
+      true -> query
     end
   end
 
