@@ -1,5 +1,6 @@
 const defaultMetadata = {
     label: '',
+    language: '',
     levelOfSeverity: '',
     casual: undefined,
     appropriated: undefined,
@@ -7,6 +8,12 @@ const defaultMetadata = {
     categories: [],
     meaning: ''
 };
+
+const languageOptions = [
+    { value: 'english', label: 'English' },
+    { value: 'hindi', label: 'Hindi' },
+    { value: 'tamil', label: 'Tamil' }
+];
 
 const categoryOptions = [
     {value: 'gendered', label: 'Gendered'},
@@ -23,4 +30,4 @@ const categoryOptions = [
 ];
 
 
-export { defaultMetadata, categoryOptions };
+export { defaultMetadata, categoryOptions, languageOptions };
