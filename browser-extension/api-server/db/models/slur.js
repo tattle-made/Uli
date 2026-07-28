@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
       label: {
         type: DataTypes.STRING,
       },
+      language: {
+        type: DataTypes.STRING,
+      },
       levelOfSeverity: {
         type: DataTypes.ENUM(['low', 'medium', 'high']),
       },

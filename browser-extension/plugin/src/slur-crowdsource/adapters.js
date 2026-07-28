@@ -28,6 +28,7 @@ function crowdsourceSlurMapApiKeys(apiSlur){
     return {
         id: apiSlur["id"],
         label: apiSlur["label"],
+        language: apiSlur["language"],
         levelOfSeverity: apiSlur["level_of_severity"],
         casual: apiSlur["casual"],
         appropriated: apiSlur["appropriated"],
