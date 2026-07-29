@@ -8,7 +8,8 @@ import {
     RadioButtonGroup,
     TextArea,
     TextInput,
-    SelectMultiple
+    SelectMultiple,
+    Select
 } from 'grommet';
 import { useNavigate } from 'react-router-dom';
 import Api from './Api';
@@ -16,7 +17,8 @@ import { UserContext, NotificationContext } from '../atoms/AppContext';
 import { slurCreatePluginToApi } from '../../slur-crowdsource/adapters';
 import {
     categoryOptions,
-    defaultMetadata
+    defaultMetadata,
+    languageOptions
 } from '../../slur-crowdsource/values';
 import { createCrowdsourceSlur } from '../../api/crowdsource-slurs';
 
@@ -92,6 +94,20 @@ export function SlurCreate() {
                     required={{ indicator: true }}
                 >
                     <TextInput id="slur-form-label" name="label" />
+                </FormField>
+
+                <FormField
+                    name="language"
+                    label={'Language'}
+                    required={{ indicator: true }}
+                >
+                    <Select
+                        id="slur-form-language"
+                        name="language"
+                        options={languageOptions}
+                        labelKey="label"
+                        valueKey="value"
+                    />
                 </FormField>
 
                 <FormField
