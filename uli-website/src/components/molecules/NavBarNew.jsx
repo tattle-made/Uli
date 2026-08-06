@@ -64,9 +64,9 @@ export default function NavBarNew() {
           {/* <NavLinkNew to="#">
             <Text className="text-[16px] font-medium">Contact</Text>
           </NavLinkNew> */}
-          {/* <NavLinkNew to="/about">
-            <Text className="text-[16px] font-medium">About us</Text>
-          </NavLinkNew> */}
+          <NavLinkNew to="/about">
+            <Text className="text-[16px] font-medium">About</Text>
+          </NavLinkNew>
           <NavLinkNew to="/blog">
             <Text className="text-[16px] font-medium">Blog</Text>
           </NavLinkNew>
@@ -78,9 +78,9 @@ export default function NavBarNew() {
 
       <Box className={`bg-[#FFE7D9] w-full text-center overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-96 opacity-100 mt-9 mb-4" : "max-h-0 opacity-0"} lg:hidden`}>
         <Box className="flex flex-col gap-5 py-6">
-          {/* <NavLinkNew to="/about">
-            <Text className="text-[16px] font-medium">About us</Text>
-          </NavLinkNew> */}
+          <NavLinkNew to="/about">
+            <Text className="text-[16px] font-medium">About</Text>
+          </NavLinkNew>
           <NavLinkNew to="/blog">
             <Text className="text-[16px] font-medium">Blog</Text>
           </NavLinkNew>
