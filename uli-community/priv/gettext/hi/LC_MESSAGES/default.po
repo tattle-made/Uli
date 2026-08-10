@@ -10,65 +10,65 @@ msgstr ""
 #: lib/uli_community_web/live/user_settings_live.ex:9
 #, elixir-autogen, elixir-format
 msgid "Account Settings"
-msgstr ""
+msgstr "खाते की सेटिंग्स"
 
 #: lib/uli_community_web/components/core_components.ex:505
 #, elixir-autogen, elixir-format
 msgid "Actions"
-msgstr ""
+msgstr "कार्रवाइयाँ"
 
 #: lib/uli_community_web/live/user_registration_live.ex:13
 #, elixir-autogen, elixir-format
 msgid "Already registered?"
-msgstr ""
+msgstr "पहले से पंजीकृत हैं?"
 
 #: lib/uli_community_web/components/core_components.ex:160
 #, elixir-autogen, elixir-format
 msgid "Attempting to reconnect"
-msgstr ""
+msgstr "पुनः कनेक्ट करने का प्रयास किया जा रहा है"
 
 #: lib/uli_community_web/live/user_settings_live.ex:33
 #, elixir-autogen, elixir-format
 msgid "Change Email"
-msgstr ""
+msgstr "ईमेल बदलें"
 
 #: lib/uli_community_web/live/user_settings_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Change Password"
-msgstr ""
+msgstr "पासवर्ड बदलें"
 
 #: lib/uli_community_web/live/user_settings_live.ex:33
 #: lib/uli_community_web/live/user_settings_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Changing..."
-msgstr ""
+msgstr "बदला जा रहा है..."
 
 #: lib/uli_community_web/live/user_reset_password_live.ex:25
 #: lib/uli_community_web/live/user_settings_live.ex:63
 #, elixir-autogen, elixir-format
 msgid "Confirm new password"
-msgstr ""
+msgstr "नए पासवर्ड की पुष्टि करें"
 
 #: lib/uli_community_web/live/user_registration_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Create an account"
-msgstr ""
+msgstr "खाता बनाएँ"
 
 #: lib/uli_community_web/live/user_registration_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Creating account..."
-msgstr ""
+msgstr "खाता बनाया जा रहा है..."
 
 #: lib/uli_community_web/live/user_settings_live.ex:27
 #: lib/uli_community_web/live/user_settings_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "Current password"
-msgstr ""
+msgstr "वर्तमान पासवर्ड"
 
 #: lib/uli_community_web/live/user_login_live.ex:10
 #, elixir-autogen, elixir-format
 msgid "Don't have an account?"
-msgstr ""
+msgstr "क्या आपका खाता नहीं है?"
 
 #: lib/uli_community_web/live/user_forgot_password_live.ex:15
 #: lib/uli_community_web/live/user_login_live.ex:19
@@ -76,28 +76,28 @@ msgstr ""
 #: lib/uli_community_web/live/user_settings_live.ex:21
 #, elixir-autogen, elixir-format
 msgid "Email"
-msgstr ""
+msgstr "ईमेल"
 
 #: lib/uli_community_web/components/core_components.ex:151
 #, elixir-autogen, elixir-format
 msgid "Error!"
-msgstr ""
+msgstr "त्रुटि!"
 
 #: lib/uli_community_web/live/user_forgot_password_live.ex:10
 #: lib/uli_community_web/live/user_login_live.ex:25
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
-msgstr ""
+msgstr "पासवर्ड भूल गए?"
 
 #: lib/uli_community_web/components/core_components.ex:172
 #, elixir-autogen, elixir-format
 msgid "Hang in there while we get back on track"
-msgstr ""
+msgstr "जब तक हम सब कुछ ठीक करते हैं, तब तक प्रतीक्षा करें"
 
 #: lib/uli_community_web/live/user_login_live.ex:23
 #, elixir-autogen, elixir-format
 msgid "Keep me logged in"
-msgstr ""
+msgstr "मुझे लॉग इन रखें"
 
 #: lib/uli_community_web/components/layouts/root.html.heex:56
 #: lib/uli_community_web/live/user_forgot_password_live.ex:24
@@ -106,13 +106,13 @@ msgstr ""
 #: lib/uli_community_web/live/user_reset_password_live.ex:35
 #, elixir-autogen, elixir-format
 msgid "Log in"
-msgstr ""
+msgstr "लॉग इन करें"
 
 ## user_login_live.ex
 #: lib/uli_community_web/live/user_login_live.ex:8
 #, elixir-autogen, elixir-format
 msgid "Log in to account"
-msgstr ""
+msgstr "खाते में लॉग इन करें"
 
 #: lib/uli_community_web/components/layouts/root.html.heex:39
 #, elixir-autogen, elixir-format
@@ -122,67 +122,67 @@ msgstr "लॉग आउट"
 #: lib/uli_community_web/live/user_login_live.ex:29
 #, elixir-autogen, elixir-format
 msgid "Logging in..."
-msgstr ""
+msgstr "लॉग इन किया जा रहा है..."
 
 #: lib/uli_community_web/live/user_reset_password_live.ex:21
 #: lib/uli_community_web/live/user_settings_live.ex:56
 #, elixir-autogen, elixir-format
 msgid "New password"
-msgstr ""
+msgstr "नया पासवर्ड"
 
 #: lib/uli_community_web/live/user_registration_live.ex:31
 #: lib/uli_community_web/live/user_reset_password_live.ex:18
 #, elixir-autogen, elixir-format
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr ""
+msgstr "ओह, कुछ गलत हो गया! कृपया नीचे दी गई त्रुटियों की जाँच करें।"
 
 #: lib/uli_community_web/live/user_login_live.ex:20
 #: lib/uli_community_web/live/user_registration_live.ex:35
 #, elixir-autogen, elixir-format
 msgid "Password"
-msgstr ""
+msgstr "पासवर्ड"
 
 ## home.html.heex
 #: lib/uli_community_web/controllers/page_html/home.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Reclaim your online space"
-msgstr ""
+msgstr "अपने ऑनलाइन स्पेस पर फिर से अधिकार पाएँ"
 
 #: lib/uli_community_web/components/layouts/root.html.heex:48
 #: lib/uli_community_web/live/user_forgot_password_live.ex:23
 #: lib/uli_community_web/live/user_reset_password_live.ex:34
 #, elixir-autogen, elixir-format
 msgid "Register"
-msgstr ""
+msgstr "पंजीकरण करें"
 
 ## user_registration_live.ex
 #: lib/uli_community_web/live/user_registration_live.ex:11
 #, elixir-autogen, elixir-format
 msgid "Register for an account"
-msgstr ""
+msgstr "खाते के लिए पंजीकरण करें"
 
 ## user_reset_password_live.ex
 #: lib/uli_community_web/live/user_reset_password_live.ex:9
 #: lib/uli_community_web/live/user_reset_password_live.ex:29
 #, elixir-autogen, elixir-format
 msgid "Reset Password"
-msgstr ""
+msgstr "पासवर्ड रीसेट करें"
 
 #: lib/uli_community_web/live/user_reset_password_live.ex:29
 #, elixir-autogen, elixir-format
 msgid "Resetting..."
-msgstr ""
+msgstr "रीसेट किया जा रहा है..."
 
 #: lib/uli_community_web/live/user_forgot_password_live.ex:18
 #, elixir-autogen, elixir-format
 msgid "Send password reset instructions"
-msgstr ""
+msgstr "पासवर्ड रीसेट करने के निर्देश भेजें"
 
 ## user_forgot_password_live.ex
 #: lib/uli_community_web/live/user_forgot_password_live.ex:17
 #, elixir-autogen, elixir-format
 msgid "Sending..."
-msgstr ""
+msgstr "भेजा जा रहा है..."
 
 ## root.html.heex (nav)
 #: lib/uli_community_web/components/layouts/root.html.heex:30
@@ -193,40 +193,40 @@ msgstr "सेटिंग्स"
 #: lib/uli_community_web/live/user_login_live.ex:12
 #, elixir-autogen, elixir-format
 msgid "Sign up"
-msgstr ""
+msgstr "साइन अप करें"
 
 #: lib/uli_community_web/components/core_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Something went wrong!"
-msgstr ""
+msgstr "कुछ गलत हो गया!"
 
 #: lib/uli_community_web/components/core_components.ex:150
 #, elixir-autogen, elixir-format
 msgid "Success!"
-msgstr ""
+msgstr "सफलता!"
 
 #: lib/uli_community_web/controllers/page_html/home.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "View Crowdsourced Contributions"
-msgstr ""
+msgstr "क्राउडसोर्स किए गए योगदान देखें"
 
 #: lib/uli_community_web/components/core_components.ex:155
 #, elixir-autogen, elixir-format
 msgid "We can't find the internet"
-msgstr ""
+msgstr "हमें इंटरनेट नहीं मिल रहा है"
 
 #: lib/uli_community_web/components/core_components.ex:76
 #: lib/uli_community_web/components/core_components.ex:130
 #, elixir-autogen, elixir-format
 msgid "close"
-msgstr ""
+msgstr "बंद करें"
 
 #: lib/uli_community_web/live/user_login_live.ex:14
 #, elixir-autogen, elixir-format
 msgid "for an account now."
-msgstr ""
+msgstr "अब खाते के लिए।"
 
 #: lib/uli_community_web/live/user_registration_live.ex:17
 #, elixir-autogen, elixir-format
 msgid "to your account now."
-msgstr ""
+msgstr "अब अपने खाते में।"
