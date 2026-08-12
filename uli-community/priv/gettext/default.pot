@@ -53,12 +53,12 @@ msgstr ""
 msgid "Confirm new password"
 msgstr ""
 
-#: lib/uli_community_web/live/user_registration_live.ex:38
+#: lib/uli_community_web/live/user_registration_live.ex:37
 #, elixir-autogen, elixir-format
 msgid "Create an account"
 msgstr ""
 
-#: lib/uli_community_web/live/user_registration_live.ex:38
+#: lib/uli_community_web/live/user_registration_live.ex:37
 #, elixir-autogen, elixir-format
 msgid "Creating account..."
 msgstr ""
@@ -75,8 +75,8 @@ msgid "Don't have an account?"
 msgstr ""
 
 #: lib/uli_community_web/live/user_forgot_password_live.ex:15
-#: lib/uli_community_web/live/user_login_live.ex:19
-#: lib/uli_community_web/live/user_registration_live.ex:34
+#: lib/uli_community_web/live/user_login_live.ex:18
+#: lib/uli_community_web/live/user_registration_live.ex:33
 #: lib/uli_community_web/live/user_settings_live.ex:21
 #, elixir-autogen, elixir-format
 msgid "Email"
@@ -88,7 +88,7 @@ msgid "Error!"
 msgstr ""
 
 #: lib/uli_community_web/live/user_forgot_password_live.ex:10
-#: lib/uli_community_web/live/user_login_live.ex:25
+#: lib/uli_community_web/live/user_login_live.ex:24
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
 msgstr ""
@@ -98,15 +98,14 @@ msgstr ""
 msgid "Hang in there while we get back on track"
 msgstr ""
 
-#: lib/uli_community_web/live/user_login_live.ex:23
+#: lib/uli_community_web/live/user_login_live.ex:22
 #, elixir-autogen, elixir-format
 msgid "Keep me logged in"
 msgstr ""
 
 #: lib/uli_community_web/components/layouts/root.html.heex:56
 #: lib/uli_community_web/live/user_forgot_password_live.ex:24
-#: lib/uli_community_web/live/user_login_live.ex:30
-#: lib/uli_community_web/live/user_registration_live.ex:15
+#: lib/uli_community_web/live/user_login_live.ex:29
 #: lib/uli_community_web/live/user_reset_password_live.ex:35
 #, elixir-autogen, elixir-format
 msgid "Log in"
@@ -122,7 +121,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: lib/uli_community_web/live/user_login_live.ex:29
+#: lib/uli_community_web/live/user_login_live.ex:28
 #, elixir-autogen, elixir-format
 msgid "Logging in..."
 msgstr ""
@@ -133,14 +132,14 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: lib/uli_community_web/live/user_registration_live.ex:31
+#: lib/uli_community_web/live/user_registration_live.ex:30
 #: lib/uli_community_web/live/user_reset_password_live.ex:18
 #, elixir-autogen, elixir-format
 msgid "Oops, something went wrong! Please check the errors below."
 msgstr ""
 
-#: lib/uli_community_web/live/user_login_live.ex:20
-#: lib/uli_community_web/live/user_registration_live.ex:35
+#: lib/uli_community_web/live/user_login_live.ex:19
+#: lib/uli_community_web/live/user_registration_live.ex:34
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr ""
@@ -188,11 +187,6 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: lib/uli_community_web/live/user_login_live.ex:12
-#, elixir-autogen, elixir-format
-msgid "Sign up"
-msgstr ""
-
 #: lib/uli_community_web/components/core_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Something went wrong!"
@@ -219,12 +213,12 @@ msgstr ""
 msgid "close"
 msgstr ""
 
-#: lib/uli_community_web/live/user_login_live.ex:14
+#: lib/uli_community_web/live/user_login_live.ex:12
 #, elixir-autogen, elixir-format
-msgid "for an account now."
+msgid "Sign up now"
 msgstr ""
 
-#: lib/uli_community_web/live/user_registration_live.ex:17
+#: lib/uli_community_web/live/user_registration_live.ex:15
 #, elixir-autogen, elixir-format
-msgid "to your account now."
+msgid "Log in now"
 msgstr ""

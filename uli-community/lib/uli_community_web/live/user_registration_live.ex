@@ -12,9 +12,8 @@ defmodule UliCommunityWeb.UserRegistrationLive do
         <:subtitle>
           <%= gettext("Already registered?") %>
           <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-            <%= gettext("Log in") %>
+            <%= gettext("Log in now") %>
           </.link>
-          <%= gettext("to your account now.") %>
         </:subtitle>
       </.header>
 

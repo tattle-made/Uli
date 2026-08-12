@@ -9,9 +9,8 @@ defmodule UliCommunityWeb.UserLoginLive do
         <:subtitle>
           <%= gettext("Don't have an account?") %>
           <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-            <%= gettext("Sign up") %>
+            <%= gettext("Sign up now") %>
           </.link>
-          <%= gettext("for an account now.") %>
         </:subtitle>
       </.header>
 
