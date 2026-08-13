@@ -11,19 +11,25 @@
 #   - https://pkgs.org/ - resource for finding needed packages
 #   - Ex: hexpm/elixir:1.17.2-erlang-27.0-debian-bullseye-20240701-slim
 #
-ARG ELIXIR_VERSION=1.18.2
-ARG OTP_VERSION=27.2.1
-ARG DEBIAN_VERSION=ubuntu-jammy-20240808
-ARG RUNNER_DEBIAN_VERSION=jammy-20240808
+# 1.18.4-erlang-27.3.4.14-ubuntu-jammy-20260627 <- Current Image
+ARG ELIXIR_VERSION=1.18.4
+ARG OTP_VERSION=27.3.4.14
+ARG DEBIAN_VERSION=ubuntu-jammy-20260627
+ARG RUNNER_DEBIAN_VERSION=jammy-20260627
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="ubuntu:${RUNNER_DEBIAN_VERSION}"
 
 FROM ${BUILDER_IMAGE} as builder
 
-# install build dependencies
+# install build dependencies and python
 RUN apt-get update -y && apt-get install -y build-essential git npm \
+  python3 python3-venv curl \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
 
 # prepare build dir
 WORKDIR /app
@@ -50,6 +56,18 @@ COPY priv priv
 
 COPY lib lib
 
+# set up the python venv, install deps, and pre-download the
+# vyakyarth model weights used in advanced search. 
+# HF_HOME pins the download location inside the project dir 
+# instead of the default ~/.cache,
+# so it's copyable into the runner stage below.
+# This is its own layer, so it's only re-run (and only re-downloads)
+# when lib/python actually changes - unrelated app changes (CSS, other
+# .ex files, etc.) reuse the cached layer.
+ENV HF_HOME=/app/lib/python/.cache/huggingface
+RUN cd lib/python && uv venv && uv pip install -r pyproject.toml \
+  && .venv/bin/python -c "import text_vec; text_vec.initialize()"
+
 COPY assets assets
 
 RUN npm install --prefix assets
@@ -72,6 +90,7 @@ FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
   apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  python3 python3-venv \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
@@ -87,6 +106,12 @@ RUN chown nobody /app
 # set runner ENV
 ENV MIX_ENV="prod"
 
+# bring the python venv (deps + pre-downloaded model cache)
+# into the runner image, and point HF_HOME at the same spot so the
+# app finds the model without re-downloading it at runtime.
+COPY --from=builder --chown=nobody:root /app/lib/python /app/lib/python
+ENV HF_HOME=/app/lib/python/.cache/huggingface
+
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/uli_community ./
 
@@ -97,4 +122,4 @@ USER nobody
 # above and adding an entrypoint. See https://github.com/krallin/tini for details
 # ENTRYPOINT ["/tini", "--"]
 
-CMD ["/app/bin/server"]
+CMD ["/app/bin/uli_community", "start"]

@@ -122,9 +122,16 @@ if config_env() == :prod do
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
   # ## Configuring the mailer
-  config :uli_community, UliCommunity.Mailer,
-    adapter: Swoosh.Adapters.AmazonSES,
-    region: "ap-south-1",
-    access_key: aws_access_key_id,
-    secret: aws_secret_access_key
+  # MAILER_ADAPTER=local switches to Swoosh's in-memory adapter, useful when
+  # running a prod-like build locally without real AWS SES creds. Any other
+  # value (including unset, as in real prod) keeps the SES adapter.
+  if System.get_env("MAILER_ADAPTER") == "local" do
+    config :uli_community, UliCommunity.Mailer, adapter: Swoosh.Adapters.Local
+  else
+    config :uli_community, UliCommunity.Mailer,
+      adapter: Swoosh.Adapters.AmazonSES,
+      region: "ap-south-1",
+      access_key: aws_access_key_id,
+      secret: aws_secret_access_key
+  end
 end
