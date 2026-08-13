@@ -23,3 +23,8 @@ config :logger, level: :info
 
 # text vec genserver for prod setup
 config :uli_community, :enable_text_vec_rep_vyakyarth, true
+
+# Configure Python
+config :uli_community, :python,
+  python: "/app/lib/python/.venv/bin/python",
+  python_path: "/app/lib/python"
