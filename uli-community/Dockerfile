@@ -24,15 +24,32 @@ FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies and python
 RUN apt-get update -y && apt-get install -y build-essential git npm \
-  python3 python3-venv curl \
+  python3 python3-venv \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-# install uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:${PATH}"
+# install a pinned uv binary (avoids curl | sh executing an unpinned,
+# unverified remote script as root on every build)
+COPY --from=ghcr.io/astral-sh/uv:0.6.16 /uv /uvx /usr/local/bin/
 
 # prepare build dir
 WORKDIR /app
+
+# set up the python venv, install deps, and pre-download the
+# vyakyarth model weights used in advanced search (~1.1GB, the heaviest
+# step in this build). Copied in and run before any Elixir/Phoenix step,
+# on its own COPY, so this layer's cache key depends only on lib/python's
+# own content - it's untouched by changes to mix.exs, other lib/**/*.ex
+# files, assets, etc.
+# --locked asserts uv.lock matches pyproject.toml and fails instead of
+# re-resolving, so transitive dependency versions are pinned and builds
+# are reproducible. --no-install-project skips installing this directory
+# as a package - lib/python is just scripts, not something imported.
+# HF_HOME pins the download location inside the project dir instead of the
+# default ~/.cache, so it's copyable into the runner stage below.
+COPY lib/python lib/python
+ENV HF_HOME=/app/lib/python/.cache/huggingface
+RUN cd lib/python && uv sync --locked --no-install-project \
+  && .venv/bin/python -c "import text_vec; text_vec.initialize()"
 
 # install hex + rebar
 RUN mix local.hex --force && \
@@ -55,18 +72,6 @@ RUN mix deps.compile
 COPY priv priv
 
 COPY lib lib
-
-# set up the python venv, install deps, and pre-download the
-# vyakyarth model weights used in advanced search. 
-# HF_HOME pins the download location inside the project dir 
-# instead of the default ~/.cache,
-# so it's copyable into the runner stage below.
-# This is its own layer, so it's only re-run (and only re-downloads)
-# when lib/python actually changes - unrelated app changes (CSS, other
-# .ex files, etc.) reuse the cached layer.
-ENV HF_HOME=/app/lib/python/.cache/huggingface
-RUN cd lib/python && uv venv && uv pip install -r pyproject.toml \
-  && .venv/bin/python -c "import text_vec; text_vec.initialize()"
 
 COPY assets assets
 
