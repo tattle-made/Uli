@@ -40,7 +40,7 @@ npm-debug.log
 /.elixir_ls/
 .venv/
 **__pycache__/
-**uv.lock
+# **uv.lock
 
 .env*
 !.env.local.example

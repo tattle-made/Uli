@@ -19,13 +19,12 @@ This project is a Phoenix template designed to streamline the setting up of a Ph
 
 ### Setup Python and Install relevant dependencies
 1. Install [`uv`](https://docs.astral.sh/uv/). We use `uv` as the pacakge manager for python. 
-2. Setup a virtural enviroment inside `lib/python` folder
+2. Setup a virtual enviroment and install Python dependencies inside `lib/python` folder
 ```sh
 cd lib/python
-uv venv
+uv sync --locked --no-install-project
 ```
-This will create a `.venv` folder
-3. Run `uv pip install -r pyproject.toml` to installl Python related dependencies inside the `lib/python/` folder.
+This will create a `.venv` folder and install dependencies pinned exactly as recorded in `uv.lock`. To add, update, or remove a dependency, use `uv add <package>` / `uv remove <package>` - these update `pyproject.toml` and `uv.lock` together, so commit both. If you ever edit `pyproject.toml` by hand instead, run `uv lock` afterwards to regenerate `uv.lock` to match.
 
 ### Phoenix Server
 
