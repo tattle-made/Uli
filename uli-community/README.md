@@ -19,7 +19,7 @@ This project is a Phoenix template designed to streamline the setting up of a Ph
 
 ### Setup Python and Install relevant dependencies
 1. Install [`uv`](https://docs.astral.sh/uv/). We use `uv` as the pacakge manager for python. 
-2. Setup a virtural enviroment and install Python dependencies inside `lib/python` folder
+2. Setup a virtual enviroment and install Python dependencies inside `lib/python` folder
 ```sh
 cd lib/python
 uv sync --locked --no-install-project
