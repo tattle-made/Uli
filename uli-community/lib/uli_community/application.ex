@@ -39,6 +39,7 @@ defmodule UliCommunity.Application do
     :ok
   end
 
+  # Conditionally adds the vyakyarth text-vec child to the supervision tree based on the flag.
   def enable_text_vyakyarth_model do
     if Application.get_env(:uli_community, :enable_text_vec_rep_vyakyarth, false) do
       [UliCommunity.MediaProcessing.TextVecRepVyakyarth]
