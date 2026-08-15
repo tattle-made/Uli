@@ -222,3 +222,362 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Log in now"
 msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:146
+#, elixir-autogen, elixir-format
+msgid "Crowdsource Contributions"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:55
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:236
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:612
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:723
+#, elixir-autogen, elixir-format
+msgid "Level of Severity"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "Clear All Filters"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:176
+#, elixir-autogen, elixir-format
+msgid "Enable Advanced Search"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:186
+#, elixir-autogen, elixir-format
+msgid "Search slurs..."
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Approve Slur Metadata"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Approve Slur Only"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Approve Slur and Slur Metadata"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:44
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:358
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:360
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:724
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Slur Label"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Frequency of Metadata with same label"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:66
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:270
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:725
+#, elixir-autogen, elixir-format
+msgid "Is Casual?"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Add Only Slur"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:88
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:734
+#, elixir-autogen, elixir-format
+msgid "Appropriation Context"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:101
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:379
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:632
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:741
+#, elixir-autogen, elixir-format
+msgid "Categories"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:79
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:297
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:729
+#, elixir-autogen, elixir-format
+msgid "Is Appropriated?"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:98
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:740
+#, elixir-autogen, elixir-format
+msgid "Meaning"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:139
+#, elixir-autogen, elixir-format
+msgid "Save Slur Metadata"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:133
+#, elixir-autogen, elixir-format
+msgid "Slur Already Added"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:495
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:656
+#, elixir-autogen, elixir-format
+msgid "Sort"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:113
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:464
+#, elixir-autogen, elixir-format
+msgid "Ableist"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:749
+#, elixir-autogen, elixir-format
+msgid "Add"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:263
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:290
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:317
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:351
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:367
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:617
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:627
+#, elixir-autogen, elixir-format
+msgid "All"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:678
+#, elixir-autogen, elixir-format
+msgid "Apply Filters"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:112
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:454
+#, elixir-autogen, elixir-format
+msgid "Body Shaming"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:110
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:434
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:650
+#, elixir-autogen, elixir-format
+msgid "Caste"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:111
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:444
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:647
+#, elixir-autogen, elixir-format
+msgid "Class"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:670
+#, elixir-autogen, elixir-format
+msgid "Clear Filters"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "Community"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:344
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:626
+#, elixir-autogen, elixir-format
+msgid "Crowdsourcing Exercise"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:204
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:594
+#, elixir-autogen, elixir-format
+msgid "Date"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:108
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:414
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:644
+#, elixir-autogen, elixir-format
+msgid "Ethnicity"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:337
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:625
+#, elixir-autogen, elixir-format
+msgid "Experts 2022"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:572
+#, elixir-autogen, elixir-format
+msgid "Filter By"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:600
+#, elixir-autogen, elixir-format
+msgid "From"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:105
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:384
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:635
+#, elixir-autogen, elixir-format
+msgid "Gendered"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:60
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:256
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:616
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:58
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:242
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:614
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:59
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:249
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:615
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:501
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:658
+#, elixir-autogen, elixir-format
+msgid "Newest first"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:70
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:83
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:283
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:310
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:726
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:732
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:737
+#, elixir-autogen, elixir-format
+msgid "No"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Null"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:508
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:659
+#, elixir-autogen, elixir-format
+msgid "Oldest first"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:115
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:484
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Others"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:330
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:624
+#, elixir-autogen, elixir-format
+msgid "Plugin"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:109
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:424
+#, elixir-autogen, elixir-format
+msgid "Political Affiliation"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:107
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:404
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:641
+#, elixir-autogen, elixir-format
+msgid "Religion"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:718
+#, elixir-autogen, elixir-format
+msgid "Searching..."
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:114
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:474
+#, elixir-autogen, elixir-format
+msgid "Sexual Identity"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:106
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:394
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:638
+#, elixir-autogen, elixir-format
+msgid "Sexualized"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:154
+#, elixir-autogen, elixir-format
+msgid "Showing all %{count} contributions"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:722
+#, elixir-autogen, elixir-format
+msgid "Slur's Label"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:324
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:622
+#, elixir-autogen, elixir-format
+msgid "Source"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:606
+#, elixir-autogen, elixir-format
+msgid "To"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:69
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:82
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:276
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:303
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:726
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:732
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:737
+#, elixir-autogen, elixir-format
+msgid "Yes"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:207
+#, elixir-autogen, elixir-format
+msgid "from"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:220
+#, elixir-autogen, elixir-format
+msgid "to"
+msgstr ""

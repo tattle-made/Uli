@@ -1,5 +1,5 @@
 <.modal id="add-slur-modal" on_cancel={JS.push("close-modal")}>
-  <.header class="text-center">Approve Slur and Slur Metadata</.header>
+ <.header class="text-center"><%= gettext("Approve Slur and Slur Metadata") %></.header>
   <.simple_form
     for={@slur_form}
     phx-submit={
@@ -13,13 +13,16 @@
         phx-change="update-form-type"
         class="text-center"
         type="select"
-        options={[{"Approve Slur Only", "only-slur"}, {"Approve Slur Metadata", "slur-metadata"}]}
+        options={[
+          {gettext("Approve Slur Only"), "only-slur"},
+          {gettext("Approve Slur Metadata"), "slur-metadata"}
+        ]}
         field={@slur_form[:approve_type]}
       />
     </.header>
     <%= if @approve_type == "slur-metadata" do %>
       <p class="text-xs m-0 p-0 text-slate-700">
-        Frequency of Metadata with same label:
+        <%= gettext("Frequency of Metadata with same label") %>:
         <%= if @already_present_metadata_freq > 0 do %>
           <a href={"/plugin-metadata/#{@selected_slur["label"]}"} class="font-semibold underline">
             <%= @already_present_metadata_freq %>
@@ -34,11 +37,11 @@
 
     <div class="flex gap-4">
       <div class="flex-1">
-        <.input required label="Slur Label" field={@slur_form[:label]} />
+        <.input required label={gettext("Slur Label")} field={@slur_form[:label]} />
       </div>
       <.input
         required
-        label="Language"
+        label={gettext("Language")}
         type="select"
         options={@language_options}
         field={@slur_form[:language]}
@@ -49,16 +52,23 @@
       <div class="flex justify-between">
         <.input
           required
-          label="Level of Severity"
+          label={gettext("Level of Severity")}
           type="select"
-          options={[{"Low", "low"}, {"Medium", "medium"}, {"High", "high"}]}
+          options={[
+            {gettext("Low"), "low"},
+            {gettext("Medium"), "medium"},
+            {gettext("High"), "high"}
+          ]}
           field={@slur_form[:level_of_severity]}
         />
         <.input
           required
-          label="Is Casual?"
+          label={gettext("Is Casual?")}
           type="select"
-          options={[{"Yes", true}, {"No", false}]}
+          options={[
+            {gettext("Yes"), true},
+            {gettext("No"), false}
+          ]}
           field={@slur_form[:casual]}
         />
 
@@ -66,36 +76,43 @@
       <div class="flex justify-start gap-12"> --%>
         <.input
           required
-          label="Is Appropriated?"
+          label={gettext("Is Appropriated?")}
           type="select"
-          options={[{"Yes", true}, {"No", false}]}
+          options={[
+            {gettext("Yes"), true},
+            {gettext("No"), false}
+          ]}
           field={@slur_form[:appropriated]}
         />
         <.input
-          label="Appropriation Context"
+          label={gettext("Appropriation Context")}
           type="select"
-          options={[{"Null", nil}, {"Community", true}, {"Others", false}]}
+          options={[
+            {gettext("Null"), nil},
+            {gettext("Community"), true},
+            {gettext("Others"), false}
+          ]}
           field={@slur_form[:appropriation_context]}
         />
       </div>
-      <.input required label="Meaning" type="textarea" field={@slur_form[:meaning]} />
+      <.input required label={gettext("Meaning")} type="textarea" field={@slur_form[:meaning]} />
       <.input
         required
-        label="Categories"
+        label={gettext("Categories")}
         type="select"
         multiple
         options={[
-          {"Gendered", :gendered},
-          {"Sexualized", :sexualized},
-          {"Religion", :religion},
-          {"Ethnicity", :ethnicity},
-          {"Political Affiliation", :political_affiliation},
-          {"Caste", :caste},
-          {"Class", :class},
-          {"Body Shaming", :body_shaming},
-          {"Ableist", :ableist},
-          {"Sexual Identity", :sexual_identity},
-          {"Other", :other}
+          {gettext("Gendered"), :gendered},
+          {gettext("Sexualized"), :sexualized},
+          {gettext("Religion"), :religion},
+          {gettext("Ethnicity"), :ethnicity},
+          {gettext("Political Affiliation"), :political_affiliation},
+          {gettext("Caste"), :caste},
+          {gettext("Class"), :class},
+          {gettext("Body Shaming"), :body_shaming},
+          {gettext("Ableist"), :ableist},
+          {gettext("Sexual Identity"), :sexual_identity},
+          {gettext("Other"), :other}
         ]}
         field={@slur_form[:categories]}
       />
@@ -107,26 +124,26 @@
         type="button"
         class="bg-red-400 hover:bg-red-500"
       >
-        Cancel
+        <%= gettext("Cancel") %>
       </.button>
 
-      <%= if @approve_type== "only-slur" do %>
+      <%= if @approve_type == "only-slur" do %>
         <.button type="submit" disabled={@slur_already_added?}>
-          <%= if @slur_already_added? do
-            "Slur Already Added"
-          else
-            "Add Only Slur"
-          end %>
+          <%= if @slur_already_added? do %>
+            <%= gettext("Slur Already Added") %>
+          <% else %>
+            <%= gettext("Add Only Slur") %>
+          <% end %>
         </.button>
       <% else %>
-        <.button type="submit">Save Slur Metadata</.button>
+        <.button type="submit"><%= gettext("Save Slur Metadata") %></.button>
       <% end %>
     </div>
   </.simple_form>
 </.modal>
 
 <.header class="text-center text-4xl">
-  Crowdsource Contributions
+    <%= gettext("Crowdsource Contributions") %>
 </.header>
 
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
@@ -134,7 +151,7 @@
   <div class="text-slate-900">
     <!-- Responsive heading -->
     <h1 class="text-base sm:text-lg md:text-xl font-normal truncate">
-      <%= "Showing all #{@query_count} contributions" %>
+      <%= gettext("Showing all %{count} contributions", count: @query_count) %>
     </h1>
     <!-- Clear Filters (only tablet/laptop and larger) -->
     <.link
@@ -144,7 +161,7 @@
       class="hidden md:inline-flex mt-4 items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
     >
       <.icon name="hero-x-circle" class="w-4 h-4" />
-      <span>Clear All Filters</span>
+      <span><%= gettext("Clear All Filters") %></span>
     </.link>
     <!-- Advanced Search -->
     <form phx-change="toggle-advanced-search" class="flex items-center mt-4 text-sm text-zinc-600">
@@ -156,7 +173,7 @@
         class="h-4 w-4 rounded border-gray-300 text-zinc-600 focus:ring-zinc-500"
       />
       <label for="advanced_search" class="ml-2 text-zinc-800 font-medium text-base">
-        Enable Advanced Search
+        <%= gettext("Enable Advanced Search") %>
       </label>
     </form>
   </div>
@@ -166,7 +183,7 @@
       <input
         type="text"
         name="search"
-        placeholder="Search slurs..."
+        placeholder={gettext("Search slurs...")}
         value={Keyword.get(@search_params, :search, "")}
         class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
       />
@@ -184,10 +201,10 @@
   <div class="hidden lg:flex h-fit w-full lg:w-1/5 lg:h-fit flex-col mr-4 border-e border-zinc-200">
     <%= unless @advanced_search do %>
       <div>
-        <p class="py-2">Date</p>
+        <p class="py-2"><%= gettext("Date") %></p>
         <div id="date-range-selector" phx-hook="DateSelector" class="flex-row gap-2 flex-wrap">
           <div class="flex flex-row gap-2 text-xs items-center">
-            <label for="from">from&nbsp;&nbsp;</label>
+            <label for="from"><%= gettext("from") %>&nbsp;&nbsp;</label>
             <input
               class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
               type="date"
@@ -200,7 +217,7 @@
             />
           </div>
           <div class="flex flex-row gap-2 text-xs items-center">
-            <label for="to"> to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+            <label for="to"> <%= gettext("to") %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
             <input
               class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
               type="date"
@@ -216,138 +233,138 @@
       </div>
 
       <div>
-        <p class="py-2">Level of Severity</p>
+        <p class="py-2"><%= gettext("Level of Severity") %></p>
         <div>
           <.input_radio
             name="level_of_severity"
             id="low"
             value="low"
-            label="Low"
+            label={gettext("Low")}
             selection={Keyword.get(@search_params, :level_of_severity)}
           />
           <.input_radio
             name="level_of_severity"
             id="medium"
             value="medium"
-            label="Medium"
+            label={gettext("Medium")}
             selection={Keyword.get(@search_params, :level_of_severity)}
           />
           <.input_radio
             name="level_of_severity"
             id="high"
             value="high"
-            label="High"
+            label={gettext("High")}
             selection={Keyword.get(@search_params, :level_of_severity)}
           />
           <.input_radio
             name="level_of_severity"
             id="all"
             value="all"
-            label="All"
+            label={gettext("All")}
             selection={Keyword.get(@search_params, :level_of_severity)}
           />
         </div>
       </div>
 
       <div>
-        <p class="py-2">Is Casual?</p>
+        <p class="py-2"><%= gettext("Is Casual?") %></p>
         <div>
           <.input_radio
             name="casual"
             id="casual_true"
             value="true"
-            label="Yes"
+            label={gettext("Yes")}
             selection={Keyword.get(@search_params, :casual)}
           />
           <.input_radio
             name="casual"
             id="casual_false"
             value="false"
-            label="No"
+            label={gettext("No")}
             selection={Keyword.get(@search_params, :casual)}
           />
           <.input_radio
             name="casual"
             id="casual_all"
             value="all"
-            label="All"
+            label={gettext("All")}
             selection={Keyword.get(@search_params, :casual)}
           />
         </div>
       </div>
 
       <div>
-        <p class="py-2">Is Appropriated?</p>
+        <p class="py-2"><%= gettext("Is Appropriated?") %></p>
         <div>
           <.input_radio
             name="appropriated"
             id="appropriated_true"
             value="true"
-            label="Yes"
+            label={gettext("Yes")}
             selection={Keyword.get(@search_params, :appropriated)}
           />
           <.input_radio
             name="appropriated"
             id="appropriated_false"
             value="false"
-            label="No"
+            label={gettext("No")}
             selection={Keyword.get(@search_params, :appropriated)}
           />
           <.input_radio
             name="appropriated"
             id="appropriated_all"
             value="all"
-            label="All"
+            label={gettext("All")}
             selection={Keyword.get(@search_params, :appropriated)}
           />
         </div>
       </div>
 
       <div>
-        <p class="py-2">Source</p>
+        <p class="py-2"><%= gettext("Source") %></p>
         <div>
           <.input_radio
             name="source"
             id="plugin"
             value="plugin"
-            label="Plugin"
+            label={gettext("Plugin")}
             selection={Keyword.get(@search_params, :source)}
           />
           <.input_radio
             name="source"
             id="experts_2022"
             value="experts_2022"
-            label="Experts 2022"
+            label={gettext("Experts 2022")}
             selection={Keyword.get(@search_params, :source)}
           />
           <.input_radio
             name="source"
             id="crowdsourcing_exercise"
             value="crowdsourcing_exercise"
-            label="Crowdsourcing Exercise"
+            label={gettext("Crowdsourcing Exercise")}
             selection={Keyword.get(@search_params, :source)}
           />
           <.input_radio
             name="source"
             id="source_all"
             value="all"
-            label="All"
+            label={gettext("All")}
             selection={Keyword.get(@search_params, :source)}
           />
         </div>
       </div>
 
       <div>
-        <p class="py-2">Language</p>
+        <p class="py-2"><%= gettext("Language") %></p>
         <form phx-change="change-language">
-          <label for="language-filter" class="sr-only">Language</label>
+          <label for="language-filter" class="sr-only"><%= gettext("Language") %></label>
           <select
             name="language"
             id="language-filter"
             class="border border-gray-300 rounded p-2 text-sm w-auto"
           >
             <option value="all" selected={Keyword.get(@search_params, :language) == "all"}>
-              All
+              <%= gettext("All") %>
             </option>
             <%= for {name, code} <- @language_options do %>
               <option value={code} selected={Keyword.get(@search_params, :language) == code}>
@@ -359,12 +376,12 @@
       </div>
 
       <div>
-        <p class="py-2">Categories</p>
+        <p class="py-2"><%= gettext("Categories") %></p>
         <div>
           <.checkbox
             id="gendered"
             group="categories"
-            label="Gendered"
+            label={gettext("Gendered")}
             selection={
               if "gendered" in Keyword.get(@search_params, :categories, []),
                 do: ["gendered"],
@@ -374,7 +391,7 @@
           <.checkbox
             id="sexualized"
             group="categories"
-            label="Sexualized"
+            label={gettext("Sexualized")}
             selection={
               if "sexualized" in Keyword.get(@search_params, :categories, []),
                 do: ["sexualized"],
@@ -384,7 +401,7 @@
           <.checkbox
             id="religion"
             group="categories"
-            label="Religion"
+            label={gettext("Religion")}
             selection={
               if "religion" in Keyword.get(@search_params, :categories, []),
                 do: ["religion"],
@@ -394,7 +411,7 @@
           <.checkbox
             id="ethnicity"
             group="categories"
-            label="Ethnicity"
+            label={gettext("Ethnicity")}
             selection={
               if "ethnicity" in Keyword.get(@search_params, :categories, []),
                 do: ["ethnicity"],
@@ -404,7 +421,7 @@
           <.checkbox
             id="political_affiliation"
             group="categories"
-            label="Political Affiliation"
+            label={gettext("Political Affiliation")}
             selection={
               if "political_affiliation" in Keyword.get(@search_params, :categories, []),
                 do: ["political_affiliation"],
@@ -414,7 +431,7 @@
           <.checkbox
             id="caste"
             group="categories"
-            label="Caste"
+            label={gettext("Caste")}
             selection={
               if "caste" in Keyword.get(@search_params, :categories, []),
                 do: ["caste"],
@@ -424,7 +441,7 @@
           <.checkbox
             id="class"
             group="categories"
-            label="Class"
+            label={gettext("Class")}
             selection={
               if "class" in Keyword.get(@search_params, :categories, []),
                 do: ["class"],
@@ -434,7 +451,7 @@
           <.checkbox
             id="body_shaming"
             group="categories"
-            label="Body Shaming"
+            label={gettext("Body Shaming")}
             selection={
               if "body_shaming" in Keyword.get(@search_params, :categories, []),
                 do: ["body_shaming"],
@@ -444,7 +461,7 @@
           <.checkbox
             id="ableist"
             group="categories"
-            label="Ableist"
+            label={gettext("Ableist")}
             selection={
               if "ableist" in Keyword.get(@search_params, :categories, []),
                 do: ["ableist"],
@@ -454,7 +471,7 @@
           <.checkbox
             id="sexual_identity"
             group="categories"
-            label="Sexual Identity"
+            label={gettext("Sexual Identity")}
             selection={
               if "sexual_identity" in Keyword.get(@search_params, :categories, []),
                 do: ["sexual_identity"],
@@ -464,7 +481,7 @@
           <.checkbox
             id="other"
             group="categories"
-            label="Other"
+            label={gettext("Other")}
             selection={
               if "other" in Keyword.get(@search_params, :categories, []),
                 do: ["other"],
@@ -475,20 +492,20 @@
       </div>
 
       <div>
-        <p class="py-2">Sort</p>
+        <p class="py-2"><%= gettext("Sort") %></p>
         <div>
           <.input_radio
             name="sort-by"
             id="newest"
             value="newest"
-            label="Newest first"
+            label={gettext("Newest first")}
             selection={Keyword.get(@search_params, :sort)}
           />
           <.input_radio
             name="sort-by"
             id="oldest"
             value="oldest"
-            label="Oldest first"
+            label={gettext("Oldest first")}
             selection={Keyword.get(@search_params, :sort)}
           />
         </div>
@@ -552,7 +569,7 @@
     >
       <!-- Header -->
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-semibold">Filter By</h2>
+        <h2 class="text-lg font-semibold"><%= gettext("Filter By") %></h2>
         <button
           phx-click={
             JS.hide(to: "#mobile-filters-drawer")
@@ -574,72 +591,72 @@
       >
         <!-- Date Range -->
         <div class="mb-4">
-          <p class="font-medium mb-2">Date</p>
+          <p class="font-medium mb-2"><%= gettext("Date") %></p>
           <div class="flex flex-col gap-2">
             <input
               type="date"
               name="filters[from]"
               class="border rounded p-2 text-sm"
-              placeholder="From"
+              placeholder={gettext("From")}
             />
             <input
               type="date"
               name="filters[to]"
               class="border rounded p-2 text-sm"
-              placeholder="To"
+              placeholder={gettext("To")}
             />
           </div>
         </div>
         <!-- Level of Severity -->
         <div class="mb-4">
-          <p class="font-medium mb-2">Level of Severity</p>
+          <p class="font-medium mb-2"><%= gettext("Level of Severity") %></p>
           <select name="filters[level_of_severity]" class="border rounded p-2 text-sm w-full">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-            <option value="all" selected>All</option>
+            <option value="low"><%= gettext("Low") %></option>
+            <option value="medium"><%= gettext("Medium") %></option>
+            <option value="high"><%= gettext("High") %></option>
+            <option value="all" selected><%= gettext("All") %></option>
           </select>
         </div>
         <!-- Source -->
         <div class="mb-4">
-          <p class="font-medium mb-2">Source</p>
+          <p class="font-medium mb-2"><%= gettext("Source") %></p>
           <select name="filters[source]" class="border rounded p-2 text-sm w-full">
-            <option value="plugin">Plugin</option>
-            <option value="experts_2022">Experts 2022</option>
-            <option value="crowdsourcing_exercise">Crowdsourcing Exercise</option>
-            <option value="all" selected>All</option>
+            <option value="plugin"><%= gettext("Plugin") %></option>
+            <option value="experts_2022"><%= gettext("Experts 2022") %></option>
+            <option value="crowdsourcing_exercise"><%= gettext("Crowdsourcing Exercise") %></option>
+            <option value="all" selected><%= gettext("All") %></option>
           </select>
         </div>
         <!-- Categories -->
         <div class="mb-4">
-          <p class="font-medium mb-2">Categories</p>
+          <p class="font-medium mb-2"><%= gettext("Categories") %></p>
           <div class="grid grid-cols-2 gap-2 text-sm">
             <label>
-              <input type="checkbox" name="filters[categories][]" value="gendered" /> Gendered
+              <input type="checkbox" name="filters[categories][]" value="gendered" /> <%= gettext("Gendered") %>
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="sexualized" /> Sexualized
+              <input type="checkbox" name="filters[categories][]" value="sexualized" /> <%= gettext("Sexualized") %>
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="religion" /> Religion
+              <input type="checkbox" name="filters[categories][]" value="religion" /> <%= gettext("Religion") %>
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="ethnicity" /> Ethnicity
+              <input type="checkbox" name="filters[categories][]" value="ethnicity" /> <%= gettext("Ethnicity") %>
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="class" /> Class
+              <input type="checkbox" name="filters[categories][]" value="class" /> <%= gettext("Class") %>
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="caste" /> Caste
+              <input type="checkbox" name="filters[categories][]" value="caste" /> <%= gettext("Caste") %>
             </label>
           </div>
         </div>
         <!-- Sort -->
         <div class="mb-6">
-          <p class="font-medium mb-2">Sort</p>
+          <p class="font-medium mb-2"><%= gettext("Sort") %></p>
           <select name="filters[sort]" class="border rounded p-2 text-sm w-full">
-            <option value="newest" selected>Newest first</option>
-            <option value="oldest">Oldest first</option>
+            <option value="newest" selected><%= gettext("Newest first") %></option>
+            <option value="oldest"><%= gettext("Oldest first") %></option>
           </select>
         </div>
         <!-- Buttons -->
@@ -650,7 +667,7 @@
             }
             class="px-4 py-2 rounded bg-gray-200 text-sm"
           >
-            Clear Filters
+            <%= gettext("Clear Filters") %>
           </.link>
 
           <button
@@ -658,7 +675,7 @@
             class="px-4 py-2 rounded text-sm text-white font-medium"
             style="background-color: rgb(231, 109, 103); color: rgb(81, 78, 128);"
           >
-            Apply Filters
+            <%= gettext("Apply Filters") %>
           </button>
         </div>
       </.form>
@@ -698,30 +715,30 @@
             d="M12 4a8 8 0 0 1 8 8h2a10 10 0 1 0-10 10v-2a8 8 0 0 1 0-16z"
           />
         </svg>
-        <span class="text-lg text-zinc-700 font-medium">Searching...</span>
+        <span class="text-lg text-zinc-700 font-medium"><%= gettext("Searching...") %></span>
       </div>
     <% else %>
       <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
-        <:col :let={slur} label="Slur's Label"><%= slur.label %></:col>
-        <:col :let={slur} label="Level of Severity"><%= slur.level_of_severity || "-" %></:col>
-        <:col :let={slur} label="Language"><%= slur.language || "-" %></:col>
-        <:col :let={slur} label="Is Casual?">
-          <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && "Yes") || "No" %>
+        <:col :let={slur} label={gettext("Slur's Label")}><%= slur.label %></:col>
+        <:col :let={slur} label={gettext("Level of Severity")}><%= slur.level_of_severity || "-" %></:col>
+        <:col :let={slur} label={gettext("Language")}><%= slur.language || "-" %></:col>
+        <:col :let={slur} label={gettext("Is Casual?")}>
+          <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && gettext("Yes")) || gettext("No") %>
         </:col>
 
-        <:col :let={slur} label="Is Appropriated?">
+        <:col :let={slur} label={gettext("Is Appropriated?")}>
           <%= if is_nil(slur.appropriated),
             do: "-",
-            else: (slur.appropriated == true && "Yes") || "No" %>
+            else: (slur.appropriated == true && gettext("Yes")) || gettext("No") %>
         </:col>
-        <:col :let={slur} label="Appropriation Context">
+        <:col :let={slur} label={gettext("Appropriation Context")}>
           <%= if is_nil(slur.appropriation_context),
             do: "-",
-            else: (slur.appropriation_context == true && "Yes") || "No" %>
+            else: (slur.appropriation_context == true && gettext("Yes")) || gettext("No") %>
         </:col>
 
-        <:col :let={slur} label="Meaning"><%= slur.meaning || "-" %></:col>
-        <:col :let={slur} label="Categories">
+        <:col :let={slur} label={gettext("Meaning")}><%= slur.meaning || "-" %></:col>
+        <:col :let={slur} label={gettext("Categories")}>
           <%= Enum.join(slur.categories || ["-"], ",") %>
         </:col>
         <:action :let={slur}>
@@ -729,7 +746,7 @@
             <.button phx-click={
               JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
             }>
-              Add
+              <%= gettext("Add") %>
             </.button>
           <% end %>
         </:action>

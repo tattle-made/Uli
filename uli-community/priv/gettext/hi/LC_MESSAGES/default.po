@@ -224,3 +224,362 @@ msgstr "अभी खाता बनाएँ"
 #, elixir-autogen, elixir-format
 msgid "Log in now"
 msgstr "अभी लॉग इन करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:146
+#, elixir-autogen, elixir-format
+msgid "Crowdsource Contributions"
+msgstr "क्राउडसोर्स योगदान"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:55
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:236
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:612
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:723
+#, elixir-autogen, elixir-format
+msgid "Level of Severity"
+msgstr "गंभीरता का स्तर"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "Clear All Filters"
+msgstr "सभी फ़िल्टर हटाएँ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:176
+#, elixir-autogen, elixir-format
+msgid "Enable Advanced Search"
+msgstr "उन्नत खोज शुरू करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:186
+#, elixir-autogen, elixir-format
+msgid "Search slurs..."
+msgstr "अपशब्द खोजें…"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Approve Slur Metadata"
+msgstr "अपशब्द मेटाडेटा स्वीकृत करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Approve Slur Only"
+msgstr "केवल अपशब्द स्वीकृत करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Approve Slur and Slur Metadata"
+msgstr "अपशब्द और उसका मेटाडेटा स्वीकृत करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:44
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:358
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:360
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:724
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "भाषा"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Slur Label"
+msgstr "अपशब्द का लेबल"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Frequency of Metadata with same label"
+msgstr "समान लेबल वाले मेटाडेटा की आवृत्ति"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:66
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:270
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:725
+#, elixir-autogen, elixir-format
+msgid "Is Casual?"
+msgstr "क्या यह अनौपचारिक है?"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Add Only Slur"
+msgstr ""
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:88
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:734
+#, elixir-autogen, elixir-format
+msgid "Appropriation Context"
+msgstr "अपनाने का संदर्भ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:101
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:379
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:632
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:741
+#, elixir-autogen, elixir-format
+msgid "Categories"
+msgstr "श्रेणियाँ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:79
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:297
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:729
+#, elixir-autogen, elixir-format
+msgid "Is Appropriated?"
+msgstr "क्या इसे अपनाया गया है?"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:98
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:740
+#, elixir-autogen, elixir-format
+msgid "Meaning"
+msgstr "अर्थ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:139
+#, elixir-autogen, elixir-format
+msgid "Save Slur Metadata"
+msgstr "अपशब्द मेटाडेटा स्वीकृत करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:133
+#, elixir-autogen, elixir-format
+msgid "Slur Already Added"
+msgstr "अपशब्द पहले से जोड़ा गया है"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:495
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:656
+#, elixir-autogen, elixir-format
+msgid "Sort"
+msgstr "क्रमबद्ध करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:113
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:464
+#, elixir-autogen, elixir-format
+msgid "Ableist"
+msgstr  "सक्षमता-भेदभावपूर्ण"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:749
+#, elixir-autogen, elixir-format
+msgid "Add"
+msgstr "जोड़ें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:263
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:290
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:317
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:351
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:367
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:617
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:627
+#, elixir-autogen, elixir-format
+msgid "All"
+msgstr "सभी"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:678
+#, elixir-autogen, elixir-format
+msgid "Apply Filters"
+msgstr "फ़िल्टर लागू करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:112
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:454
+#, elixir-autogen, elixir-format
+msgid "Body Shaming"
+msgstr  "शरीर को लेकर शर्मिंदा करना"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:110
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:434
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:650
+#, elixir-autogen, elixir-format
+msgid "Caste"
+msgstr "जाति"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:111
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:444
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:647
+#, elixir-autogen, elixir-format
+msgid "Class"
+msgstr "वर्ग"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:670
+#, elixir-autogen, elixir-format
+msgid "Clear Filters"
+msgstr "सभी फ़िल्टर हटाएँ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "Community"
+msgstr "समुदाय"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:344
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:626
+#, elixir-autogen, elixir-format
+msgid "Crowdsourcing Exercise"
+msgstr "क्राउडसोर्सिंग अभ्यास"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:204
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:594
+#, elixir-autogen, elixir-format
+msgid "Date"
+msgstr "तारीख"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:108
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:414
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:644
+#, elixir-autogen, elixir-format
+msgid "Ethnicity"
+msgstr  "जातीयता"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:337
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:625
+#, elixir-autogen, elixir-format
+msgid "Experts 2022"
+msgstr  "2022 के विशेषज्ञ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:572
+#, elixir-autogen, elixir-format
+msgid "Filter By"
+msgstr "छँटाई करें"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:600
+#, elixir-autogen, elixir-format
+msgid "From"
+msgstr "से"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:105
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:384
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:635
+#, elixir-autogen, elixir-format
+msgid "Gendered"
+msgstr "लिंग-आधारित"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:60
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:256
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:616
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "उच्च"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:58
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:242
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:614
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "निम्न"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:59
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:249
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:615
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "मध्यम"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:501
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:658
+#, elixir-autogen, elixir-format
+msgid "Newest first"
+msgstr "नवीनतम पहले"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:70
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:83
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:283
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:310
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:726
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:732
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:737
+#, elixir-autogen, elixir-format
+msgid "No"
+msgstr "नहीं"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Null"
+msgstr "रिक्त"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:508
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:659
+#, elixir-autogen, elixir-format
+msgid "Oldest first"
+msgstr "सबसे पुराने पहले दिखाएँ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:115
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:484
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "अन्य"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Others"
+msgstr "अन्य"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:330
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:624
+#, elixir-autogen, elixir-format
+msgid "Plugin"
+msgstr "प्लगइन"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:109
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:424
+#, elixir-autogen, elixir-format
+msgid "Political Affiliation"
+msgstr "राजनीतिक संबद्धता"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:107
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:404
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:641
+#, elixir-autogen, elixir-format
+msgid "Religion"
+msgstr "धर्म"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:718
+#, elixir-autogen, elixir-format
+msgid "Searching..."
+msgstr "खोजा जा रहा है..."
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:114
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:474
+#, elixir-autogen, elixir-format
+msgid "Sexual Identity"
+msgstr "यौन पहचान"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:106
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:394
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:638
+#, elixir-autogen, elixir-format
+msgid "Sexualized"
+msgstr "यौनिकृत"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:154
+#, elixir-autogen, elixir-format
+msgid "Showing all %{count} contributions"
+msgstr "%{count} सभी योगदान दिखाए जा रहे हैं"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:722
+#, elixir-autogen, elixir-format
+msgid "Slur's Label"
+msgstr "अपशब्द का लेबल"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:324
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:622
+#, elixir-autogen, elixir-format
+msgid "Source"
+msgstr "स्रोत"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:606
+#, elixir-autogen, elixir-format
+msgid "To"
+msgstr "तक"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:69
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:82
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:276
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:303
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:726
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:732
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:737
+#, elixir-autogen, elixir-format
+msgid "Yes"
+msgstr "हाँ"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:207
+#, elixir-autogen, elixir-format
+msgid "from"
+msgstr "से"
+
+#: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:220
+#, elixir-autogen, elixir-format
+msgid "to"
+msgstr "तक"
