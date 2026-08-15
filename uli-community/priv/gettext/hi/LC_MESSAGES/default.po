@@ -301,7 +301,7 @@ msgstr "क्या यह अनौपचारिक है?"
 #: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "Add Only Slur"
-msgstr ""
+msgstr "केवल अपशब्द जोड़ें"
 
 #: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:88
 #: lib/uli_community_web/live/crowdsource_contributions_live.html.heex:734
