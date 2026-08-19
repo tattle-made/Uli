@@ -33,10 +33,18 @@ defmodule Scripts.ClusterTextVecStore do
         try do
           clusters = Python.call(py, "clustering", "get_clusters", [operator_parameters])
 
-          update_clusters(clusters)
-          Logger.info("Finished updating cluster assignments")
+          case update_clusters(clusters) do
+            [] ->
+              Logger.info("Finished updating cluster assignments")
+              {:ok, clusters}
 
-          {:ok, clusters}
+            failures ->
+              Logger.error(
+                "Finished updating cluster assignments with #{length(failures)} failure(s): #{inspect(failures)}"
+              )
+
+              {:error, {:partial_failure, failures}}
+          end
         rescue
           e ->
             Logger.error("Failed to run clustering: #{inspect(e)}")
@@ -52,7 +60,7 @@ defmodule Scripts.ClusterTextVecStore do
   end
 
   defp update_clusters(clusters) do
-    Enum.each(clusters, fn {cluster_key, items} ->
+    Enum.flat_map(clusters, fn {cluster_key, items} ->
       # Convert key to string and extract the number after "cluster_"
       cluster_str = to_string(cluster_key)
 
@@ -64,7 +72,7 @@ defmodule Scripts.ClusterTextVecStore do
 
       Logger.info("Updating #{length(items)} vectors for cluster #{cluster_number}")
 
-      Enum.each(items, fn item ->
+      Enum.reduce(items, [], fn item, failures ->
         # because the key is a charlist
         id = item |> Map.get(~c"id")
 
@@ -74,15 +82,19 @@ defmodule Scripts.ClusterTextVecStore do
               "Could not find vector #{inspect(id)} while updating cluster #{cluster_number}"
             )
 
+            [{:not_found, id} | failures]
+
           vector ->
             case vector |> Ecto.Changeset.change(%{cluster: cluster_number}) |> Repo.update() do
               {:ok, _vector} ->
-                :ok
+                failures
 
               {:error, changeset} ->
                 Logger.warning(
                   "Failed to update vector #{inspect(id)} for cluster #{cluster_number}: #{inspect(changeset.errors)}"
                 )
+
+                [{:update_failed, id, changeset.errors} | failures]
             end
         end
       end)
