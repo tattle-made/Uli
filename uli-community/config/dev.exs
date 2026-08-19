@@ -90,4 +90,4 @@ config :uli_community, :python,
   python_path: Path.join([File.cwd!(), "lib", "python"])
 
 # text vec genserver for dev setup
-config :uli_community, :enable_text_vec_rep_vyakyarth, false
+config :uli_community, :enable_text_vec_rep_vyakyarth, true
