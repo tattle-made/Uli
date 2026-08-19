@@ -13,6 +13,7 @@ defmodule Scripts.ClusterTextVecStore do
   def run do
     # Get all text vector store entries
     vectors = Repo.all(TextVecStoreVyakyarth)
+    Logger.info("Starting text vector clustering for #{length(vectors)} vectors")
 
     # Format data for Python clustering
     operator_parameters =
@@ -27,12 +28,23 @@ defmodule Scripts.ClusterTextVecStore do
 
     case Python.start(python_path: @python_path, python: @python_executable) do
       {:ok, py} ->
+        Logger.info("Python clustering process started")
+
         try do
           clusters = Python.call(py, "clustering", "get_clusters", [operator_parameters])
 
-          update_clusters(clusters)
+          case update_clusters(clusters) do
+            [] ->
+              Logger.info("Finished updating cluster assignments")
+              {:ok, clusters}
 
-          {:ok, clusters}
+            failures ->
+              Logger.error(
+                "Finished updating cluster assignments with #{length(failures)} failure(s): #{inspect(failures)}"
+              )
+
+              {:error, {:partial_failure, failures}}
+          end
         rescue
           e ->
             Logger.error("Failed to run clustering: #{inspect(e)}")
@@ -48,7 +60,7 @@ defmodule Scripts.ClusterTextVecStore do
   end
 
   defp update_clusters(clusters) do
-    Enum.each(clusters, fn {cluster_key, items} ->
+    Enum.flat_map(clusters, fn {cluster_key, items} ->
       # Convert key to string and extract the number after "cluster_"
       cluster_str = to_string(cluster_key)
 
@@ -58,13 +70,33 @@ defmodule Scripts.ClusterTextVecStore do
           _ -> raise "Unexpected cluster key format: #{inspect(cluster_key)}"
         end
 
-      Enum.each(items, fn item ->
+      Logger.info("Updating #{length(items)} vectors for cluster #{cluster_number}")
+
+      Enum.reduce(items, [], fn item, failures ->
         # because the key is a charlist
         id = item |> Map.get(~c"id")
 
-        Repo.get(TextVecStoreVyakyarth, id)
-        |> Ecto.Changeset.change(%{cluster: cluster_number})
-        |> Repo.update()
+        case Repo.get(TextVecStoreVyakyarth, id) do
+          nil ->
+            Logger.warning(
+              "Could not find vector #{inspect(id)} while updating cluster #{cluster_number}"
+            )
+
+            [{:not_found, id} | failures]
+
+          vector ->
+            case vector |> Ecto.Changeset.change(%{cluster: cluster_number}) |> Repo.update() do
+              {:ok, _vector} ->
+                failures
+
+              {:error, changeset} ->
+                Logger.warning(
+                  "Failed to update vector #{inspect(id)} for cluster #{cluster_number}: #{inspect(changeset.errors)}"
+                )
+
+                [{:update_failed, id, changeset.errors} | failures]
+            end
+        end
       end)
     end)
   end
