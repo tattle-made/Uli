@@ -7,6 +7,12 @@
     <.live_title>
       <%= assigns[:page_title] || "Uli Community" %>
     </.live_title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Meetei+Mayek&family=Noto+Sans+Ol+Chiki&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap"
+    />
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
@@ -86,6 +92,26 @@
         </div>
       </li>
     </ul>
+    <%= if @current_user do %>
+      <ul class="relative z-10 flex items-center justify-end gap-4 px-4 sm:px-6 lg:px-8 border-t border-zinc-200 py-2">
+        <li>
+          <.link
+            href={~p"/crowdsource-contributions"}
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+          >
+            <%= gettext("Crowdsource Contributions") %>
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/cluster-viz"}
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+          >
+            <%= gettext("Cluster Visualization") %>
+          </.link>
+        </li>
+      </ul>
+    <% end %>
     <%= @inner_content %>
   </body>
 </html>

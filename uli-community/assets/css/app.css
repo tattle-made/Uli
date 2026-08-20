@@ -11,4 +11,17 @@
 
 @theme {
   --color-brand: #FD4F00;
+
+  /* Crowdsourced slur labels span ~22 Indian languages across a dozen
+     scripts (see UliCommunity.Languages). The original system-font stack
+     stays first so English/Latin text renders unchanged; the Noto script
+     families are appended purely as fallbacks, so the browser only reaches
+     for them when the system font has no glyph for a character (e.g. Tamil)
+     instead of falling back all the way to tofu boxes. */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
+    "Noto Sans Devanagari", "Noto Sans Bengali", "Noto Sans Gujarati",
+    "Noto Sans Gurmukhi", "Noto Sans Kannada", "Noto Sans Malayalam",
+    "Noto Sans Oriya", "Noto Sans Tamil", "Noto Sans Telugu",
+    "Noto Sans Meetei Mayek", "Noto Sans Ol Chiki", "Noto Sans Arabic";
 }

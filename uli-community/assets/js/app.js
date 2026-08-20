@@ -27,6 +27,7 @@ import { PieChartHook } from "./hooks/pie_chart_hook";
 import { BarChartHook } from "./hooks/bar_chart_hook.js";
 import { SourceBarChartHook } from "./hooks/source_bar_chart_hook.js";
 import { WeeklyLineChartHook } from "./hooks/weekly_line_chart_hook.js";
+import { ClusterBubbleChartHook } from "./hooks/cluster_bubble_chart_hook.js";
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -38,6 +39,7 @@ Hooks.BarChartHook = BarChartHook
 Hooks.SourceBarChartHook = SourceBarChartHook
 Hooks.WeeklyLineChartHook = WeeklyLineChartHook
 Hooks.DateSelector = DateSelectorHook;
+Hooks.ClusterBubbleChartHook = ClusterBubbleChartHook;
 
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

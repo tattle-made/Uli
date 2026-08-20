@@ -13,7 +13,7 @@ defmodule UliCommunity.MediaProcessing.VectorSearch do
         from v in TextVecStoreVyakyarth,
           join: s in CrowdsourcedSlur,
           on: v.crowdsourced_slur_id == s.id,
-          order_by: fragment("? <-> ?", v.embedding, ^embedding),
+          order_by: fragment("? <=> ?", v.embedding, ^embedding),
           limit: ^top_n,
           select: fragment("LOWER(TRIM(?))", s.label)
 
@@ -25,7 +25,13 @@ defmodule UliCommunity.MediaProcessing.VectorSearch do
           where: fragment("LOWER(TRIM(?))", s.label) in ^normalized_labels,
           select: s
 
-      Repo.all(all_variants_query)
+      results = Repo.all(all_variants_query)
+      normalized_query = query |> String.trim() |> String.downcase()
+
+      # Exact label matches should rank above purely semantic matches
+      Enum.sort_by(results, fn slur ->
+        if String.downcase(String.trim(slur.label)) == normalized_query, do: 0, else: 1
+      end)
     end
   end
 end
