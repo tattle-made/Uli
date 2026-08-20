@@ -11,11 +11,16 @@ defmodule Scripts.ExtractCrowdsourcedSlurEmbedding do
   A word is considered unprocessed if it doesn't have a corresponding embedding i.e. an entry in text_vec_store_vyakyarth table
   """
   def enqueue_unprocessed_texts_batch do
+    # labels that already have an embedding, from any crowdsourced_slur row
+    embedded_labels_query =
+      from v in TextVecStoreVyakyarth,
+        join: s in CrowdsourcedSlur,
+        on: v.crowdsourced_slur_id == s.id,
+        select: fragment("LOWER(TRIM(?))", s.label)
+
     unprocessed_slurs_query =
       from s in CrowdsourcedSlur,
-        left_join: v in TextVecStoreVyakyarth,
-        on: v.crowdsourced_slur_id == s.id,
-        where: is_nil(v.id),
+        where: fragment("LOWER(TRIM(?))", s.label) not in subquery(embedded_labels_query),
         group_by: fragment("LOWER(TRIM(?))", s.label),
         select: %{
           id: min(s.id),

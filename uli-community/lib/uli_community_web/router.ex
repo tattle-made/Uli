@@ -163,6 +163,7 @@ defmodule UliCommunityWeb.Router do
       live "/admin/import-slurs", ImportSlursCsvLive, :index
       live "/gentoken", TokenGeneratorLive, :index
       live "/crowdsource-contributions", CrowdsourceContributionsLive, :index
+      live "/cluster-viz", ClusterVizLive, :index
       live "/plugin-metadata/:slur_label", PluginMetadataSlurLive, :index
       live "/dashboard", DashboardLive
 
