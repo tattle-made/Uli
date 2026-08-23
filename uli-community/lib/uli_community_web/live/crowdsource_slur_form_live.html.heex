@@ -1,0 +1,228 @@
+<div class="flex gap-6 p-6 bg-gray-50 min-h-screen">
+  <!-- Left Sidebar: My Contributions -->
+  <div class="w-80">
+    <div class="bg-white rounded-lg p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold">My Contributions</h2>
+        <span class="text-sm font-medium"><%= @current_user.email %></span>
+      </div>
+
+      <.link href={~p"/contribute-slur"} class="w-full mb-4 bg-black text-white px-4 py-2 rounded font-medium hover:bg-gray-800 flex items-center justify-center gap-2">
+        ➕ Add Slur
+      </.link>
+
+      <div class="mb-4">
+        <input
+          type="text"
+          placeholder="Search"
+          class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+        />
+      </div>
+
+      <div class="text-sm text-gray-600 mb-4">
+        <strong>50 Contributions</strong>
+      </div>
+
+      <div class="flex items-center gap-2 mb-3">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+        </svg>
+        <select class="text-sm border border-gray-300 rounded px-2 py-1">
+          <option>Sort: Newest First</option>
+          <option>Oldest First</option>
+        </select>
+      </div>
+
+      <div class="space-y-2">
+        <!-- Placeholder slur list items -->
+        <div class="p-3 bg-red-50 border-l-4 border-red-400 cursor-pointer hover:bg-red-100">
+          <div class="font-medium text-sm">Slur 1</div>
+        </div>
+        <div class="p-3 bg-gray-100 cursor-pointer hover:bg-gray-200">
+          <div class="font-medium text-sm">Slur 2</div>
+        </div>
+        <div class="p-3 bg-gray-100 cursor-pointer hover:bg-gray-200">
+          <div class="font-medium text-sm">Slur 3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Content: Form -->
+  <div class="flex-1">
+    <div class="bg-white rounded-lg p-8 shadow-sm max-w-2xl">
+      <div class="flex items-center justify-between mb-8">
+        <h1 class="text-2xl font-bold">
+          <%= if @mode == :edit, do: "Edit Slur", else: "Add Slur" %>
+        </h1>
+        <%= if @mode == :edit do %>
+          <button
+            class="px-4 py-2 text-red-600 border border-red-600 rounded hover:bg-red-50"
+            phx-click="delete"
+            data-confirm="Are you sure?"
+          >
+            🗑️ Delete
+          </button>
+        <% end %>
+      </div>
+
+      <.form :let={f} for={@form} phx-submit="save" class="space-y-6">
+        <!-- What is the slur? -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            What is the slur?
+          </label>
+          <p class="text-sm text-gray-600 mb-3">
+            How is this slur commonly spelled.
+          </p>
+          <.input
+            field={f[:label]}
+            type="text"
+            placeholder="Enter slur label"
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+          />
+          <div class="mt-3 p-3 bg-orange-50 rounded flex items-center gap-2">
+            <span class="text-2xl">🔍</span>
+            <span class="text-sm text-gray-700">
+              Search Result: Is it similar to (select any):
+            </span>
+          </div>
+        </div>
+
+        <!-- Level of Severity -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            Level of Severity
+          </label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="level_of_severity" value="low" />
+              <span class="text-sm">🟡 Low</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="level_of_severity" value="medium" />
+              <span class="text-sm">🟠 Medium</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="level_of_severity" value="high" />
+              <span class="text-sm">🔴 High</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Is it Casual? -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            Is it Casual?
+          </label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="casual" value="true" />
+              <span class="text-sm">Yes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="casual" value="false" />
+              <span class="text-sm">No</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Has it been appropriated? -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            Has it been appropriated?
+          </label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="appropriated" value="true" />
+              <span class="text-sm">Yes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="appropriated" value="false" />
+              <span class="text-sm">No</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Who has it been Appropriated by -->
+        <div>
+          <label class="block text-sm font-semibold mb-2 flex items-center gap-2">
+            <span>💬 Who has it been Appropriated by</span>
+          </label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2 px-4 py-2 border-2 border-orange-400 rounded cursor-pointer">
+              <input type="radio" name="appropriation_context" value="community" />
+              <span class="text-sm">By the Community</span>
+            </label>
+            <label class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded cursor-pointer">
+              <input type="radio" name="appropriation_context" value="others" />
+              <span class="text-sm">Others / People outside the community</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- What makes it problematic? -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            What makes it problematic?
+          </label>
+          <.input
+            field={f[:meaning]}
+            type="textarea"
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+          />
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            Categories?
+          </label>
+          <div class="flex gap-2 flex-wrap">
+            <label class="flex items-center gap-2 px-3 py-1 border-2 border-orange-400 rounded-full cursor-pointer">
+              <input type="checkbox" name="categories" value="gender" />
+              <span class="text-sm">Gender</span>
+            </label>
+            <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer">
+              <input type="checkbox" name="categories" value="caste" />
+              <span class="text-sm">Caste</span>
+            </label>
+            <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer">
+              <input type="checkbox" name="categories" value="class" />
+              <span class="text-sm">Class</span>
+            </label>
+            <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer">
+              <input type="checkbox" name="categories" value="religion" />
+              <span class="text-sm">Religion</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Language -->
+        <div>
+          <label class="block text-sm font-semibold mb-2">
+            Language
+          </label>
+          <div class="flex gap-2 flex-wrap">
+            <%= for {name, code} <- @language_options do %>
+              <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer hover:border-orange-400">
+                <input type="radio" name="language" value={code} />
+                <span class="text-sm"><%= name %> / <code class="text-xs"><%= String.upcase(code) %></code></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4 border-t">
+          <button
+            type="submit"
+            class="w-full bg-black text-white px-6 py-3 rounded font-semibold hover:bg-gray-800 flex items-center justify-center gap-2"
+          >
+            💾 Save & Submit Slur
+          </button>
+        </div>
+      </.form>
+    </div>
+  </div>
+</div>

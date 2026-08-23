@@ -23,7 +23,8 @@ defmodule UliCommunity.Languages do
     "snd" => "Sindhi",
     "tam" => "Tamil",
     "tel" => "Telugu",
-    "urd" => "Urdu"
+    "urd" => "Urdu",
+    "eng" => "English"
   }
 
   def valid_codes, do: Map.keys(@codes)
