@@ -17,13 +17,14 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
           # Edit mode
           slur = Repo.get(CrowdsourcedSlur, id)
 
-          if slur && slur.user_id == user.id do
+          if slur && slur.contributor_user_id == user.id do
             {:ok,
              socket
              |> assign(:page_title, "Edit Slur")
              |> assign(:slur, slur)
              |> assign(:mode, :edit)
              |> assign(:language_options, Languages.select_options())
+             |> assign_my_contributions(user)
              |> assign_form(slur)}
           else
             {:ok, redirect(socket, to: "/crowdsource-contributions")}
@@ -37,6 +38,7 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
            |> assign(:slur, nil)
            |> assign(:mode, :create)
            |> assign(:language_options, Languages.select_options())
+           |> assign_my_contributions(user)
            |> assign_form(%CrowdsourcedSlur{})}
       end
     else
@@ -49,7 +51,10 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
     user = socket.assigns.current_user
     mode = socket.assigns.mode
 
-    slur_params = Map.put(slur_params, "user_id", user.id)
+    slur_params =
+      slur_params
+      |> Map.put("contributor_user_id", user.id)
+      |> Map.put_new("source", "crowdsourcing_exercise")
 
     case mode do
       :create -> create_slur(slur_params, socket)
@@ -82,7 +87,10 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
          |> redirect(to: "/crowdsource-contributions")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign_form(socket, changeset)}
+        {:noreply,
+         socket
+         |> put_flash(:error, "Failed to save slur")
+         |> assign_form(changeset)}
     end
   end
 
@@ -95,8 +103,16 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
          |> redirect(to: "/crowdsource-contributions")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign_form(socket, changeset)}
+        {:noreply,
+         socket
+         |> put_flash(:error, "Failed to save slur")
+         |> assign_form(changeset)}
     end
+  end
+
+  defp assign_my_contributions(socket, user) do
+    {:ok, slurs} = UserContribution.get_crowdsourced_slur_by_user(user.id)
+    assign(socket, :my_contributions, slurs)
   end
 
   defp assign_form(socket, %CrowdsourcedSlur{} = slur) do
@@ -106,5 +122,10 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
 
   defp assign_form(socket, changeset) do
     assign(socket, form: to_form(changeset))
+  end
+
+  # Translate changeset form field errors into simple strings to be displayed in the form.
+  def field_errors(%Phoenix.HTML.FormField{} = field) do
+    Enum.map(field.errors, &translate_error/1)
   end
 end

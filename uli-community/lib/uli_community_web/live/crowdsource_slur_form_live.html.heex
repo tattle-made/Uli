@@ -20,7 +20,7 @@
       </div>
 
       <div class="text-sm text-gray-600 mb-4">
-        <strong>50 Contributions</strong>
+        <strong><%= length(@my_contributions) %> Contributions</strong>
       </div>
 
       <div class="flex items-center gap-2 mb-3">
@@ -33,17 +33,23 @@
         </select>
       </div>
 
-      <div class="space-y-2">
-        <!-- Placeholder slur list items -->
-        <div class="p-3 bg-red-50 border-l-4 border-red-400 cursor-pointer hover:bg-red-100">
-          <div class="font-medium text-sm">Slur 1</div>
-        </div>
-        <div class="p-3 bg-gray-100 cursor-pointer hover:bg-gray-200">
-          <div class="font-medium text-sm">Slur 2</div>
-        </div>
-        <div class="p-3 bg-gray-100 cursor-pointer hover:bg-gray-200">
-          <div class="font-medium text-sm">Slur 3</div>
-        </div>
+      <div class="space-y-2 max-h-96 overflow-y-auto pr-1">
+        <p :if={@my_contributions == []} class="text-sm text-gray-500">
+          You haven't added any slurs yet.
+        </p>
+        <.link
+          :for={contribution <- @my_contributions}
+          href={~p"/contribute-slur/#{contribution.id}"}
+          class={[
+            "block p-3 rounded",
+            if(@slur && contribution.id == @slur.id,
+              do: "bg-red-50 border-l-4 border-red-400 hover:bg-red-100",
+              else: "bg-gray-100 hover:bg-gray-200"
+            )
+          ]}
+        >
+          <div class="font-medium text-sm"><%= contribution.label %></div>
+        </.link>
       </div>
     </div>
   </div>
@@ -79,14 +85,15 @@
             field={f[:label]}
             type="text"
             placeholder="Enter slur label"
-            class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            readonly={@mode == :edit}
+            class={"w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-400 focus:border-transparent" <> if(@mode == :edit, do: " bg-gray-100 cursor-not-allowed", else: "")}
           />
-          <div class="mt-3 p-3 bg-orange-50 rounded flex items-center gap-2">
+          <%!-- <div class="mt-3 p-3 bg-orange-50 rounded flex items-center gap-2">
             <span class="text-2xl">🔍</span>
             <span class="text-sm text-gray-700">
               Search Result: Is it similar to (select any):
             </span>
-          </div>
+          </div> --%>
         </div>
 
         <!-- Level of Severity -->
@@ -96,18 +103,19 @@
           </label>
           <div class="flex gap-4">
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="level_of_severity" value="low" />
+              <input type="radio" name={f[:level_of_severity].name} value="low" checked={to_string(f[:level_of_severity].value) == "low"} />
               <span class="text-sm">🟡 Low</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="level_of_severity" value="medium" />
+              <input type="radio" name={f[:level_of_severity].name} value="medium" checked={to_string(f[:level_of_severity].value) == "medium"} />
               <span class="text-sm">🟠 Medium</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="level_of_severity" value="high" />
+              <input type="radio" name={f[:level_of_severity].name} value="high" checked={to_string(f[:level_of_severity].value) == "high"} />
               <span class="text-sm">🔴 High</span>
             </label>
           </div>
+          <.error :for={msg <- field_errors(f[:level_of_severity])}><%= msg %></.error>
         </div>
 
         <!-- Is it Casual? -->
@@ -117,14 +125,15 @@
           </label>
           <div class="flex gap-4">
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="casual" value="true" />
+              <input type="radio" name={f[:casual].name} value="true" checked={to_string(f[:casual].value) == "true"} />
               <span class="text-sm">Yes</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="casual" value="false" />
+              <input type="radio" name={f[:casual].name} value="false" checked={to_string(f[:casual].value) == "false"} />
               <span class="text-sm">No</span>
             </label>
           </div>
+          <.error :for={msg <- field_errors(f[:casual])}><%= msg %></.error>
         </div>
 
         <!-- Has it been appropriated? -->
@@ -134,14 +143,15 @@
           </label>
           <div class="flex gap-4">
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="appropriated" value="true" />
+              <input type="radio" name={f[:appropriated].name} value="true" checked={to_string(f[:appropriated].value) == "true"} />
               <span class="text-sm">Yes</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="appropriated" value="false" />
+              <input type="radio" name={f[:appropriated].name} value="false" checked={to_string(f[:appropriated].value) == "false"} />
               <span class="text-sm">No</span>
             </label>
           </div>
+          <.error :for={msg <- field_errors(f[:appropriated])}><%= msg %></.error>
         </div>
 
         <!-- Who has it been Appropriated by -->
@@ -151,11 +161,11 @@
           </label>
           <div class="flex gap-4">
             <label class="flex items-center gap-2 px-4 py-2 border-2 border-orange-400 rounded cursor-pointer">
-              <input type="radio" name="appropriation_context" value="community" />
+              <input type="radio" name={f[:appropriation_context].name} value="true" checked={to_string(f[:appropriation_context].value) == "true"} />
               <span class="text-sm">By the Community</span>
             </label>
             <label class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded cursor-pointer">
-              <input type="radio" name="appropriation_context" value="others" />
+              <input type="radio" name={f[:appropriation_context].name} value="false" checked={to_string(f[:appropriation_context].value) == "false"} />
               <span class="text-sm">Others / People outside the community</span>
             </label>
           </div>
@@ -179,23 +189,30 @@
             Categories?
           </label>
           <div class="flex gap-2 flex-wrap">
-            <label class="flex items-center gap-2 px-3 py-1 border-2 border-orange-400 rounded-full cursor-pointer">
-              <input type="checkbox" name="categories" value="gender" />
-              <span class="text-sm">Gender</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer">
-              <input type="checkbox" name="categories" value="caste" />
-              <span class="text-sm">Caste</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer">
-              <input type="checkbox" name="categories" value="class" />
-              <span class="text-sm">Class</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer">
-              <input type="checkbox" name="categories" value="religion" />
-              <span class="text-sm">Religion</span>
-            </label>
+            <% selected_categories = f[:categories].value |> List.wrap() |> Enum.map(&to_string/1) %>
+            <%= for {value, label} <- [
+              {"gendered", "Gender"},
+              {"sexualized", "Sexualized"},
+              {"religion", "Religion"},
+              {"ethnicity", "Ethnicity"},
+              {"political_affiliation", "Political Affiliation"},
+              {"caste", "Caste"},
+              {"class", "Class"},
+              {"body_shaming", "Body Shaming"},
+              {"ableist", "Ableist"},
+              {"sexual_identity", "Sexual Identity"},
+              {"other", "Other"}
+            ] do %>
+              <label class={[
+                "flex items-center gap-2 px-3 py-1 rounded-full cursor-pointer",
+                if(value in selected_categories, do: "border-2 border-orange-400", else: "border border-gray-300")
+              ]}>
+                <input type="checkbox" name={f[:categories].name <> "[]"} value={value} checked={value in selected_categories} />
+                <span class="text-sm"><%= label %></span>
+              </label>
+            <% end %>
           </div>
+          <.error :for={msg <- field_errors(f[:categories])}><%= msg %></.error>
         </div>
 
         <!-- Language -->
@@ -206,7 +223,7 @@
           <div class="flex gap-2 flex-wrap">
             <%= for {name, code} <- @language_options do %>
               <label class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-full cursor-pointer hover:border-orange-400">
-                <input type="radio" name="language" value={code} />
+                <input type="radio" name={f[:language].name} value={code} checked={to_string(f[:language].value) == code} />
                 <span class="text-sm"><%= name %> / <code class="text-xs"><%= String.upcase(code) %></code></span>
               </label>
             <% end %>
