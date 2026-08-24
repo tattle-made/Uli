@@ -31,7 +31,8 @@ const languageOptions = [
     { value: 'snd', label: 'Sindhi' },
     { value: 'tam', label: 'Tamil' },
     { value: 'tel', label: 'Telugu' },
-    { value: 'urd', label: 'Urdu' }
+    { value: 'urd', label: 'Urdu' },
+    { value: 'eng', label: 'English' },
 ];
 
 const categoryOptions = [
