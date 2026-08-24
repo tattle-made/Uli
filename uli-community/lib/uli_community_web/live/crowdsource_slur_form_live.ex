@@ -51,14 +51,17 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
     user = socket.assigns.current_user
     mode = socket.assigns.mode
 
-    slur_params =
-      slur_params
-      |> Map.put("contributor_user_id", user.id)
-      |> Map.put_new("source", "crowdsourcing_exercise")
+    slur_params = Map.put(slur_params, "contributor_user_id", user.id)
 
+    # The form has no source field. Force it on create, since every slur submitted
+    # here is crowdsourced through this form; strip it on edit so a client-supplied
+    # value can't override the slur's original source.
     case mode do
-      :create -> create_slur(slur_params, socket)
-      :edit -> update_slur(socket.assigns.slur, slur_params, socket)
+      :create ->
+        create_slur(Map.put(slur_params, "source", "crowdsourcing_exercise"), socket)
+
+      :edit ->
+        update_slur(socket.assigns.slur, Map.delete(slur_params, "source"), socket)
     end
   end
 
