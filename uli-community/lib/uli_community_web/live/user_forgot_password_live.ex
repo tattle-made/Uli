@@ -5,24 +5,68 @@ defmodule UliCommunityWeb.UserForgotPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        <%= gettext("Forgot your password?") %>
-        <:subtitle>We'll send a password reset link to your inbox</:subtitle>
-      </.header>
+    <div class="w-full max-w-[440px] mx-auto flex flex-col items-center">
+      
+      <!-- Headline & Subtitle in Labrada -->
+      <div class="text-center mb-6 font-['Labrada']">
+        <h1 class="text-[28px] font-normal text-[#4e1818] tracking-tight leading-tight">
+          <%= gettext("Forgot your password?") %>
+        </h1>
+        <p class="text-[15px] text-[#4e1818]/70 mt-1">
+          <%= gettext("Enter your email address and we will send you password reset instructions.") %>
+        </p>
+      </div>
 
-      <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input field={@form[:email]} type="email" placeholder={gettext("Email")} required />
-        <:actions>
-          <.button phx-disable-with={gettext("Sending...")} class="w-full">
-            <%= gettext("Send password reset instructions") %>
-          </.button>
-        </:actions>
-      </.simple_form>
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}><%= gettext("Register") %></.link>
-        | <.link href={~p"/users/log_in"}><%= gettext("Log in") %></.link>
+      <!-- Modern Dashboard Card (Sans-serif) -->
+      <div class="w-full bg-white border border-[#e2d8cc] rounded-2xl shadow-sm overflow-hidden p-6 sm:p-8 font-sans">
+        <.form :let={f} for={@form} id="reset_password_form" phx-submit="send_email" class="space-y-4">
+          <div>
+            <label for={f[:email].id} class="block text-sm font-semibold text-[#4e1818] mb-1.5">
+              <%= gettext("Email address") %>
+            </label>
+            <input
+              type="email"
+              name={f[:email].name}
+              id={f[:email].id}
+              value={Phoenix.HTML.Form.normalize_value("email", f[:email].value)}
+              required
+              autofocus
+              autocomplete="email"
+              placeholder="you@example.com"
+              class="w-full px-3.5 py-2.5 bg-white border border-[#d6c7b2] rounded-lg text-[#4e1818] placeholder-[#4e1818]/40 text-sm focus:outline-none focus:border-[#ff5e00] focus:ring-1 focus:ring-[#ff5e00] transition-colors duration-150"
+            />
+            <.error :for={msg <- f[:email].errors}><%= msg %></.error>
+          </div>
+
+          <div class="pt-2">
+            <button
+              type="submit"
+              phx-disable-with={gettext("Sending...")}
+              class="w-full h-[44px] bg-[#4e1818] border border-[#4e1818] text-[#fdf6ed] text-sm font-semibold rounded-lg hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white transition-colors duration-150 inline-flex items-center justify-center cursor-pointer shadow-sm"
+            >
+              <%= gettext("Send reset instructions") %> <span aria-hidden="true" class="ml-2 font-mono">→</span>
+            </button>
+          </div>
+        </.form>
+      </div>
+
+      <!-- Bottom switch links in Labrada -->
+      <p class="mt-6 text-center text-sm text-[#4e1818]/80 font-['Labrada'] space-x-2">
+        <.link 
+          navigate={~p"/users/log_in"} 
+          class="font-normal text-[#4e1818] underline underline-offset-4 hover:text-[#ff5e00] transition-colors"
+        >
+          <%= gettext("Back to Log in") %>
+        </.link>
+        <span>•</span>
+        <.link 
+          navigate={~p"/users/register"} 
+          class="font-normal text-[#4e1818] underline underline-offset-4 hover:text-[#ff5e00] transition-colors"
+        >
+          <%= gettext("Register") %>
+        </.link>
       </p>
+
     </div>
     """
   end

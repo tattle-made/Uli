@@ -11,27 +11,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Meetei+Mayek&family=Noto+Sans+Ol+Chiki&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Labrada:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Meetei+Mayek&family=Noto+Sans+Ol+Chiki&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap"
     />
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="">
-    <ul class="relative z-20 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-    <li class="mr-auto">
-    <a href="/" class="m-1">
-        <img src={~p"/images/Uli_Logo.png"} width="56" />
-      </a>
-    </li>
-      <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6 text-zinc-900">
+  <body class="bg-[#fdf6ed] antialiased m-0 p-0 text-[#4e1818] font-['Labrada']">
+    <%= if @current_user do %>
+      <div class="w-full h-[27px] bg-cross-stitch-h z-40 shrink-0" style="transform: rotate(180deg);"></div>
+      <ul class="relative z-20 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end py-2">
+        <li class="mr-auto">
+          <a href="/" class="m-1 flex items-center">
+            <img 
+              src={~p"/images/figma_landing/uli_community_header_logo.svg"} 
+              alt="Uli Community" 
+              class="h-[22px] w-auto object-contain select-none" 
+            />
+          </a>
+        </li>
+        <li class="text-[0.8125rem] leading-6 text-zinc-900 font-['Inter']">
           <%= @current_user.email %>
         </li>
         <li>
           <.link
             href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 font-['Inter']"
           >
             <%= gettext("Settings") %>
           </.link>
@@ -40,60 +45,41 @@
           <.link
             href={~p"/users/log_out"}
             method="delete"
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 font-['Inter']"
           >
             <%= gettext("Log out") %>
           </.link>
         </li>
-      <% else %>
-        <li>
-          <.link
-            href={~p"/users/register"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        <li class="relative group">
+          <button
+            class="flex items-center text-zinc-600 hover:text-zinc-900 transition-colors"
+            aria-label="Select language"
           >
-            <%= gettext("Register") %>
-          </.link>
+            <.icon name="hero-language" class="w-5 h-5" />
+          </button>
+          <div class="absolute right-0 top-full pt-1 hidden group-hover:block z-50">
+            <ul class="min-w-[10rem] rounded-lg border border-zinc-200 bg-white py-1 shadow-lg text-sm text-zinc-700 font-['Inter']">
+              <li>
+                <a
+                  href={~p"/locale/en"}
+                  class={"block px-4 py-2 hover:bg-zinc-50 #{if assigns[:locale] == "en", do: "font-semibold text-zinc-900", else: ""}"}
+                >
+                  English
+                </a>
+              </li>
+              <li>
+                <a
+                  href={~p"/locale/hi"}
+                  class={"block px-4 py-2 hover:bg-zinc-50 #{if assigns[:locale] == "hi", do: "font-semibold text-zinc-900", else: ""}"}
+                >
+                  हिंदी
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
-        <li>
-          <.link
-            href={~p"/users/log_in"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            <%= gettext("Log in") %>
-          </.link>
-        </li>
-      <% end %>
-      <li class="relative group">
-        <button
-          class="flex items-center text-zinc-600 hover:text-zinc-900 transition-colors"
-          aria-label="Select language"
-        >
-          <.icon name="hero-language" class="w-5 h-5" />
-        </button>
-        <div class="absolute right-0 top-full pt-1 hidden group-hover:block z-50">
-          <ul class="min-w-[10rem] rounded-lg border border-zinc-200 bg-white py-1 shadow-lg text-sm text-zinc-700">
-            <li>
-              <a
-                href={~p"/locale/en"}
-                class={"block px-4 py-2 hover:bg-zinc-50 #{if assigns[:locale] == "en", do: "font-semibold text-zinc-900", else: ""}"}
-              >
-                English
-              </a>
-            </li>
-            <li>
-              <a
-                href={~p"/locale/hi"}
-                class={"block px-4 py-2 hover:bg-zinc-50 #{if assigns[:locale] == "hi", do: "font-semibold text-zinc-900", else: ""}"}
-              >
-                हिंदी
-              </a>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-    <%= if @current_user do %>
-      <ul class="relative z-10 flex items-center justify-end gap-4 px-4 sm:px-6 lg:px-8 border-t border-zinc-200 py-2">
+      </ul>
+      <ul class="relative z-10 flex items-center justify-end gap-4 px-4 sm:px-6 lg:px-8 border-t border-zinc-200 py-2 font-['Inter']">
         <li>
           <.link
             href={~p"/crowdsource-contributions"}
