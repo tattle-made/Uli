@@ -5,20 +5,51 @@ defmodule UliCommunityWeb.UserConfirmationLive do
 
   def render(%{live_action: :edit} = assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
+    <div class="w-full max-w-[440px] mx-auto flex flex-col items-center">
+      
+      <!-- Headline & Subtitle -->
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-neutral-900 tracking-tight">
+          <%= gettext("Confirm your account") %>
+        </h1>
+        <p class="text-sm text-neutral-500 mt-1">
+          <%= gettext("Click below to complete your email confirmation.") %>
+        </p>
+      </div>
 
-      <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
-        <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
-        <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
-        </:actions>
-      </.simple_form>
+      <!-- Modern Dashboard Card -->
+      <div class="w-full bg-white border border-[#e2d8cc] rounded-2xl shadow-sm overflow-hidden p-6 sm:p-8">
+        <.form for={@form} id="confirmation_form" phx-submit="confirm_account" class="space-y-4">
+          <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
+          <div>
+            <button
+              type="submit"
+              phx-disable-with={gettext("Confirming...")}
+              class="w-full h-[44px] bg-[#4e1818] border border-[#4e1818] text-[#fdf6ed] text-sm font-semibold rounded-lg hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white transition-colors duration-150 inline-flex items-center justify-center cursor-pointer shadow-sm"
+            >
+              <%= gettext("Confirm my account") %> <span aria-hidden="true" class="ml-2 font-mono">→</span>
+            </button>
+          </div>
+        </.form>
+      </div>
 
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+      <!-- Bottom switch links -->
+      <p class="mt-6 text-center text-sm text-neutral-500 space-x-2">
+        <.link 
+          navigate={~p"/users/log_in"} 
+          class="font-semibold text-neutral-900 underline underline-offset-4 hover:text-black transition-colors"
+        >
+          <%= gettext("Log in") %>
+        </.link>
+        <span>•</span>
+        <.link 
+          navigate={~p"/users/register"} 
+          class="font-semibold text-neutral-900 underline underline-offset-4 hover:text-black transition-colors"
+        >
+          <%= gettext("Register") %>
+        </.link>
       </p>
+
     </div>
     """
   end

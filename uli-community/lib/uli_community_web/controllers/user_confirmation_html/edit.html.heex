@@ -1,14 +1,31 @@
-<div class="mx-auto max-w-sm">
-  <.header class="text-center">Confirm account</.header>
-
-  <.simple_form for={@conn.params["user"]} as={:user} action={~p"/users/confirm/#{@token}"}>
-    <:actions>
-      <.button class="w-full">Confirm my account</.button>
-    </:actions>
-  </.simple_form>
-
-  <p class="text-center mt-4">
-    <.link href={~p"/users/register"}>Register</.link>
-    | <.link href={~p"/users/log_in"}>Log in</.link>
+<div class="w-full max-w-[453px] mx-auto flex flex-col items-center font-['Labrada']">
+  <h1 class="text-center text-[#4e1818] text-[26px] font-light leading-tight mb-2">
+    <%= gettext("Confirm your account") %>
+  </h1>
+  <p class="text-center text-[15px] text-[#4e1818]/80 max-w-[340px] mb-8 font-normal">
+    <%= gettext("Click the button below to complete your confirmation.") %>
   </p>
+
+  <div class="relative w-full bg-[#ffece6] border border-[#4e1818] p-7 sm:p-9">
+    <.form for={@conn.params["user"]} as={:user} action={~p"/users/confirm/#{@token}"} class="space-y-4">
+      <div class="pt-2">
+        <button
+          type="submit"
+          class="w-full h-[42px] bg-[#4e1818] border border-[#4e1818] text-[#fdf6ed] font-['Labrada'] text-[15px] font-normal inline-flex items-center justify-center transition-colors duration-150 hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white cursor-pointer"
+        >
+          <%= gettext("Confirm my account") %> <span aria-hidden="true" class="ml-2 font-mono">→</span>
+        </button>
+      </div>
+    </.form>
+  </div>
+
+  <div class="mt-6 flex items-center justify-center gap-3 text-sm text-[#4e1818]">
+    <.link href={~p"/users/register"} class="font-normal text-[#4e1818] underline hover:text-[#ff5e00] transition-colors duration-150">
+      <%= gettext("Register") %>
+    </.link>
+    <span>•</span>
+    <.link href={~p"/users/log_in"} class="font-normal text-[#4e1818] underline hover:text-[#ff5e00] transition-colors duration-150">
+      <%= gettext("Log in") %>
+    </.link>
+  </div>
 </div>

@@ -1,22 +1,374 @@
-<div class="max-w-7xl mx-auto">
-  <div class="flex items-center justify-center gap-12 py-12">
-    <div class="max-w-md">
-      <p class="text-4xl font-bold mb-4"><%= gettext("Reclaim your online space") %></p>
-      <p class="mt-2 text-lg">
-        Use Uli to redact slurs and abusive content, archive problematic content, and collectively push back against online gender based violence
-      </p>
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title>
+      <%= assigns[:page_title] || "Uli Community" %>
+    </.live_title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Labrada:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Rubik+Glitch&family=Silkscreen&display=swap"
+    />
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+    <style>
+      :root {
+        --ink: currentColor;
+        --ink-2: #FF4FD8;
+        --ink-3: #ff5e00;
+      }
 
-      <%=if @current_user do %>
-        <a href="/crowdsource-contributions">
-          <button class="border border-gray-500 rounded-md text-sm font-semibold px-2 py-1 mt-8">
-            <%= gettext("View Crowdsourced Contributions") %>
-          </button>
-        </a>
-      <% end %>
+      .bg-cross-stitch-v {
+        background-image: url('/images/figma_landing/border_vertical.png');
+        background-repeat: repeat-y;
+        background-position: left top;
+        background-size: 32px 88.6px;
+      }
+      .bg-cross-stitch-h {
+        background-image: url('/images/figma_landing/border_horizontal.png');
+        background-repeat: repeat-x;
+        background-position: left top;
+        background-size: 176.8px 27.2px;
+      }
+
+      @keyframes floatUpFade {
+        0% {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-float-up {
+        animation: floatUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .animate-float-up-delay-1 {
+        animation: floatUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        opacity: 0;
+      }
+
+      .animate-float-up-delay-2 {
+        animation: floatUpFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        opacity: 0;
+      }
+
+      .animate-float-up-delay-3 {
+        animation: floatUpFade 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+        opacity: 0;
+      }
+
+      /* Block unhide staggered reveal */
+      @keyframes blockUnhide {
+        0% {
+          opacity: 0;
+          transform: translateY(6px);
+          filter: blur(4px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      .heading-block {
+        display: inline-block;
+        opacity: 0;
+        animation: blockUnhide 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: calc(var(--block-i, 0) * 0.15s);
+      }
+
+      /* 10 Cipher — scrambled characters decode once into the word */
+      .fx-decoder {
+        display: inline-block;
+        font: inherit;
+        font-family: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+        vertical-align: baseline;
+        line-height: inherit;
+      }
+      .fx-decoder::after {
+        content: "slur";
+        color: inherit;
+        animation: fx-decoder-slur 0.9s steps(1) 0.6s 1 normal forwards;
+      }
+
+      @keyframes fx-decoder-slur {
+        0%   { content: "▓K#R"; color: var(--ink-3); }
+        15%  { content: "$%#▒"; color: var(--ink-3); }
+        30%  { content: "s☰*r"; color: var(--ink-3); }
+        45%  { content: "sl0r"; color: var(--ink-3); }
+        60%  { content: "slùr"; color: var(--ink-3); }
+        75%, 100% { content: "slur"; color: inherit; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .heading-block {
+          opacity: 1 !important;
+          transform: none !important;
+          filter: none !important;
+          animation: none !important;
+        }
+        .fx-decoder::after {
+          content: "slur" !important;
+          animation: none !important;
+          color: var(--ink) !important;
+        }
+        .animate-float-up,
+        .animate-float-up-delay-1,
+        .animate-float-up-delay-2,
+        .animate-float-up-delay-3 {
+          animation: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-[#fdf6ed] antialiased m-0 p-0 overflow-x-hidden font-['Labrada'] text-[#4e1818]">
+    <!-- Outer Viewport: Cream background, edge-to-edge full width with NO max-width on borders -->
+    <div class="relative w-full min-h-screen bg-[#fdf6ed] flex flex-col items-center">
+      
+      <!-- Top Horizontal Cross-stitch Border -->
+      <div 
+        class="w-full h-[27px] bg-cross-stitch-h z-40 shrink-0" 
+        style="transform: rotate(180deg);"
+      ></div>
+
+      <!-- Left Vertical Cross-stitch Border -->
+      <div 
+        class="absolute top-[27px] bottom-[27px] left-0 w-[32px] bg-cross-stitch-v pointer-events-none z-40 hidden sm:block"
+      ></div>
+
+      <!-- Right Vertical Cross-stitch Border -->
+      <div 
+        class="absolute top-[27px] bottom-[27px] right-0 w-[32px] bg-cross-stitch-v pointer-events-none z-40 hidden sm:block" 
+        style="transform: scaleX(-1);"
+      ></div>
+
+      <!-- ================= MAIN CONTENT CONTAINER ================= -->
+      <div class="w-full max-w-[1200px] mx-auto px-4 sm:px-12 pt-8 pb-16 flex flex-col items-center relative z-20">
+        
+        <!-- Logo & Brand Header -->
+        <header class="flex items-center justify-center mb-24">
+          <img 
+            src={~p"/images/figma_landing/uli_community_header_logo.svg"} 
+            alt="Uli Community" 
+            class="h-[28px] w-auto object-contain select-none" 
+          />
+        </header>
+
+        <!-- Subtitle / Tagline with 100% line height and increased balanced margins (3x) -->
+        <h1 class="text-center text-[#4e1818] text-[24px] font-light max-w-[430px] mx-auto leading-none mb-28">
+          <span class="heading-block" style="--block-i: 0;">Contribute to</span>
+          <span class="heading-block" style="--block-i: 1;">building a safer</span>
+          <span class="heading-block" style="--block-i: 2;">online space,</span>
+          <span class="heading-block" style="--block-i: 3;">one</span>
+          <span class="heading-block" style="--block-i: 4;"><span class="fx-decoder" role="img" aria-label="slur"></span></span>
+          <span class="heading-block" style="--block-i: 3;">word at a time.</span>
+        </h1>
+
+        <!-- ================= CONTINUOUS CENTRAL COLUMN CONTAINER ================= -->
+        <div class="relative w-full flex flex-col items-center">
+          
+          <!-- Continuous Pink Central Pillar running underneath (max 455px wide, full width responsive on small screens) -->
+          <!-- Sits at z-10, runs from under the top stats card down to the rounded bottom cap -->
+          <div 
+            class="absolute top-[160px] bottom-[80px] w-full max-w-[455px] bg-[#ffece6] rounded-bl-[20px] rounded-br-[20px] z-10 pointer-events-none"
+            style="left: 50%; transform: translateX(-50%);"
+          ></div>
+
+          <!-- Bottom Stepped Pixel Edge Container (Figma 194:1100, matches #ffece6 body color) -->
+          <div 
+            class="absolute bottom-0 w-full max-w-[455px] h-[259px] z-10 pointer-events-none"
+            style="left: 50%; transform: translateX(-50%);"
+          >
+            <img 
+              src={~p"/images/figma_landing/rectangle14.png"} 
+              alt="" 
+              class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" 
+            />
+          </div>
+
+          <!-- ================= TOP STATS & AUTH OVERLAPPING CARDS (Z-20 & Z-30) ================= -->
+          <div class="relative w-full max-w-[453px] flex flex-col items-center z-20 animate-float-up-delay-1">
+            
+            <!-- 1. Upper White Stats Box (Behind: z-20, Height: 264px) -->
+            <div class="relative w-full h-[264px] z-20">
+              <img 
+                src={~p"/images/figma_landing/rectangle11.png"} 
+                alt="" 
+                class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" 
+              />
+              <div class="relative z-10 w-full px-7 pt-7 flex items-center justify-between text-center">
+                <!-- Slurs Metric -->
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="text-[28px] font-normal text-[#4e1818] leading-tight mb-0.5 tabular-nums stat-counter" data-target="1500">0</div>
+                  <div class="text-[16px] font-normal text-[#4e1818] leading-tight"><%= gettext("Slurs") %></div>
+                </div>
+
+                <!-- Divider Line -->
+                <img src={~p"/images/figma_landing/divider.svg"} alt="" class="h-[34px] w-auto opacity-70 mb-1" />
+
+                <!-- Language Metric -->
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="text-[28px] font-normal text-[#4e1818] leading-tight mb-0.5 tabular-nums stat-counter" data-target="9">0</div>
+                  <div class="text-[16px] font-normal text-[#4e1818] leading-tight"><%= gettext("Language") %></div>
+                </div>
+
+                <!-- Divider Line -->
+                <img src={~p"/images/figma_landing/divider.svg"} alt="" class="h-[34px] w-auto opacity-70 mb-1" />
+
+                <!-- Contributors Metric -->
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="text-[28px] font-normal text-[#4e1818] leading-tight mb-0.5 tabular-nums stat-counter" data-target="100">0</div>
+                  <div class="text-[16px] font-normal text-[#4e1818] leading-tight"><%= gettext("Contributors") %></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Lower Pink Auth Box (In Front: z-30, Height: 197px, Overlaps upper white box with negative margin) -->
+            <div class="relative w-full h-[197px] -mt-[145px] z-30">
+              <img 
+                src={~p"/images/figma_landing/rectangle12.png"} 
+                alt="" 
+                class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" 
+              />
+              <div class="relative z-10 h-full w-full px-8 pt-7 flex flex-col items-center text-center">
+                <p class="text-[18px] font-normal text-[#4e1818] leading-[22px] max-w-[303px] text-center mb-5">
+                  <%= gettext("Explore, annotate and add to our multilingual slur database.") %>
+                </p>
+
+                <%= if @current_user do %>
+                  <div class="flex gap-3 items-center justify-center">
+                    <.link 
+                      href={~p"/crowdsource-contributions"} 
+                      class="h-[36px] px-4 inline-flex items-center justify-center bg-[#4e1818] border border-[#4e1818] text-[#fdf6ed] font-['Inter'] font-bold text-[13.6px] transition-colors duration-150 active:scale-95 hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white"
+                    >
+                      <%= gettext("View Contributions") %>
+                    </.link>
+                    <.link 
+                      href={~p"/contribute-slur"} 
+                      class="h-[36px] px-4 inline-flex items-center justify-center bg-white border border-[#4e1818] text-[#4e1818] font-['Inter'] font-bold text-[13.6px] transition-colors duration-150 active:scale-95 hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white"
+                    >
+                      <%= gettext("Contribute Slur") %>
+                    </.link>
+                  </div>
+                <% else %>
+                  <div class="flex gap-3 items-center justify-center">
+                    <.link 
+                      href={~p"/users/log_in"} 
+                      class="w-[101px] h-[36px] bg-white border border-[#4e1818] text-[#4e1818] font-['Inter'] font-bold text-[13.6px] inline-flex items-center justify-center transition-colors duration-150 hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white active:scale-95"
+                    >
+                      <%= gettext("Login") %>
+                    </.link>
+                    <.link 
+                      href={~p"/users/register"} 
+                      class="w-[101px] h-[36px] bg-[#ffcdc0] border border-[#ffcdc0] text-[#4e1818] font-['Inter'] font-bold text-[13.8px] inline-flex items-center justify-center transition-colors duration-150 hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white active:scale-95"
+                    >
+                      <%= gettext("Register") %>
+                    </.link>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= OVERSIZED DATASET TABLE IMAGE FRAME (Z-20) ================= -->
+          <section class="w-full max-w-[1105px] bg-[#fefaf4] border border-[rgba(0,0,0,0.1)] rounded-[19px] p-4 sm:p-8 -mt-[48px] mb-9 flex items-center justify-center z-20 animate-float-up-delay-2">
+            <a href={~p"/crowdsource-contributions"} class="block w-full transition-opacity hover:opacity-95">
+              <img 
+                src={~p"/images/figma_landing/dashboard_preview.png"} 
+                alt="Uli Slur Dataset Table" 
+                class="w-full h-auto object-contain" 
+              />
+            </a>
+          </section>
+
+          <!-- ================= "WHAT IS ULI?" FOREGROUND TEXT & BUTTON (Z-20) ================= -->
+          <section class="w-full max-w-[455px] flex flex-col items-center text-center relative z-20 pb-20 animate-float-up-delay-3">
+            <!-- Section Title -->
+            <h2 class="text-[24px] font-medium text-[#4e1818] text-center mb-6 leading-tight">
+              <%= gettext("what is uli?") %>
+            </h2>
+
+            <!-- Description Paragraphs -->
+            <div class="w-full max-w-[358px] px-2 text-left text-[14px] font-light text-[#4e1818] leading-[1.3] space-y-4 mb-10">
+              <p>
+                <%= gettext("Project Uli at Tattle tackles online gender-based violence and tech-facilitated gender-based violence by developing collective tools for safer digital engagement. We do this through three components, which are reparative, redactive and educational, to build a community of people who engage with Project Uli in different ways they align with it.") %>
+              </p>
+
+              <p>
+                <%= gettext("We started with building a dataset of slur words in Indian regional languages annotated to expand on who is harmed and how harm is normalised by language-centric abuse. Then, we built a plugin tool for browsers that redacts slur words by highlighting them to share the metadata on the slur words or covering the abusive words with a patch.") %>
+              </p>
+
+              <p>
+                <%= gettext("The tool catches the slur words that have found their way into the 1500+ slur word dataset. Finally, we engage with young people in workshops at schools and colleges to denormalise online abuse with a specific focus on language-centric abuse prevalent in digital social networking spaces.") %>
+              </p>
+            </div>
+
+            <!-- "Learn more about Uli" CTA Button -->
+            <div class="z-20">
+              <a 
+                href="https://uli.tattle.co.in/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="w-[168px] h-[36px] bg-[#4e1818] border border-[#4e1818] text-[#fdf6ed] font-['Inter'] font-bold text-[13.6px] inline-flex items-center justify-center transition-colors duration-150 hover:bg-[#ff5e00] hover:border-[#ff5e00] hover:text-white active:scale-95"
+              >
+                <%= gettext("Learn more about Uli") %>
+              </a>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+
+      <!-- Bottom Horizontal Cross-stitch Border -->
+      <div 
+        class="w-full h-[27px] bg-cross-stitch-h z-40 shrink-0 mt-auto"
+      ></div>
     </div>
 
-    <div class="w-[600px]">
-      <img src={~p"/images/HeroIllustration.gif"} alt="Hero Illustration" />
-    </div>
-  </div>
-</div>
+    <!-- Stats Ticker Count-up Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const counters = document.querySelectorAll(".stat-counter");
+        const duration = 1600; // ms
+        const startTime = performance.now();
+
+        function easeOutExpo(t) {
+          return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        }
+
+        function updateCounters(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easedProgress = easeOutExpo(progress);
+
+          counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute("data-target"), 10);
+            const current = Math.round(easedProgress * target);
+            counter.textContent = current.toLocaleString();
+          });
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounters);
+          }
+        }
+
+        requestAnimationFrame(updateCounters);
+      });
+    </script>
+  </body>
+</html>

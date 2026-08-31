@@ -2,7 +2,10 @@ defmodule UliCommunityWeb.PageController do
   use UliCommunityWeb, :controller
 
   def home(conn, _params) do
-    render(conn, :home, layout: false)
+    conn
+    |> put_root_layout(false)
+    |> render(:home, layout: false)
   end
 
 end
+
