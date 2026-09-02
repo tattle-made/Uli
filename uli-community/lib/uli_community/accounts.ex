@@ -352,4 +352,18 @@ defmodule UliCommunity.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  def list_recent_users(limit \\ 20, offset \\ 0) do
+    User
+    |> order_by([u], desc: u.inserted_at)
+    |> limit(^limit)
+    |> offset(^offset)
+    |> Repo.all()
+  end
+
+  def count_users do
+    Repo.aggregate(User, :count, :id)
+  end
+
+
 end
