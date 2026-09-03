@@ -37,3 +37,15 @@ Abuse detection in Indian Languages is a nascent stage with a lack of task and l
 | ----------- | -------- | --------- | ------ | ---- |
 | Llama Guard | 0.55     | 0.84      | 0.13   | 0.22 |
 
+# Milestone Updates : 
+## Conceptualize Performance Metrics : 
+### Static Benchmark : 
+Out of the 4 datasets, the 2 datasets created by our team - annotated tweets and benign/harmful sentences will be treated as static benchmark datasets for now. These were manually created by our expert group. Once we have real data coming in through our product, we might add other static benchmarks to this or update this if needed. But for the next quarter, we are moving ahead with considering these as the static benchmarks.
+
+### Dynamic test set creation protocol : 
+As new data comes from our product, we will conduct its manual evaluation periodically. A detailed process that we have implemented for it has been documented [here](https://tattle.co.in/blog/2026-05-28-how-to-do-manual-evaluations/). This process involve annotating data manually and segmenting it into categories of abuse. This will help us create datasets that remain representative of abuse landscape and ensure we cover multiple categories of harm. 
+While the manual process is useful when discovering patterns and nuances in new data, for capturing already established categories, we can consider using LLMs to assist our team members.
+
+### Conceptualize Metrics
+We are currently tracking F1 macro as the primary metric to account for performance across abuse categories. In addition, we plan to track per-class F1 and performance delta against the static benchmark to identify regressions and understand whether model improvements generalize to newly emerging patterns.
+
