@@ -37,6 +37,20 @@ Abuse detection in Indian Languages is a nascent stage with a lack of task and l
 | ----------- | -------- | --------- | ------ | ---- |
 | Llama Guard | 0.55     | 0.84      | 0.13   | 0.22 |
 
+# Dataset Description
+## Sharechat 
+A large-scale (150K), human-annotated, multilingual (5 languages), balanced (49% abusive content) and diverse (70K users) abuse detection dataset of user comments, sourced from a popular social media platform - ShareChat
+
+## HASOC
+A [dataset](https://hasocfire.github.io/hasoc/2024/dataset.html) of abusive texts sourced from twitter and facebook.
+
+## Uli annotated tweets
+24,000 manually annotated tweets created by the Tattle team to create an Abuse detection ML model
+
+## Uli harmful and benign sentences
+Around 100 pairs of sentences containing a slur in harmful and benign usage. 
+
+
 # Milestone Updates : 
 ## Conceptualize Performance Metrics : 
 ### Static Benchmark : 
@@ -47,5 +61,5 @@ As new data comes from our product, we will conduct its manual evaluation period
 While the manual process is useful when discovering patterns and nuances in new data, for capturing already established categories, we can consider using LLMs to assist our team members.
 
 ### Conceptualize Metrics
-We are currently tracking F1 macro as the primary metric to account for performance across abuse categories. In addition, we plan to track per-class F1 and performance delta against the static benchmark to identify regressions and understand whether model improvements generalize to newly emerging patterns.
+We are currently tracking Accuracy and F1 macro as the primary metric to account for performance across abuse categories. In addition, we plan to track per-class F1 and performance delta against the static benchmark to identify regressions and understand whether model improvements generalize to newly emerging patterns.
 
