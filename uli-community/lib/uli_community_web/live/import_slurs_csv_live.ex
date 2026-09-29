@@ -60,7 +60,8 @@ defmodule UliCommunityWeb.ImportSlursCsvLive do
           {:noreply, assign(socket, parse_error: message, step: :upload)}
 
         [{:ok, []}] ->
-          {:noreply, assign(socket, parse_error: "The CSV file contains no data rows.", step: :upload)}
+          {:noreply,
+           assign(socket, parse_error: "The CSV file contains no data rows.", step: :upload)}
 
         [{:ok, rows}] ->
           {:noreply,
@@ -69,7 +70,8 @@ defmodule UliCommunityWeb.ImportSlursCsvLive do
            |> apply_validation(rows, nil, nil, nil)}
 
         [] ->
-          {:noreply, assign(socket, parse_error: "Please select a CSV file first.", step: :upload)}
+          {:noreply,
+           assign(socket, parse_error: "Please select a CSV file first.", step: :upload)}
       end
     end
   end
@@ -87,7 +89,12 @@ defmodule UliCommunityWeb.ImportSlursCsvLive do
        override_language: override_language,
        override_source: override_source
      )
-     |> apply_validation(socket.assigns.parsed_rows, override_user_id, override_language, override_source)}
+     |> apply_validation(
+       socket.assigns.parsed_rows,
+       override_user_id,
+       override_language,
+       override_source
+     )}
   end
 
   @impl true
@@ -128,7 +135,8 @@ defmodule UliCommunityWeb.ImportSlursCsvLive do
       validated_rows: validated_rows,
       valid_count: Enum.count(validated_rows, & &1.valid),
       invalid_count: Enum.count(validated_rows, &(!&1.valid)),
-      missing_source_count: Enum.count(rows, fn raw -> nilify_empty(Map.get(raw, "source")) == nil end)
+      missing_source_count:
+        Enum.count(rows, fn raw -> nilify_empty(Map.get(raw, "source")) == nil end)
     )
   end
 
@@ -173,14 +181,15 @@ defmodule UliCommunityWeb.ImportSlursCsvLive do
 
   defp build_attrs(raw, override_user_id, override_language, override_source) do
     # nilify_empty ensures empty CSV strings don't cause Ecto cast/validation errors
-    language = override_language || nilify_empty(Map.get(raw, "language"))
-    source = override_source || nilify_empty(Map.get(raw, "source"))
+    # Only fixed-value fields are downcased; label/meaning keep their original case
+    language = override_language || downcase_optional(Map.get(raw, "language"))
+    source = override_source || downcase_optional(Map.get(raw, "source"))
     categories = raw |> Map.get("categories", "") |> parse_categories()
     appropriation_context = parse_optional_boolean(Map.get(raw, "appropriation_context"))
 
     %{
       label: nilify_empty(Map.get(raw, "label")),
-      level_of_severity: nilify_empty(Map.get(raw, "level_of_severity")),
+      level_of_severity: downcase_optional(Map.get(raw, "level_of_severity")),
       casual: parse_optional_boolean(Map.get(raw, "casual")),
       appropriated: parse_optional_boolean(Map.get(raw, "appropriated")),
       appropriation_context: appropriation_context,
@@ -194,20 +203,27 @@ defmodule UliCommunityWeb.ImportSlursCsvLive do
   end
 
   defp parse_categories(str) when is_binary(str) do
-    str |> String.split("|") |> Enum.map(&String.trim/1) |> Enum.reject(&(&1 == ""))
+    str
+    |> String.split("|")
+    |> Enum.map(&(&1 |> String.trim() |> String.downcase() |> String.replace(~r/[\s-]+/, "_")))
+    |> Enum.reject(&(&1 == ""))
   end
 
   defp parse_categories(_), do: []
 
   defp parse_boolean("true"), do: true
+  defp parse_boolean("yes"), do: true
   defp parse_boolean("1"), do: true
   defp parse_boolean("false"), do: false
+  defp parse_boolean("no"), do: false
   defp parse_boolean("0"), do: false
   defp parse_boolean(val), do: val
 
   defp parse_optional_boolean(""), do: nil
   defp parse_optional_boolean(nil), do: nil
-  defp parse_optional_boolean(val), do: parse_boolean(val)
+  defp parse_optional_boolean(val), do: val |> String.downcase() |> parse_boolean()
+
+  defp downcase_optional(val), do: val |> nilify_empty() |> then(&(&1 && String.downcase(&1)))
 
   defp nilify_empty(""), do: nil
   defp nilify_empty(nil), do: nil
