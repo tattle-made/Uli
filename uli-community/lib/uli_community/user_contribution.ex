@@ -25,27 +25,32 @@ defmodule UliCommunity.UserContribution do
   Returns paginated and filtered list of crowdsourced_slurs.
   """
   def list_crowdsourced_slurs_with_filters(search_params) do
-    page_num = Keyword.get(search_params, :page_num, 1)
-    per_page = 30
-    offset = (page_num - 1) * per_page
+  page_num = Keyword.get(search_params, :page_num, 1)
+  per_page = 30
+  offset = (page_num - 1) * per_page
 
-    query = build_filtered_query(search_params)
+  query = build_filtered_query(search_params)
 
-    # Get total count
-    count_query = from(s in query, select: count(s.id))
-    total_count = Repo.one(count_query)
+  count_query =
+    from(s in query,
+      select: count(s.id)
+    )
 
-    # Get paginated results
-    results_query =
-      query
-      |> apply_sorting(search_params)
-      |> limit(^per_page)
-      |> offset(^offset)
+  total_count = Repo.one(count_query)
 
-    results = Repo.all(results_query)
+  total_pages =
+    max(1, ceil(total_count / per_page))
 
-    {total_count, results}
-  end
+  results_query =
+    query
+    |> apply_sorting(search_params)
+    |> limit(^per_page)
+    |> offset(^offset)
+
+  results = Repo.all(results_query)
+
+  {total_count, total_pages, page_num, per_page, results}
+end
 
   defp build_filtered_query(search_params) do
     CrowdsourcedSlur
