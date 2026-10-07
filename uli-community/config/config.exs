@@ -10,7 +10,8 @@ import Config
 config :uli_community, Oban,
   engine: Oban.Engines.Basic,
   notifier: Oban.Notifiers.Postgres,
-  queues: [text_index: 1],
+  # p1_*: Labs P1 Comments Classifier (one Apify scrape at a time, two LLM jobs).
+  queues: [text_index: 1, p1_fetch: 1, p1_classify: 2],
   repo: UliCommunity.Repo
 
 config :uli_community,

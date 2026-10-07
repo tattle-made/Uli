@@ -2,7 +2,7 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   use UliCommunityWeb, :live_view
 
   import UliCommunityWeb.Labs.P1.Components
-  alias UliCommunity.Labs.P1.DummyData
+  alias UliCommunity.Labs.P1
 
   @stages [
     queued: "Queued",
@@ -12,7 +12,7 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   ]
 
   def mount(%{"id" => id}, _session, socket) do
-    case DummyData.get_post(id) do
+    case load_post(id) do
       nil ->
         {:ok,
          socket
@@ -20,13 +20,13 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
          |> push_navigate(to: ~p"/labs/p1/channels")}
 
       post ->
-        if connected?(socket), do: DummyData.subscribe()
+        if connected?(socket), do: P1.subscribe()
 
         {:ok,
          assign(socket,
            page_title: "#{post.title || "Post"} · Labs P1",
            post: post,
-           channel: DummyData.get_channel(post.channel_id),
+           channel: P1.get_channel!(post.channel_id),
            run_id: nil,
            tab: "categorized",
            filter: "all",
@@ -53,7 +53,7 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   end
 
   def handle_info(:labs_p1_updated, socket) do
-    case DummyData.get_post(socket.assigns.post.id) do
+    case load_post(socket.assigns.post.id) do
       nil -> {:noreply, push_navigate(socket, to: ~p"/labs/p1/channels")}
       post -> {:noreply, socket |> assign(post: post) |> load_run()}
     end
@@ -90,8 +90,8 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   def handle_event("open_report", _, socket), do: {:noreply, assign(socket, show_report: true)}
 
   def handle_event("refetch", %{"post_id" => id, "config" => config}, socket) do
-    case DummyData.refetch(id, config) do
-      :ok ->
+    case P1.refetch(socket.assigns.post, config) do
+      {:ok, _run} ->
         # Jump to the new run.
         {:noreply,
          socket
@@ -107,10 +107,18 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   defp toggle(set, id),
     do: if(MapSet.member?(set, id), do: MapSet.delete(set, id), else: MapSet.put(set, id))
 
+  # The post with numbered runs and the latest run, or nil if it no longer exists.
+  defp load_post(id) do
+    case UliCommunity.Repo.get(P1.Posts, id) do
+      nil -> nil
+      _ -> id |> P1.get_post!() |> with_run_info()
+    end
+  end
+
   defp load_run(socket) do
     %{post: post, run_id: run_id} = socket.assigns
     run = Enum.find(post.runs, &(&1.id == run_id)) || post.latest_run
-    comments = if run && run.status == :done, do: DummyData.comments_for_run(run), else: []
+    comments = if run && run.status == :done, do: comment_rows(run), else: []
 
     socket =
       if socket.assigns.selection_run_id == (run && run.id) do
@@ -122,10 +130,36 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     assign(socket,
       run: run,
       comments: comments,
-      counts: DummyData.category_counts(comments),
+      counts: count_categories(comments),
       by_id: Map.new(comments, &{&1["id"], &1}),
       replies: comments |> Enum.filter(& &1["parent_id"]) |> Enum.group_by(& &1["parent_id"])
     )
+  end
+
+  # The run's comments as the maps the templates use. Within a run, comments are keyed by
+  # their platform ID, which is also what replies point to (parent_id).
+  defp comment_rows(run) do
+    for {c, cl} <- P1.comments_with_classification(run.id) do
+      %{
+        "id" => c.external_id,
+        "parent_id" => c.parent_external_id,
+        "url" => c.url,
+        "text" => c.text,
+        "author_username" => c.author_username,
+        "author_verified" => c.author_verified,
+        "commented_at" => c.commented_at,
+        "likes" => c.likes,
+        "reply_count" => c.reply_count,
+        "scraper" => to_string(run.scraper),
+        "category" => cl && to_string(cl.category),
+        "remark" => cl && cl.remark,
+        "raw" => c.raw
+      }
+    end
+  end
+
+  defp count_categories(comments) do
+    comments |> Enum.frequencies_by(& &1["category"]) |> string_counts()
   end
 
   # Abusive and worth-engaging comments are what the creator most needs to see.
@@ -161,7 +195,7 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             reply = if parent, do: " (reply to @#{parent["author_username"]})", else: ""
             text = (c["text"] || "") |> String.replace(~r/\s+/, " ") |> String.trim()
             text = if text == "", do: "(sticker or GIF)", else: "\"#{text}\""
-            link = get_in(c, ["raw", "commentUrl"]) || c["post_url"]
+            link = c["url"] || post.url
 
             "#{i}. @#{c["author_username"]}#{reply}: #{text}\n" <>
               if(c["remark"], do: "   Why: #{c["remark"]}\n", else: "") <>
@@ -231,15 +265,15 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
               class="rounded-lg border-zinc-300 py-1.5 text-sm focus:border-zinc-400 focus:ring-0"
             >
               <option :for={r <- @post.runs} value={r.id} selected={@run && r.id == @run.id}>
-                #{r.number} · {format_dt(r.started_at)} · {r.comment_limit} comments, {scraper_label(
+                #{r.number} · {format_dt(r.started_at || r.inserted_at)} · {r.comment_limit} comments, {scraper_label(
                   r.scraper
                 )}{if r == @post.latest_run, do: " (latest)"}
               </option>
             </select>
           </form>
           <.status_badge run={@run} />
-          <span :if={@run && @run.fetched} class="text-xs text-zinc-500">
-            {@run.fetched} comments fetched
+          <span :if={@run && @run.fetched_count} class="text-xs text-zinc-500">
+            {@run.fetched_count} comments fetched
           </span>
         </div>
       </div>
@@ -567,8 +601,8 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             <span class="text-xs text-zinc-400">{format_dt(@comment["commented_at"])}</span>
             <span class="text-xs text-zinc-400">· ♥ {@comment["likes"]}</span>
             <a
-              :if={get_in(@comment, ["raw", "commentUrl"])}
-              href={get_in(@comment, ["raw", "commentUrl"])}
+              :if={@comment["url"]}
+              href={@comment["url"]}
               target="_blank"
               rel="noopener"
               class="inline-flex items-center gap-0.5 text-xs text-zinc-400 hover:text-zinc-800 hover:underline"

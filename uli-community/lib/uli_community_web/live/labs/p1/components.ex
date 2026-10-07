@@ -5,6 +5,7 @@ defmodule UliCommunityWeb.Labs.P1.Components do
 
   import UliCommunityWeb.CoreComponents, only: [icon: 1, modal: 1, button: 1]
   alias Phoenix.LiveView.JS
+  alias UliCommunity.Labs.P1
 
   @categories [
     {"abusive", "Abusive"},
@@ -17,12 +18,15 @@ defmodule UliCommunityWeb.Labs.P1.Components do
   def category_label(key),
     do: List.keyfind(@categories, key, 0, {key, "Not categorized"}) |> elem(1)
 
-  def scraper_label("with_replies"), do: "Comments + replies"
+  # Settings come from the DB as atoms (:with_replies) and from forms as strings.
+  def scraper_label(scraper) when scraper in [:with_replies, "with_replies"],
+    do: "Comments + replies"
+
   def scraper_label(_), do: "Comments only"
 
   # Sort only exists for the comments-only scraper; it's nil for the replies one.
   def config_summary(c) do
-    sort = %{"recent" => "most recent", "popular" => "most popular"}[c.sort]
+    sort = %{"recent" => "most recent", "popular" => "most popular"}[c.sort && to_string(c.sort)]
 
     Enum.join(
       Enum.reject(["#{c.comment_limit} comments", scraper_label(c.scraper), sort], &is_nil/1),
@@ -30,8 +34,36 @@ defmodule UliCommunityWeb.Labs.P1.Components do
     )
   end
 
-  def in_progress?(nil), do: false
-  def in_progress?(run), do: run.status in [:queued, :fetching, :categorizing]
+  def in_progress?(run), do: P1.in_progress?(run)
+
+  def display_name(channel), do: channel.name || "@#{channel.handle}"
+
+  @doc """
+  Adds what the pages show for a post: `runs` numbered #1..#n (oldest first), the
+  `latest_run`, and category `counts` (string keys) once the latest run is done.
+  """
+  def with_run_info(post) do
+    total = length(post.runs)
+
+    runs =
+      post.runs |> Enum.with_index() |> Enum.map(fn {r, i} -> Map.put(r, :number, total - i) end)
+
+    latest = List.first(runs)
+
+    counts =
+      if latest && latest.status == :done,
+        do: string_counts(P1.category_counts(latest.id))
+
+    Map.merge(post, %{runs: runs, latest_run: latest, counts: counts})
+  end
+
+  @doc "Category counts with string keys (nil = not categorized), for the pills and tiles."
+  def string_counts(counts) do
+    Enum.reduce(counts, %{"abusive" => 0, "neutral_spam" => 0, "worth_engaging" => 0}, fn
+      {nil, n}, acc -> Map.put(acc, nil, n)
+      {category, n}, acc -> Map.put(acc, to_string(category), n)
+    end)
+  end
 
   def format_dt(nil), do: "—"
   def format_dt(%DateTime{} = dt), do: Calendar.strftime(dt, "%d %b %Y, %H:%M")
@@ -178,10 +210,14 @@ defmodule UliCommunityWeb.Labs.P1.Components do
           name="config[scraper]"
           class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
         >
-          <option value="basic" selected={@config.scraper == "basic"}>
+          <option value="basic" selected={to_string(@config.scraper) == "basic"}>
             Comments only (cheaper)
           </option>
-          <option value="with_replies" data-replies selected={@config.scraper == "with_replies"}>
+          <option
+            value="with_replies"
+            data-replies
+            selected={to_string(@config.scraper) == "with_replies"}
+          >
             Comments + replies
           </option>
         </select>
@@ -192,8 +228,10 @@ defmodule UliCommunityWeb.Labs.P1.Components do
           name="config[sort]"
           class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
         >
-          <option value="recent" selected={@config.sort != "popular"}>Most recent</option>
-          <option value="popular" selected={@config.sort == "popular"}>Most popular</option>
+          <option value="recent" selected={to_string(@config.sort) != "popular"}>Most recent</option>
+          <option value="popular" selected={to_string(@config.sort) == "popular"}>
+            Most popular
+          </option>
         </select>
       </label>
     </div>

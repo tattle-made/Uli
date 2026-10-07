@@ -11,6 +11,7 @@ dependencies = [
     "torch>=2.13,<3.0",
     "torchvision>=0.28,<1.0",
     "apify-client>=2.5.1",
+    "openai>=3.26.0",
 ]
 
 [tool.uv.sources]
