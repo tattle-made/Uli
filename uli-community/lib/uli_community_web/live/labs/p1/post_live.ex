@@ -81,11 +81,17 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   def handle_event("toggle_select", %{"id" => id}, socket),
     do: {:noreply, assign(socket, selected: toggle(socket.assigns.selected, id))}
 
-  def handle_event("select_all", _, socket),
-    do: {:noreply, assign(socket, selected: MapSet.new(socket.assigns.comments, & &1["id"]))}
+  # Select all / Clear only act on the current view (All, or one category);
+  # what's selected in other views is kept.
+  def handle_event("select_all", _, socket) do
+    %{selected: selected, comments: comments, filter: filter} = socket.assigns
+    {:noreply, assign(socket, selected: MapSet.union(selected, view_ids(comments, filter)))}
+  end
 
-  def handle_event("select_none", _, socket),
-    do: {:noreply, assign(socket, selected: MapSet.new())}
+  def handle_event("select_none", _, socket) do
+    %{selected: selected, comments: comments, filter: filter} = socket.assigns
+    {:noreply, assign(socket, selected: MapSet.difference(selected, view_ids(comments, filter)))}
+  end
 
   def handle_event("open_report", _, socket), do: {:noreply, assign(socket, show_report: true)}
 
@@ -214,6 +220,12 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
       "\n\n"
     )
   end
+
+  # IDs of every comment in a view, replies included.
+  defp view_ids(comments, "all"), do: MapSet.new(comments, & &1["id"])
+
+  defp view_ids(comments, category),
+    do: comments |> Enum.filter(&(&1["category"] == category)) |> MapSet.new(& &1["id"])
 
   defp visible_comments(comments, "all"), do: Enum.reject(comments, & &1["parent_id"])
   defp visible_comments(comments, f), do: Enum.filter(comments, &(&1["category"] == f))
@@ -441,15 +453,40 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             <span class="font-semibold">{MapSet.size(@selected)}</span>
             of {length(@comments)} comments selected for the creator report
           </span>
+          <% view =
+            if @filter == "all", do: nil, else: String.downcase(category_label(@filter)) %>
           <button phx-click="select_all" class="font-semibold text-zinc-500 hover:text-zinc-800">
-            Select all
+            {if view,
+              do: "Select all #{view} (#{MapSet.size(view_ids(@comments, @filter))})",
+              else: "Select all"}
           </button>
           <button phx-click="select_none" class="font-semibold text-zinc-500 hover:text-zinc-800">
-            Clear
+            {if view, do: "Clear #{view}", else: "Clear"}
           </button>
-          <.button phx-click="open_report" disabled={MapSet.size(@selected) == 0} class="ml-auto">
-            <.icon name="hero-envelope-mini" class="-ml-0.5 h-4 w-4" /> Prepare report
-          </.button>
+          <div class="ml-auto flex items-center gap-2">
+            <%!-- A plain form POST (not a LiveView event); the controller sends the CSV as a
+                 download. It targets a hidden iframe because LiveView disconnects on any
+                 regular form submit that isn't aimed at another tab or frame. --%>
+            <iframe name="p1-csv-download" class="hidden"></iframe>
+            <.form
+              for={%{}}
+              action={~p"/labs/p1/runs/#{@run.id}/export"}
+              method="post"
+              target="p1-csv-download"
+            >
+              <input type="hidden" name="comment_ids" value={Enum.join(@selected, ",")} />
+              <button
+                type="submit"
+                disabled={MapSet.size(@selected) == 0}
+                class="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-zinc-700 ring-1 ring-zinc-300 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <.icon name="hero-arrow-down-tray-mini" class="-ml-0.5 h-4 w-4" /> Download CSV
+              </button>
+            </.form>
+            <.button phx-click="open_report" disabled={MapSet.size(@selected) == 0}>
+              <.icon name="hero-envelope-mini" class="-ml-0.5 h-4 w-4" /> Prepare report
+            </.button>
+          </div>
         </div>
 
         <ul class="space-y-3">

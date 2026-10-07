@@ -197,6 +197,11 @@ defmodule UliCommunity.Labs.P1 do
 
   def get_run!(id), do: Runs |> Repo.get!(id) |> Repo.preload(post: :channel)
 
+  @doc "The run's position among its post's runs (#1 is the oldest)."
+  def run_number(%Runs{id: id, post_id: post_id}) do
+    Repo.aggregate(from(r in Runs, where: r.post_id == ^post_id and r.id <= ^id), :count)
+  end
+
   @doc "Updates a run (used by the workers) and notifies open pages."
   def update_run(%Runs{} = run, attrs) do
     with {:ok, run} <- run |> Runs.changeset(attrs) |> Repo.update() do

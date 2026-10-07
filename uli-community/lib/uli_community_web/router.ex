@@ -180,6 +180,8 @@ defmodule UliCommunityWeb.Router do
         live("/channels", ChannelsLive, :index)
         live("/channels/:id", ChannelLive, :show)
         live("/posts/:id", PostLive, :show)
+        # CSV export of a run's selected comments (admin check is in the controller).
+        post("/runs/:run_id/export", ExportController, :create)
       end
 
       scope "/app", UserApp do
