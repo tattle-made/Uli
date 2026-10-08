@@ -22,6 +22,9 @@ defmodule UliCommunity.Labs.B2P1 do
 
   @topic "labs_b2_p1"
   @in_progress [:queued, :fetching, :categorizing]
+  # A run that's fetching/categorizing with no update for this long has stopped responding
+  # (e.g. the server restarted mid-job). Apify runs are capped at 15 minutes.
+  @stale_after_minutes 30
   @instagram_url ~r{^https?://(?:www\.)?instagram\.com/(?:[A-Za-z0-9_.]+/)?(?:p|reel|reels|tv)/([A-Za-z0-9_-]+)}
 
   # ---- Live updates ----
@@ -153,8 +156,20 @@ defmodule UliCommunity.Labs.B2P1 do
 
   # ---- Runs ----
 
-  def in_progress?(%Runs{status: status}), do: status in @in_progress
+  @doc "Whether a run is still being processed. Stalled runs don't count, so they can be refetched."
+  def in_progress?(%Runs{status: status} = run), do: status in @in_progress and not stale?(run)
   def in_progress?(_), do: false
+
+  @doc """
+  Whether a run is stuck: fetching or categorizing with no update for #{@stale_after_minutes}
+  minutes. Queued runs never count: their Oban job is in the DB and runs after a restart.
+  """
+  def stale?(%Runs{status: status, updated_at: %DateTime{} = updated_at})
+      when status in [:fetching, :categorizing] do
+    DateTime.diff(DateTime.utc_now(), updated_at, :minute) >= @stale_after_minutes
+  end
+
+  def stale?(_), do: false
 
   def latest_run(%Posts{runs: [latest | _]}), do: latest
   def latest_run(_), do: nil
@@ -164,27 +179,51 @@ defmodule UliCommunity.Labs.B2P1 do
   Refused while the post's latest run is still in progress.
   """
   def refetch(%Posts{} = post, config_attrs) do
-    # Reload so the run copies the post's latest caption and context.
+    Multi.new()
+    |> Multi.run(:post, fn repo, _ -> lock_post_for_refetch(repo, post.id) end)
+    |> Multi.run(:stale_run, fn repo, %{post: post} -> fail_stale_run(repo, latest_run(post)) end)
+    |> Multi.update(:config, fn %{post: post} ->
+      PostConfigs.changeset(post.config, stringify(config_attrs))
+    end)
+    |> Multi.merge(fn %{post: post, config: config} -> run_multi(post, config) end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{run: run}} ->
+        broadcast()
+        {:ok, run}
+
+      {:error, :post, :in_progress, _} ->
+        {:error, "This post is already being processed."}
+
+      {:error, _step, changeset, _} ->
+        {:error, error_message(changeset)}
+    end
+  end
+
+  # Locks the post's row (SELECT ... FOR UPDATE) before checking for a run in progress, so
+  # two refetches at the same moment can't both pass the check and start two paid runs.
+  # Also reloads the post, so the new run copies its latest caption and context.
+  defp lock_post_for_refetch(repo, post_id) do
     post =
-      Posts
-      |> Repo.get!(post.id)
-      |> Repo.preload([:config, runs: from(r in Runs, order_by: [desc: r.id])])
+      from(p in Posts, where: p.id == ^post_id, lock: "FOR UPDATE")
+      |> repo.one!()
+      |> repo.preload([:config, runs: from(r in Runs, order_by: [desc: r.id])])
 
-    if in_progress?(latest_run(post)) do
-      {:error, "This post is already being processed."}
+    if in_progress?(latest_run(post)), do: {:error, :in_progress}, else: {:ok, post}
+  end
+
+  # A refetch over a stalled run marks that run failed, so it doesn't stay "fetching" forever.
+  defp fail_stale_run(repo, run) do
+    if stale?(run) do
+      run
+      |> Runs.changeset(%{
+        status: :failed,
+        error: "Stopped responding (no progress for #{@stale_after_minutes}+ minutes).",
+        finished_at: DateTime.utc_now() |> DateTime.truncate(:second)
+      })
+      |> repo.update()
     else
-      Multi.new()
-      |> Multi.update(:config, PostConfigs.changeset(post.config, stringify(config_attrs)))
-      |> Multi.merge(fn %{config: config} -> run_multi(post, config) end)
-      |> Repo.transaction()
-      |> case do
-        {:ok, %{run: run}} ->
-          broadcast()
-          {:ok, run}
-
-        {:error, _step, changeset, _} ->
-          {:error, error_message(changeset)}
-      end
+      {:ok, nil}
     end
   end
 

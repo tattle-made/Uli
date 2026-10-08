@@ -45,6 +45,9 @@ defmodule UliCommunity.Workers.B2P1.FetchCommentsWorker do
     end
   rescue
     e -> {:error, "Python call failed: #{Exception.message(e)}"}
+  catch
+    # e.g. the Python process dying; without this the run would stay "fetching".
+    :exit, reason -> {:error, "Python process exited: #{inspect(reason)}"}
   end
 
   # Saves the comments, records the Apify details and queues classification, all at once.

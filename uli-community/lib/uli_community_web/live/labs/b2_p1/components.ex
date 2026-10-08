@@ -110,12 +110,9 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
 
   def status_badge(assigns) do
     {label, class} =
-      case assigns.run.status do
-        :queued -> {"Queued", "bg-zinc-100 text-zinc-700"}
-        :fetching -> {"Fetching comments", "bg-blue-100 text-blue-800"}
-        :categorizing -> {"Categorizing", "bg-violet-100 text-violet-800"}
-        :done -> {"Done", "bg-emerald-100 text-emerald-800"}
-        :failed -> {"Failed", "bg-red-100 text-red-800"}
+      cond do
+        B2P1.stale?(assigns.run) -> {"Stalled", "bg-amber-100 text-amber-800"}
+        true -> status_style(assigns.run.status)
       end
 
     assigns = assign(assigns, label: label, class: class)
@@ -126,14 +123,24 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
         @class
       ]}
-      title={@run.error}
+      title={@run.error || if(B2P1.stale?(@run), do: "No progress for 30+ minutes. You can refetch.")}
     >
       <.icon :if={in_progress?(@run)} name="hero-arrow-path" class="h-3.5 w-3.5 animate-spin" />
-      <.icon :if={@run.status == :failed} name="hero-exclamation-triangle-mini" class="h-3.5 w-3.5" />
+      <.icon
+        :if={@run.status == :failed or B2P1.stale?(@run)}
+        name="hero-exclamation-triangle-mini"
+        class="h-3.5 w-3.5"
+      />
       {@label}
     </span>
     """
   end
+
+  defp status_style(:queued), do: {"Queued", "bg-zinc-100 text-zinc-700"}
+  defp status_style(:fetching), do: {"Fetching comments", "bg-blue-100 text-blue-800"}
+  defp status_style(:categorizing), do: {"Categorizing", "bg-violet-100 text-violet-800"}
+  defp status_style(:done), do: {"Done", "bg-emerald-100 text-emerald-800"}
+  defp status_style(:failed), do: {"Failed", "bg-red-100 text-red-800"}
 
   attr :category, :string, default: nil
 

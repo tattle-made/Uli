@@ -341,6 +341,17 @@ defmodule UliCommunityWeb.Labs.B2P1.PostLive do
             <p class="mt-2">{@run.error}</p>
             <p class="mt-2 text-red-700">Check the URL and refetch, or pick an earlier run above.</p>
           </div>
+        <% B2P1.stale?(@run) -> %>
+          <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+            <div class="flex items-center gap-2 font-semibold">
+              <.icon name="hero-exclamation-triangle" class="h-5 w-5" />
+              Run #{@run.number} stopped responding
+            </div>
+            <p class="mt-2">
+              It has had no progress for 30+ minutes (e.g. the server restarted mid-run). Refetch to
+              start a new run; this one will be marked as failed.
+            </p>
+          </div>
         <% in_progress?(@run) -> %>
           <.progress_steps run={@run} />
         <% true -> %>

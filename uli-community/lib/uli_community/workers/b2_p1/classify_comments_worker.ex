@@ -69,6 +69,9 @@ defmodule UliCommunity.Workers.B2P1.ClassifyCommentsWorker do
         Python.call("comment_classify", "classify_batch", [@model, prompt, payload, post])
       rescue
         e -> {:error, "Python call failed: #{Exception.message(e)}"}
+      catch
+        # e.g. the Python process dying; recorded as a failed call, then retried.
+        :exit, reason -> {:error, "Python process exited: #{inspect(reason)}"}
       end
 
     case result do
