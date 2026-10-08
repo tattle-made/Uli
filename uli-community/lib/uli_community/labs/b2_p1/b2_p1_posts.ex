@@ -45,6 +45,9 @@ defmodule UliCommunity.Labs.B2P1.Posts do
     |> unique_constraint([:channel_id, :external_id], message: "post already added")
   end
 
+  @doc "Edits only the optional caption and context (blank values are saved as nil)."
+  def details_changeset(post, attrs), do: cast(post, attrs, [:caption, :context])
+
   # The content type must be one the channel's platform supports (b2_p1_platforms.content_types).
   defp validate_content_type(changeset) do
     channel_id = get_field(changeset, :channel_id)

@@ -14,8 +14,9 @@ defmodule UliCommunity.Workers.B2P1.ClassifyCommentsWorker do
   alias UliCommunity.Labs.B2P1.{CommentClassifications, LlmRequests, Python}
   alias UliCommunity.Repo
 
-  # Already used with this API key in another project; known to work.
-  @model "gpt-4.1"
+  # Every LLM request and classification row records the model, so results from different
+  # models stay comparable if this changes.
+  @model "gpt-6.1-sol"
   # Bump this (and add priv/prompts/b2_p1/classify_<version>.txt) whenever the prompt changes.
   @prompt_version "v1"
   @batch_size 50
@@ -60,10 +61,12 @@ defmodule UliCommunity.Workers.B2P1.ClassifyCommentsWorker do
   # (empty when every comment in the batch got a result).
   defp classify_batch(run, prompt, comments) do
     payload = Jason.encode!(Enum.map(comments, &%{id: &1.id, text: &1.text}))
+    # The caption and context this run copied from its post (either can be empty).
+    post = Jason.encode!(%{caption: run.caption, context: run.context})
 
     result =
       try do
-        Python.call("comment_classify", "classify_batch", [@model, prompt, payload])
+        Python.call("comment_classify", "classify_batch", [@model, prompt, payload, post])
       rescue
         e -> {:error, "Python call failed: #{Exception.message(e)}"}
       end

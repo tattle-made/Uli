@@ -27,8 +27,9 @@ defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
            posts: load_posts(channel.id),
            default_config: @default_config,
            show_add: false,
-           add_text: "",
-           add_errors: [],
+           add_rows: [],
+           same_settings: true,
+           shared_config: default_config(),
            refetch_post: nil
          )}
     end
@@ -40,8 +41,28 @@ defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
 
   defp load_posts(channel_id), do: channel_id |> B2P1.list_posts() |> Enum.map(&with_run_info/1)
 
-  def handle_event("open_add", _, socket),
-    do: {:noreply, assign(socket, show_add: true, add_text: "", add_errors: [])}
+  def handle_event("open_add", _, socket) do
+    {:noreply,
+     assign(socket,
+       show_add: true,
+       add_rows: [new_row(default_config())],
+       same_settings: true,
+       shared_config: default_config()
+     )}
+  end
+
+  # Keeps the add-posts form's rows, settings and checkbox in sync while the admin types.
+  def handle_event("add_change", params, socket), do: {:noreply, apply_form(socket, params)}
+
+  def handle_event("add_row", _, socket) do
+    %{add_rows: rows, shared_config: shared} = socket.assigns
+    {:noreply, assign(socket, add_rows: rows ++ [new_row(shared)])}
+  end
+
+  def handle_event("remove_row", %{"index" => index}, socket) do
+    rows = List.delete_at(socket.assigns.add_rows, String.to_integer(index))
+    {:noreply, assign(socket, add_rows: rows)}
+  end
 
   def handle_event("open_refetch", %{"id" => id}, socket) do
     {:noreply, assign(socket, refetch_post: B2P1.get_post!(id))}
@@ -50,9 +71,21 @@ defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
   def handle_event("close_modal", _, socket),
     do: {:noreply, assign(socket, show_add: false, refetch_post: nil)}
 
-  def handle_event("add_posts", %{"urls" => text, "config" => config}, socket) do
-    urls = String.split(text, ["\n", "\r", ",", " "], trim: true)
-    {:ok, added, errors} = B2P1.add_posts(socket.assigns.channel, urls, config)
+  def handle_event("add_posts", params, socket) do
+    socket = apply_form(socket, params)
+    %{add_rows: rows, same_settings: same?, shared_config: shared} = socket.assigns
+
+    entries =
+      for row <- rows, String.trim(row.url) != "" do
+        %{
+          "url" => row.url,
+          "caption" => row.caption,
+          "context" => row.context,
+          "config" => config_params(if same?, do: shared, else: row.config)
+        }
+      end
+
+    {:ok, added, errors} = B2P1.add_posts(socket.assigns.channel, entries)
 
     socket =
       if added != [],
@@ -61,18 +94,15 @@ defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
 
     socket =
       cond do
-        urls == [] ->
-          assign(socket, add_errors: [{"", "Paste at least one post URL."}])
+        entries == [] ->
+          assign(socket, add_rows: [%{hd(rows) | error: "Add at least one post URL."}])
 
         errors == [] ->
           assign(socket, show_add: false)
 
         true ->
-          # Keep the dialog open with only the lines that need fixing.
-          assign(socket,
-            add_text: errors |> Enum.map(&elem(&1, 0)) |> Enum.join("\n"),
-            add_errors: errors
-          )
+          # Keep the dialog open with only the posts that need fixing, each with its error.
+          assign(socket, add_rows: failed_rows(rows, errors))
       end
 
     {:noreply, assign(socket, posts: load_posts(socket.assigns.channel.id))}
@@ -181,32 +211,75 @@ defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
       <.modal :if={@show_add} id="add-posts-modal" show on_cancel={JS.push("close_modal")}>
         <h2 class="text-lg font-semibold text-zinc-900">Add posts to @{@channel.handle}</h2>
         <p class="mt-1 text-sm text-zinc-500">
-          Paste one Instagram post or reel URL per line. Each one is queued for comment fetching.
+          Add an Instagram post or reel URL for each post. Caption and context are optional; they
+          help the AI understand the comments.
         </p>
-        <form phx-submit="add_posts" class="mt-6 space-y-5">
-          <textarea
-            name="urls"
-            rows="6"
-            placeholder="https://www.instagram.com/p/ABC123/\nhttps://www.instagram.com/reel/XYZ789/"
-            class="block w-full rounded-lg border-zinc-300 font-mono text-sm focus:border-zinc-400 focus:ring-0"
-          ><%= @add_text %></textarea>
+        <form phx-submit="add_posts" phx-change="add_change" class="mt-6 space-y-4">
+          <div
+            :for={{row, i} <- Enum.with_index(@add_rows)}
+            class="space-y-3 rounded-lg border border-zinc-200 p-4"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-zinc-800">Post {i + 1}</span>
+              <button
+                :if={length(@add_rows) > 1}
+                type="button"
+                phx-click="remove_row"
+                phx-value-index={i}
+                class="text-xs font-semibold text-zinc-500 hover:text-red-600"
+              >
+                Remove
+              </button>
+            </div>
+            <input
+              type="text"
+              name={"posts[#{i}][url]"}
+              value={row.url}
+              placeholder="https://www.instagram.com/p/ABC123/"
+              class="block w-full rounded-lg border-zinc-300 font-mono text-sm focus:border-zinc-400 focus:ring-0"
+            />
+            <p :if={row.error} class="text-sm text-red-600">{row.error}</p>
+            <textarea
+              name={"posts[#{i}][caption]"}
+              rows="2"
+              placeholder="Caption (optional)"
+              class="block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
+            >{row.caption}</textarea>
+            <textarea
+              name={"posts[#{i}][context]"}
+              rows="2"
+              placeholder="Context (optional): notes about the creator or the post"
+              class="block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
+            >{row.context}</textarea>
+            <div :if={!@same_settings} class="border-t border-zinc-100 pt-3">
+              <p class="mb-2 text-xs font-semibold text-zinc-600">Fetch settings for this post</p>
+              <.config_fields config={row.config} name={"posts[#{i}][config]"} />
+            </div>
+          </div>
 
-          <ul :if={@add_errors != []} class="space-y-1 rounded-lg bg-red-50 p-3 text-sm text-red-700">
-            <li :for={{url, msg} <- @add_errors}>
-              <span :if={url != ""} class="font-mono">{url}</span>
-              <span :if={url != ""}>—</span> {msg}
-            </li>
-          </ul>
+          <button
+            type="button"
+            phx-click="add_row"
+            class="inline-flex items-center gap-1 text-sm font-semibold text-zinc-600 hover:text-zinc-900"
+          >
+            <.icon name="hero-plus-mini" class="h-4 w-4" /> Add another post
+          </button>
 
-          <details class="rounded-lg border border-zinc-200 p-4">
-            <summary class="cursor-pointer text-sm font-semibold text-zinc-700">
-              Fetch settings
-              <span class="font-normal text-zinc-500">
-                (default: {config_summary(@default_config)})
-              </span>
-            </summary>
-            <div class="mt-4"><.config_fields config={@default_config} /></div>
-          </details>
+          <div class="rounded-lg border border-zinc-200 p-4">
+            <label class="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+              <input type="hidden" name="same_settings" value="false" />
+              <input
+                type="checkbox"
+                name="same_settings"
+                value="true"
+                checked={@same_settings}
+                class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+              /> Use the same fetch settings for every post
+            </label>
+            <div :if={@same_settings} class="mt-4">
+              <.config_fields config={@shared_config} name="config" />
+            </div>
+          </div>
 
           <div class="flex justify-end">
             <.button type="submit">Add &amp; start fetching</.button>
@@ -220,4 +293,63 @@ defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
   end
 
   defp short_url(url), do: String.replace(url, ~r{^https?://(www\.)?}, "")
+
+  # ---- Add-posts form state ----
+
+  defp default_config,
+    do: Map.take(@default_config, [:comment_limit, :scraper, :sort])
+
+  defp new_row(config), do: %{url: "", caption: "", context: "", config: config, error: nil}
+
+  # Rebuilds the rows, shared settings and checkbox from the submitted form. A row's own
+  # settings are only in the form while the checkbox is off; until then it copies the
+  # shared settings.
+  defp apply_form(socket, params) do
+    %{add_rows: old_rows, shared_config: old_shared} = socket.assigns
+    shared = if params["config"], do: config_from_params(params["config"]), else: old_shared
+
+    rows =
+      (params["posts"] || %{})
+      |> Enum.sort_by(fn {index, _} -> String.to_integer(index) end)
+      |> Enum.map(fn {index, p} ->
+        old = Enum.at(old_rows, String.to_integer(index)) || new_row(shared)
+
+        %{
+          url: p["url"] || "",
+          caption: p["caption"] || "",
+          context: p["context"] || "",
+          config: if(p["config"], do: config_from_params(p["config"]), else: shared),
+          error: old.error
+        }
+      end)
+
+    assign(socket,
+      add_rows: if(rows == [], do: old_rows, else: rows),
+      same_settings: params["same_settings"] != "false",
+      shared_config: shared
+    )
+  end
+
+  defp config_from_params(p),
+    do: %{comment_limit: p["comment_limit"], scraper: p["scraper"], sort: p["sort"]}
+
+  defp config_params(config),
+    do: %{
+      "comment_limit" => to_string(config.comment_limit),
+      "scraper" => to_string(config.scraper),
+      "sort" => config.sort && to_string(config.sort)
+    }
+
+  # The rows whose URL failed, in order, each with its error message.
+  defp failed_rows(rows, errors) do
+    {kept, _} =
+      Enum.reduce(rows, {[], errors}, fn row, {kept, errors} ->
+        case Enum.split_with(errors, fn {url, _} -> url == String.trim(row.url) end) do
+          {[{_, message} | rest], others} -> {kept ++ [%{row | error: message}], rest ++ others}
+          {[], _} -> {kept, errors}
+        end
+      end)
+
+    kept
+  end
 end

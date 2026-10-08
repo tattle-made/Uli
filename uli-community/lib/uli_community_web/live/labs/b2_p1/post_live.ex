@@ -33,6 +33,7 @@ defmodule UliCommunityWeb.Labs.B2P1.PostLive do
            expanded: MapSet.new(),
            raw_open: MapSet.new(),
            refetch_post: nil,
+           show_details: false,
            # Comments picked for the creator report, reset whenever another run is shown.
            selected: MapSet.new(),
            selection_run_id: nil,
@@ -77,7 +78,24 @@ defmodule UliCommunityWeb.Labs.B2P1.PostLive do
     do: {:noreply, assign(socket, refetch_post: socket.assigns.post)}
 
   def handle_event("close_modal", _, socket),
-    do: {:noreply, assign(socket, refetch_post: nil, show_report: false)}
+    do: {:noreply, assign(socket, refetch_post: nil, show_report: false, show_details: false)}
+
+  def handle_event("open_details", _, socket), do: {:noreply, assign(socket, show_details: true)}
+
+  # Caption and context are optional; they're used from the next run (refetch) on.
+  def handle_event("save_details", %{"details" => attrs}, socket) do
+    case B2P1.update_post_details(socket.assigns.post, attrs) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Saved. The next refetch will use this caption and context.")
+         |> assign(show_details: false, post: load_post(socket.assigns.post.id))
+         |> load_run()}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, "Couldn't save the caption and context.")}
+    end
+  end
 
   def handle_event("toggle_select", %{"id" => id}, socket),
     do: {:noreply, assign(socket, selected: toggle(socket.assigns.selected, id))}
@@ -259,11 +277,20 @@ defmodule UliCommunityWeb.Labs.B2P1.PostLive do
               </span>
               <span>Current settings: {config_summary(@post.config)}</span>
             </div>
+            <.post_details caption={@post.caption} context={@post.context} class="mt-3" />
           </div>
-          <.button phx-click="open_refetch" disabled={in_progress?(@post.latest_run)}>
-            <.icon name="hero-arrow-path-mini" class="-ml-0.5 h-4 w-4" />
-            {if @post.latest_run, do: "Refetch", else: "Fetch comments"}
-          </.button>
+          <div class="flex items-center gap-2">
+            <button
+              phx-click="open_details"
+              class="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-zinc-700 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              <.icon name="hero-pencil-square-mini" class="-ml-0.5 h-4 w-4" /> Edit details
+            </button>
+            <.button phx-click="open_refetch" disabled={in_progress?(@post.latest_run)}>
+              <.icon name="hero-arrow-path-mini" class="-ml-0.5 h-4 w-4" />
+              {if @post.latest_run, do: "Refetch", else: "Fetch comments"}
+            </.button>
+          </div>
         </div>
 
         <div
@@ -289,6 +316,14 @@ defmodule UliCommunityWeb.Labs.B2P1.PostLive do
             {@run.fetched_count} comments fetched
           </span>
         </div>
+
+        <%!-- The caption and context this run copied from the post when it started. --%>
+        <details :if={@run} class="mt-3 text-sm">
+          <summary class="cursor-pointer text-xs font-semibold text-zinc-500 hover:text-zinc-800">
+            Caption &amp; context used by run #{@run.number}
+          </summary>
+          <.post_details caption={@run.caption} context={@run.context} class="mt-2" />
+        </details>
       </div>
 
       <%!-- Body --%>
@@ -313,6 +348,44 @@ defmodule UliCommunityWeb.Labs.B2P1.PostLive do
       <% end %>
 
       <.refetch_modal :if={@refetch_post} post={@refetch_post} />
+
+      <.modal :if={@show_details} id="details-modal" show on_cancel={JS.push("close_modal")}>
+        <h2 class="text-lg font-semibold text-zinc-900">Caption &amp; context</h2>
+        <p class="mt-1 text-sm text-zinc-500">
+          Both optional. They help the AI understand the comments, and are used from the next
+          refetch on. Earlier runs keep what they used.
+        </p>
+        <form phx-submit="save_details" class="mt-6 space-y-4">
+          <label class="block text-sm">
+            <span class="font-semibold text-zinc-800">Caption</span>
+            <textarea
+              name="details[caption]"
+              rows="4"
+              placeholder="The post's caption"
+              class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
+            >{@post.caption}</textarea>
+          </label>
+          <label class="block text-sm">
+            <span class="font-semibold text-zinc-800">Context</span>
+            <textarea
+              name="details[context]"
+              rows="3"
+              placeholder="Notes about the creator or the post, e.g. a comedian posting satire"
+              class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
+            >{@post.context}</textarea>
+          </label>
+          <div class="flex justify-end gap-3">
+            <button
+              type="button"
+              phx-click={JS.exec("data-cancel", to: "#details-modal")}
+              class="rounded-lg px-3 py-2 text-sm font-semibold text-zinc-600 hover:bg-zinc-100"
+            >
+              Cancel
+            </button>
+            <.button type="submit">Save</.button>
+          </div>
+        </form>
+      </.modal>
 
       <.modal :if={@show_report} id="report-modal" show on_cancel={JS.push("close_modal")}>
         <h2 class="text-lg font-semibold text-zinc-900">Report for @{@channel.handle}</h2>

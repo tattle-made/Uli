@@ -23,22 +23,28 @@ def _text(value):
     return value.decode("utf-8") if isinstance(value, bytes) else value
 
 
-def classify_batch(model, prompt, comments_json):
-    """`comments_json` is a JSON list of {"id": ..., "text": ...}."""
+def classify_batch(model, prompt, comments_json, post_json=None):
+    """
+    `comments_json` is a JSON list of {"id": ..., "text": ...}. `post_json` is an optional
+    JSON object with the post's "caption" and/or "context"; empty values are left out.
+    """
     model, prompt = _text(model), _text(prompt)
     comments = json.loads(comments_json)
+    post = {k: v for k, v in json.loads(post_json or "{}").items() if v}
 
     # The model copies short numbers far more reliably than long comment IDs, so the
     # batch is numbered 1..N and the numbers are mapped back to IDs below.
     numbered = [
         {"n": n, "text": c["text"] or ""} for n, c in enumerate(comments, start=1)
     ]
+    # Caption and context are sent as data next to the comments, never inside the prompt.
+    payload = {"post": post, "comments": numbered} if post else {"comments": numbered}
     request = {
         "model": model,
         "response_format": {"type": "json_object"},
         "messages": [
             {"role": "system", "content": prompt},
-            {"role": "user", "content": json.dumps(numbered, ensure_ascii=False)},
+            {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
         ],
     }
     result = {

@@ -90,20 +90,22 @@ defmodule UliCommunity.Labs.B2P1 do
   end
 
   @doc """
-  Adds one post per valid Instagram URL to the channel, with the given fetch settings,
-  and queues a run for each. Returns `{:ok, added_posts, errors}` where errors are
-  `{url, message}` for invalid or already-added URLs.
+  Adds posts to the channel and queues a run for each. Each entry is a map with a
+  `"url"`, optional `"caption"` and `"context"`, and the `"config"` (fetch settings) for
+  that post. Returns `{:ok, added_posts, errors}` where errors are `{url, message}` for
+  invalid or already-added URLs.
+
+  entries: [%{"url" => ..., "caption" => ..., "context" => ..., "config" => %{...}}, ...]
   """
-  def add_posts(%Channels{} = channel, urls, config_attrs) do
+  def add_posts(%Channels{} = channel, entries) do
     {added, errors} =
-      urls
-      |> Enum.map(&String.trim/1)
-      |> Enum.reject(&(&1 == ""))
-      |> Enum.uniq()
-      |> Enum.reduce({[], []}, fn url, {added, errors} ->
-        case add_post(channel, url, config_attrs) do
+      entries
+      |> Enum.map(&Map.update(&1, "url", "", fn url -> String.trim(url || "") end))
+      |> Enum.reject(&(&1["url"] == ""))
+      |> Enum.reduce({[], []}, fn entry, {added, errors} ->
+        case add_post(channel, entry) do
           {:ok, post} -> {[post | added], errors}
-          {:error, message} -> {added, [{url, message} | errors]}
+          {:error, message} -> {added, [{entry["url"], message} | errors]}
         end
       end)
 
@@ -111,13 +113,17 @@ defmodule UliCommunity.Labs.B2P1 do
     {:ok, Enum.reverse(added), Enum.reverse(errors)}
   end
 
-  defp add_post(channel, url, config_attrs) do
-    with {:ok, shortcode} <- parse_instagram_url(url) do
+  defp add_post(channel, entry) do
+    config_attrs = entry["config"] || %{}
+
+    with {:ok, shortcode} <- parse_instagram_url(entry["url"]) do
       post_attrs = %{
         channel_id: channel.id,
         external_id: shortcode,
         # /p/ works for reels too, so every post is stored in this one form.
-        url: "https://www.instagram.com/p/#{shortcode}/"
+        url: "https://www.instagram.com/p/#{shortcode}/",
+        caption: entry["caption"],
+        context: entry["context"]
       }
 
       Multi.new()
@@ -158,8 +164,11 @@ defmodule UliCommunity.Labs.B2P1 do
   Refused while the post's latest run is still in progress.
   """
   def refetch(%Posts{} = post, config_attrs) do
+    # Reload so the run copies the post's latest caption and context.
     post =
-      Repo.preload(post, [:config, runs: from(r in Runs, order_by: [desc: r.id])], force: true)
+      Posts
+      |> Repo.get!(post.id)
+      |> Repo.preload([:config, runs: from(r in Runs, order_by: [desc: r.id])])
 
     if in_progress?(latest_run(post)) do
       {:error, "This post is already being processed."}
@@ -179,7 +188,16 @@ defmodule UliCommunity.Labs.B2P1 do
     end
   end
 
-  # Creates a queued run with a copy of the config and queues the fetch job for it.
+  @doc "Updates a post's optional caption and context; they're used from the next run on."
+  def update_post_details(%Posts{} = post, attrs) do
+    with {:ok, post} <- post |> Posts.details_changeset(attrs) |> Repo.update() do
+      broadcast()
+      {:ok, post}
+    end
+  end
+
+  # Creates a queued run with a copy of the config and of the post's caption and context,
+  # and queues the fetch job for it.
   defp run_multi(post, config) do
     Multi.new()
     |> Multi.insert(
@@ -189,7 +207,9 @@ defmodule UliCommunity.Labs.B2P1 do
         status: :queued,
         comment_limit: config.comment_limit,
         scraper: config.scraper,
-        sort: config.sort
+        sort: config.sort,
+        caption: post.caption,
+        context: post.context
       })
     )
     |> Oban.insert(:job, fn %{run: run} -> FetchCommentsWorker.new(%{run_id: run.id}) end)

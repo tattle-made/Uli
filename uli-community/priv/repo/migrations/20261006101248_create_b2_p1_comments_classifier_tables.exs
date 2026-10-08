@@ -68,6 +68,10 @@ defmodule UliCommunity.Repo.Migrations.CreateB2P1CommentsClassifierTables do
       add :comment_limit, :integer, null: false
       add :scraper, :string, null: false
       add :sort, :string
+      # (caption and context) Copied from the post when the run starts (both optional),
+      # so each run records the caption and context its classification used.
+      add :caption, :text
+      add :context, :text
       add :apify_run_id, :string
       add :apify_dataset_id, :string
       # Apify's own run status (SUCCEEDED, FAILED, TIMED-OUT, ...), separate from our :status.

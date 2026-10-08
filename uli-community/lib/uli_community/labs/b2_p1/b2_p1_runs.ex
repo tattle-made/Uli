@@ -14,6 +14,9 @@ defmodule UliCommunity.Labs.B2P1.Runs do
     field :comment_limit, :integer
     field :scraper, Ecto.Enum, values: [:basic, :with_replies]
     field :sort, Ecto.Enum, values: [:recent, :popular]
+    # (caption and context) Copied from the post when the run starts (both optional).
+    field :caption, :string
+    field :context, :string
     field :apify_run_id, :string
     field :apify_dataset_id, :string
     # Apify's own run status (SUCCEEDED, FAILED, TIMED-OUT, ...), separate from :status.
@@ -42,6 +45,8 @@ defmodule UliCommunity.Labs.B2P1.Runs do
       :comment_limit,
       :scraper,
       :sort,
+      :caption,
+      :context,
       :apify_run_id,
       :apify_dataset_id,
       :apify_status,

@@ -158,6 +158,28 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
     """
   end
 
+  @doc "Shows a caption and context; either (or both) can be empty."
+  attr :caption, :string, default: nil
+  attr :context, :string, default: nil
+  attr :class, :string, default: nil
+
+  def post_details(assigns) do
+    ~H"""
+    <dl class={["grid gap-1 text-sm", @class]}>
+      <div :for={{label, value} <- [{"Caption", @caption}, {"Context", @context}]} class="flex gap-2">
+        <dt class="w-16 flex-none text-xs font-semibold uppercase text-zinc-400">{label}</dt>
+        <dd
+          :if={(value || "") != ""}
+          class="min-w-0 whitespace-pre-line break-words text-zinc-700 line-clamp-3"
+        >
+          {value}
+        </dd>
+        <dd :if={(value || "") == ""} class="italic text-zinc-400">none</dd>
+      </div>
+    </dl>
+    """
+  end
+
   @doc "Compact abusive / neutral / engaging counts for table rows."
   attr :counts, :map, default: nil
 
@@ -189,6 +211,8 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
   "Comments + replies" is selected.
   """
   attr :config, :map, required: true
+  # Field-name prefix, e.g. "config" or "posts[0][config]" for per-post settings.
+  attr :name, :string, default: "config"
 
   def config_fields(assigns) do
     ~H"""
@@ -197,7 +221,7 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
         <span class="font-semibold text-zinc-800">Comment limit</span>
         <input
           type="number"
-          name="config[comment_limit]"
+          name={"#{@name}[comment_limit]"}
           min="1"
           max="1000"
           value={@config.comment_limit}
@@ -207,7 +231,7 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
       <label class="block text-sm">
         <span class="font-semibold text-zinc-800">Scraper</span>
         <select
-          name="config[scraper]"
+          name={"#{@name}[scraper]"}
           class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
         >
           <option value="basic" selected={to_string(@config.scraper) == "basic"}>
@@ -225,7 +249,7 @@ defmodule UliCommunityWeb.Labs.B2P1.Components do
       <label class="block text-sm group-has-[option[data-replies]:checked]:hidden">
         <span class="font-semibold text-zinc-800">Sort</span>
         <select
-          name="config[sort]"
+          name={"#{@name}[sort]"}
           class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
         >
           <option value="recent" selected={to_string(@config.sort) != "popular"}>Most recent</option>
