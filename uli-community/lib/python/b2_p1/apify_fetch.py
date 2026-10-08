@@ -1,5 +1,5 @@
 """
-Labs P1: fetch one Instagram post's comments with Apify, for the Elixir FetchCommentsWorker.
+Labs B2_P1: fetch one Instagram post's comments with Apify, for the Elixir FetchCommentsWorker.
 
 Called over erlport. Arguments arrive as bytes; the result is returned as UTF-8 JSON bytes
 (an Elixir binary) and never raises, so the worker can record failures on the run:
@@ -13,7 +13,7 @@ from datetime import timedelta
 
 from apify_client import ApifyClient
 
-# Scraper name (as stored on p1_runs.scraper) -> Apify actor.
+# Scraper name (as stored on b2_p1_runs.scraper) -> Apify actor.
 ACTORS = {
     "with_replies": "apify/instagram-comment-scraper",
     "basic": "scrapesmith/instagram-comments-scraper",

@@ -1,24 +1,24 @@
-defmodule UliCommunityWeb.Labs.P1.ChannelsLive do
+defmodule UliCommunityWeb.Labs.B2P1.ChannelsLive do
   use UliCommunityWeb, :live_view
 
-  import UliCommunityWeb.Labs.P1.Components
-  alias UliCommunity.Labs.P1
+  import UliCommunityWeb.Labs.B2P1.Components
+  alias UliCommunity.Labs.B2P1
 
   def mount(_params, _session, socket) do
-    if connected?(socket), do: P1.subscribe()
+    if connected?(socket), do: B2P1.subscribe()
 
     {:ok,
      assign(socket,
-       page_title: "Channels · Labs P1",
-       channels: P1.list_channels(),
-       platforms: P1.list_platforms(),
+       page_title: "Channels · Labs B2_P1",
+       channels: B2P1.list_channels(),
+       platforms: B2P1.list_platforms(),
        show_new: false,
        form_error: nil
      )}
   end
 
-  def handle_info(:labs_p1_updated, socket) do
-    {:noreply, assign(socket, channels: P1.list_channels())}
+  def handle_info(:labs_b2_p1_updated, socket) do
+    {:noreply, assign(socket, channels: B2P1.list_channels())}
   end
 
   def handle_event("open_new", _, socket),
@@ -27,12 +27,12 @@ defmodule UliCommunityWeb.Labs.P1.ChannelsLive do
   def handle_event("close_modal", _, socket), do: {:noreply, assign(socket, show_new: false)}
 
   def handle_event("create_channel", %{"channel" => attrs}, socket) do
-    case P1.create_channel(attrs) do
+    case B2P1.create_channel(attrs) do
       {:ok, channel} ->
         {:noreply,
          socket
          |> put_flash(:info, "Channel @#{channel.handle} added.")
-         |> push_navigate(to: ~p"/labs/p1/channels/#{channel.id}")}
+         |> push_navigate(to: ~p"/labs/b2_p1/channels/#{channel.id}")}
 
       {:error, changeset} ->
         {:noreply, assign(socket, form_error: error_text(changeset))}
@@ -81,7 +81,7 @@ defmodule UliCommunityWeb.Labs.P1.ChannelsLive do
             <tr
               :for={%{channel: ch, post_count: post_count, last_run_at: last_run_at} <- @channels}
               class="cursor-pointer hover:bg-zinc-50"
-              phx-click={JS.navigate(~p"/labs/p1/channels/#{ch.id}")}
+              phx-click={JS.navigate(~p"/labs/b2_p1/channels/#{ch.id}")}
             >
               <td class="px-4 py-3">
                 <div class="font-semibold text-zinc-900">{display_name(ch)}</div>

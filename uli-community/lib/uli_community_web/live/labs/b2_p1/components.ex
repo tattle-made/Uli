@@ -1,11 +1,11 @@
-defmodule UliCommunityWeb.Labs.P1.Components do
-  @moduledoc "Shared UI pieces for the Labs P1 Comments Classifier prototype."
+defmodule UliCommunityWeb.Labs.B2P1.Components do
+  @moduledoc "Shared UI pieces for the Labs B2_P1 Comments Classifier prototype."
   use Phoenix.Component
   use Phoenix.VerifiedRoutes, endpoint: UliCommunityWeb.Endpoint, router: UliCommunityWeb.Router
 
   import UliCommunityWeb.CoreComponents, only: [icon: 1, modal: 1, button: 1]
   alias Phoenix.LiveView.JS
-  alias UliCommunity.Labs.P1
+  alias UliCommunity.Labs.B2P1
 
   @categories [
     {"abusive", "Abusive"},
@@ -34,7 +34,7 @@ defmodule UliCommunityWeb.Labs.P1.Components do
     )
   end
 
-  def in_progress?(run), do: P1.in_progress?(run)
+  def in_progress?(run), do: B2P1.in_progress?(run)
 
   def display_name(channel), do: channel.name || "@#{channel.handle}"
 
@@ -52,7 +52,7 @@ defmodule UliCommunityWeb.Labs.P1.Components do
 
     counts =
       if latest && latest.status == :done,
-        do: string_counts(P1.category_counts(latest.id))
+        do: string_counts(B2P1.category_counts(latest.id))
 
     Map.merge(post, %{runs: runs, latest_run: latest, counts: counts})
   end
@@ -84,7 +84,7 @@ defmodule UliCommunityWeb.Labs.P1.Components do
         navigate={~p"/labs"}
         class="rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 hover:bg-amber-200"
       >
-        Labs · P1 prototype
+        Labs · B2_P1 prototype
       </.link>
       <%= for {label, path} <- @crumbs do %>
         <.icon name="hero-chevron-right-mini" class="h-4 w-4" />

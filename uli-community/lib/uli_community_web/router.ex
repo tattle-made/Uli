@@ -174,9 +174,9 @@ defmodule UliCommunityWeb.Router do
       live("/analytics/user-registrations", UserRegistrationsLive, :index)
 
       live("/labs", LabsLive, :index)
-      live("/labs/p1", LabsLive, :p1)
+      live("/labs/b2_p1", LabsLive, :b2_p1)
 
-      scope "/labs/p1", Labs.P1 do
+      scope "/labs/b2_p1", Labs.B2P1 do
         live("/channels", ChannelsLive, :index)
         live("/channels/:id", ChannelLive, :show)
         live("/posts/:id", PostLive, :show)

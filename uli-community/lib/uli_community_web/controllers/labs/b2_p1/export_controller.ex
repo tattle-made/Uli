@@ -1,4 +1,4 @@
-defmodule UliCommunityWeb.Labs.P1.ExportController do
+defmodule UliCommunityWeb.Labs.B2P1.ExportController do
   @moduledoc """
   CSV download of a run's selected comments.
   The post page submits the selected comment IDs; everything else is read fresh from
@@ -7,7 +7,7 @@ defmodule UliCommunityWeb.Labs.P1.ExportController do
   use UliCommunityWeb, :controller
 
   alias UliCommunity.Authorization
-  alias UliCommunity.Labs.P1
+  alias UliCommunity.Labs.B2P1
 
   @header ~w(comment_id comment_url text author_username author_id commented_at likes is_reply
              parent_comment_id category remark model prompt_version classified_at channel
@@ -16,15 +16,15 @@ defmodule UliCommunityWeb.Labs.P1.ExportController do
   def create(conn, %{"run_id" => run_id} = params) do
     # The /labs admin rule only runs for LiveViews, so check it here too.
     if Authorization.authorized?(conn.assigns.current_user, conn.request_path, "POST") do
-      run = P1.get_run!(run_id)
+      run = B2P1.get_run!(run_id)
 
       selected =
         params |> Map.get("comment_ids", "") |> String.split(",", trim: true) |> MapSet.new()
 
-      run_number = P1.run_number(run)
+      run_number = B2P1.run_number(run)
 
       rows =
-        for {c, cl} <- P1.comments_with_classification(run.id),
+        for {c, cl} <- B2P1.comments_with_classification(run.id),
             MapSet.member?(selected, c.external_id) do
           [
             c.external_id,

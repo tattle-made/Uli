@@ -1,28 +1,28 @@
-defmodule UliCommunityWeb.Labs.P1.ChannelLive do
+defmodule UliCommunityWeb.Labs.B2P1.ChannelLive do
   use UliCommunityWeb, :live_view
 
-  import UliCommunityWeb.Labs.P1.Components
-  alias UliCommunity.Labs.P1
-  alias UliCommunity.Labs.P1.PostConfigs
+  import UliCommunityWeb.Labs.B2P1.Components
+  alias UliCommunity.Labs.B2P1
+  alias UliCommunity.Labs.B2P1.PostConfigs
 
   # Prefills the add-posts form; scraping with replies is the default for now.
   @default_config %PostConfigs{}
 
   def mount(%{"id" => id}, _session, socket) do
-    case UliCommunity.Repo.get(P1.Channels, id) do
+    case UliCommunity.Repo.get(B2P1.Channels, id) do
       nil ->
         {:ok,
          socket
          |> put_flash(:error, "Channel not found.")
-         |> push_navigate(to: ~p"/labs/p1/channels")}
+         |> push_navigate(to: ~p"/labs/b2_p1/channels")}
 
       _ ->
-        channel = P1.get_channel!(id)
-        if connected?(socket), do: P1.subscribe()
+        channel = B2P1.get_channel!(id)
+        if connected?(socket), do: B2P1.subscribe()
 
         {:ok,
          assign(socket,
-           page_title: "@#{channel.handle} · Labs P1",
+           page_title: "@#{channel.handle} · Labs B2_P1",
            channel: channel,
            posts: load_posts(channel.id),
            default_config: @default_config,
@@ -34,17 +34,17 @@ defmodule UliCommunityWeb.Labs.P1.ChannelLive do
     end
   end
 
-  def handle_info(:labs_p1_updated, socket) do
+  def handle_info(:labs_b2_p1_updated, socket) do
     {:noreply, assign(socket, posts: load_posts(socket.assigns.channel.id))}
   end
 
-  defp load_posts(channel_id), do: channel_id |> P1.list_posts() |> Enum.map(&with_run_info/1)
+  defp load_posts(channel_id), do: channel_id |> B2P1.list_posts() |> Enum.map(&with_run_info/1)
 
   def handle_event("open_add", _, socket),
     do: {:noreply, assign(socket, show_add: true, add_text: "", add_errors: [])}
 
   def handle_event("open_refetch", %{"id" => id}, socket) do
-    {:noreply, assign(socket, refetch_post: P1.get_post!(id))}
+    {:noreply, assign(socket, refetch_post: B2P1.get_post!(id))}
   end
 
   def handle_event("close_modal", _, socket),
@@ -52,7 +52,7 @@ defmodule UliCommunityWeb.Labs.P1.ChannelLive do
 
   def handle_event("add_posts", %{"urls" => text, "config" => config}, socket) do
     urls = String.split(text, ["\n", "\r", ",", " "], trim: true)
-    {:ok, added, errors} = P1.add_posts(socket.assigns.channel, urls, config)
+    {:ok, added, errors} = B2P1.add_posts(socket.assigns.channel, urls, config)
 
     socket =
       if added != [],
@@ -80,7 +80,7 @@ defmodule UliCommunityWeb.Labs.P1.ChannelLive do
 
   def handle_event("refetch", %{"post_id" => id, "config" => config}, socket) do
     socket =
-      case P1.refetch(P1.get_post!(id), config) do
+      case B2P1.refetch(B2P1.get_post!(id), config) do
         {:ok, _run} -> put_flash(socket, :info, "Refetch queued.")
         {:error, msg} -> put_flash(socket, :error, msg)
       end
@@ -91,7 +91,7 @@ defmodule UliCommunityWeb.Labs.P1.ChannelLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-6xl">
-      <.breadcrumbs crumbs={[{"Channels", ~p"/labs/p1/channels"}, {"@#{@channel.handle}", nil}]} />
+      <.breadcrumbs crumbs={[{"Channels", ~p"/labs/b2_p1/channels"}, {"@#{@channel.handle}", nil}]} />
 
       <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -134,7 +134,7 @@ defmodule UliCommunityWeb.Labs.P1.ChannelLive do
           <tbody class="divide-y divide-zinc-100">
             <tr :for={post <- @posts} class="hover:bg-zinc-50">
               <td class="px-4 py-3">
-                <.link navigate={~p"/labs/p1/posts/#{post.id}"} class="group block">
+                <.link navigate={~p"/labs/b2_p1/posts/#{post.id}"} class="group block">
                   <div class="font-semibold text-zinc-900 group-hover:underline">
                     {post.title || short_url(post.url)}
                   </div>
@@ -167,7 +167,7 @@ defmodule UliCommunityWeb.Labs.P1.ChannelLive do
                   {if post.latest_run, do: "Refetch", else: "Fetch"}
                 </button>
                 <.link
-                  navigate={~p"/labs/p1/posts/#{post.id}"}
+                  navigate={~p"/labs/b2_p1/posts/#{post.id}"}
                   class="ml-1 inline-flex items-center rounded-lg px-2.5 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-100"
                 >
                   View <.icon name="hero-chevron-right-mini" class="h-3.5 w-3.5" />

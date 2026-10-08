@@ -1,4 +1,4 @@
-defmodule UliCommunity.Labs.P1.Runs do
+defmodule UliCommunity.Labs.B2P1.Runs do
   @moduledoc """
   One Apify run for one post. `comment_limit`, `scraper` and `sort` are copied from the
   post config when the run starts and never change afterwards.
@@ -6,7 +6,7 @@ defmodule UliCommunity.Labs.P1.Runs do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "p1_runs" do
+  schema "b2_p1_runs" do
     field :status, Ecto.Enum,
       values: [:queued, :fetching, :categorizing, :done, :failed],
       default: :queued
@@ -27,9 +27,9 @@ defmodule UliCommunity.Labs.P1.Runs do
     field :started_at, :utc_datetime
     field :finished_at, :utc_datetime
 
-    belongs_to :post, UliCommunity.Labs.P1.Posts
-    has_many :comments, UliCommunity.Labs.P1.Comments, foreign_key: :run_id
-    has_many :llm_requests, UliCommunity.Labs.P1.LlmRequests, foreign_key: :run_id
+    belongs_to :post, UliCommunity.Labs.B2P1.Posts
+    has_many :comments, UliCommunity.Labs.B2P1.Comments, foreign_key: :run_id
+    has_many :llm_requests, UliCommunity.Labs.B2P1.LlmRequests, foreign_key: :run_id
 
     timestamps(type: :utc_datetime)
   end

@@ -1,4 +1,4 @@
-defmodule UliCommunity.Labs.P1.CommentClassifications do
+defmodule UliCommunity.Labs.B2P1.CommentClassifications do
   @moduledoc """
   One LLM classification attempt for a comment. All attempts are kept (re-runs add rows),
   so results can be compared across prompts and retries; the newest (highest id) is current.
@@ -6,16 +6,16 @@ defmodule UliCommunity.Labs.P1.CommentClassifications do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "p1_comment_classifications" do
+  schema "b2_p1_comment_classifications" do
     field :category, Ecto.Enum, values: [:abusive, :neutral_spam, :worth_engaging]
     field :remark, :string
     field :confidence, :float
     field :model, :string
     field :prompt_version, :string
 
-    belongs_to :comment, UliCommunity.Labs.P1.Comments
+    belongs_to :comment, UliCommunity.Labs.B2P1.Comments
     # The LLM call that produced this result (nil for results imported from elsewhere).
-    belongs_to :llm_request, UliCommunity.Labs.P1.LlmRequests
+    belongs_to :llm_request, UliCommunity.Labs.B2P1.LlmRequests
 
     timestamps(type: :utc_datetime)
   end

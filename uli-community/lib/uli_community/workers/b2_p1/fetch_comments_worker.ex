@@ -1,21 +1,21 @@
-defmodule UliCommunity.Workers.P1.FetchCommentsWorker do
+defmodule UliCommunity.Workers.B2P1.FetchCommentsWorker do
   @moduledoc """
-  Labs P1, step 1 of a run: fetch the post's comments with Apify, save them, then queue
+  Labs B2_P1, step 1 of a run: fetch the post's comments with Apify, save them, then queue
   `ClassifyCommentsWorker`. Run status: queued -> fetching -> categorizing (or failed).
   """
   # No retries: every attempt is a paid Apify run. A failed run can be refetched from the UI.
-  use Oban.Worker, queue: :p1_fetch, max_attempts: 1
+  use Oban.Worker, queue: :b2_p1_fetch, max_attempts: 1
 
   alias Ecto.Multi
-  alias UliCommunity.Labs.P1
-  alias UliCommunity.Labs.P1.{CommentNormalizer, Comments, Python}
+  alias UliCommunity.Labs.B2P1
+  alias UliCommunity.Labs.B2P1.{CommentNormalizer, Comments, Python}
   alias UliCommunity.Repo
-  alias UliCommunity.Workers.P1.ClassifyCommentsWorker
+  alias UliCommunity.Workers.B2P1.ClassifyCommentsWorker
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"run_id" => run_id}}) do
-    run = P1.get_run!(run_id)
-    {:ok, run} = P1.update_run(run, %{status: :fetching, started_at: now()})
+    run = B2P1.get_run!(run_id)
+    {:ok, run} = B2P1.update_run(run, %{status: :fetching, started_at: now()})
 
     case fetch(run) do
       {:ok, %{"status" => "ok", "run" => apify_run, "items" => items}} ->
@@ -68,7 +68,7 @@ defmodule UliCommunity.Workers.P1.FetchCommentsWorker do
     |> Multi.insert_all(:comments, Comments, rows, on_conflict: :nothing)
     |> Multi.update(
       :run,
-      P1.Runs.changeset(
+      B2P1.Runs.changeset(
         run,
         Map.merge(apify_fields(apify_run), %{status: :categorizing, fetched_count: length(rows)})
       )
@@ -77,7 +77,7 @@ defmodule UliCommunity.Workers.P1.FetchCommentsWorker do
     |> Repo.transaction()
     |> case do
       {:ok, _} ->
-        P1.broadcast()
+        B2P1.broadcast()
         :ok
 
       {:error, step, reason, _} ->
@@ -104,7 +104,7 @@ defmodule UliCommunity.Workers.P1.FetchCommentsWorker do
   end
 
   defp fail(run, error, extra) do
-    P1.update_run(run, Map.merge(extra, %{status: :failed, error: error, finished_at: now()}))
+    B2P1.update_run(run, Map.merge(extra, %{status: :failed, error: error, finished_at: now()}))
     {:error, error}
   end
 

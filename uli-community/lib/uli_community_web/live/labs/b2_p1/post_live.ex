@@ -1,8 +1,8 @@
-defmodule UliCommunityWeb.Labs.P1.PostLive do
+defmodule UliCommunityWeb.Labs.B2P1.PostLive do
   use UliCommunityWeb, :live_view
 
-  import UliCommunityWeb.Labs.P1.Components
-  alias UliCommunity.Labs.P1
+  import UliCommunityWeb.Labs.B2P1.Components
+  alias UliCommunity.Labs.B2P1
 
   @stages [
     queued: "Queued",
@@ -17,16 +17,16 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
         {:ok,
          socket
          |> put_flash(:error, "Post not found.")
-         |> push_navigate(to: ~p"/labs/p1/channels")}
+         |> push_navigate(to: ~p"/labs/b2_p1/channels")}
 
       post ->
-        if connected?(socket), do: P1.subscribe()
+        if connected?(socket), do: B2P1.subscribe()
 
         {:ok,
          assign(socket,
-           page_title: "#{post.title || "Post"} · Labs P1",
+           page_title: "#{post.title || "Post"} · Labs B2_P1",
            post: post,
-           channel: P1.get_channel!(post.channel_id),
+           channel: B2P1.get_channel!(post.channel_id),
            run_id: nil,
            tab: "categorized",
            filter: "all",
@@ -52,15 +52,16 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     {:noreply, socket |> assign(run_id: run_id) |> load_run()}
   end
 
-  def handle_info(:labs_p1_updated, socket) do
+  def handle_info(:labs_b2_p1_updated, socket) do
     case load_post(socket.assigns.post.id) do
-      nil -> {:noreply, push_navigate(socket, to: ~p"/labs/p1/channels")}
+      nil -> {:noreply, push_navigate(socket, to: ~p"/labs/b2_p1/channels")}
       post -> {:noreply, socket |> assign(post: post) |> load_run()}
     end
   end
 
   def handle_event("select_run", %{"run" => run_id}, socket) do
-    {:noreply, push_patch(socket, to: ~p"/labs/p1/posts/#{socket.assigns.post.id}?run=#{run_id}")}
+    {:noreply,
+     push_patch(socket, to: ~p"/labs/b2_p1/posts/#{socket.assigns.post.id}?run=#{run_id}")}
   end
 
   def handle_event("tab", %{"tab" => tab}, socket), do: {:noreply, assign(socket, tab: tab)}
@@ -96,14 +97,14 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   def handle_event("open_report", _, socket), do: {:noreply, assign(socket, show_report: true)}
 
   def handle_event("refetch", %{"post_id" => id, "config" => config}, socket) do
-    case P1.refetch(socket.assigns.post, config) do
+    case B2P1.refetch(socket.assigns.post, config) do
       {:ok, _run} ->
         # Jump to the new run.
         {:noreply,
          socket
          |> put_flash(:info, "Refetch queued.")
          |> assign(refetch_post: nil)
-         |> push_patch(to: ~p"/labs/p1/posts/#{id}")}
+         |> push_patch(to: ~p"/labs/b2_p1/posts/#{id}")}
 
       {:error, msg} ->
         {:noreply, socket |> put_flash(:error, msg) |> assign(refetch_post: nil)}
@@ -115,9 +116,9 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
 
   # The post with numbered runs and the latest run, or nil if it no longer exists.
   defp load_post(id) do
-    case UliCommunity.Repo.get(P1.Posts, id) do
+    case UliCommunity.Repo.get(B2P1.Posts, id) do
       nil -> nil
-      _ -> id |> P1.get_post!() |> with_run_info()
+      _ -> id |> B2P1.get_post!() |> with_run_info()
     end
   end
 
@@ -145,7 +146,7 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   # The run's comments as the maps the templates use. Within a run, comments are keyed by
   # their platform ID, which is also what replies point to (parent_id).
   defp comment_rows(run) do
-    for {c, cl} <- P1.comments_with_classification(run.id) do
+    for {c, cl} <- B2P1.comments_with_classification(run.id) do
       %{
         "id" => c.external_id,
         "parent_id" => c.parent_external_id,
@@ -234,8 +235,8 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     ~H"""
     <div class="mx-auto max-w-5xl">
       <.breadcrumbs crumbs={[
-        {"Channels", ~p"/labs/p1/channels"},
-        {"@#{@channel.handle}", ~p"/labs/p1/channels/#{@channel.id}"},
+        {"Channels", ~p"/labs/b2_p1/channels"},
+        {"@#{@channel.handle}", ~p"/labs/b2_p1/channels/#{@channel.id}"},
         {@post.title || "Post", nil}
       ]} />
 
@@ -467,12 +468,12 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             <%!-- A plain form POST (not a LiveView event); the controller sends the CSV as a
                  download. It targets a hidden iframe because LiveView disconnects on any
                  regular form submit that isn't aimed at another tab or frame. --%>
-            <iframe name="p1-csv-download" class="hidden"></iframe>
+            <iframe name="b2-p1-csv-download" class="hidden"></iframe>
             <.form
               for={%{}}
-              action={~p"/labs/p1/runs/#{@run.id}/export"}
+              action={~p"/labs/b2_p1/runs/#{@run.id}/export"}
               method="post"
-              target="p1-csv-download"
+              target="b2-p1-csv-download"
             >
               <input type="hidden" name="comment_ids" value={Enum.join(@selected, ",")} />
               <button

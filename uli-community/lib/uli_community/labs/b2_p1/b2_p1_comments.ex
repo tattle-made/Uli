@@ -1,9 +1,9 @@
-defmodule UliCommunity.Labs.P1.Comments do
+defmodule UliCommunity.Labs.B2P1.Comments do
   @moduledoc "A comment (or reply) fetched in a run, normalized from either scraper, plus its raw item."
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "p1_comments" do
+  schema "b2_p1_comments" do
     field :external_id, :string
     # Set for replies: the external_id of the comment being replied to.
     field :parent_external_id, :string
@@ -20,10 +20,10 @@ defmodule UliCommunity.Labs.P1.Comments do
     field :reply_count, :integer, default: 0
     field :raw, :map
 
-    belongs_to :run, UliCommunity.Labs.P1.Runs
-    belongs_to :post, UliCommunity.Labs.P1.Posts
+    belongs_to :run, UliCommunity.Labs.B2P1.Runs
+    belongs_to :post, UliCommunity.Labs.B2P1.Posts
 
-    has_many :classifications, UliCommunity.Labs.P1.CommentClassifications,
+    has_many :classifications, UliCommunity.Labs.B2P1.CommentClassifications,
       foreign_key: :comment_id
 
     timestamps(type: :utc_datetime)

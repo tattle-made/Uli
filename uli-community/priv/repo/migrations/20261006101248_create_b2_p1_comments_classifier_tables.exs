@@ -1,8 +1,8 @@
-defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
+defmodule UliCommunity.Repo.Migrations.CreateB2P1CommentsClassifierTables do
   use Ecto.Migration
 
   def change do
-    create table(:p1_platforms) do
+    create table(:b2_p1_platforms) do
       add :slug, :string, null: false
       add :name, :string, null: false
       add :content_types, {:array, :string}, null: false, default: []
@@ -10,28 +10,28 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:p1_platforms, [:slug])
+    create unique_index(:b2_p1_platforms, [:slug])
 
     execute(
       """
-      INSERT INTO p1_platforms (slug, name, content_types, inserted_at, updated_at)
+      INSERT INTO b2_p1_platforms (slug, name, content_types, inserted_at, updated_at)
       VALUES ('instagram', 'Instagram', '{post,reel}', now(), now())
       """,
-      "DELETE FROM p1_platforms WHERE slug = 'instagram'"
+      "DELETE FROM b2_p1_platforms WHERE slug = 'instagram'"
     )
 
-    create table(:p1_channels) do
-      add :platform_id, references(:p1_platforms, on_delete: :restrict), null: false
+    create table(:b2_p1_channels) do
+      add :platform_id, references(:b2_p1_platforms, on_delete: :restrict), null: false
       add :name, :string
       add :handle, :string, null: false
 
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:p1_channels, [:platform_id, :handle])
+    create unique_index(:b2_p1_channels, [:platform_id, :handle])
 
-    create table(:p1_posts) do
-      add :channel_id, references(:p1_channels, on_delete: :delete_all), null: false
+    create table(:b2_p1_posts) do
+      add :channel_id, references(:b2_p1_channels, on_delete: :delete_all), null: false
       # Platform's own post ID, e.g. the Instagram shortcode in /p/<code>/.
       add :external_id, :string, null: false
       add :url, :string, null: false
@@ -47,11 +47,11 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:p1_posts, [:channel_id, :external_id])
+    create unique_index(:b2_p1_posts, [:channel_id, :external_id])
 
     # Settings the next run of a post will use (one row per post).
-    create table(:p1_post_configs) do
-      add :post_id, references(:p1_posts, on_delete: :delete_all), null: false
+    create table(:b2_p1_post_configs) do
+      add :post_id, references(:b2_p1_posts, on_delete: :delete_all), null: false
       add :comment_limit, :integer, null: false, default: 100
       add :scraper, :string, null: false, default: "with_replies"
       add :sort, :string
@@ -59,11 +59,11 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:p1_post_configs, [:post_id])
+    create unique_index(:b2_p1_post_configs, [:post_id])
 
     # One Apify run per post. Settings are copied from the post config when the run starts.
-    create table(:p1_runs) do
-      add :post_id, references(:p1_posts, on_delete: :delete_all), null: false
+    create table(:b2_p1_runs) do
+      add :post_id, references(:b2_p1_posts, on_delete: :delete_all), null: false
       add :status, :string, null: false, default: "queued"
       add :comment_limit, :integer, null: false
       add :scraper, :string, null: false
@@ -84,11 +84,11 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:p1_runs, [:post_id])
+    create index(:b2_p1_runs, [:post_id])
 
-    create table(:p1_comments) do
-      add :run_id, references(:p1_runs, on_delete: :delete_all), null: false
-      add :post_id, references(:p1_posts, on_delete: :delete_all), null: false
+    create table(:b2_p1_comments) do
+      add :run_id, references(:b2_p1_runs, on_delete: :delete_all), null: false
+      add :post_id, references(:b2_p1_posts, on_delete: :delete_all), null: false
       add :external_id, :string, null: false
       add :parent_external_id, :string
       # Direct link to the comment (scraper's commentUrl).
@@ -108,12 +108,12 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:p1_comments, [:run_id, :external_id])
-    create index(:p1_comments, [:post_id])
+    create unique_index(:b2_p1_comments, [:run_id, :external_id])
+    create index(:b2_p1_comments, [:post_id])
 
     # One row per LLM call (a batch of comments), including failed calls.
-    create table(:p1_llm_requests) do
-      add :run_id, references(:p1_runs, on_delete: :delete_all), null: false
+    create table(:b2_p1_llm_requests) do
+      add :run_id, references(:b2_p1_runs, on_delete: :delete_all), null: false
       add :model, :string, null: false
       add :prompt_version, :string, null: false
       add :status, :string, null: false
@@ -130,12 +130,12 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:p1_llm_requests, [:run_id])
+    create index(:b2_p1_llm_requests, [:run_id])
 
-    create table(:p1_comment_classifications) do
-      add :comment_id, references(:p1_comments, on_delete: :delete_all), null: false
+    create table(:b2_p1_comment_classifications) do
+      add :comment_id, references(:b2_p1_comments, on_delete: :delete_all), null: false
       # The LLM call that produced this result (nil for results imported from elsewhere).
-      add :llm_request_id, references(:p1_llm_requests, on_delete: :nilify_all)
+      add :llm_request_id, references(:b2_p1_llm_requests, on_delete: :nilify_all)
       add :category, :string, null: false
       add :remark, :text
       add :confidence, :float
@@ -147,7 +147,7 @@ defmodule UliCommunity.Repo.Migrations.CreateP1CommentsClassifierTables do
 
     # No unique index: every classification attempt is kept for analysis.
     # The newest row (highest id) is a comment's current result.
-    create index(:p1_comment_classifications, [:comment_id, :prompt_version])
-    create index(:p1_comment_classifications, [:llm_request_id])
+    create index(:b2_p1_comment_classifications, [:comment_id, :prompt_version])
+    create index(:b2_p1_comment_classifications, [:llm_request_id])
   end
 end

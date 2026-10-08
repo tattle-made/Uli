@@ -1,4 +1,4 @@
-defmodule UliCommunity.Labs.P1.LlmRequests do
+defmodule UliCommunity.Labs.B2P1.LlmRequests do
   @moduledoc """
   One LLM call: a batch of a run's comments sent for classification. Failed calls are
   logged too. Keeps the exact request and response for cost tracking and prompt research.
@@ -6,7 +6,7 @@ defmodule UliCommunity.Labs.P1.LlmRequests do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "p1_llm_requests" do
+  schema "b2_p1_llm_requests" do
     field :model, :string
     field :prompt_version, :string
     field :status, Ecto.Enum, values: [:completed, :error]
@@ -19,9 +19,9 @@ defmodule UliCommunity.Labs.P1.LlmRequests do
     field :request, :map
     field :response, :map
 
-    belongs_to :run, UliCommunity.Labs.P1.Runs
+    belongs_to :run, UliCommunity.Labs.B2P1.Runs
 
-    has_many :classifications, UliCommunity.Labs.P1.CommentClassifications,
+    has_many :classifications, UliCommunity.Labs.B2P1.CommentClassifications,
       foreign_key: :llm_request_id
 
     timestamps(type: :utc_datetime)

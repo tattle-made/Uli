@@ -1,15 +1,15 @@
-defmodule UliCommunity.Labs.P1.PostConfigs do
+defmodule UliCommunity.Labs.B2P1.PostConfigs do
   @moduledoc "Settings the next run of a post will use. One row per post."
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "p1_post_configs" do
+  schema "b2_p1_post_configs" do
     field :comment_limit, :integer, default: 100
     field :scraper, Ecto.Enum, values: [:basic, :with_replies], default: :with_replies
     # Only the basic scraper supports sorting.
     field :sort, Ecto.Enum, values: [:recent, :popular]
 
-    belongs_to :post, UliCommunity.Labs.P1.Posts
+    belongs_to :post, UliCommunity.Labs.B2P1.Posts
 
     timestamps(type: :utc_datetime)
   end

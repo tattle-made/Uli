@@ -1,6 +1,6 @@
-defmodule UliCommunity.Labs.P1 do
+defmodule UliCommunity.Labs.B2P1 do
   @moduledoc """
-  Context for the Labs P1 Comments Classifier: channels, posts, their fetch settings,
+  Context for the Labs B2_P1 Comments Classifier: channels, posts, their fetch settings,
   runs (one Apify run per post, then LLM classification) and the results.
   """
   import Ecto.Query, warn: false
@@ -8,7 +8,7 @@ defmodule UliCommunity.Labs.P1 do
   alias Ecto.Multi
   alias UliCommunity.Repo
 
-  alias UliCommunity.Labs.P1.{
+  alias UliCommunity.Labs.B2P1.{
     Channels,
     CommentClassifications,
     Comments,
@@ -18,9 +18,9 @@ defmodule UliCommunity.Labs.P1 do
     Runs
   }
 
-  alias UliCommunity.Workers.P1.FetchCommentsWorker
+  alias UliCommunity.Workers.B2P1.FetchCommentsWorker
 
-  @topic "labs_p1"
+  @topic "labs_b2_p1"
   @in_progress [:queued, :fetching, :categorizing]
   @instagram_url ~r{^https?://(?:www\.)?instagram\.com/(?:[A-Za-z0-9_.]+/)?(?:p|reel|reels|tv)/([A-Za-z0-9_-]+)}
 
@@ -28,8 +28,8 @@ defmodule UliCommunity.Labs.P1 do
 
   def subscribe, do: Phoenix.PubSub.subscribe(UliCommunity.PubSub, @topic)
 
-  @doc "Tells every open P1 page that something changed."
-  def broadcast, do: Phoenix.PubSub.broadcast(UliCommunity.PubSub, @topic, :labs_p1_updated)
+  @doc "Tells every open B2_P1 page that something changed."
+  def broadcast, do: Phoenix.PubSub.broadcast(UliCommunity.PubSub, @topic, :labs_b2_p1_updated)
 
   # ---- Platforms & channels ----
 

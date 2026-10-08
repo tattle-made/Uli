@@ -1,13 +1,13 @@
-defmodule UliCommunity.Labs.P1.Channels do
+defmodule UliCommunity.Labs.B2P1.Channels do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "p1_channels" do
+  schema "b2_p1_channels" do
     field :name, :string
     field :handle, :string
 
-    belongs_to :platform, UliCommunity.Labs.P1.Platforms
-    has_many :posts, UliCommunity.Labs.P1.Posts, foreign_key: :channel_id
+    belongs_to :platform, UliCommunity.Labs.B2P1.Platforms
+    has_many :posts, UliCommunity.Labs.B2P1.Posts, foreign_key: :channel_id
 
     timestamps(type: :utc_datetime)
   end

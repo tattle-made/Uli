@@ -1,8 +1,8 @@
 """
-Labs P1: classify one batch of comments with OpenAI, for the Elixir ClassifyCommentsWorker.
+Labs B2_P1: classify one batch of comments with OpenAI, for the Elixir ClassifyCommentsWorker.
 
 Called over erlport. The prompt and comments come from Elixir (the prompt lives in
-priv/prompts/p1/); the API key is read from the OPENAI_API_KEY environment variable.
+priv/prompts/b2_p1/); the API key is read from the OPENAI_API_KEY environment variable.
 The result is returned as UTF-8 JSON bytes and never raises, so failed calls can be logged:
 
     {"status": "ok" | "error", "error": str | None, "results": [{comment_id, category, remark}],

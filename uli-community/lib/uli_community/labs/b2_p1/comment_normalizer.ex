@@ -1,6 +1,6 @@
-defmodule UliCommunity.Labs.P1.CommentNormalizer do
+defmodule UliCommunity.Labs.B2P1.CommentNormalizer do
   @moduledoc """
-  Turns one raw Apify comment item into `p1_comments` attributes. The two scrapers return
+  Turns one raw Apify comment item into `b2_p1_comments` attributes. The two scrapers return
   the same data under different keys; the format is detected from the item itself.
 
   | field              | basic (scrapesmith)   | with replies (apify)        |

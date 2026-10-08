@@ -1,28 +1,28 @@
-defmodule UliCommunity.Workers.P1.ClassifyCommentsWorker do
+defmodule UliCommunity.Workers.B2P1.ClassifyCommentsWorker do
   @moduledoc """
-  Labs P1, step 2 of a run: classify the run's comments with OpenAI in batches. Every call
-  is logged to p1_llm_requests (failed ones too) and every result is kept in
-  p1_comment_classifications. Run status: categorizing -> done (or failed).
+  Labs B2_P1, step 2 of a run: classify the run's comments with OpenAI in batches. Every call
+  is logged to b2_p1_llm_requests (failed ones too) and every result is kept in
+  b2_p1_comment_classifications. Run status: categorizing -> done (or failed).
 
   Only comments without a result for the current prompt version are sent, so a retry
   picks up where the last attempt stopped and never re-classifies finished comments.
   """
-  use Oban.Worker, queue: :p1_classify, max_attempts: 3
+  use Oban.Worker, queue: :b2_p1_classify, max_attempts: 3
 
   alias Ecto.Multi
-  alias UliCommunity.Labs.P1
-  alias UliCommunity.Labs.P1.{CommentClassifications, LlmRequests, Python}
+  alias UliCommunity.Labs.B2P1
+  alias UliCommunity.Labs.B2P1.{CommentClassifications, LlmRequests, Python}
   alias UliCommunity.Repo
 
   # Already used with this API key in another project; known to work.
   @model "gpt-4.1"
-  # Bump this (and add priv/prompts/p1/classify_<version>.txt) whenever the prompt changes.
+  # Bump this (and add priv/prompts/b2_p1/classify_<version>.txt) whenever the prompt changes.
   @prompt_version "v1"
   @batch_size 50
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"run_id" => run_id}, attempt: attempt, max_attempts: max}) do
-    run = P1.get_run!(run_id)
+    run = B2P1.get_run!(run_id)
 
     errors =
       if System.get_env("OPENAI_API_KEY") in [nil, ""] do
@@ -31,19 +31,19 @@ defmodule UliCommunity.Workers.P1.ClassifyCommentsWorker do
         prompt = File.read!(prompt_path())
 
         run.id
-        |> P1.comments_to_classify(@prompt_version)
+        |> B2P1.comments_to_classify(@prompt_version)
         |> Enum.chunk_every(@batch_size)
         |> Enum.flat_map(&classify_batch(run, prompt, &1))
       end
 
     cond do
       errors == [] ->
-        P1.update_run(run, %{status: :done, finished_at: now()})
+        B2P1.update_run(run, %{status: :done, finished_at: now()})
         :ok
 
       # Out of attempts: keep whatever was classified; the rest shows as not categorized.
       attempt >= max ->
-        P1.update_run(run, %{
+        B2P1.update_run(run, %{
           status: :failed,
           error: "Classification failed: #{Enum.join(errors, "; ")}",
           finished_at: now()
@@ -126,7 +126,7 @@ defmodule UliCommunity.Workers.P1.ClassifyCommentsWorker do
   end
 
   defp prompt_path,
-    do: Application.app_dir(:uli_community, "priv/prompts/p1/classify_#{@prompt_version}.txt")
+    do: Application.app_dir(:uli_community, "priv/prompts/b2_p1/classify_#{@prompt_version}.txt")
 
   defp now, do: DateTime.utc_now() |> DateTime.truncate(:second)
 end
