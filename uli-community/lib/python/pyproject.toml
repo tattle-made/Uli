@@ -1,7 +1,7 @@
 [project]
 name = "project"
 version = "0.0.0"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "feluda==0.9.4",
     "feluda-vid-vec-rep-clip==0.1.4",
