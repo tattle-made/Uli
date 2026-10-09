@@ -1,8 +1,8 @@
-defmodule UliCommunityWeb.Labs.P1.PostLive do
+defmodule UliCommunityWeb.Labs.B2P1.PostLive do
   use UliCommunityWeb, :live_view
 
-  import UliCommunityWeb.Labs.P1.Components
-  alias UliCommunity.Labs.P1.DummyData
+  import UliCommunityWeb.Labs.B2P1.Components
+  alias UliCommunity.Labs.B2P1
 
   @stages [
     queued: "Queued",
@@ -12,27 +12,28 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   ]
 
   def mount(%{"id" => id}, _session, socket) do
-    case DummyData.get_post(id) do
+    case load_post(id) do
       nil ->
         {:ok,
          socket
          |> put_flash(:error, "Post not found.")
-         |> push_navigate(to: ~p"/labs/p1/channels")}
+         |> push_navigate(to: ~p"/labs/b2_p1/channels")}
 
       post ->
-        if connected?(socket), do: DummyData.subscribe()
+        if connected?(socket), do: B2P1.subscribe()
 
         {:ok,
          assign(socket,
-           page_title: "#{post.title || "Post"} · Labs P1",
+           page_title: "#{post.title || "Post"} · Labs B2_P1",
            post: post,
-           channel: DummyData.get_channel(post.channel_id),
+           channel: B2P1.get_channel!(post.channel_id),
            run_id: nil,
            tab: "categorized",
            filter: "all",
            expanded: MapSet.new(),
            raw_open: MapSet.new(),
            refetch_post: nil,
+           show_details: false,
            # Comments picked for the creator report, reset whenever another run is shown.
            selected: MapSet.new(),
            selection_run_id: nil,
@@ -52,15 +53,16 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     {:noreply, socket |> assign(run_id: run_id) |> load_run()}
   end
 
-  def handle_info(:labs_p1_updated, socket) do
-    case DummyData.get_post(socket.assigns.post.id) do
-      nil -> {:noreply, push_navigate(socket, to: ~p"/labs/p1/channels")}
+  def handle_info(:labs_b2_p1_updated, socket) do
+    case load_post(socket.assigns.post.id) do
+      nil -> {:noreply, push_navigate(socket, to: ~p"/labs/b2_p1/channels")}
       post -> {:noreply, socket |> assign(post: post) |> load_run()}
     end
   end
 
   def handle_event("select_run", %{"run" => run_id}, socket) do
-    {:noreply, push_patch(socket, to: ~p"/labs/p1/posts/#{socket.assigns.post.id}?run=#{run_id}")}
+    {:noreply,
+     push_patch(socket, to: ~p"/labs/b2_p1/posts/#{socket.assigns.post.id}?run=#{run_id}")}
   end
 
   def handle_event("tab", %{"tab" => tab}, socket), do: {:noreply, assign(socket, tab: tab)}
@@ -76,28 +78,51 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     do: {:noreply, assign(socket, refetch_post: socket.assigns.post)}
 
   def handle_event("close_modal", _, socket),
-    do: {:noreply, assign(socket, refetch_post: nil, show_report: false)}
+    do: {:noreply, assign(socket, refetch_post: nil, show_report: false, show_details: false)}
+
+  def handle_event("open_details", _, socket), do: {:noreply, assign(socket, show_details: true)}
+
+  # Caption and context are optional; they're used from the next run (refetch) on.
+  def handle_event("save_details", %{"details" => attrs}, socket) do
+    case B2P1.update_post_details(socket.assigns.post, attrs) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Saved. The next refetch will use this caption and context.")
+         |> assign(show_details: false, post: load_post(socket.assigns.post.id))
+         |> load_run()}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, "Couldn't save the caption and context.")}
+    end
+  end
 
   def handle_event("toggle_select", %{"id" => id}, socket),
     do: {:noreply, assign(socket, selected: toggle(socket.assigns.selected, id))}
 
-  def handle_event("select_all", _, socket),
-    do: {:noreply, assign(socket, selected: MapSet.new(socket.assigns.comments, & &1["id"]))}
+  # Select all / Clear only act on the current view (All, or one category);
+  # what's selected in other views is kept.
+  def handle_event("select_all", _, socket) do
+    %{selected: selected, comments: comments, filter: filter} = socket.assigns
+    {:noreply, assign(socket, selected: MapSet.union(selected, view_ids(comments, filter)))}
+  end
 
-  def handle_event("select_none", _, socket),
-    do: {:noreply, assign(socket, selected: MapSet.new())}
+  def handle_event("select_none", _, socket) do
+    %{selected: selected, comments: comments, filter: filter} = socket.assigns
+    {:noreply, assign(socket, selected: MapSet.difference(selected, view_ids(comments, filter)))}
+  end
 
   def handle_event("open_report", _, socket), do: {:noreply, assign(socket, show_report: true)}
 
   def handle_event("refetch", %{"post_id" => id, "config" => config}, socket) do
-    case DummyData.refetch(id, config) do
-      :ok ->
+    case B2P1.refetch(socket.assigns.post, config) do
+      {:ok, _run} ->
         # Jump to the new run.
         {:noreply,
          socket
          |> put_flash(:info, "Refetch queued.")
          |> assign(refetch_post: nil)
-         |> push_patch(to: ~p"/labs/p1/posts/#{id}")}
+         |> push_patch(to: ~p"/labs/b2_p1/posts/#{id}")}
 
       {:error, msg} ->
         {:noreply, socket |> put_flash(:error, msg) |> assign(refetch_post: nil)}
@@ -107,10 +132,18 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
   defp toggle(set, id),
     do: if(MapSet.member?(set, id), do: MapSet.delete(set, id), else: MapSet.put(set, id))
 
+  # The post with numbered runs and the latest run, or nil if it no longer exists.
+  defp load_post(id) do
+    case UliCommunity.Repo.get(B2P1.Posts, id) do
+      nil -> nil
+      _ -> id |> B2P1.get_post!() |> with_run_info()
+    end
+  end
+
   defp load_run(socket) do
     %{post: post, run_id: run_id} = socket.assigns
     run = Enum.find(post.runs, &(&1.id == run_id)) || post.latest_run
-    comments = if run && run.status == :done, do: DummyData.comments_for_run(run), else: []
+    comments = if run && run.status == :done, do: comment_rows(run), else: []
 
     socket =
       if socket.assigns.selection_run_id == (run && run.id) do
@@ -122,10 +155,36 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     assign(socket,
       run: run,
       comments: comments,
-      counts: DummyData.category_counts(comments),
+      counts: count_categories(comments),
       by_id: Map.new(comments, &{&1["id"], &1}),
       replies: comments |> Enum.filter(& &1["parent_id"]) |> Enum.group_by(& &1["parent_id"])
     )
+  end
+
+  # The run's comments as the maps the templates use. Within a run, comments are keyed by
+  # their platform ID, which is also what replies point to (parent_id).
+  defp comment_rows(run) do
+    for {c, cl} <- B2P1.comments_with_classification(run.id) do
+      %{
+        "id" => c.external_id,
+        "parent_id" => c.parent_external_id,
+        "url" => c.url,
+        "text" => c.text,
+        "author_username" => c.author_username,
+        "author_verified" => c.author_verified,
+        "commented_at" => c.commented_at,
+        "likes" => c.likes,
+        "reply_count" => c.reply_count,
+        "scraper" => to_string(run.scraper),
+        "category" => cl && to_string(cl.category),
+        "remark" => cl && cl.remark,
+        "raw" => c.raw
+      }
+    end
+  end
+
+  defp count_categories(comments) do
+    comments |> Enum.frequencies_by(& &1["category"]) |> string_counts()
   end
 
   # Abusive and worth-engaging comments are what the creator most needs to see.
@@ -161,7 +220,7 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             reply = if parent, do: " (reply to @#{parent["author_username"]})", else: ""
             text = (c["text"] || "") |> String.replace(~r/\s+/, " ") |> String.trim()
             text = if text == "", do: "(sticker or GIF)", else: "\"#{text}\""
-            link = get_in(c, ["raw", "commentUrl"]) || c["post_url"]
+            link = c["url"] || post.url
 
             "#{i}. @#{c["author_username"]}#{reply}: #{text}\n" <>
               if(c["remark"], do: "   Why: #{c["remark"]}\n", else: "") <>
@@ -181,6 +240,12 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     )
   end
 
+  # IDs of every comment in a view, replies included.
+  defp view_ids(comments, "all"), do: MapSet.new(comments, & &1["id"])
+
+  defp view_ids(comments, category),
+    do: comments |> Enum.filter(&(&1["category"] == category)) |> MapSet.new(& &1["id"])
+
   defp visible_comments(comments, "all"), do: Enum.reject(comments, & &1["parent_id"])
   defp visible_comments(comments, f), do: Enum.filter(comments, &(&1["category"] == f))
 
@@ -188,8 +253,8 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
     ~H"""
     <div class="mx-auto max-w-5xl">
       <.breadcrumbs crumbs={[
-        {"Channels", ~p"/labs/p1/channels"},
-        {"@#{@channel.handle}", ~p"/labs/p1/channels/#{@channel.id}"},
+        {"Channels", ~p"/labs/b2_p1/channels"},
+        {"@#{@channel.handle}", ~p"/labs/b2_p1/channels/#{@channel.id}"},
         {@post.title || "Post", nil}
       ]} />
 
@@ -212,11 +277,20 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
               </span>
               <span>Current settings: {config_summary(@post.config)}</span>
             </div>
+            <.post_details caption={@post.caption} context={@post.context} class="mt-3" />
           </div>
-          <.button phx-click="open_refetch" disabled={in_progress?(@post.latest_run)}>
-            <.icon name="hero-arrow-path-mini" class="-ml-0.5 h-4 w-4" />
-            {if @post.latest_run, do: "Refetch", else: "Fetch comments"}
-          </.button>
+          <div class="flex items-center gap-2">
+            <button
+              phx-click="open_details"
+              class="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-zinc-700 ring-1 ring-zinc-300 hover:bg-zinc-100"
+            >
+              <.icon name="hero-pencil-square-mini" class="-ml-0.5 h-4 w-4" /> Edit details
+            </button>
+            <.button phx-click="open_refetch" disabled={in_progress?(@post.latest_run)}>
+              <.icon name="hero-arrow-path-mini" class="-ml-0.5 h-4 w-4" />
+              {if @post.latest_run, do: "Refetch", else: "Fetch comments"}
+            </.button>
+          </div>
         </div>
 
         <div
@@ -231,17 +305,25 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
               class="rounded-lg border-zinc-300 py-1.5 text-sm focus:border-zinc-400 focus:ring-0"
             >
               <option :for={r <- @post.runs} value={r.id} selected={@run && r.id == @run.id}>
-                #{r.number} · {format_dt(r.started_at)} · {r.comment_limit} comments, {scraper_label(
+                #{r.number} · {format_dt(r.started_at || r.inserted_at)} · {r.comment_limit} comments, {scraper_label(
                   r.scraper
                 )}{if r == @post.latest_run, do: " (latest)"}
               </option>
             </select>
           </form>
           <.status_badge run={@run} />
-          <span :if={@run && @run.fetched} class="text-xs text-zinc-500">
-            {@run.fetched} comments fetched
+          <span :if={@run && @run.fetched_count} class="text-xs text-zinc-500">
+            {@run.fetched_count} comments fetched
           </span>
         </div>
+
+        <%!-- The caption and context this run copied from the post when it started. --%>
+        <details :if={@run} class="mt-3 text-sm">
+          <summary class="cursor-pointer text-xs font-semibold text-zinc-500 hover:text-zinc-800">
+            Caption &amp; context used by run #{@run.number}
+          </summary>
+          <.post_details caption={@run.caption} context={@run.context} class="mt-2" />
+        </details>
       </div>
 
       <%!-- Body --%>
@@ -259,6 +341,17 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             <p class="mt-2">{@run.error}</p>
             <p class="mt-2 text-red-700">Check the URL and refetch, or pick an earlier run above.</p>
           </div>
+        <% B2P1.stale?(@run) -> %>
+          <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+            <div class="flex items-center gap-2 font-semibold">
+              <.icon name="hero-exclamation-triangle" class="h-5 w-5" />
+              Run #{@run.number} stopped responding
+            </div>
+            <p class="mt-2">
+              It has had no progress for 30+ minutes (e.g. the server restarted mid-run). Refetch to
+              start a new run; this one will be marked as failed.
+            </p>
+          </div>
         <% in_progress?(@run) -> %>
           <.progress_steps run={@run} />
         <% true -> %>
@@ -266,6 +359,44 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
       <% end %>
 
       <.refetch_modal :if={@refetch_post} post={@refetch_post} />
+
+      <.modal :if={@show_details} id="details-modal" show on_cancel={JS.push("close_modal")}>
+        <h2 class="text-lg font-semibold text-zinc-900">Caption &amp; context</h2>
+        <p class="mt-1 text-sm text-zinc-500">
+          Both optional. They help the AI understand the comments, and are used from the next
+          refetch on. Earlier runs keep what they used.
+        </p>
+        <form phx-submit="save_details" class="mt-6 space-y-4">
+          <label class="block text-sm">
+            <span class="font-semibold text-zinc-800">Caption</span>
+            <textarea
+              name="details[caption]"
+              rows="4"
+              placeholder="The post's caption"
+              class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
+            >{@post.caption}</textarea>
+          </label>
+          <label class="block text-sm">
+            <span class="font-semibold text-zinc-800">Context</span>
+            <textarea
+              name="details[context]"
+              rows="3"
+              placeholder="Notes about the creator or the post, e.g. a comedian posting satire"
+              class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
+            >{@post.context}</textarea>
+          </label>
+          <div class="flex justify-end gap-3">
+            <button
+              type="button"
+              phx-click={JS.exec("data-cancel", to: "#details-modal")}
+              class="rounded-lg px-3 py-2 text-sm font-semibold text-zinc-600 hover:bg-zinc-100"
+            >
+              Cancel
+            </button>
+            <.button type="submit">Save</.button>
+          </div>
+        </form>
+      </.modal>
 
       <.modal :if={@show_report} id="report-modal" show on_cancel={JS.push("close_modal")}>
         <h2 class="text-lg font-semibold text-zinc-900">Report for @{@channel.handle}</h2>
@@ -407,15 +538,40 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             <span class="font-semibold">{MapSet.size(@selected)}</span>
             of {length(@comments)} comments selected for the creator report
           </span>
+          <% view =
+            if @filter == "all", do: nil, else: String.downcase(category_label(@filter)) %>
           <button phx-click="select_all" class="font-semibold text-zinc-500 hover:text-zinc-800">
-            Select all
+            {if view,
+              do: "Select all #{view} (#{MapSet.size(view_ids(@comments, @filter))})",
+              else: "Select all"}
           </button>
           <button phx-click="select_none" class="font-semibold text-zinc-500 hover:text-zinc-800">
-            Clear
+            {if view, do: "Clear #{view}", else: "Clear"}
           </button>
-          <.button phx-click="open_report" disabled={MapSet.size(@selected) == 0} class="ml-auto">
-            <.icon name="hero-envelope-mini" class="-ml-0.5 h-4 w-4" /> Prepare report
-          </.button>
+          <div class="ml-auto flex items-center gap-2">
+            <%!-- A plain form POST (not a LiveView event); the controller sends the CSV as a
+                 download. It targets a hidden iframe because LiveView disconnects on any
+                 regular form submit that isn't aimed at another tab or frame. --%>
+            <iframe name="b2-p1-csv-download" class="hidden"></iframe>
+            <.form
+              for={%{}}
+              action={~p"/labs/b2_p1/runs/#{@run.id}/export"}
+              method="post"
+              target="b2-p1-csv-download"
+            >
+              <input type="hidden" name="comment_ids" value={Enum.join(@selected, ",")} />
+              <button
+                type="submit"
+                disabled={MapSet.size(@selected) == 0}
+                class="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-zinc-700 ring-1 ring-zinc-300 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <.icon name="hero-arrow-down-tray-mini" class="-ml-0.5 h-4 w-4" /> Download CSV
+              </button>
+            </.form>
+            <.button phx-click="open_report" disabled={MapSet.size(@selected) == 0}>
+              <.icon name="hero-envelope-mini" class="-ml-0.5 h-4 w-4" /> Prepare report
+            </.button>
+          </div>
         </div>
 
         <ul class="space-y-3">
@@ -567,8 +723,8 @@ defmodule UliCommunityWeb.Labs.P1.PostLive do
             <span class="text-xs text-zinc-400">{format_dt(@comment["commented_at"])}</span>
             <span class="text-xs text-zinc-400">· ♥ {@comment["likes"]}</span>
             <a
-              :if={get_in(@comment, ["raw", "commentUrl"])}
-              href={get_in(@comment, ["raw", "commentUrl"])}
+              :if={@comment["url"]}
+              href={@comment["url"]}
               target="_blank"
               rel="noopener"
               class="inline-flex items-center gap-0.5 text-xs text-zinc-400 hover:text-zinc-800 hover:underline"

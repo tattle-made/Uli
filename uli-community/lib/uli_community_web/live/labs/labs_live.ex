@@ -1,19 +1,19 @@
 defmodule UliCommunityWeb.LabsLive do
-  @moduledoc "Index of the /labs prototypes. `/labs/p1` redirects to the P1 channels page."
+  @moduledoc "Index of the /labs prototypes. `/labs/b2_p1` redirects to the B2_P1 channels page."
   use UliCommunityWeb, :live_view
 
   @prototypes [
     %{
-      key: "P1",
+      key: "B2_P1",
       name: "Comments Classifier",
       description:
         "Add a creator's Instagram channel and posts, fetch their comments and let an LLM sort them into abusive, neutral/spam and worth engaging. Includes a report the admin can send to the creator.",
-      path: "/labs/p1/channels"
+      path: "/labs/b2_p1/channels"
     }
   ]
 
-  def mount(_params, _session, %{assigns: %{live_action: :p1}} = socket) do
-    {:ok, push_navigate(socket, to: ~p"/labs/p1/channels")}
+  def mount(_params, _session, %{assigns: %{live_action: :b2_p1}} = socket) do
+    {:ok, push_navigate(socket, to: ~p"/labs/b2_p1/channels")}
   end
 
   def mount(_params, _session, socket) do

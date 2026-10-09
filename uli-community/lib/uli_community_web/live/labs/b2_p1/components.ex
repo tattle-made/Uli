@@ -1,10 +1,11 @@
-defmodule UliCommunityWeb.Labs.P1.Components do
-  @moduledoc "Shared UI pieces for the Labs P1 Comments Classifier prototype."
+defmodule UliCommunityWeb.Labs.B2P1.Components do
+  @moduledoc "Shared UI pieces for the Labs B2_P1 Comments Classifier prototype."
   use Phoenix.Component
   use Phoenix.VerifiedRoutes, endpoint: UliCommunityWeb.Endpoint, router: UliCommunityWeb.Router
 
   import UliCommunityWeb.CoreComponents, only: [icon: 1, modal: 1, button: 1]
   alias Phoenix.LiveView.JS
+  alias UliCommunity.Labs.B2P1
 
   @categories [
     {"abusive", "Abusive"},
@@ -17,12 +18,15 @@ defmodule UliCommunityWeb.Labs.P1.Components do
   def category_label(key),
     do: List.keyfind(@categories, key, 0, {key, "Not categorized"}) |> elem(1)
 
-  def scraper_label("with_replies"), do: "Comments + replies"
+  # Settings come from the DB as atoms (:with_replies) and from forms as strings.
+  def scraper_label(scraper) when scraper in [:with_replies, "with_replies"],
+    do: "Comments + replies"
+
   def scraper_label(_), do: "Comments only"
 
   # Sort only exists for the comments-only scraper; it's nil for the replies one.
   def config_summary(c) do
-    sort = %{"recent" => "most recent", "popular" => "most popular"}[c.sort]
+    sort = %{"recent" => "most recent", "popular" => "most popular"}[c.sort && to_string(c.sort)]
 
     Enum.join(
       Enum.reject(["#{c.comment_limit} comments", scraper_label(c.scraper), sort], &is_nil/1),
@@ -30,8 +34,36 @@ defmodule UliCommunityWeb.Labs.P1.Components do
     )
   end
 
-  def in_progress?(nil), do: false
-  def in_progress?(run), do: run.status in [:queued, :fetching, :categorizing]
+  def in_progress?(run), do: B2P1.in_progress?(run)
+
+  def display_name(channel), do: channel.name || "@#{channel.handle}"
+
+  @doc """
+  Adds what the pages show for a post: `runs` numbered #1..#n (oldest first), the
+  `latest_run`, and category `counts` (string keys) once the latest run is done.
+  """
+  def with_run_info(post) do
+    total = length(post.runs)
+
+    runs =
+      post.runs |> Enum.with_index() |> Enum.map(fn {r, i} -> Map.put(r, :number, total - i) end)
+
+    latest = List.first(runs)
+
+    counts =
+      if latest && latest.status == :done,
+        do: string_counts(B2P1.category_counts(latest.id))
+
+    Map.merge(post, %{runs: runs, latest_run: latest, counts: counts})
+  end
+
+  @doc "Category counts with string keys (nil = not categorized), for the pills and tiles."
+  def string_counts(counts) do
+    Enum.reduce(counts, %{"abusive" => 0, "neutral_spam" => 0, "worth_engaging" => 0}, fn
+      {nil, n}, acc -> Map.put(acc, nil, n)
+      {category, n}, acc -> Map.put(acc, to_string(category), n)
+    end)
+  end
 
   def format_dt(nil), do: "—"
   def format_dt(%DateTime{} = dt), do: Calendar.strftime(dt, "%d %b %Y, %H:%M")
@@ -52,7 +84,7 @@ defmodule UliCommunityWeb.Labs.P1.Components do
         navigate={~p"/labs"}
         class="rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 hover:bg-amber-200"
       >
-        Labs · P1 prototype
+        Labs · B2_P1 prototype
       </.link>
       <%= for {label, path} <- @crumbs do %>
         <.icon name="hero-chevron-right-mini" class="h-4 w-4" />
@@ -78,12 +110,9 @@ defmodule UliCommunityWeb.Labs.P1.Components do
 
   def status_badge(assigns) do
     {label, class} =
-      case assigns.run.status do
-        :queued -> {"Queued", "bg-zinc-100 text-zinc-700"}
-        :fetching -> {"Fetching comments", "bg-blue-100 text-blue-800"}
-        :categorizing -> {"Categorizing", "bg-violet-100 text-violet-800"}
-        :done -> {"Done", "bg-emerald-100 text-emerald-800"}
-        :failed -> {"Failed", "bg-red-100 text-red-800"}
+      cond do
+        B2P1.stale?(assigns.run) -> {"Stalled", "bg-amber-100 text-amber-800"}
+        true -> status_style(assigns.run.status)
       end
 
     assigns = assign(assigns, label: label, class: class)
@@ -94,14 +123,24 @@ defmodule UliCommunityWeb.Labs.P1.Components do
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
         @class
       ]}
-      title={@run.error}
+      title={@run.error || if(B2P1.stale?(@run), do: "No progress for 30+ minutes. You can refetch.")}
     >
       <.icon :if={in_progress?(@run)} name="hero-arrow-path" class="h-3.5 w-3.5 animate-spin" />
-      <.icon :if={@run.status == :failed} name="hero-exclamation-triangle-mini" class="h-3.5 w-3.5" />
+      <.icon
+        :if={@run.status == :failed or B2P1.stale?(@run)}
+        name="hero-exclamation-triangle-mini"
+        class="h-3.5 w-3.5"
+      />
       {@label}
     </span>
     """
   end
+
+  defp status_style(:queued), do: {"Queued", "bg-zinc-100 text-zinc-700"}
+  defp status_style(:fetching), do: {"Fetching comments", "bg-blue-100 text-blue-800"}
+  defp status_style(:categorizing), do: {"Categorizing", "bg-violet-100 text-violet-800"}
+  defp status_style(:done), do: {"Done", "bg-emerald-100 text-emerald-800"}
+  defp status_style(:failed), do: {"Failed", "bg-red-100 text-red-800"}
 
   attr :category, :string, default: nil
 
@@ -123,6 +162,28 @@ defmodule UliCommunityWeb.Labs.P1.Components do
     ]}>
       {category_label(@category)}
     </span>
+    """
+  end
+
+  @doc "Shows a caption and context; either (or both) can be empty."
+  attr :caption, :string, default: nil
+  attr :context, :string, default: nil
+  attr :class, :string, default: nil
+
+  def post_details(assigns) do
+    ~H"""
+    <dl class={["grid gap-1 text-sm", @class]}>
+      <div :for={{label, value} <- [{"Caption", @caption}, {"Context", @context}]} class="flex gap-2">
+        <dt class="w-16 flex-none text-xs font-semibold uppercase text-zinc-400">{label}</dt>
+        <dd
+          :if={(value || "") != ""}
+          class="min-w-0 whitespace-pre-line break-words text-zinc-700 line-clamp-3"
+        >
+          {value}
+        </dd>
+        <dd :if={(value || "") == ""} class="italic text-zinc-400">none</dd>
+      </div>
+    </dl>
     """
   end
 
@@ -157,6 +218,8 @@ defmodule UliCommunityWeb.Labs.P1.Components do
   "Comments + replies" is selected.
   """
   attr :config, :map, required: true
+  # Field-name prefix, e.g. "config" or "posts[0][config]" for per-post settings.
+  attr :name, :string, default: "config"
 
   def config_fields(assigns) do
     ~H"""
@@ -165,7 +228,7 @@ defmodule UliCommunityWeb.Labs.P1.Components do
         <span class="font-semibold text-zinc-800">Comment limit</span>
         <input
           type="number"
-          name="config[comment_limit]"
+          name={"#{@name}[comment_limit]"}
           min="1"
           max="1000"
           value={@config.comment_limit}
@@ -175,13 +238,17 @@ defmodule UliCommunityWeb.Labs.P1.Components do
       <label class="block text-sm">
         <span class="font-semibold text-zinc-800">Scraper</span>
         <select
-          name="config[scraper]"
+          name={"#{@name}[scraper]"}
           class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
         >
-          <option value="basic" selected={@config.scraper == "basic"}>
+          <option value="basic" selected={to_string(@config.scraper) == "basic"}>
             Comments only (cheaper)
           </option>
-          <option value="with_replies" data-replies selected={@config.scraper == "with_replies"}>
+          <option
+            value="with_replies"
+            data-replies
+            selected={to_string(@config.scraper) == "with_replies"}
+          >
             Comments + replies
           </option>
         </select>
@@ -189,11 +256,13 @@ defmodule UliCommunityWeb.Labs.P1.Components do
       <label class="block text-sm group-has-[option[data-replies]:checked]:hidden">
         <span class="font-semibold text-zinc-800">Sort</span>
         <select
-          name="config[sort]"
+          name={"#{@name}[sort]"}
           class="mt-1 block w-full rounded-lg border-zinc-300 text-sm focus:border-zinc-400 focus:ring-0"
         >
-          <option value="recent" selected={@config.sort != "popular"}>Most recent</option>
-          <option value="popular" selected={@config.sort == "popular"}>Most popular</option>
+          <option value="recent" selected={to_string(@config.sort) != "popular"}>Most recent</option>
+          <option value="popular" selected={to_string(@config.sort) == "popular"}>
+            Most popular
+          </option>
         </select>
       </label>
     </div>
