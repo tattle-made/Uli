@@ -11,11 +11,13 @@
 #   - https://pkgs.org/ - resource for finding needed packages
 #   - Ex: hexpm/elixir:1.17.2-erlang-27.0-debian-bullseye-20240701-slim
 #
-# 1.18.4-erlang-27.3.4.14-ubuntu-jammy-20260627 <- Current Image
+# 1.18.4-erlang-27.3.4.14-ubuntu-noble-20260610 <- Current Image
+# Ubuntu 24.04 (noble) ships Python 3.12, which the lib/python dependencies need
+# (e.g. apify-client 3.x requires Python 3.11+; jammy only has Python 3.10).
 ARG ELIXIR_VERSION=1.18.4
 ARG OTP_VERSION=27.3.4.14
-ARG DEBIAN_VERSION=ubuntu-jammy-20260627
-ARG RUNNER_DEBIAN_VERSION=jammy-20260627
+ARG DEBIAN_VERSION=ubuntu-noble-20260610
+ARG RUNNER_DEBIAN_VERSION=noble-20260610
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="ubuntu:${RUNNER_DEBIAN_VERSION}"
@@ -23,7 +25,8 @@ ARG RUNNER_IMAGE="ubuntu:${RUNNER_DEBIAN_VERSION}"
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies and python
-RUN apt-get update -y && apt-get install -y build-essential git npm \
+RUN apt-get update -y && apt-get upgrade -y \
+  && apt-get install -y build-essential git npm \
   python3 python3-venv \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
@@ -93,8 +96,9 @@ RUN mix release
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
-RUN apt-get update -y && \
-  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+# apt-get upgrade picks up security fixes released after the base image (e.g. openssl).
+RUN apt-get update -y && apt-get upgrade -y && \
+  apt-get install -y libstdc++6 openssl libncurses6 locales ca-certificates \
   python3 python3-venv \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
