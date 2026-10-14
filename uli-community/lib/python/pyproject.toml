@@ -1,7 +1,7 @@
 [project]
 name = "project"
 version = "0.0.0"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "feluda==0.9.4",
     "feluda-vid-vec-rep-clip==0.1.4",
@@ -11,6 +11,7 @@ dependencies = [
     "torch>=2.13,<3.0",
     "torchvision>=0.28,<1.0",
     "apify-client>=2.5.1",
+    "openai>=3.26.0",
 ]
 
 [tool.uv.sources]

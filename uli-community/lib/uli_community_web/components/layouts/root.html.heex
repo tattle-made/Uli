@@ -108,6 +108,14 @@
             <%= gettext("My Contributions") %>
           </.link>
         </li>
+        <li :if={@current_user.role == :admin}>
+          <.link
+            href={~p"/labs"}
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+          >
+            <%= gettext("Labs") %>
+          </.link>
+        </li>
       </ul>
     <% end %>
     <%= @inner_content %>
