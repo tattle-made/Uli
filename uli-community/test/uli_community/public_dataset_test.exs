@@ -21,18 +21,18 @@ defmodule UliCommunity.PublicDatasetTest do
     end
 
     test "create_plugin_slur_metadata/1 with valid data creates a plugin_slur_metadata" do
-      valid_attrs = %{label: "some label", language: "some language", level_of_severity: "some level_of_severity", casual: "some casual", appropriated: true, appropriation_context: true, meaning: "some meaning", batch: 42, categories: ["option1", "option2"]}
+      valid_attrs = %{label: "some label", language: "some language", level_of_severity: "low", casual: true, appropriated: true, appropriation_context: true, meaning: "some meaning", batch: 42, categories: ["gendered", "sexualized"]}
 
       assert {:ok, %PluginSlurMetadata{} = plugin_slur_metadata} = PublicDataset.create_plugin_slur_metadata(valid_attrs)
       assert plugin_slur_metadata.label == "some label"
       assert plugin_slur_metadata.language == "some language"
-      assert plugin_slur_metadata.level_of_severity == "some level_of_severity"
-      assert plugin_slur_metadata.casual == "some casual"
+      assert plugin_slur_metadata.level_of_severity == :low
+      assert plugin_slur_metadata.casual == true
       assert plugin_slur_metadata.appropriated == true
       assert plugin_slur_metadata.appropriation_context == true
       assert plugin_slur_metadata.meaning == "some meaning"
       assert plugin_slur_metadata.batch == 42
-      assert plugin_slur_metadata.categories == ["option1", "option2"]
+      assert plugin_slur_metadata.categories == [:gendered, :sexualized]
     end
 
     test "create_plugin_slur_metadata/1 with invalid data returns error changeset" do
@@ -41,18 +41,18 @@ defmodule UliCommunity.PublicDatasetTest do
 
     test "update_plugin_slur_metadata/2 with valid data updates the plugin_slur_metadata" do
       plugin_slur_metadata = plugin_slur_metadata_fixture()
-      update_attrs = %{label: "some updated label", language: "some updated language", level_of_severity: "some updated level_of_severity", casual: "some updated casual", appropriated: false, appropriation_context: false, meaning: "some updated meaning", batch: 43, categories: ["option1"]}
+      update_attrs = %{label: "some updated label", language: "some updated language", level_of_severity: "high", casual: false, appropriated: false, appropriation_context: false, meaning: "some updated meaning", batch: 43, categories: ["religion"]}
 
       assert {:ok, %PluginSlurMetadata{} = plugin_slur_metadata} = PublicDataset.update_plugin_slur_metadata(plugin_slur_metadata, update_attrs)
       assert plugin_slur_metadata.label == "some updated label"
       assert plugin_slur_metadata.language == "some updated language"
-      assert plugin_slur_metadata.level_of_severity == "some updated level_of_severity"
-      assert plugin_slur_metadata.casual == "some updated casual"
+      assert plugin_slur_metadata.level_of_severity == :high
+      assert plugin_slur_metadata.casual == false
       assert plugin_slur_metadata.appropriated == false
       assert plugin_slur_metadata.appropriation_context == false
       assert plugin_slur_metadata.meaning == "some updated meaning"
       assert plugin_slur_metadata.batch == 43
-      assert plugin_slur_metadata.categories == ["option1"]
+      assert plugin_slur_metadata.categories == [:religion]
     end
 
     test "update_plugin_slur_metadata/2 with invalid data returns error changeset" do

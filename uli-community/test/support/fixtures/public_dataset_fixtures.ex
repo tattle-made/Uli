@@ -14,11 +14,11 @@ defmodule UliCommunity.PublicDatasetFixtures do
         appropriated: true,
         appropriation_context: true,
         batch: 42,
-        casual: "some casual",
-        categories: ["option1", "option2"],
+        casual: true,
+        categories: ["gendered", "sexualized"],
         label: "some label",
         language: "some language",
-        level_of_severity: "some level_of_severity",
+        level_of_severity: "low",
         meaning: "some meaning"
       })
       |> UliCommunity.PublicDataset.create_plugin_slur_metadata()
