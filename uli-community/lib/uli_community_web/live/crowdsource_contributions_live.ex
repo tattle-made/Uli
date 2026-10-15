@@ -69,6 +69,12 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      |> put_flash(:info, "New Contribution Added!")}
   end
 
+  # LiveView drops the "value" key when a click unchecks a checkbox, so the
+  # category checkboxes send their category under "category" instead.
+  def handle_event("change-search", %{"name" => "categories", "category" => category}, socket) do
+    handle_event("change-search", %{"name" => "categories", "value" => category}, socket)
+  end
+
   def handle_event("change-search", value, socket) do
     search_params = socket.assigns.search_params
 
