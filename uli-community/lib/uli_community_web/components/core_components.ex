@@ -763,7 +763,7 @@ end
         disabled={@disabled}
         phx-click="change-search"
         phx-value-name="categories"
-        phx-value-value={@id}
+        phx-value-category={@id}
         class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
         {@rest}
       />
