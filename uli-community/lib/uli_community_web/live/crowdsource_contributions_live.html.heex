@@ -790,7 +790,7 @@
           <!-- Previous -->
           <%= if @current_page > 1 do %>
             <.link
-              navigate={
+              patch={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @current_page - 1)
@@ -812,7 +812,7 @@
           <!-- Next -->
           <%= if @current_page < @total_pages do %>
             <.link
-              navigate={
+              patch={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @current_page + 1)
