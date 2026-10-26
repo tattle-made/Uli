@@ -146,6 +146,34 @@
   {gettext("Crowdsource Contributions")}
 </.header>
 
+<div class="flex justify-center mt-6 mb-6">
+  <div class="flex items-center gap-2">
+    <form phx-submit="search" class="relative w-64 flex">
+      <input
+        type="text"
+        name="search"
+        placeholder={gettext("Search slurs...")}
+        value={Keyword.get(@search_params, :search, "")}
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+      />
+
+      <button
+        type="submit"
+        class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center border border-zinc-400 rounded-md bg-white"
+      >
+        <.icon name="hero-magnifying-glass" class="h-4 w-4 text-gray-500" />
+      </button>
+    </form>
+
+    <.link
+      href={~p"/contribute-slur"}
+      class="px-4 py-2 bg-black text-white rounded-lg flex items-center gap-2"
+    >
+      ➕ Add New Slur
+    </.link>
+  </div>
+</div>
+
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
   <!-- Left Side -->
   <div class="text-slate-900">
@@ -176,30 +204,6 @@
         {gettext("Enable Advanced Search")}
       </label>
     </form>
-  </div>
-  <!-- Right Side (Search bar) -->
-  <div class="w-full md:w-auto flex items-center gap-2">
-    <form phx-submit="search" class="relative w-full md:w-64 flex">
-      <input
-        type="text"
-        name="search"
-        placeholder={gettext("Search slurs...")}
-        value={Keyword.get(@search_params, :search, "")}
-        class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-      />
-      <button
-        type="submit"
-        class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center border border-zinc-400 rounded-md bg-white hover:bg-zinc-100 transition"
-      >
-        <.icon name="hero-magnifying-glass" class="h-4 w-4 text-gray-500" />
-      </button>
-    </form>
-    <.link
-      href={~p"/contribute-slur"}
-      class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition flex items-center gap-2 whitespace-nowrap"
-    >
-      ➕ Add New Slur
-    </.link>
   </div>
 </div>
 
@@ -796,7 +800,6 @@
         </div>
 
         <div class="flex items-center gap-3 text-sm text-gray-700 whitespace-nowrap">
-
           <span class="font-medium">Goto Page</span>
 
           <form phx-change="goto-page">
