@@ -784,13 +784,14 @@
         </button>
       </div>
     </div>
-    <%= unless @advanced_search do %>
-      <div class="flex items-center justify-between border rounded-lg px-4 py-3 bg-white">
+      <div
+        :if={!@advanced_search}
+        class="flex items-center justify-between border rounded-lg px-4 py-3 bg-white">
         <div class="flex items-center gap-1">
           <!-- Previous -->
           <%= if @current_page > 1 do %>
             <.link
-              patch={
+              navigate={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @current_page - 1)
@@ -812,7 +813,7 @@
           <!-- Next -->
           <%= if @current_page < @total_pages do %>
             <.link
-              patch={
+              navigate={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @current_page + 1)
@@ -841,11 +842,13 @@
             Keyword.put(@search_params, :page_num, page)
           )
         }
-              class={[
-                "w-8 h-8 rounded-full flex items-center justify-center",
-                page == @current_page && "bg-red-500 text-white font-semibold",
-                page != @current_page && "border border-gray-300 hover:bg-gray-100"
-              ]}
+              class={
+                if page == @current_page do
+                  "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold"
+                else
+                  "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                end
+              }
             >
               {page}
             </.link>
@@ -910,8 +913,6 @@
           </form>
         </div>
       </div>
-    <% end %>
-
     <div class="h-2" />
 
     <%= if @vector_search_loading do %>
@@ -956,12 +957,13 @@
         <:col :let={slur} label={gettext("Meaning")}>{slur.meaning || "-"}</:col>
         <:col :let={slur} label={gettext("Categories")}>
           <div class="flex flex-wrap gap-2">
-            <span :if={slur.categories in [nil, []]}>-</span>
-
-            <.slur_category_badge
-              :for={category <- slur.categories || []}
-              category={to_string(category)}
-            />
+            <%= if Enum.empty?(slur.categories || []) do %>
+              -
+            <% else %>
+              <%= for category <- slur.categories do %>
+                <.slur_category_badge category={to_string(category)} />
+              <% end %>
+            <% end %>
           </div>
         </:col>
         <:action :let={slur}>
