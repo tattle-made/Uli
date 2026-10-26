@@ -841,13 +841,11 @@
             Keyword.put(@search_params, :page_num, page)
           )
         }
-              class={
-                if page == @current_page do
-                  "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold"
-                else
-                  "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-                end
-              }
+              class={[
+                "w-8 h-8 rounded-full flex items-center justify-center",
+                page == @current_page && "bg-red-500 text-white font-semibold",
+                page != @current_page && "border border-gray-300 hover:bg-gray-100"
+              ]}
             >
               {page}
             </.link>
