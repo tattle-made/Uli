@@ -36,10 +36,10 @@ defmodule UliCommunityWeb.CoreComponents do
       </.modal>
 
   """
-  attr :id, :string, required: true
-  attr :show, :boolean, default: false
-  attr :on_cancel, JS, default: %JS{}
-  slot :inner_block, required: true
+  attr(:id, :string, required: true)
+  attr(:show, :boolean, default: false)
+  attr(:on_cancel, JS, default: %JS{})
+  slot(:inner_block, required: true)
 
   def modal(assigns) do
     ~H"""
@@ -97,13 +97,13 @@ defmodule UliCommunityWeb.CoreComponents do
       <.flash kind={:info} flash={@flash} />
       <.flash kind={:info} phx-mounted={show("#flash")}>Welcome Back!</.flash>
   """
-  attr :id, :string, doc: "the optional id of flash container"
-  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-  attr :title, :string, default: nil
-  attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
+  attr(:id, :string, doc: "the optional id of flash container")
+  attr(:flash, :map, default: %{}, doc: "the map of flash messages to display")
+  attr(:title, :string, default: nil)
+  attr(:kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup")
+  attr(:rest, :global, doc: "the arbitrary HTML attributes to add to the flash container")
 
-  slot :inner_block, doc: "the optional inner block that renders the flash message"
+  slot(:inner_block, doc: "the optional inner block that renders the flash message")
 
   def flash(assigns) do
     assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
@@ -141,8 +141,8 @@ defmodule UliCommunityWeb.CoreComponents do
 
       <.flash_group flash={@flash} />
   """
-  attr :flash, :map, required: true, doc: "the map of flash messages"
-  attr :id, :string, default: "flash-group", doc: "the optional id of flash container"
+  attr(:flash, :map, required: true, doc: "the map of flash messages")
+  attr(:id, :string, default: "flash-group", doc: "the optional id of flash container")
 
   def flash_group(assigns) do
     ~H"""
@@ -189,17 +189,18 @@ defmodule UliCommunityWeb.CoreComponents do
         </:actions>
       </.simple_form>
   """
-  attr :for, :any, required: true, doc: "the data structure for the form"
-  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+  attr(:for, :any, required: true, doc: "the data structure for the form")
+  attr(:as, :any, default: nil, doc: "the server side parameter to collect all input under")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
+  )
 
-  attr :class, :string, default: nil
+  attr(:class, :string, default: nil)
 
-  slot :inner_block, required: true
-  slot :actions, doc: "the slot for form actions, such as a submit button"
+  slot(:inner_block, required: true)
+  slot(:actions, doc: "the slot for form actions, such as a submit button")
 
   def simple_form(assigns) do
     ~H"""
@@ -222,12 +223,12 @@ defmodule UliCommunityWeb.CoreComponents do
       <.button>Send!</.button>
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
-  attr :type, :string, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
-  attr :disabled, :boolean, default: false
+  attr(:type, :string, default: nil)
+  attr(:class, :string, default: nil)
+  attr(:rest, :global, include: ~w(disabled form name value))
+  attr(:disabled, :boolean, default: false)
 
-  slot :inner_block, required: true
+  slot(:inner_block, required: true)
 
   def button(assigns) do
     ~H"""
@@ -272,30 +273,33 @@ defmodule UliCommunityWeb.CoreComponents do
       <.input field={@form[:email]} type="email" />
       <.input name="my-input" errors={["oh no!"]} />
   """
-  attr :id, :any, default: nil
-  attr :name, :any
-  attr :label, :string, default: nil
-  attr :value, :any
+  attr(:id, :any, default: nil)
+  attr(:name, :any)
+  attr(:label, :string, default: nil)
+  attr(:value, :any)
 
-  attr :type, :string,
+  attr(:type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
                 range search select tel text textarea time url week)
+  )
 
-  attr :field, Phoenix.HTML.FormField,
+  attr(:field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
+  )
 
-  attr :errors, :list, default: []
-  attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
-  attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
-  attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
-  attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
-  attr :class, :string, default: nil
-  attr :label_class, :string, default: nil
+  attr(:errors, :list, default: [])
+  attr(:checked, :boolean, doc: "the checked flag for checkbox inputs")
+  attr(:prompt, :string, default: nil, doc: "the prompt for select inputs")
+  attr(:options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2")
+  attr(:multiple, :boolean, default: false, doc: "the multiple flag for select inputs")
+  attr(:class, :string, default: nil)
+  attr(:label_class, :string, default: nil)
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                  multiple pattern placeholder readonly required rows size step)
+  )
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -402,8 +406,8 @@ defmodule UliCommunityWeb.CoreComponents do
   @doc """
   Renders a label.
   """
-  attr :for, :string, default: nil
-  slot :inner_block, required: true
+  attr(:for, :string, default: nil)
+  slot(:inner_block, required: true)
 
   def label(assigns) do
     ~H"""
@@ -416,7 +420,7 @@ defmodule UliCommunityWeb.CoreComponents do
   @doc """
   Generates a generic error message.
   """
-  slot :inner_block, required: true
+  slot(:inner_block, required: true)
 
   def error(assigns) do
     ~H"""
@@ -430,11 +434,11 @@ defmodule UliCommunityWeb.CoreComponents do
   @doc """
   Renders a header with title.
   """
-  attr :class, :string, default: nil
+  attr(:class, :string, default: nil)
 
-  slot :inner_block, required: true
-  slot :subtitle
-  slot :actions
+  slot(:inner_block, required: true)
+  slot(:subtitle)
+  slot(:actions)
 
   def header(assigns) do
     ~H"""
@@ -462,97 +466,97 @@ defmodule UliCommunityWeb.CoreComponents do
         <:col :let={user} label="username"><%= user.username %></:col>
       </.table>
   """
-  attr :id, :string, required: true
-  attr :rows, :list, required: true
-  attr :row_id, :any, default: nil, doc: "the function for generating the row id"
-  attr :row_click, :any, default: nil, doc: "the function for handling phx-click on each row"
+  attr(:id, :string, required: true)
+  attr(:rows, :list, required: true)
+  attr(:row_id, :any, default: nil, doc: "the function for generating the row id")
+  attr(:row_click, :any, default: nil, doc: "the function for handling phx-click on each row")
 
-  attr :row_item, :any,
+  attr(:row_item, :any,
     default: &Function.identity/1,
     doc: "the function for mapping each row before calling the :col and :action slots"
+  )
 
   slot :col, required: true do
-    attr :label, :string
+    attr(:label, :string)
   end
 
-  slot :action, doc: "the slot for showing user actions in the last table column"
+  slot(:action, doc: "the slot for showing user actions in the last table column")
 
   def table(assigns) do
-  assigns =
-    with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-      assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
-    end
+    assigns =
+      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
+        assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
+      end
 
-  ~H"""
-  <div class="overflow-x-auto overflow-y-auto max-h-[500px] px-4 sm:overflow-visible sm:px-0">
-    <table class="w-[40rem] mt-11 sm:w-full border-collapse">
-      <thead class="text-sm text-center leading-6 text-zinc-500">
-        <tr>
-          <th
-            :for={{col, i} <- Enum.with_index(@col)}
-            class={[
-              "p-0 pb-4 pr-6 font-normal",
-              "max-sm:sticky max-sm:top-0 max-sm:bg-white max-sm:z-20",
-              i == 0 && "max-sm:left-0 max-sm:z-30"
-            ]}
-          >
-            <%= col[:label] %>
-          </th>
-          <th
-            :if={@action != []}
-            class="relative p-0 pb-4 max-sm:sticky max-sm:top-0 max-sm:z-20 max-sm:bg-white"
-          >
-            <span class="sr-only"><%= gettext("Actions") %></span>
-          </th>
-        </tr>
-      </thead>
+    ~H"""
+    <div class="overflow-x-auto overflow-y-auto max-h-[500px] px-4 sm:overflow-visible sm:px-0">
+      <table class="w-[40rem] mt-11 sm:w-full border-collapse">
+        <thead class="text-sm text-center leading-6 text-zinc-500">
+          <tr>
+            <th
+              :for={{col, i} <- Enum.with_index(@col)}
+              class={[
+                "p-0 pb-4 pr-6 font-normal",
+                "max-sm:sticky max-sm:top-0 max-sm:bg-white max-sm:z-20",
+                i == 0 && "max-sm:left-0 max-sm:z-30"
+              ]}
+            >
+              <%= col[:label] %>
+            </th>
+            <th
+              :if={@action != []}
+              class="relative p-0 pb-4 max-sm:sticky max-sm:top-0 max-sm:z-20 max-sm:bg-white"
+            >
+              <span class="sr-only"><%= gettext("Actions") %></span>
+            </th>
+          </tr>
+        </thead>
 
-      <tbody
-        id={@id}
-        phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-        class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
-      >
-        <tr
-          :for={row <- @rows}
-          id={@row_id && @row_id.(row)}
-          class="group hover:bg-slate-200"
+        <tbody
+          id={@id}
+          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
+          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >
-          <td
-            :for={{col, i} <- Enum.with_index(@col)}
-            phx-click={@row_click && @row_click.(row)}
-            class={[
-              "relative p-0 text-center",
-              @row_click && "hover:cursor-pointer",
-              # first column सिर्फ phone पर sticky
-              i == 0 && "max-sm:sticky max-sm:left-0 max-sm:z-20 max-sm:bg-white"
-            ]}
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-slate-200"
           >
-            <div class="block py-4 pr-6">
-              <span class=" right-0 -left-4 group-hover:bg-slate-200 sm:rounded-l-xl" />
-              <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
-                <%= render_slot(col, @row_item.(row)) %>
-              </span>
-            </div>
-          </td>
+            <td
+              :for={{col, i} <- Enum.with_index(@col)}
+              phx-click={@row_click && @row_click.(row)}
+              class={[
+                "relative p-0 text-center",
+                @row_click && "hover:cursor-pointer",
+                # first column सिर्फ phone पर sticky
+                i == 0 && "max-sm:sticky max-sm:left-0 max-sm:z-20 max-sm:bg-white"
+              ]}
+            >
+              <div class="block py-4 pr-6">
+                <span class=" right-0 -left-4 group-hover:bg-slate-200 sm:rounded-l-xl" />
+                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                  <%= render_slot(col, @row_item.(row)) %>
+                </span>
+              </div>
+            </td>
 
-          <td :if={@action != []} class="relative w-14 p-0">
-            <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-              <span class="-right-4 left-0 group-hover:bg-slate-200 sm:rounded-r-xl" />
-              <span
-                :for={action <- @action}
-                class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-              >
-                <%= render_slot(action, @row_item.(row)) %>
-              </span>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  """
-end
-
+            <td :if={@action != []} class="relative w-14 p-0">
+              <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
+                <span class="-right-4 left-0 group-hover:bg-slate-200 sm:rounded-r-xl" />
+                <span
+                  :for={action <- @action}
+                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                >
+                  <%= render_slot(action, @row_item.(row)) %>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    """
+  end
 
   @doc """
   Renders a data list.
@@ -565,7 +569,7 @@ end
       </.list>
   """
   slot :item, required: true do
-    attr :title, :string, required: true
+    attr(:title, :string, required: true)
   end
 
   def list(assigns) do
@@ -588,8 +592,8 @@ end
 
       <.back navigate={~p"/posts"}>Back to posts</.back>
   """
-  attr :navigate, :any, required: true
-  slot :inner_block, required: true
+  attr(:navigate, :any, required: true)
+  slot(:inner_block, required: true)
 
   def back(assigns) do
     ~H"""
@@ -623,8 +627,8 @@ end
       <.icon name="hero-x-mark-solid" />
       <.icon name="hero-arrow-path" class="ml-1 w-3 h-3 animate-spin" />
   """
-  attr :name, :string, required: true
-  attr :class, :string, default: nil
+  attr(:name, :string, required: true)
+  attr(:class, :string, default: nil)
 
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
@@ -712,17 +716,22 @@ end
   @doc """
   Renders a radio input with label.
   """
-  attr :name, :string, required: true
-  attr :id, :string, required: true
-  attr :value, :string, required: true
-  attr :label, :string, required: true
-  attr :selection, :any, default: nil
-  attr :disabled, :boolean, default: false
-  attr :rest, :global
+  attr(:name, :string, required: true)
+  attr(:id, :string, required: true)
+  attr(:value, :string, required: true)
+  attr(:label, :string, required: true)
+  attr(:selection, :any, default: nil)
+  attr(:disabled, :boolean, default: false)
+  attr(:rest, :global)
 
   def input_radio(assigns) do
     ~H"""
-    <div class="flex items-center gap-2">
+    <div
+      class={[
+        "flex items-center gap-2 rounded-lg px-2 py-1 transition-colors",
+        (@selection == @value || @selection == "all") && "bg-red-100"
+      ]}
+    >
       <input
         type="radio"
         id={@id}
@@ -736,7 +745,19 @@ end
         class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
         {@rest}
       />
-      <label for={@id} class="text-sm text-zinc-600"><%= @label %></label>
+
+      <label
+        for={@id}
+        class={[
+          "text-sm",
+          (@selection == @value) &&
+          "font-semibold text-zinc-600",
+          (@selection != @value && @selection != "all") &&
+            "text-zinc-600"
+        ]}
+      >
+        <%= @label %>
+      </label>
     </div>
     """
   end
@@ -744,16 +765,21 @@ end
   @doc """
   Renders a checkbox input with label.
   """
-  attr :id, :string, required: true
-  attr :group, :string, required: true
-  attr :label, :string, required: true
-  attr :selection, :list, default: []
-  attr :disabled, :boolean, default: false
-  attr :rest, :global
+  attr(:id, :string, required: true)
+  attr(:group, :string, required: true)
+  attr(:label, :string, required: true)
+  attr(:selection, :list, default: [])
+  attr(:disabled, :boolean, default: false)
+  attr(:rest, :global)
 
   def checkbox(assigns) do
     ~H"""
-    <div class="flex items-center gap-2">
+    <div
+      class={[
+        "flex items-center gap-2 rounded-lg px-2 py-1 transition-colors",
+        @id in @selection && "bg-red-100"
+      ]}
+    >
       <input
         type="checkbox"
         id={@id}
@@ -767,8 +793,71 @@ end
         class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
         {@rest}
       />
-      <label for={@id} class="text-sm text-zinc-600"><%= @label %></label>
+
+      <label
+        for={@id}
+        class={[
+          "text-sm",
+          @id in @selection &&
+            "font-semibold text-red-700",
+          @id not in @selection &&
+            "text-zinc-600"
+        ]}
+      >
+        <%= @label %>
+      </label>
     </div>
     """
   end
+
+  attr(:category, :string, required: true)
+
+  def slur_category_badge(assigns) do
+    ~H"""
+    <span
+      class={[
+        "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium",
+        category_color(@category)
+      ]}
+    >
+      <%= Phoenix.Naming.humanize(@category) %>
+    </span>
+    """
+  end
+
+  def category_color("gendered"),
+    do: "bg-pink-100 border-pink-400 text-pink-900"
+
+  def category_color("sexualized"),
+    do: "bg-purple-100 border-purple-400 text-purple-900"
+
+  def category_color("religion"),
+    do: "bg-yellow-100 border-yellow-400 text-yellow-900"
+
+  def category_color("ethnicity"),
+    do: "bg-green-100 border-green-400 text-green-900"
+
+  def category_color("political_affiliation"),
+    do: "bg-red-100 border-red-400 text-red-900"
+
+  def category_color("caste"),
+    do: "bg-sky-100 border-sky-400 text-sky-900"
+
+  def category_color("class"),
+    do: "bg-indigo-100 border-indigo-400 text-indigo-900"
+
+  def category_color("body_shaming"),
+    do: "bg-orange-100 border-orange-400 text-orange-900"
+
+  def category_color("ableist"),
+    do: "bg-emerald-100 border-emerald-400 text-emerald-900"
+
+  def category_color("sexual_identity"),
+    do: "bg-fuchsia-100 border-fuchsia-400 text-fuchsia-900"
+
+  def category_color("other"),
+    do: "bg-gray-100 border-gray-400 text-gray-900"
+
+  def category_color(_),
+    do: "bg-gray-100 border-gray-300 text-gray-700"
 end

@@ -705,6 +705,85 @@
   </div>
 
   <div class="w-full sm:w-4/5 gap-4">
+    <div class="flex items-center justify-between w-full mb-4">
+      <!-- Left Tabs -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Active -->
+        <button
+          type="button"
+          class="flex h-9 items-center gap-2 rounded-[10px] border-2 border-[#FF5A52] bg-[#FFD9D6] px-4"
+        >
+          <span class="text-[13px] font-semibold text-[#111827]">
+            All Slurs
+          </span>
+
+          <span class="flex h-5 min-w-[24px] items-center justify-center rounded-full border border-[#CFCFCF] bg-white px-2 text-[11px] font-semibold text-[#444]">
+            5
+          </span>
+        </button>
+
+        <!-- Inactive -->
+        <button
+          type="button"
+          class="flex h-9 items-center gap-2 rounded-[10px] border border-[#D3C9BC] bg-[#EFE6DA] px-4"
+        >
+          <span class="text-[13px] font-medium text-[#9A9188]">
+            Approved Slurs
+          </span>
+
+          <span class="flex h-5 min-w-[24px] items-center justify-center rounded-full border border-[#D7D1C8] bg-[#F6F2EC] px-2 text-[11px] font-medium text-[#A49B92]">
+            5
+          </span>
+        </button>
+      </div>
+
+      <!-- Right Side -->
+      <div class="ml-auto flex items-center gap-6">
+        <!-- Warning -->
+        <div class="flex items-center gap-2 whitespace-nowrap shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="#E58A00"
+            class="h-4 w-4"
+          >
+            <path d="M10 2L1.5 17h17L10 2Zm0 5.2c.4 0 .7.3.7.7v3.3a.7.7 0 11-1.4 0V7.9c0-.4.3-.7.7-.7Zm0 7a.9.9 0 110-1.8.9.9 0 010 1.8Z" />
+          </svg>
+
+          <span class="text-[12px] font-semibold text-[#D97706]">
+            Filters are disabled in Grouped View.
+          </span>
+        </div>
+
+        <!-- Group -->
+        <button
+          type="button"
+          class="flex h-9 shrink-0 items-center gap-2 rounded-full border border-[#D8D8D8] bg-white px-4 shadow-sm"
+        >
+          <.icon name="hero-squares-2x2" class="h-4 w-4 text-[#444]" />
+
+          <span class="whitespace-nowrap text-[13px] text-[#222]">
+            <span class="font-semibold">Group</span> : Similar Slurs
+          </span>
+
+          <.icon name="hero-chevron-down-mini" class="h-4 w-4 text-[#555]" />
+        </button>
+
+        <!-- Sort -->
+        <button
+          type="button"
+          class="flex h-9 shrink-0 items-center gap-2 rounded-full border border-[#D8D8D8] bg-white px-4 shadow-sm"
+        >
+          <.icon name="hero-bars-3-bottom-left" class="h-4 w-4 text-[#444]" />
+
+          <span class="whitespace-nowrap text-[13px] text-[#222]">
+            <span class="font-semibold">Sort</span> : Newest First
+          </span>
+
+          <.icon name="hero-chevron-down-mini" class="h-4 w-4 text-[#555]" />
+        </button>
+      </div>
+    </div>
     <%= unless @advanced_search do %>
       <div class="flex items-center justify-between border rounded-lg px-4 py-3 bg-white">
         <div class="flex items-center gap-1">
@@ -878,7 +957,15 @@
 
         <:col :let={slur} label={gettext("Meaning")}>{slur.meaning || "-"}</:col>
         <:col :let={slur} label={gettext("Categories")}>
-          {Enum.join(slur.categories || ["-"], ",")}
+          <div class="flex flex-wrap gap-2">
+            <%= if Enum.empty?(slur.categories || []) do %>
+              -
+            <% else %>
+              <%= for category <- slur.categories do %>
+                <.slur_category_badge category={to_string(category)} />
+              <% end %>
+            <% end %>
+          </div>
         </:col>
         <:action :let={slur}>
           <%= if @user_role == :admin do %>
