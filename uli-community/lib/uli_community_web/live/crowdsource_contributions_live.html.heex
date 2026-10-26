@@ -784,135 +784,136 @@
         </button>
       </div>
     </div>
-      <div
-        :if={!@advanced_search}
-        class="flex items-center justify-between border rounded-lg px-4 py-3 bg-white">
-        <div class="flex items-center gap-1">
-          <!-- Previous -->
-          <%= if @current_page > 1 do %>
-            <.link
-              navigate={
+    <div
+      :if={!@advanced_search}
+      class="flex items-center justify-between border rounded-lg px-4 py-3 bg-white"
+    >
+      <div class="flex items-center gap-1">
+        <!-- Previous -->
+        <%= if @current_page > 1 do %>
+          <.link
+            navigate={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @current_page - 1)
           )
         }
-              class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
-            >
-              <.icon name="hero-chevron-left" class="w-4 h-4" />
-            </.link>
-          <% else %>
-            <button
-              disabled
-              class="w-8 h-8 flex items-center justify-center border rounded text-gray-300"
-            >
-              <.icon name="hero-chevron-left" class="w-4 h-4" />
-            </button>
-          <% end %>
+            class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
+          >
+            <.icon name="hero-chevron-left" class="w-4 h-4" />
+          </.link>
+        <% else %>
+          <button
+            disabled
+            class="w-8 h-8 flex items-center justify-center border rounded text-gray-300"
+          >
+            <.icon name="hero-chevron-left" class="w-4 h-4" />
+          </button>
+        <% end %>
 
-          <!-- Next -->
-          <%= if @current_page < @total_pages do %>
-            <.link
-              navigate={
+        <!-- Next -->
+        <%= if @current_page < @total_pages do %>
+          <.link
+            navigate={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @current_page + 1)
           )
         }
-              class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
-            >
-              <.icon name="hero-chevron-right" class="w-4 h-4" />
-            </.link>
-          <% else %>
-            <button
-              disabled
-              class="w-8 h-8 flex items-center justify-center border rounded text-gray-300"
-            >
-              <.icon name="hero-chevron-right" class="w-4 h-4" />
-            </button>
-          <% end %>
+            class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
+          >
+            <.icon name="hero-chevron-right" class="w-4 h-4" />
+          </.link>
+        <% else %>
+          <button
+            disabled
+            class="w-8 h-8 flex items-center justify-center border rounded text-gray-300"
+          >
+            <.icon name="hero-chevron-right" class="w-4 h-4" />
+          </button>
+        <% end %>
 
-          <!-- Pages -->
+        <!-- Pages -->
 
-          <%= for page <- @page_numbers do %>
-            <.link
-              navigate={
+        <%= for page <- @page_numbers do %>
+          <.link
+            navigate={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, page)
           )
         }
-              class={
-                if page == @current_page do
-                  "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold"
-                else
-                  "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-                end
-              }
-            >
-              {page}
-            </.link>
-          <% end %>
+            class={
+              if page == @current_page do
+                "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold"
+              else
+                "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+              end
+            }
+          >
+            {page}
+          </.link>
+        <% end %>
 
-          <%= if List.last(@page_numbers) < @total_pages do %>
-            <span class="px-2 text-gray-500">
-              ...
-            </span>
+        <%= if List.last(@page_numbers) < @total_pages do %>
+          <span class="px-2 text-gray-500">
+            ...
+          </span>
 
-            <.link
-              navigate={
+          <.link
+            navigate={
           "/crowdsource-contributions?" <>
           CrowdsourceContributionsSearchParams.search_param_string(
             Keyword.put(@search_params, :page_num, @total_pages)
           )
         }
-              class={
-                if @current_page == @total_pages do
-                  "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center"
-                else
-                  "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-                end
-              }
-            >
-              {@total_pages}
-            </.link>
-          <% end %>
-        </div>
-
-        <div class="flex items-center gap-3 text-sm text-gray-700 whitespace-nowrap">
-          <span class="font-medium">Goto Page</span>
-
-          <form phx-change="goto-page">
-            <div class="relative inline-block">
-              <select
-                name="page_num"
-                class="appearance-none border border-gray-300 rounded-md bg-white py-1 pl-3 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
-              >
-                <%= for page <- 1..@total_pages do %>
-                  <option value={page} selected={page == @current_page}>
-                    {page}
-                  </option>
-                <% end %>
-              </select>
-
-              <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-            </div>
-          </form>
-        </div>
+            class={
+              if @current_page == @total_pages do
+                "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center"
+              else
+                "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+              end
+            }
+          >
+            {@total_pages}
+          </.link>
+        <% end %>
       </div>
+
+      <div class="flex items-center gap-3 text-sm text-gray-700 whitespace-nowrap">
+        <span class="font-medium">Goto Page</span>
+
+        <form phx-change="goto-page">
+          <div class="relative inline-block">
+            <select
+              name="page_num"
+              class="appearance-none border border-gray-300 rounded-md bg-white py-1 pl-3 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
+            >
+              <%= for page <- 1..@total_pages do %>
+                <option value={page} selected={page == @current_page}>
+                  {page}
+                </option>
+              <% end %>
+            </select>
+
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
     <div class="h-2" />
 
     <%= if @vector_search_loading do %>
