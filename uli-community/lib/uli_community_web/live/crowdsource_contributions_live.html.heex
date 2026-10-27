@@ -936,13 +936,12 @@
         <:col :let={slur} label={gettext("Meaning")}>{slur.meaning || "-"}</:col>
         <:col :let={slur} label={gettext("Categories")}>
           <div class="flex flex-wrap gap-2">
-            <%= if Enum.empty?(slur.categories || []) do %>
-              -
-            <% else %>
-              <%= for category <- slur.categories do %>
-                <.slur_category_badge category={to_string(category)} />
-              <% end %>
-            <% end %>
+            <span :if={slur.categories in [nil, []]}>-</span>
+
+            <.slur_category_badge
+              :for={category <- slur.categories || []}
+              category={to_string(category)}
+            />
           </div>
         </:col>
         <:action :let={slur}>
