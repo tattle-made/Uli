@@ -828,13 +828,13 @@
         <%= for page <- @page_numbers do %>
           <.link
             navigate={page_path(@search_params, page)}
-            class={
-              if page == @current_page do
-                "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold"
-              else
-                "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-              end
-            }
+            class={[
+              "w-8 h-8 rounded-full flex items-center justify-center",
+              if(page == @current_page,
+                do: "bg-red-500 text-white font-semibold",
+                else: "border border-gray-300 hover:bg-gray-100"
+              )
+            ]}
           >
             {page}
           </.link>
