@@ -869,11 +869,9 @@
               name="page_num"
               class="appearance-none border border-gray-300 rounded-md bg-white py-1 pl-3 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
             >
-              <%= for page <- 1..@total_pages do %>
-                <option value={page} selected={page == @current_page}>
-                  {page}
-                </option>
-              <% end %>
+              <option :for={page <- 1..@total_pages} value={page} selected={page == @current_page}>
+                {page}
+              </option>
             </select>
 
             <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
