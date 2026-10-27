@@ -97,7 +97,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply,
      socket
      |> assign(:search_params, new_search_params)
-     |> push_navigate(
+     |> push_patch(
        to:
          "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(new_search_params)}"
      )}
@@ -125,7 +125,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
       {:noreply,
        socket
        |> assign(:search_params, search_params)
-       |> push_navigate(
+       |> push_patch(
          to:
            "/crowdsource-contributions?" <>
              UliCommunityWeb.CrowdsourceContributionsSearchParams.search_param_string(
@@ -257,7 +257,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply,
      socket
      |> assign(:search_params, search_params)
-     |> push_navigate(
+     |> push_patch(
        to:
          "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(search_params)}"
      )}
@@ -294,7 +294,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
   def handle_event("goto-page", %{"page_num" => page}, socket) do
     {:noreply,
      socket
-     |> push_navigate(to: page_path(socket.assigns.search_params, String.to_integer(page)))}
+     |> push_patch(to: page_path(socket.assigns.search_params, String.to_integer(page)))}
   end
 
   defp page_path(search_params, page_num) do

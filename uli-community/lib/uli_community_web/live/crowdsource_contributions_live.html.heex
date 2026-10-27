@@ -792,7 +792,7 @@
         <!-- Previous -->
         <%= if @current_page > 1 do %>
           <.link
-            navigate={page_path(@search_params, @current_page - 1)}
+            patch={page_path(@search_params, @current_page - 1)}
             class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
           >
             <.icon name="hero-chevron-left" class="w-4 h-4" />
@@ -809,7 +809,7 @@
         <!-- Next -->
         <%= if @current_page < @total_pages do %>
           <.link
-            navigate={page_path(@search_params, @current_page + 1)}
+            patch={page_path(@search_params, @current_page + 1)}
             class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
           >
             <.icon name="hero-chevron-right" class="w-4 h-4" />
@@ -827,7 +827,7 @@
 
         <%= for page <- @page_numbers do %>
           <.link
-            navigate={page_path(@search_params, page)}
+            patch={page_path(@search_params, page)}
             class={[
               "w-8 h-8 rounded-full flex items-center justify-center",
               if(page == @current_page,
@@ -846,7 +846,7 @@
           </span>
 
           <.link
-            navigate={page_path(@search_params, @total_pages)}
+            patch={page_path(@search_params, @total_pages)}
             class={
               if @current_page == @total_pages do
                 "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center"
