@@ -304,6 +304,13 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      )}
   end
 
+  defp page_path(search_params, page_num) do
+    "/crowdsource-contributions?" <>
+      CrowdsourceContributionsSearchParams.search_param_string(
+        Keyword.put(search_params, :page_num, page_num)
+      )
+  end
+
   defp visible_pages(current_page, total_pages) do
     cond do
       total_pages <= 10 ->

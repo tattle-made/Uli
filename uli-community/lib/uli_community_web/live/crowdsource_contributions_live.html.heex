@@ -792,12 +792,7 @@
         <!-- Previous -->
         <%= if @current_page > 1 do %>
           <.link
-            navigate={
-          "/crowdsource-contributions?" <>
-          CrowdsourceContributionsSearchParams.search_param_string(
-            Keyword.put(@search_params, :page_num, @current_page - 1)
-          )
-        }
+            navigate={page_path(@search_params, @current_page - 1)}
             class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
           >
             <.icon name="hero-chevron-left" class="w-4 h-4" />
@@ -814,12 +809,7 @@
         <!-- Next -->
         <%= if @current_page < @total_pages do %>
           <.link
-            navigate={
-          "/crowdsource-contributions?" <>
-          CrowdsourceContributionsSearchParams.search_param_string(
-            Keyword.put(@search_params, :page_num, @current_page + 1)
-          )
-        }
+            navigate={page_path(@search_params, @current_page + 1)}
             class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
           >
             <.icon name="hero-chevron-right" class="w-4 h-4" />
@@ -837,12 +827,7 @@
 
         <%= for page <- @page_numbers do %>
           <.link
-            navigate={
-          "/crowdsource-contributions?" <>
-          CrowdsourceContributionsSearchParams.search_param_string(
-            Keyword.put(@search_params, :page_num, page)
-          )
-        }
+            navigate={page_path(@search_params, page)}
             class={
               if page == @current_page do
                 "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-semibold"
@@ -861,12 +846,7 @@
           </span>
 
           <.link
-            navigate={
-          "/crowdsource-contributions?" <>
-          CrowdsourceContributionsSearchParams.search_param_string(
-            Keyword.put(@search_params, :page_num, @total_pages)
-          )
-        }
+            navigate={page_path(@search_params, @total_pages)}
             class={
               if @current_page == @total_pages do
                 "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center"
