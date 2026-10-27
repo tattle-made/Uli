@@ -292,16 +292,9 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
 
   @impl true
   def handle_event("goto-page", %{"page_num" => page}, socket) do
-    search_params =
-      Keyword.put(socket.assigns.search_params, :page_num, String.to_integer(page))
-
     {:noreply,
      socket
-     |> push_navigate(
-       to:
-         "/crowdsource-contributions?" <>
-           CrowdsourceContributionsSearchParams.search_param_string(search_params)
-     )}
+     |> push_navigate(to: page_path(socket.assigns.search_params, String.to_integer(page)))}
   end
 
   defp page_path(search_params, page_num) do
