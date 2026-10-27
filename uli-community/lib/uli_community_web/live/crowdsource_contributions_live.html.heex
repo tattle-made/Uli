@@ -825,20 +825,19 @@
 
         <!-- Pages -->
 
-        <%= for page <- @page_numbers do %>
-          <.link
-            patch={page_path(@search_params, page)}
-            class={[
-              "w-8 h-8 rounded-full flex items-center justify-center",
-              if(page == @current_page,
-                do: "bg-red-500 text-white font-semibold",
-                else: "border border-gray-300 hover:bg-gray-100"
-              )
-            ]}
-          >
-            {page}
-          </.link>
-        <% end %>
+        <.link
+          :for={page <- @page_numbers}
+          patch={page_path(@search_params, page)}
+          class={[
+            "w-8 h-8 rounded-full flex items-center justify-center",
+            if(page == @current_page,
+              do: "bg-red-500 text-white font-semibold",
+              else: "border border-gray-300 hover:bg-gray-100"
+            )
+          ]}
+        >
+          {page}
+        </.link>
 
         <%= if List.last(@page_numbers) < @total_pages do %>
           <span class="px-2 text-gray-500">
