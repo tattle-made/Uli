@@ -7,7 +7,7 @@
   </p>
 
   <div class="relative w-full bg-[#ffece6] border border-[#4e1818] p-7 sm:p-9">
-    <.form for={@conn.params["user"]} as={:user} action={~p"/users/confirm/#{@token}"} class="space-y-4">
+    <.form for={@conn.params["user"]} as={:user} action={~p"/nolive/users/confirm/#{@token}"} class="space-y-4">
       <div class="pt-2">
         <button
           type="submit"
