@@ -1,5 +1,5 @@
 <.modal id="add-slur-modal" on_cancel={JS.push("close-modal")}>
- <.header class="text-center"><%= gettext("Approve Slur and Slur Metadata") %></.header>
+  <.header class="text-center">{gettext("Approve Slur and Slur Metadata")}</.header>
   <.simple_form
     for={@slur_form}
     phx-submit={
@@ -22,14 +22,14 @@
     </.header>
     <%= if @approve_type == "slur-metadata" do %>
       <p class="text-xs m-0 p-0 text-slate-700">
-        <%= gettext("Frequency of Metadata with same label") %>:
+        {gettext("Frequency of Metadata with same label")}:
         <%= if @already_present_metadata_freq > 0 do %>
           <a href={"/plugin-metadata/#{@selected_slur["label"]}"} class="font-semibold underline">
-            <%= @already_present_metadata_freq %>
+            {@already_present_metadata_freq}
           </a>
         <% else %>
           <span class="font-semibold">
-            <%= @already_present_metadata_freq %>
+            {@already_present_metadata_freq}
           </span>
         <% end %>
       </p>
@@ -124,34 +124,62 @@
         type="button"
         class="bg-red-400 hover:bg-red-500"
       >
-        <%= gettext("Cancel") %>
+        {gettext("Cancel")}
       </.button>
 
       <%= if @approve_type == "only-slur" do %>
         <.button type="submit" disabled={@slur_already_added?}>
           <%= if @slur_already_added? do %>
-            <%= gettext("Slur Already Added") %>
+            {gettext("Slur Already Added")}
           <% else %>
-            <%= gettext("Add Only Slur") %>
+            {gettext("Add Only Slur")}
           <% end %>
         </.button>
       <% else %>
-        <.button type="submit"><%= gettext("Save Slur Metadata") %></.button>
+        <.button type="submit">{gettext("Save Slur Metadata")}</.button>
       <% end %>
     </div>
   </.simple_form>
 </.modal>
 
 <.header class="text-center text-4xl">
-    <%= gettext("Crowdsource Contributions") %>
+  {gettext("Crowdsource Contributions")}
 </.header>
+
+<div class="flex justify-center mt-6 mb-6">
+  <div class="flex items-center gap-2">
+    <form phx-submit="search" class="relative w-64 flex">
+      <input
+        type="text"
+        name="search"
+        placeholder={gettext("Search slurs...")}
+        value={Keyword.get(@search_params, :search, "")}
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+      />
+
+      <button
+        type="submit"
+        class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center border border-zinc-400 rounded-md bg-white"
+      >
+        <.icon name="hero-magnifying-glass" class="h-4 w-4 text-gray-500" />
+      </button>
+    </form>
+
+    <.link
+      href={~p"/contribute-slur"}
+      class="px-4 py-2 bg-black text-white rounded-lg flex items-center gap-2"
+    >
+      ➕ Add New Slur
+    </.link>
+  </div>
+</div>
 
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
   <!-- Left Side -->
   <div class="text-slate-900">
     <!-- Responsive heading -->
     <h1 class="text-base sm:text-lg md:text-xl font-normal truncate">
-      <%= gettext("Showing all %{count} contributions", count: @query_count) %>
+      {gettext("Showing all %{count} contributions", count: @query_count)}
     </h1>
     <!-- Clear Filters (only tablet/laptop and larger) -->
     <.link
@@ -161,7 +189,7 @@
       class="hidden md:inline-flex mt-4 items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
     >
       <.icon name="hero-x-circle" class="w-4 h-4" />
-      <span><%= gettext("Clear All Filters") %></span>
+      <span>{gettext("Clear All Filters")}</span>
     </.link>
     <!-- Advanced Search -->
     <form phx-change="toggle-advanced-search" class="flex items-center mt-4 text-sm text-zinc-600">
@@ -173,30 +201,9 @@
         class="h-4 w-4 rounded border-gray-300 text-zinc-600 focus:ring-zinc-500"
       />
       <label for="advanced_search" class="ml-2 text-zinc-800 font-medium text-base">
-        <%= gettext("Enable Advanced Search") %>
+        {gettext("Enable Advanced Search")}
       </label>
     </form>
-  </div>
-  <!-- Right Side (Search bar) -->
-  <div class="w-full md:w-auto flex items-center gap-2">
-    <form phx-submit="search" class="relative w-full md:w-64 flex">
-      <input
-        type="text"
-        name="search"
-        placeholder={gettext("Search slurs...")}
-        value={Keyword.get(@search_params, :search, "")}
-        class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-      />
-      <button
-        type="submit"
-        class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center border border-zinc-400 rounded-md bg-white hover:bg-zinc-100 transition"
-      >
-        <.icon name="hero-magnifying-glass" class="h-4 w-4 text-gray-500" />
-      </button>
-    </form>
-    <.link href={~p"/contribute-slur"} class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition flex items-center gap-2 whitespace-nowrap">
-      ➕ Add New Slur
-    </.link>
   </div>
 </div>
 
@@ -204,10 +211,10 @@
   <div class="hidden lg:flex h-fit w-full lg:w-1/5 lg:h-fit flex-col mr-4 border-e border-zinc-200">
     <%= unless @advanced_search do %>
       <div>
-        <p class="py-2"><%= gettext("Date") %></p>
+        <p class="py-2">{gettext("Date")}</p>
         <div id="date-range-selector" phx-hook="DateSelector" class="flex-row gap-2 flex-wrap">
           <div class="flex flex-row gap-2 text-xs items-center">
-            <label for="from"><%= gettext("from") %>&nbsp;&nbsp;</label>
+            <label for="from">{gettext("from")}&nbsp;&nbsp;</label>
             <input
               class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
               type="date"
@@ -220,7 +227,7 @@
             />
           </div>
           <div class="flex flex-row gap-2 text-xs items-center">
-            <label for="to"> <%= gettext("to") %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+            <label for="to">{gettext("to")}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
             <input
               class="text-xs text-black dark:text-black dark:bg-dark-bg mt-1 mr-1 block w-fit rounded border-gray-200 focus:border-gray-400 dark:border-gray-600"
               type="date"
@@ -236,7 +243,7 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Level of Severity") %></p>
+        <p class="py-2">{gettext("Level of Severity")}</p>
         <div>
           <.input_radio
             name="level_of_severity"
@@ -270,7 +277,7 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Is Casual?") %></p>
+        <p class="py-2">{gettext("Is Casual?")}</p>
         <div>
           <.input_radio
             name="casual"
@@ -297,7 +304,7 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Is Appropriated?") %></p>
+        <p class="py-2">{gettext("Is Appropriated?")}</p>
         <div>
           <.input_radio
             name="appropriated"
@@ -324,7 +331,7 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Source") %></p>
+        <p class="py-2">{gettext("Source")}</p>
         <div>
           <.input_radio
             name="source"
@@ -358,20 +365,20 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Language") %></p>
+        <p class="py-2">{gettext("Language")}</p>
         <form phx-change="change-language">
-          <label for="language-filter" class="sr-only"><%= gettext("Language") %></label>
+          <label for="language-filter" class="sr-only">{gettext("Language")}</label>
           <select
             name="language"
             id="language-filter"
             class="border border-gray-300 rounded p-2 text-sm w-auto"
           >
             <option value="all" selected={Keyword.get(@search_params, :language) == "all"}>
-              <%= gettext("All") %>
+              {gettext("All")}
             </option>
             <%= for {name, code} <- @language_options do %>
               <option value={code} selected={Keyword.get(@search_params, :language) == code}>
-                <%= name %>
+                {name}
               </option>
             <% end %>
           </select>
@@ -379,7 +386,7 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Categories") %></p>
+        <p class="py-2">{gettext("Categories")}</p>
         <div>
           <.checkbox
             id="gendered"
@@ -495,7 +502,7 @@
       </div>
 
       <div>
-        <p class="py-2"><%= gettext("Sort") %></p>
+        <p class="py-2">{gettext("Sort")}</p>
         <div>
           <.input_radio
             name="sort-by"
@@ -572,7 +579,7 @@
     >
       <!-- Header -->
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-semibold"><%= gettext("Filter By") %></h2>
+        <h2 class="text-lg font-semibold">{gettext("Filter By")}</h2>
         <button
           phx-click={
             JS.hide(to: "#mobile-filters-drawer")
@@ -594,7 +601,7 @@
       >
         <!-- Date Range -->
         <div class="mb-4">
-          <p class="font-medium mb-2"><%= gettext("Date") %></p>
+          <p class="font-medium mb-2">{gettext("Date")}</p>
           <div class="flex flex-col gap-2">
             <input
               type="date"
@@ -612,54 +619,66 @@
         </div>
         <!-- Level of Severity -->
         <div class="mb-4">
-          <p class="font-medium mb-2"><%= gettext("Level of Severity") %></p>
+          <p class="font-medium mb-2">{gettext("Level of Severity")}</p>
           <select name="filters[level_of_severity]" class="border rounded p-2 text-sm w-full">
-            <option value="low"><%= gettext("Low") %></option>
-            <option value="medium"><%= gettext("Medium") %></option>
-            <option value="high"><%= gettext("High") %></option>
-            <option value="all" selected><%= gettext("All") %></option>
+            <option value="low">{gettext("Low")}</option>
+            <option value="medium">{gettext("Medium")}</option>
+            <option value="high">{gettext("High")}</option>
+            <option value="all" selected>{gettext("All")}</option>
           </select>
         </div>
         <!-- Source -->
         <div class="mb-4">
-          <p class="font-medium mb-2"><%= gettext("Source") %></p>
+          <p class="font-medium mb-2">{gettext("Source")}</p>
           <select name="filters[source]" class="border rounded p-2 text-sm w-full">
-            <option value="plugin"><%= gettext("Plugin") %></option>
-            <option value="experts_2022"><%= gettext("Experts 2022") %></option>
-            <option value="crowdsourcing_exercise"><%= gettext("Crowdsourcing Exercise") %></option>
-            <option value="all" selected><%= gettext("All") %></option>
+            <option value="plugin">{gettext("Plugin")}</option>
+            <option value="experts_2022">{gettext("Experts 2022")}</option>
+            <option value="crowdsourcing_exercise">{gettext("Crowdsourcing Exercise")}</option>
+            <option value="all" selected>{gettext("All")}</option>
           </select>
         </div>
         <!-- Categories -->
         <div class="mb-4">
-          <p class="font-medium mb-2"><%= gettext("Categories") %></p>
+          <p class="font-medium mb-2">{gettext("Categories")}</p>
           <div class="grid grid-cols-2 gap-2 text-sm">
             <label>
-              <input type="checkbox" name="filters[categories][]" value="gendered" /> <%= gettext("Gendered") %>
+              <input type="checkbox" name="filters[categories][]" value="gendered" /> {gettext(
+                "Gendered"
+              )}
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="sexualized" /> <%= gettext("Sexualized") %>
+              <input type="checkbox" name="filters[categories][]" value="sexualized" /> {gettext(
+                "Sexualized"
+              )}
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="religion" /> <%= gettext("Religion") %>
+              <input type="checkbox" name="filters[categories][]" value="religion" /> {gettext(
+                "Religion"
+              )}
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="ethnicity" /> <%= gettext("Ethnicity") %>
+              <input type="checkbox" name="filters[categories][]" value="ethnicity" /> {gettext(
+                "Ethnicity"
+              )}
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="class" /> <%= gettext("Class") %>
+              <input type="checkbox" name="filters[categories][]" value="class" /> {gettext(
+                "Class"
+              )}
             </label>
             <label>
-              <input type="checkbox" name="filters[categories][]" value="caste" /> <%= gettext("Caste") %>
+              <input type="checkbox" name="filters[categories][]" value="caste" /> {gettext(
+                "Caste"
+              )}
             </label>
           </div>
         </div>
         <!-- Sort -->
         <div class="mb-6">
-          <p class="font-medium mb-2"><%= gettext("Sort") %></p>
+          <p class="font-medium mb-2">{gettext("Sort")}</p>
           <select name="filters[sort]" class="border rounded p-2 text-sm w-full">
-            <option value="newest" selected><%= gettext("Newest first") %></option>
-            <option value="oldest"><%= gettext("Oldest first") %></option>
+            <option value="newest" selected>{gettext("Newest first")}</option>
+            <option value="oldest">{gettext("Oldest first")}</option>
           </select>
         </div>
         <!-- Buttons -->
@@ -670,7 +689,7 @@
             }
             class="px-4 py-2 rounded bg-gray-200 text-sm"
           >
-            <%= gettext("Clear Filters") %>
+            {gettext("Clear Filters")}
           </.link>
 
           <button
@@ -678,7 +697,7 @@
             class="px-4 py-2 rounded text-sm text-white font-medium"
             style="background-color: rgb(231, 109, 103); color: rgb(81, 78, 128);"
           >
-            <%= gettext("Apply Filters") %>
+            {gettext("Apply Filters")}
           </button>
         </div>
       </.form>
@@ -686,23 +705,192 @@
   </div>
 
   <div class="w-full sm:w-4/5 gap-4">
-    <%= unless @advanced_search do %>
-      <div class="flex flex-row items-center gap-2 w-full p-2 border-2 border-black-200 rounded-md">
-        <div :if={Keyword.get(@search_params, :page_num) - 1 > 0}>
-          <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_previous_page(@search_params)}"}>
-            <.icon name="hero-arrow-left" class="h-5 w-5" />
-          </.link>
-        </div>
-        <div class="rounded-full p-2 bg-zinc-100 border border-gray-300">
-          <p><%= Keyword.get(@search_params, :page_num) %></p>
-        </div>
+    <div class="flex items-center justify-between w-full mb-4">
+      <!-- Left Tabs -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Active -->
+        <button
+          type="button"
+          class="flex h-9 items-center gap-2 rounded-[10px] border-2 border-[#FF5A52] bg-[#FFD9D6] px-4"
+        >
+          <span class="text-[13px] font-semibold text-[#111827]">
+            All Slurs
+          </span>
 
-        <.link navigate={"/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string_for_next_page(@search_params)}"}>
-          <.icon name="hero-arrow-right" class="h-5 w-5" />
-        </.link>
+          <span class="flex h-5 min-w-[24px] items-center justify-center rounded-full border border-[#CFCFCF] bg-white px-2 text-[11px] font-semibold text-[#444]">
+            5
+          </span>
+        </button>
+
+        <!-- Inactive -->
+        <button
+          type="button"
+          class="flex h-9 items-center gap-2 rounded-[10px] border border-[#D3C9BC] bg-[#EFE6DA] px-4"
+        >
+          <span class="text-[13px] font-medium text-[#9A9188]">
+            Approved Slurs
+          </span>
+
+          <span class="flex h-5 min-w-[24px] items-center justify-center rounded-full border border-[#D7D1C8] bg-[#F6F2EC] px-2 text-[11px] font-medium text-[#A49B92]">
+            5
+          </span>
+        </button>
       </div>
-    <% end %>
 
+      <!-- Right Side -->
+      <div class="ml-auto flex items-center gap-6">
+        <!-- Warning -->
+        <div class="flex items-center gap-2 whitespace-nowrap shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="#E58A00"
+            class="h-4 w-4"
+          >
+            <path d="M10 2L1.5 17h17L10 2Zm0 5.2c.4 0 .7.3.7.7v3.3a.7.7 0 11-1.4 0V7.9c0-.4.3-.7.7-.7Zm0 7a.9.9 0 110-1.8.9.9 0 010 1.8Z" />
+          </svg>
+
+          <span class="text-[12px] font-semibold text-[#D97706]">
+            Filters are disabled in Grouped View.
+          </span>
+        </div>
+
+        <!-- Group -->
+        <button
+          type="button"
+          class="flex h-9 shrink-0 items-center gap-2 rounded-full border border-[#D8D8D8] bg-white px-4 shadow-sm"
+        >
+          <.icon name="hero-squares-2x2" class="h-4 w-4 text-[#444]" />
+
+          <span class="whitespace-nowrap text-[13px] text-[#222]">
+            <span class="font-semibold">Group</span> : Similar Slurs
+          </span>
+
+          <.icon name="hero-chevron-down-mini" class="h-4 w-4 text-[#555]" />
+        </button>
+
+        <!-- Sort -->
+        <button
+          type="button"
+          class="flex h-9 shrink-0 items-center gap-2 rounded-full border border-[#D8D8D8] bg-white px-4 shadow-sm"
+        >
+          <.icon name="hero-bars-3-bottom-left" class="h-4 w-4 text-[#444]" />
+
+          <span class="whitespace-nowrap text-[13px] text-[#222]">
+            <span class="font-semibold">Sort</span> : Newest First
+          </span>
+
+          <.icon name="hero-chevron-down-mini" class="h-4 w-4 text-[#555]" />
+        </button>
+      </div>
+    </div>
+    <div
+      :if={!@advanced_search}
+      class="flex items-center justify-between border rounded-lg px-4 py-3 bg-white"
+    >
+      <div class="flex items-center gap-1">
+        <!-- Previous -->
+        <%= if @current_page > 1 do %>
+          <.link
+            patch={page_path(@search_params, @current_page - 1)}
+            class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
+          >
+            <.icon name="hero-chevron-left" class="w-4 h-4" />
+          </.link>
+        <% else %>
+          <button
+            disabled
+            class="w-8 h-8 flex items-center justify-center border rounded text-gray-300"
+          >
+            <.icon name="hero-chevron-left" class="w-4 h-4" />
+          </button>
+        <% end %>
+
+        <!-- Next -->
+        <%= if @current_page < @total_pages do %>
+          <.link
+            patch={page_path(@search_params, @current_page + 1)}
+            class="w-8 h-8 flex items-center justify-center border rounded hover:bg-gray-100"
+          >
+            <.icon name="hero-chevron-right" class="w-4 h-4" />
+          </.link>
+        <% else %>
+          <button
+            disabled
+            class="w-8 h-8 flex items-center justify-center border rounded text-gray-300"
+          >
+            <.icon name="hero-chevron-right" class="w-4 h-4" />
+          </button>
+        <% end %>
+
+        <!-- Pages -->
+
+        <.link
+          :for={page <- @page_numbers}
+          patch={page_path(@search_params, page)}
+          class={[
+            "w-8 h-8 rounded-full flex items-center justify-center",
+            if(page == @current_page,
+              do: "bg-red-500 text-white font-semibold",
+              else: "border border-gray-300 hover:bg-gray-100"
+            )
+          ]}
+        >
+          {page}
+        </.link>
+
+        <%= if List.last(@page_numbers) < @total_pages do %>
+          <span class="px-2 text-gray-500">
+            ...
+          </span>
+
+          <.link
+            patch={page_path(@search_params, @total_pages)}
+            class={
+              if @current_page == @total_pages do
+                "w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center"
+              else
+                "w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+              end
+            }
+          >
+            {@total_pages}
+          </.link>
+        <% end %>
+      </div>
+
+      <div class="flex items-center gap-3 text-sm text-gray-700 whitespace-nowrap">
+        <span class="font-medium">Goto Page</span>
+
+        <form phx-change="goto-page">
+          <div class="relative inline-block">
+            <select
+              name="page_num"
+              class="appearance-none border border-gray-300 rounded-md bg-white py-1 pl-3 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400 cursor-pointer"
+            >
+              <option :for={page <- 1..@total_pages} value={page} selected={page == @current_page}>
+                {page}
+              </option>
+            </select>
+
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
     <div class="h-2" />
 
     <%= if @vector_search_loading do %>
@@ -718,38 +906,49 @@
             d="M12 4a8 8 0 0 1 8 8h2a10 10 0 1 0-10 10v-2a8 8 0 0 1 0-16z"
           />
         </svg>
-        <span class="text-lg text-zinc-700 font-medium"><%= gettext("Searching...") %></span>
+        <span class="text-lg text-zinc-700 font-medium">{gettext("Searching...")}</span>
       </div>
     <% else %>
       <.table id="crowdsource-slur-metadata-table" rows={@slurs_metadata_list}>
-        <:col :let={slur} label={gettext("Slur's Label")}><%= slur.label %></:col>
-        <:col :let={slur} label={gettext("Level of Severity")}><%= slur.level_of_severity || "-" %></:col>
-        <:col :let={slur} label={gettext("Language")}><%= slur.language || "-" %></:col>
+        <:col :let={slur} label={gettext("Slur's Label")}>{slur.label}</:col>
+        <:col :let={slur} label={gettext("Level of Severity")}>
+          {slur.level_of_severity || "-"}
+        </:col>
+        <:col :let={slur} label={gettext("Language")}>{slur.language || "-"}</:col>
         <:col :let={slur} label={gettext("Is Casual?")}>
-          <%= if is_nil(slur.casual), do: "-", else: (slur.casual == true && gettext("Yes")) || gettext("No") %>
+          {if is_nil(slur.casual),
+            do: "-",
+            else: (slur.casual == true && gettext("Yes")) || gettext("No")}
         </:col>
 
         <:col :let={slur} label={gettext("Is Appropriated?")}>
-          <%= if is_nil(slur.appropriated),
+          {if is_nil(slur.appropriated),
             do: "-",
-            else: (slur.appropriated == true && gettext("Yes")) || gettext("No") %>
+            else: (slur.appropriated == true && gettext("Yes")) || gettext("No")}
         </:col>
         <:col :let={slur} label={gettext("Appropriation Context")}>
-          <%= if is_nil(slur.appropriation_context),
+          {if is_nil(slur.appropriation_context),
             do: "-",
-            else: (slur.appropriation_context == true && gettext("Yes")) || gettext("No") %>
+            else: (slur.appropriation_context == true && gettext("Yes")) || gettext("No")}
         </:col>
 
-        <:col :let={slur} label={gettext("Meaning")}><%= slur.meaning || "-" %></:col>
+        <:col :let={slur} label={gettext("Meaning")}>{slur.meaning || "-"}</:col>
         <:col :let={slur} label={gettext("Categories")}>
-          <%= Enum.join(slur.categories || ["-"], ",") %>
+          <div class="flex flex-wrap gap-2">
+            <span :if={slur.categories in [nil, []]}>-</span>
+
+            <.slur_category_badge
+              :for={category <- slur.categories || []}
+              category={to_string(category)}
+            />
+          </div>
         </:col>
         <:action :let={slur}>
           <%= if @user_role == :admin do %>
             <.button phx-click={
               JS.push("open-add-slur-modal", value: %{slur: slur}) |> show_modal("add-slur-modal")
             }>
-              <%= gettext("Add") %>
+              {gettext("Add")}
             </.button>
           <% end %>
         </:action>

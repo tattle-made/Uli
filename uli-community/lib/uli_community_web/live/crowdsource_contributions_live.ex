@@ -17,6 +17,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     end
 
     user_role = socket.assigns.current_user.role
+
     {:ok,
      assign(socket,
        slurs_metadata_list: [],
@@ -30,7 +31,11 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
        query_count: 0,
        advanced_search: false,
        vector_search_loading: false,
-       language_options: Languages.select_options()
+       language_options: Languages.select_options(),
+       total_pages: 1,
+       current_page: 1,
+       per_page: 30,
+       page_numbers: [1]
      )}
   end
 
@@ -51,14 +56,19 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
        |> assign(:advanced_search, true)
        |> assign(:query_count, 0)}
     else
-      {count, results} = UserContribution.list_crowdsourced_slurs_with_filters(search_params)
+      {count, total_pages, current_page, per_page, results} =
+        UserContribution.list_crowdsourced_slurs_with_filters(search_params)
 
       {:noreply,
        socket
        |> assign(:search_params, search_params)
        |> assign(:query_count, count)
        |> assign(:slurs_metadata_list, results)
-       |> assign(:advanced_search, false)}
+       |> assign(:advanced_search, false)
+       |> assign(:total_pages, total_pages)
+       |> assign(:current_page, current_page)
+       |> assign(:per_page, per_page)
+       |> assign(:page_numbers, visible_pages(current_page, total_pages))}
     end
   end
 
@@ -87,7 +97,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply,
      socket
      |> assign(:search_params, new_search_params)
-     |> push_navigate(
+     |> push_patch(
        to:
          "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(new_search_params)}"
      )}
@@ -115,7 +125,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
       {:noreply,
        socket
        |> assign(:search_params, search_params)
-       |> push_navigate(
+       |> push_patch(
          to:
            "/crowdsource-contributions?" <>
              UliCommunityWeb.CrowdsourceContributionsSearchParams.search_param_string(
@@ -247,7 +257,7 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
     {:noreply,
      socket
      |> assign(:search_params, search_params)
-     |> push_navigate(
+     |> push_patch(
        to:
          "/crowdsource-contributions?#{CrowdsourceContributionsSearchParams.search_param_string(search_params)}"
      )}
@@ -280,4 +290,34 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
      |> push_patch(to: "/crowdsource-contributions?" <> query_string)}
   end
 
+  @impl true
+  def handle_event("goto-page", %{"page_num" => page}, socket) do
+    {:noreply,
+     socket
+     |> push_patch(to: page_path(socket.assigns.search_params, String.to_integer(page)))}
+  end
+
+  defp page_path(search_params, page_num) do
+    "/crowdsource-contributions?" <>
+      CrowdsourceContributionsSearchParams.search_param_string(
+        Keyword.put(search_params, :page_num, page_num)
+      )
+  end
+
+  defp visible_pages(current_page, total_pages) do
+    cond do
+      total_pages <= 10 ->
+        Enum.to_list(1..total_pages)
+
+      current_page <= 5 ->
+        Enum.to_list(1..10)
+
+      current_page >= total_pages - 4 ->
+        Enum.to_list((total_pages - 9)..total_pages)
+
+      true ->
+        start_page = current_page - 5
+        Enum.to_list(start_page..(start_page + 9))
+    end
+  end
 end

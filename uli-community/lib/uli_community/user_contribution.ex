@@ -31,11 +31,16 @@ defmodule UliCommunity.UserContribution do
 
     query = build_filtered_query(search_params)
 
-    # Get total count
-    count_query = from(s in query, select: count(s.id))
+    count_query =
+      from(s in query,
+        select: count(s.id)
+      )
+
     total_count = Repo.one(count_query)
 
-    # Get paginated results
+    total_pages =
+      max(1, ceil(total_count / per_page))
+
     results_query =
       query
       |> apply_sorting(search_params)
@@ -44,7 +49,7 @@ defmodule UliCommunity.UserContribution do
 
     results = Repo.all(results_query)
 
-    {total_count, results}
+    {total_count, total_pages, page_num, per_page, results}
   end
 
   defp build_filtered_query(search_params) do

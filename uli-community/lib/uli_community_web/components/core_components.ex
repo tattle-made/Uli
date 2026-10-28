@@ -478,81 +478,80 @@ defmodule UliCommunityWeb.CoreComponents do
   slot :action, doc: "the slot for showing user actions in the last table column"
 
   def table(assigns) do
-  assigns =
-    with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-      assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
-    end
+    assigns =
+      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
+        assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
+      end
 
-  ~H"""
-  <div class="overflow-x-auto overflow-y-auto max-h-[500px] px-4 sm:overflow-visible sm:px-0">
-    <table class="w-[40rem] mt-11 sm:w-full border-collapse">
-      <thead class="text-sm text-center leading-6 text-zinc-500">
-        <tr>
-          <th
-            :for={{col, i} <- Enum.with_index(@col)}
-            class={[
-              "p-0 pb-4 pr-6 font-normal",
-              "max-sm:sticky max-sm:top-0 max-sm:bg-white max-sm:z-20",
-              i == 0 && "max-sm:left-0 max-sm:z-30"
-            ]}
-          >
-            <%= col[:label] %>
-          </th>
-          <th
-            :if={@action != []}
-            class="relative p-0 pb-4 max-sm:sticky max-sm:top-0 max-sm:z-20 max-sm:bg-white"
-          >
-            <span class="sr-only"><%= gettext("Actions") %></span>
-          </th>
-        </tr>
-      </thead>
+    ~H"""
+    <div class="overflow-x-auto overflow-y-auto max-h-[500px] px-4 sm:overflow-visible sm:px-0">
+      <table class="w-[40rem] mt-11 sm:w-full border-collapse">
+        <thead class="text-sm text-center leading-6 text-zinc-500">
+          <tr>
+            <th
+              :for={{col, i} <- Enum.with_index(@col)}
+              class={[
+                "p-0 pb-4 pr-6 font-normal",
+                "max-sm:sticky max-sm:top-0 max-sm:bg-white max-sm:z-20",
+                i == 0 && "max-sm:left-0 max-sm:z-30"
+              ]}
+            >
+              <%= col[:label] %>
+            </th>
+            <th
+              :if={@action != []}
+              class="relative p-0 pb-4 max-sm:sticky max-sm:top-0 max-sm:z-20 max-sm:bg-white"
+            >
+              <span class="sr-only"><%= gettext("Actions") %></span>
+            </th>
+          </tr>
+        </thead>
 
-      <tbody
-        id={@id}
-        phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-        class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
-      >
-        <tr
-          :for={row <- @rows}
-          id={@row_id && @row_id.(row)}
-          class="group hover:bg-slate-200"
+        <tbody
+          id={@id}
+          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
+          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >
-          <td
-            :for={{col, i} <- Enum.with_index(@col)}
-            phx-click={@row_click && @row_click.(row)}
-            class={[
-              "relative p-0 text-center",
-              @row_click && "hover:cursor-pointer",
-              # first column सिर्फ phone पर sticky
-              i == 0 && "max-sm:sticky max-sm:left-0 max-sm:z-20 max-sm:bg-white"
-            ]}
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-slate-200"
           >
-            <div class="block py-4 pr-6">
-              <span class=" right-0 -left-4 group-hover:bg-slate-200 sm:rounded-l-xl" />
-              <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
-                <%= render_slot(col, @row_item.(row)) %>
-              </span>
-            </div>
-          </td>
+            <td
+              :for={{col, i} <- Enum.with_index(@col)}
+              phx-click={@row_click && @row_click.(row)}
+              class={[
+                "relative p-0 text-center",
+                @row_click && "hover:cursor-pointer",
+                # first column सिर्फ phone पर sticky
+                i == 0 && "max-sm:sticky max-sm:left-0 max-sm:z-20 max-sm:bg-white"
+              ]}
+            >
+              <div class="block py-4 pr-6">
+                <span class=" right-0 -left-4 group-hover:bg-slate-200 sm:rounded-l-xl" />
+                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                  <%= render_slot(col, @row_item.(row)) %>
+                </span>
+              </div>
+            </td>
 
-          <td :if={@action != []} class="relative w-14 p-0">
-            <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-              <span class="-right-4 left-0 group-hover:bg-slate-200 sm:rounded-r-xl" />
-              <span
-                :for={action <- @action}
-                class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-              >
-                <%= render_slot(action, @row_item.(row)) %>
-              </span>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  """
-end
-
+            <td :if={@action != []} class="relative w-14 p-0">
+              <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
+                <span class="-right-4 left-0 group-hover:bg-slate-200 sm:rounded-r-xl" />
+                <span
+                  :for={action <- @action}
+                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                >
+                  <%= render_slot(action, @row_item.(row)) %>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    """
+  end
 
   @doc """
   Renders a data list.
@@ -722,7 +721,12 @@ end
 
   def input_radio(assigns) do
     ~H"""
-    <div class="flex items-center gap-2">
+    <div
+      class={[
+        "flex items-center gap-2 rounded-lg px-2 py-1 transition-colors",
+        (@selection == @value || @selection == "all") && "bg-red-100"
+      ]}
+    >
       <input
         type="radio"
         id={@id}
@@ -736,7 +740,19 @@ end
         class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
         {@rest}
       />
-      <label for={@id} class="text-sm text-zinc-600"><%= @label %></label>
+
+      <label
+        for={@id}
+        class={[
+          "text-sm",
+          (@selection == @value) &&
+          "font-semibold text-zinc-600",
+          (@selection != @value && @selection != "all") &&
+            "text-zinc-600"
+        ]}
+      >
+        <%= @label %>
+      </label>
     </div>
     """
   end
@@ -753,7 +769,12 @@ end
 
   def checkbox(assigns) do
     ~H"""
-    <div class="flex items-center gap-2">
+    <div
+      class={[
+        "flex items-center gap-2 rounded-lg px-2 py-1 transition-colors",
+        @id in @selection && "bg-red-100"
+      ]}
+    >
       <input
         type="checkbox"
         id={@id}
@@ -767,8 +788,71 @@ end
         class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
         {@rest}
       />
-      <label for={@id} class="text-sm text-zinc-600"><%= @label %></label>
+
+      <label
+        for={@id}
+        class={[
+          "text-sm",
+          @id in @selection &&
+            "font-semibold text-red-700",
+          @id not in @selection &&
+            "text-zinc-600"
+        ]}
+      >
+        <%= @label %>
+    </label>
     </div>
     """
   end
+
+  attr :category, :string, required: true
+
+  def slur_category_badge(assigns) do
+    ~H"""
+    <span
+      class={[
+        "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium",
+        category_color(@category)
+      ]}
+    >
+      <%= Phoenix.Naming.humanize(@category) %>
+    </span>
+    """
+  end
+
+  def category_color("gendered"),
+    do: "bg-pink-100 border-pink-400 text-pink-900"
+
+  def category_color("sexualized"),
+    do: "bg-purple-100 border-purple-400 text-purple-900"
+
+  def category_color("religion"),
+    do: "bg-yellow-100 border-yellow-400 text-yellow-900"
+
+  def category_color("ethnicity"),
+    do: "bg-green-100 border-green-400 text-green-900"
+
+  def category_color("political_affiliation"),
+    do: "bg-red-100 border-red-400 text-red-900"
+
+  def category_color("caste"),
+    do: "bg-sky-100 border-sky-400 text-sky-900"
+
+  def category_color("class"),
+    do: "bg-indigo-100 border-indigo-400 text-indigo-900"
+
+  def category_color("body_shaming"),
+    do: "bg-orange-100 border-orange-400 text-orange-900"
+
+  def category_color("ableist"),
+    do: "bg-emerald-100 border-emerald-400 text-emerald-900"
+
+  def category_color("sexual_identity"),
+    do: "bg-fuchsia-100 border-fuchsia-400 text-fuchsia-900"
+
+  def category_color("other"),
+    do: "bg-gray-100 border-gray-400 text-gray-900"
+
+  def category_color(_),
+    do: "bg-gray-100 border-gray-300 text-gray-700"
 end
