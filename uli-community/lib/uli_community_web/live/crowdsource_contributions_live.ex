@@ -87,6 +87,14 @@ defmodule UliCommunityWeb.CrowdsourceContributionsLive do
         %{"name" => "search", "value" => search_value} ->
           Keyword.put(search_params, :search, search_value)
 
+        # LiveView drops the "value" key when a click unchecks a checkbox, so the
+        # category checkboxes send their category under "category" instead.
+        %{"name" => "categories", "category" => category} ->
+          CrowdsourceContributionsSearchParams.update_search_param(
+            search_params,
+            Map.put(value, "value", category)
+          )
+
         %{"name" => _name, "value" => _val} ->
           CrowdsourceContributionsSearchParams.update_search_param(search_params, value)
 
