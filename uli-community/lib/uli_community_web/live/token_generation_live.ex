@@ -12,7 +12,7 @@ defmodule UliCommunityWeb.TokenGeneratorLive do
       <:title>Generated Token</:title>
       <:body>
         This is your generated token. Please make sure to copy it now, as it will not be displayed again:
-        <p id="generated-token" class="text-sm text-slate-600"><%= @token.token %></p>
+        <p id="generated-token" class="text-sm text-slate-600">{@token.token}</p>
         <div class="flex">
           <button
             id="copy-button"
@@ -38,11 +38,11 @@ defmodule UliCommunityWeb.TokenGeneratorLive do
     <.header class="text-center">
       Generate Access Tokens
     </.header>
-    <.table id="abcd" rows={@rows}>
-      <:col :let={token} label="Token's Name"><%= token.token_name %></:col>
-      <:col :let={token} label="Access Level"><%= token.access_level %></:col>
-      <:col :let={token} label="Created"><%= DateTime.to_date(token.inserted_at) %></:col>
-      <:col :let={token} label="Expiry"><%= token.expiry %></:col>
+    <.table id="tokens-table" rows={@rows}>
+      <:col :let={token} label="Token's Name">{token.token_name}</:col>
+      <:col :let={token} label="Access Level">{token.access_level}</:col>
+      <:col :let={token} label="Created">{DateTime.to_date(token.inserted_at)}</:col>
+      <:col :let={token} label="Expiry">{token.expiry}</:col>
       <:col :let={token} label="Status">
         <%= if token.expiry >= Date.utc_today() do %>
           <span class="text-green-500">Active</span>
@@ -61,14 +61,14 @@ defmodule UliCommunityWeb.TokenGeneratorLive do
     </.table>
 
     <p class="text-xs text-gray-500 text-center">
-      <%= if @rows == nil or @rows == [] do
+      {if @rows == nil or @rows == [] do
         "No Tokens to Display. Generate Tokens to Display Here."
       else
         ""
-      end %>
+      end}
     </p>
 
-    <.simple_form for={@token_form} phx-submit="gen_token" phx-update="ignore">
+    <.simple_form for={@token_form} id="token-form" phx-submit="gen_token" phx-update="ignore">
       <.input field={@token_form[:token_name]} label="Token Name" />
       <.input type="date" min={Date.utc_today()} field={@token_form[:expiry]} label="Set Expiry" />
       <.input
