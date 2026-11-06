@@ -26,7 +26,7 @@ defmodule UliCommunityWeb.TokenGenerationLiveTest do
     |> assert_has("#tokens-table")
     # Make sure the generated token is not shown now that the model is hidden
     |> refute_has("#generated-token", text: "SFMyNTY")
-    # Check if the token is shows on the table
+    # Check if the token shows up on the table
     |> assert_has("#tokens-table tr", text: "Phoenix Test Token", count: 1)
     |> assert_has("#tokens-table tr", text: Date.to_iso8601(expiry))
     |> assert_has("#tokens-table tr", text: "Active")
