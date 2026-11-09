@@ -28,12 +28,15 @@ defmodule UliCommunityWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import UliCommunityWeb.ConnCase
+      import PhoenixTest
     end
   end
 
   setup tags do
     UliCommunity.DataCase.setup_sandbox(tags)
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+
+    {:ok,
+     conn: Phoenix.ConnTest.build_conn() |> PhoenixTest.put_endpoint(UliCommunityWeb.Endpoint)}
   end
 
   @doc """

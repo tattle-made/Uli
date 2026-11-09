@@ -40,6 +40,9 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
+# Configure phoenix_test endpoint for routing requests
+config :phoenix_test, :endpoint, UliCommunityWeb.Endpoint
+
 # setup python venv paths
 config :uli_community, :python,
   python: Path.join([File.cwd!(), "lib", "python", ".venv", "bin", "python"]),
