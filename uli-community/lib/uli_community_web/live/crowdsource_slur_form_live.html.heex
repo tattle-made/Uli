@@ -72,11 +72,11 @@
         <% end %>
       </div>
 
-      <.form :let={f} for={@form} phx-submit="save" class="space-y-6">
+      <.form id="slur-submission-form" :let={f} for={@form} phx-submit="save" class="space-y-6">
         <!-- What is the slur? -->
         <div>
-          <label class="block text-sm font-semibold mb-2">
-            What is the slur?
+        <label class="block text-sm font-semibold mb-2">
+          What is the slur?
           </label>
           <p class="text-sm text-gray-600 mb-3">
             How is this slur commonly spelled.
