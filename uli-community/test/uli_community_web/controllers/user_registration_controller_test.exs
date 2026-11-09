@@ -5,7 +5,7 @@ defmodule UliCommunityWeb.UserRegistrationControllerTest do
 
   describe "GET /users/register" do
     test "renders registration page", %{conn: conn} do
-      conn = get(conn, ~p"/users/register")
+      conn = get(conn, ~p"/nolive/users/register")
       response = html_response(conn, 200)
       assert response =~ "Register"
       assert response =~ ~p"/users/log_in"
@@ -25,7 +25,7 @@ defmodule UliCommunityWeb.UserRegistrationControllerTest do
       email = unique_user_email()
 
       conn =
-        post(conn, ~p"/users/register", %{
+        post(conn, ~p"/nolive/users/register", %{
           "user" => valid_user_attributes(email: email)
         })
 
@@ -33,7 +33,7 @@ defmodule UliCommunityWeb.UserRegistrationControllerTest do
       assert redirected_to(conn) == ~p"/"
 
       # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
+      conn = get(conn, ~p"/users/settings")
       response = html_response(conn, 200)
       assert response =~ email
       assert response =~ ~p"/users/settings"
@@ -42,7 +42,7 @@ defmodule UliCommunityWeb.UserRegistrationControllerTest do
 
     test "render errors for invalid data", %{conn: conn} do
       conn =
-        post(conn, ~p"/users/register", %{
+        post(conn, ~p"/nolive/users/register", %{
           "user" => %{"email" => "with spaces", "password" => "too short"}
         })
 

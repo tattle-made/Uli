@@ -14,7 +14,7 @@ defmodule UliCommunityWeb.UserConfirmationLiveTest do
   describe "Confirm user" do
     test "renders confirmation page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/confirm/some-token")
-      assert html =~ "Confirm Account"
+      assert html =~ "Confirm your account"
     end
 
     test "confirms the given token once", %{conn: conn, user: user} do

@@ -48,7 +48,7 @@ defmodule UliCommunityWeb.UserRegistrationLiveTest do
       assert redirected_to(conn) == ~p"/"
 
       # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
+      conn = get(conn, ~p"/users/settings")
       response = html_response(conn, 200)
       assert response =~ email
       assert response =~ "Settings"
@@ -77,7 +77,7 @@ defmodule UliCommunityWeb.UserRegistrationLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|main a:fl-contains("Log in")|)
+        |> element("main a", "Log in now")
         |> render_click()
         |> follow_redirect(conn, ~p"/users/log_in")
 

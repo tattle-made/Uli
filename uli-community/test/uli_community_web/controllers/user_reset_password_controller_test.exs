@@ -11,7 +11,7 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
 
   describe "GET /users/reset_password" do
     test "renders the reset password page", %{conn: conn} do
-      conn = get(conn, ~p"/users/reset_password")
+      conn = get(conn, ~p"/nolive/users/reset_password")
       response = html_response(conn, 200)
       assert response =~ "Forgot your password?"
     end
@@ -21,7 +21,7 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
     @tag :capture_log
     test "sends a new reset password token", %{conn: conn, user: user} do
       conn =
-        post(conn, ~p"/users/reset_password", %{
+        post(conn, ~p"/nolive/users/reset_password", %{
           "user" => %{"email" => user.email}
         })
 
@@ -35,7 +35,7 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
 
     test "does not send reset password token if email is invalid", %{conn: conn} do
       conn =
-        post(conn, ~p"/users/reset_password", %{
+        post(conn, ~p"/nolive/users/reset_password", %{
           "user" => %{"email" => "unknown@example.com"}
         })
 
@@ -59,12 +59,12 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
     end
 
     test "renders reset password", %{conn: conn, token: token} do
-      conn = get(conn, ~p"/users/reset_password/#{token}")
-      assert html_response(conn, 200) =~ "Reset password"
+      conn = get(conn, ~p"/nolive/users/reset_password/#{token}")
+      assert html_response(conn, 200) =~ "Reset your password"
     end
 
     test "does not render reset password with invalid token", %{conn: conn} do
-      conn = get(conn, ~p"/users/reset_password/oops")
+      conn = get(conn, ~p"/nolive/users/reset_password/oops")
       assert redirected_to(conn) == ~p"/"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
@@ -84,7 +84,7 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
 
     test "resets password once", %{conn: conn, user: user, token: token} do
       conn =
-        put(conn, ~p"/users/reset_password/#{token}", %{
+        put(conn, ~p"/nolive/users/reset_password/#{token}", %{
           "user" => %{
             "password" => "new valid password",
             "password_confirmation" => "new valid password"
@@ -102,7 +102,7 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
 
     test "does not reset password on invalid data", %{conn: conn, token: token} do
       conn =
-        put(conn, ~p"/users/reset_password/#{token}", %{
+        put(conn, ~p"/nolive/users/reset_password/#{token}", %{
           "user" => %{
             "password" => "too short",
             "password_confirmation" => "does not match"
@@ -113,7 +113,7 @@ defmodule UliCommunityWeb.UserResetPasswordControllerTest do
     end
 
     test "does not reset password with invalid token", %{conn: conn} do
-      conn = put(conn, ~p"/users/reset_password/oops")
+      conn = put(conn, ~p"/nolive/users/reset_password/oops")
       assert redirected_to(conn) == ~p"/"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~

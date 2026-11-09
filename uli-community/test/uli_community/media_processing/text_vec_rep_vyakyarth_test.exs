@@ -1,5 +1,6 @@
 defmodule UliCommunity.MediaProcessing.TextVecRepVyakyarthTest do
   use ExUnit.Case
+  @moduletag :integration
   alias UliCommunity.MediaProcessing.TextVecRepVyakyarth
 
   @test_text "This is a test text for vector representation"
