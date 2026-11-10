@@ -13,13 +13,19 @@ export default function MailchimpSubscribeForm() {
   return (
     <div className="w-full flex flex-col items-center justify-center">
       <div className="w-full max-w-[813px] flex flex-col items-center justify-center px-4 md:px-10 gap-6">
-        {/* Title */}
-        <h2 className="font-['MixStitch'] font-medium text-[48px] sm:text-[64px] leading-tight text-center text-white m-0 tracking-wide">
+        {/* Title matching SupportUs header font */}
+        <h2
+          className="text-center text-[40px] md:text-[64px] leading-[1.14em] text-white m-0"
+          style={{ fontFamily: "'Eenvoudige Batik', sans-serif" }}
+        >
           Stay Updated
         </h2>
 
-        {/* Subtitle */}
-        <p className="font-labrada font-normal text-[18px] sm:text-[20px] leading-[24px] text-[#fff6e8] text-center max-w-[733px] m-0">
+        {/* Description text from earlier */}
+        <p
+          className="text-center text-[18px] sm:text-[20px] leading-[26px] max-w-[733px] m-0"
+          style={{ fontFamily: "'Labrada', serif", color: "#FFF6E8" }}
+        >
           Get Ulis’ latest work and dispatches in your inbox.
         </p>
 
@@ -34,7 +40,7 @@ export default function MailchimpSubscribeForm() {
 
               return (
                 <div className="w-full flex flex-col gap-2">
-                  {/* Email input bar with Subscribe button */}
+                  {/* Email input bar with Subscribe button - fixed exact height 66px and button 136px x 50px */}
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -45,7 +51,7 @@ export default function MailchimpSubscribeForm() {
                     className="bg-[#fff8ed] flex items-center justify-between h-[66px] pl-[16px] sm:pl-[20px] pr-[8px] py-[8px] gap-3 sm:gap-4 w-full shadow-sm"
                   >
                     {/* Mail Icon */}
-                    <div className="shrink-0 w-[28px] h-[28px] sm:w-[34px] sm:h-[34px] flex items-center justify-center">
+                    <div className="shrink-0 w-[34px] h-[34px] flex items-center justify-center">
                       <svg
                         className="w-full h-full text-[#2D2D2D] fill-current"
                         viewBox="0 0 34 34"
@@ -69,11 +75,11 @@ export default function MailchimpSubscribeForm() {
                       className="font-labrada font-normal text-[18px] sm:text-[20px] leading-[28px] text-[#2d2d2d] placeholder-[#57524a] bg-transparent border-none outline-none flex-1 min-w-0"
                     />
 
-                    {/* Subscribe button */}
+                    {/* Subscribe button: 136px x 50px */}
                     <button
                       type="submit"
                       disabled={isSending || isSuccess}
-                      className="shrink-0 bg-[#ad521b] hover:bg-[#8e4215] active:bg-[#723410] disabled:opacity-70 transition-colors duration-200 h-[50px] px-4 sm:px-6 flex items-center justify-center cursor-pointer border-none"
+                      className="shrink-0 w-[110px] sm:w-[136px] h-[50px] bg-[#ad521b] hover:bg-[#8e4215] active:bg-[#723410] disabled:opacity-70 transition-colors duration-200 flex items-center justify-center cursor-pointer border-none"
                     >
                       <span className="font-labrada font-medium text-[18px] sm:text-[20px] leading-[28px] text-white whitespace-nowrap">
                         {isSending ? "Submitting..." : isSuccess ? "Subscribed!" : "Subscribe"}
@@ -104,7 +110,7 @@ export default function MailchimpSubscribeForm() {
             }}
           />
 
-          {/* Read previous dispatches archive link */}
+          {/* Read previous dispatches archive link: 65px */}
           <a
             href={ARCHIVE_URL}
             target="_blank"

@@ -49,11 +49,11 @@ const NewHome = () => {
       <RecentBlogs />
       {/* <Resources /> */}
 
-      <SupportUs />
-
-      <Box className="bg-[#2D2D2D] py-20 px-4 md:px-5 flex flex-col items-center smooth-layout">
+      <Box className="bg-[#2D2D2D] pt-24 pb-16 px-4 md:px-5 flex flex-col items-center smooth-layout">
         <MailchimpSubscribeForm />
       </Box>
+
+      <SupportUs />
 
     </AppShell >
   );
