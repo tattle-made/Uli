@@ -52,13 +52,23 @@ const items = [
   }
 ];
 
-const PixelatedArrow = ({ color, isOpen }) => (
-  <MaskIcon
-    url="/Arrow.svg"
-    color={color}
-    size={24}
+const DropDownArrow = ({ color, isOpen }) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
     className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-  />
+  >
+    <path
+      d="M19 9L12 15L5 9"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
 );
 
 const HighlightedDescription = ({ text }) => {
@@ -135,7 +145,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
           </span>
         </div>
         <div className="flex justify-end flex-shrink-0">
-          <PixelatedArrow color={textColor} isOpen={isOpen} />
+          <DropDownArrow color={textColor} isOpen={isOpen} />
         </div>
       </div>
 
@@ -180,7 +190,7 @@ export default function SupportUs() {
   return (
     <Box
       ref={revealRef}
-      className="reveal bg-[#2D2D2D] pt-32 pb-20 px-4 md:px-5 text-white flex flex-col items-center gap-12 smooth-layout"
+      className="reveal bg-[#2D2D2D] pt-12 pb-20 px-4 md:px-5 text-white flex flex-col items-center gap-12 smooth-layout"
     >
       <div className="flex flex-col items-center gap-3">
         <Text

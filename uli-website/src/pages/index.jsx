@@ -49,9 +49,14 @@ const NewHome = () => {
       <RecentBlogs />
       {/* <Resources /> */}
 
-      <Box className="bg-[#2D2D2D] pt-24 pb-16 px-4 md:px-5 flex flex-col items-center smooth-layout">
+      <Box className="bg-[#2D2D2D] pt-24 pb-12 px-4 md:px-5 flex flex-col items-center smooth-layout">
         <MailchimpSubscribeForm />
       </Box>
+
+      {/* Dashed divider between Subscribe Flex and Support Flex from Figma node 493:323 */}
+      <div className="bg-[#2D2D2D] w-full flex justify-center px-4 md:px-12">
+        <div className="w-full max-w-[1130px] border-t border-dashed border-[#FFF6E8]/40" />
+      </div>
 
       <SupportUs />
 
