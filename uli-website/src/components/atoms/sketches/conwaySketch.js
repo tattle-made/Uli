@@ -720,7 +720,8 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
           p.pop();
        }
 
-    // 4. Stitch borders: one horizontal line at navbar bottom + individual rects for content elements
+    // 4. Stitch borders: disabled to remove dotted borders around elements
+    /*
     {
           if (s.voronoiColor !== cachedVoronoiColorStr) {
              cachedVoronoiColorStr = s.voronoiColor;
@@ -776,6 +777,7 @@ export const createConwaySketch = (settingsRef, containerRef, interactionRef) =>
        p.drawingContext.setLineDash([]);
        p.pop();
     }
+    */
 
     p.pop();
   };

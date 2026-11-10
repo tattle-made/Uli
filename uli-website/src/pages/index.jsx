@@ -17,6 +17,14 @@ const NewHome = () => {
     <AppShell>
       <Box style={{ position: "relative" }}>
         <BlueprintBackground />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(48.86% 60.34% at 49.96% 47.17%, #FFF6EC 58.65%, rgba(255, 246, 232, 0.00) 100%)",
+            zIndex: -1,
+          }}
+        />
         <Box align="center" margin={{ horizontal: "large", vertical: "small" }} className="pt-24 lg:pt-32">
           <Box className="w-full">
             <Announcements />
@@ -39,7 +47,7 @@ const NewHome = () => {
             </Text>
 
             <Box className="push-globe flex flex-row gap-6 font-normal text-[15px] lg:text-[19px] leading-[120%] animate-[fadeUp_1s_ease-out_0.7s_both] smooth-layout">
-              <NavLinkNew to="/process">Our Process</NavLinkNew>
+              <NavLinkNew to="/process" className="underline underline-offset-4 decoration-current">Our Process</NavLinkNew>
               {/* <NavLinkNew to="/about">About Us</NavLinkNew> */}
             </Box>
           </Box>
