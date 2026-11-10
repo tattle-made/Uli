@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily:{
-        labrada: ["Labrada","monospace", "serif"]
+        labrada: ["Labrada","monospace", "serif"],
+        mixstitch: ["MixStitch", "monospace", "serif"]
       }
     },
   },

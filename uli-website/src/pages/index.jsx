@@ -51,7 +51,7 @@ const NewHome = () => {
 
       <SupportUs />
 
-      <Box className="bg-inherit pt-32 pb-20 px-4 md:px-5 text-slate-900 flex flex-col items-center gap-12 smooth-layout">
+      <Box className="bg-[#2D2D2D] py-20 px-4 md:px-5 flex flex-col items-center smooth-layout">
         <MailchimpSubscribeForm />
       </Box>
 
