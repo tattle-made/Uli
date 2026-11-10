@@ -4,6 +4,7 @@ import { NavLink } from "../atoms/UliCore";
 import { navigate } from "gatsby";
 import { NavLinkNew } from "../atoms/NavLinkNew";
 import TattleLogo from "../atoms/TattleLogo";
+import GithubButton from "../atoms/GithubButton";
 
 export default function NavBarNew() {
   const [open, setOpen] = useState(false);
@@ -60,7 +61,7 @@ export default function NavBarNew() {
 
         <Box flex direction="row" gap="medium" justify="end" align="end" className="lg:hidden" ><button className="bg-inherit m-0 p-0 border-none transition-transform duration-300" onClick={() => { setOpen(prev => !prev) }}><img src={open ? "/cross-icon.svg" : "/hamburger-icon.svg"} alt="" className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`} /></button></Box>
 
-        <Box flex direction="row" gap="medium" justify="end" className="hidden lg:flex clear-sketch clear-sketch-tight">
+        <Box flex direction="row" gap="medium" align="center" justify="end" className="hidden lg:flex clear-sketch clear-sketch-tight">
           {/* <NavLinkNew to="#">
             <Text className="text-[16px] font-medium">Contact</Text>
           </NavLinkNew> */}
@@ -73,11 +74,12 @@ export default function NavBarNew() {
           <NavLinkNew to="/research">
             <Text className="text-[16px] font-medium">Research</Text>
           </NavLinkNew>
+          <GithubButton />
         </Box>
       </Box>
 
       <Box className={`bg-[#FFE7D9] w-full text-center overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-96 opacity-100 mt-9 mb-4" : "max-h-0 opacity-0"} lg:hidden`}>
-        <Box className="flex flex-col gap-5 py-6">
+        <Box className="flex flex-col items-center gap-5 py-6">
           <NavLinkNew to="/about">
             <Text className="text-[16px] font-medium">About</Text>
           </NavLinkNew>
@@ -87,6 +89,7 @@ export default function NavBarNew() {
           <NavLinkNew to="/research">
             <Text className="text-[16px] font-medium">Research</Text>
           </NavLinkNew>
+          <GithubButton />
         </Box>
 
 
