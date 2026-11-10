@@ -33,6 +33,6 @@ You will be notified of the breach through the registered email ID you share wit
 Grievance Officer
 Any grievances may be sent to:
 
-________ [Name]
-_______[email ID]
-_________[address]
+________ [Name]  
+_______[email ID]  
+_________[address]  
