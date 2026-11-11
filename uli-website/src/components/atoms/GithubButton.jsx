@@ -7,7 +7,7 @@ export default function GithubButton({ className = "" }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="View Uli on GitHub"
-      className={`inline-flex items-center justify-center gap-[6px] bg-[#2d2d2d] px-[10px] py-[4px] text-white no-underline transition-colors duration-200 ease-in-out hover:bg-[#404040] active:bg-[#1a1a1a] select-none ${className}`}
+      className={`inline-flex items-center justify-center gap-[6px] bg-[#2d2d2d] px-[10px] py-[4px] text-white no-underline transition-colors duration-200 ease-in-out hover:bg-[#F28948] active:bg-[#d97232] select-none ${className}`}
     >
       <svg
         className="w-[16px] h-[16px] shrink-0 fill-current"

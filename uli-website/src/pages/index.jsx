@@ -8,7 +8,6 @@ import Resources from "../components/molecules/Resources";
 import SupportUs from "../components/molecules/SupportUs";
 // import Resources from "../components/molecules/Resources";
 import { NavLinkNew } from "../components/atoms/NavLinkNew";
-import MailchimpSubscribeForm from "../components/molecules/MailchimpSubscribeForm";
 import { SectionBorderTop } from "../components/molecules/SectionBorders";
 import BlueprintBackground from "../components/atoms/BlueprintBackground";
 
@@ -56,31 +55,6 @@ const NewHome = () => {
       <Projects />
       <RecentBlogs />
       {/* <Resources /> */}
-
-      <Box className="bg-[#2D2D2D] pt-24 pb-12 px-4 md:px-5 flex flex-col items-center smooth-layout">
-        <MailchimpSubscribeForm />
-      </Box>
-
-      {/* Dashed divider between Subscribe Flex and Support Flex from Figma node 493:323 */}
-      <div className="bg-[#2D2D2D] w-full flex justify-center px-4 md:px-12">
-        <svg
-          className="w-full max-w-[1130px] h-[1px]"
-          viewBox="0 0 1130 1"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-        >
-          <line
-            x1="0"
-            y1="0.5"
-            x2="1130"
-            y2="0.5"
-            stroke="#FFF6E8"
-            strokeOpacity="0.4"
-            strokeDasharray="8 6"
-          />
-        </svg>
-      </div>
 
       <SupportUs />
 

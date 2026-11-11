@@ -1,13 +1,40 @@
 import React from "react";
 import { Box } from "grommet";
 import { Link } from "gatsby";
+import MailchimpSubscribeForm from "./MailchimpSubscribeForm";
 
 export default function FooterNew() {
   const linkClasses =
     "text-white no-underline hover:text-[#F28948] hover:underline transition-colors duration-200 text-[16px] font-medium";
 
   return (
-    <div className="bg-[#2D2D2D] w-full flex flex-col items-center">
+    <footer className="bg-[#2D2D2D] w-full flex flex-col items-center">
+      {/* Dashed divider above Newsletter Subscribe (between main page content and footer) */}
+      <div className="w-full flex justify-center px-4 md:px-12">
+        <svg
+          className="w-full max-w-[1130px] h-[1px]"
+          viewBox="0 0 1130 1"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+        >
+          <line
+            x1="0"
+            y1="0.5"
+            x2="1130"
+            y2="0.5"
+            stroke="#FFF6E8"
+            strokeOpacity="0.4"
+            strokeDasharray="8 6"
+          />
+        </svg>
+      </div>
+
+      {/* Newsletter Subscribe Section */}
+      <div className="w-full pt-20 pb-16 px-4 md:px-5 flex flex-col items-center">
+        <MailchimpSubscribeForm />
+      </div>
+
       {/* Dashed divider above Footer links from Figma node 493:287 */}
       <div className="w-full flex justify-center px-4 md:px-12">
         <svg
@@ -83,6 +110,6 @@ export default function FooterNew() {
           </Link>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }

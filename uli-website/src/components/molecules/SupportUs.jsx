@@ -159,7 +159,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
         <div className="flex flex-col gap-[20px] pt-2 border-t border-black/10">
           <HighlightedDescription text={item.description} />
           {item.buttonText.length != 0 && <button
-            className="bg-black py-[12px] px-[24px] w-max mt-4 border-none outline-none cursor-pointer hover:bg-[#333333] transition-colors active:scale-95 transform"
+            className="bg-black py-[12px] px-[24px] w-max mt-4 border-none outline-none cursor-pointer hover:bg-[#F28948] transition-colors active:scale-95 transform"
             onClick={(e) => {
               e.stopPropagation();
               if (item.buttonText.toLowerCase().includes('email')) {

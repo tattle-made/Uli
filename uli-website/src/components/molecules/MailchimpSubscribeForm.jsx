@@ -79,7 +79,7 @@ export default function MailchimpSubscribeForm() {
                     <button
                       type="submit"
                       disabled={isSending || isSuccess}
-                      className="box-border shrink-0 w-[110px] sm:w-[136px] h-[50px] bg-[#ad521b] hover:bg-[#8e4215] active:bg-[#723410] disabled:opacity-70 transition-colors duration-200 flex items-center justify-center cursor-pointer border-none"
+                      className="box-border shrink-0 w-[110px] sm:w-[136px] h-[50px] bg-[#ad521b] hover:bg-[#F28948] active:bg-[#d97232] disabled:opacity-70 transition-colors duration-200 flex items-center justify-center cursor-pointer border-none"
                     >
                       <span className="font-labrada font-medium text-[18px] sm:text-[20px] leading-[28px] text-white whitespace-nowrap">
                         {isSending ? "Submitting..." : isSuccess ? "Subscribed!" : "Subscribe"}
@@ -116,7 +116,7 @@ export default function MailchimpSubscribeForm() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Read previous dispatches"
-            className="box-border bg-[#0d0d0d] hover:bg-[#202020] active:bg-[#000000] transition-colors duration-200 flex items-center justify-center gap-[10px] h-[65px] w-full text-decoration-none no-underline group cursor-pointer"
+            className="box-border bg-[#0d0d0d] hover:bg-[#F28948] active:bg-[#d97232] transition-colors duration-200 flex items-center justify-center gap-[10px] h-[65px] w-full text-decoration-none no-underline group cursor-pointer"
           >
             <div className="shrink-0 w-[24px] h-[24px] flex items-center justify-center text-[#fff8ed]">
               <svg
