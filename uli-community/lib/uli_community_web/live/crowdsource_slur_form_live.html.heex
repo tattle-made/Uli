@@ -84,8 +84,8 @@
               phx-click="delete"
               data-confirm="Are you sure?"
             >
-              <svg aria-hidden="true" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18m-2 0-1 14H6L5 6m4 0V4h6v2m-5 4v6m4-6v6" />
+              <svg aria-hidden="true" class="h-5 w-5" viewBox="0 -960 960 960" fill="currentColor">
+                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
               </svg>
               <span>Delete</span>
             </button>
@@ -256,7 +256,7 @@
                       <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                   </span>
-                  <span class="font-normal"><%= name %> / <code class="font-sans text-inherit"><%= String.upcase(code) %></code></span>
+                  <span class="font-normal"><%= name %> / <code class="font-sans text-inherit">&lt;<%= String.upcase(code) %>&gt;</code></span>
                 </label>
               <% end %>
             </div>
@@ -268,7 +268,10 @@
               type="submit"
               class="flex h-[88px] w-full items-center justify-center gap-2 rounded-[10px] bg-black px-6 text-lg font-semibold text-white hover:bg-gray-800"
             >
-              💾 Save & Submit Slur
+              <svg aria-hidden="true" class="h-6 w-6 shrink-0" viewBox="0 -960 960 960" fill="currentColor">
+                <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
+              </svg>
+              <span>Save &amp; Submit Slur</span>
             </button>
           </div>
         </.form>
