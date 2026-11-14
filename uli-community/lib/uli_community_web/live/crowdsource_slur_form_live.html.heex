@@ -125,17 +125,17 @@
               <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
                 <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="low" checked={to_string(f[:level_of_severity].value) == "low"} />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-yellow-300"></span>
-                <span class="text-sm font-medium">low</span>
+                <span class="text-sm font-medium lowercase">Low</span>
               </label>
               <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
                 <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="medium" checked={to_string(f[:level_of_severity].value) == "medium"} />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-amber-500"></span>
-                <span class="text-sm font-medium">medium</span>
+                <span class="text-sm font-medium lowercase">Medium</span>
               </label>
               <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
                 <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="high" checked={to_string(f[:level_of_severity].value) == "high"} />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-red-500"></span>
-                <span class="text-sm font-medium">high</span>
+                <span class="text-sm font-medium lowercase">High</span>
               </label>
             </div>
             <.error :for={msg <- field_errors(f[:level_of_severity])}><%= msg %></.error>
@@ -230,7 +230,11 @@
               ] do %>
                 <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:bg-[#ffcbca] has-[:checked]:opacity-100">
                   <input type="checkbox" class="peer sr-only" name={f[:categories].name <> "[]"} value={value} checked={value in selected_categories} />
-                  <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-[9px] font-bold leading-none text-white peer-checked:inline-flex">✓</span>
+                  <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex">
+                    <svg class="h-2 w-2" viewBox="0 0 10 10" fill="none">
+                      <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
                   <span class="font-normal"><%= label %></span>
                 </label>
               <% end %>
@@ -247,7 +251,11 @@
               <%= for {name, code} <- @language_options do %>
                 <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100">
                   <input type="radio" class="peer sr-only" name={f[:language].name} value={code} checked={to_string(f[:language].value) == code} />
-                  <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-[9px] font-bold leading-none text-white peer-checked:inline-flex">✓</span>
+                  <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex">
+                    <svg class="h-2 w-2" viewBox="0 0 10 10" fill="none">
+                      <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
                   <span class="font-normal"><%= name %> / <code class="font-sans text-inherit"><%= String.upcase(code) %></code></span>
                 </label>
               <% end %>
