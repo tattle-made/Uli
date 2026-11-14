@@ -30,8 +30,8 @@
           />
         </div>
 
-        <div class="flex items-center justify-between gap-3 mb-4">
-          <div class="inline-flex h-[30px] shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+  <div class="inline-flex h-[30px] shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
             <%= length(@my_contributions) %> Contributions
           </div>
           <label class="inline-flex h-[34px] items-center gap-[6px] rounded-full border border-black/50 px-[10px] text-xs">
@@ -122,17 +122,17 @@
               Level of Severity
             </label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="low" checked={to_string(f[:level_of_severity].value) == "low"} />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-yellow-300"></span>
                 <span class="text-sm font-medium lowercase">Low</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="medium" checked={to_string(f[:level_of_severity].value) == "medium"} />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-amber-500"></span>
                 <span class="text-sm font-medium lowercase">Medium</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="high" checked={to_string(f[:level_of_severity].value) == "high"} />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-red-500"></span>
                 <span class="text-sm font-medium lowercase">High</span>
@@ -147,11 +147,11 @@
               Is it Casual?
             </label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:casual].name} value="true" checked={to_string(f[:casual].value) == "true"} />
                 <span class="text-sm font-medium">Yes</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:casual].name} value="false" checked={to_string(f[:casual].value) == "false"} />
                 <span class="text-sm font-medium">No</span>
               </label>
@@ -165,11 +165,11 @@
               Has it been appropriated?
             </label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:appropriated].name} value="true" checked={to_string(f[:appropriated].value) == "true"} />
                 <span class="text-sm font-medium">Yes</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:appropriated].name} value="false" checked={to_string(f[:appropriated].value) == "false"} />
                 <span class="text-sm font-medium">No</span>
               </label>
@@ -185,11 +185,11 @@
             </div>
             <div class="w-full border-t border-black/10"></div>
             <div class="flex flex-wrap gap-[10px]">
-              <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:appropriation_context].name} value="true" checked={to_string(f[:appropriation_context].value) == "true"} />
                 <span class="text-[13px] font-normal">By the Community</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100">
+              <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input type="radio" class="sr-only" name={f[:appropriation_context].name} value="false" checked={to_string(f[:appropriation_context].value) == "false"} />
                 <span class="text-[13px] font-normal">Others / People outside the community</span>
               </label>
@@ -228,7 +228,7 @@
                 {"sexual_identity", "Sexual Identity"},
                 {"other", "Other"}
               ] do %>
-                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:bg-[#ffcbca] has-[:checked]:opacity-100">
+                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:bg-[#ffcbca] has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                   <input type="checkbox" class="peer sr-only" name={f[:categories].name <> "[]"} value={value} checked={value in selected_categories} />
                   <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex">
                     <svg class="h-2 w-2" viewBox="0 0 10 10" fill="none">
@@ -249,7 +249,7 @@
             </label>
             <div class="flex gap-2 flex-wrap">
               <%= for {name, code} <- @language_options do %>
-                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100">
+                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                   <input type="radio" class="peer sr-only" name={f[:language].name} value={code} checked={to_string(f[:language].value) == code} />
                   <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex">
                     <svg class="h-2 w-2" viewBox="0 0 10 10" fill="none">
