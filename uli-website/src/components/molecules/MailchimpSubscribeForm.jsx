@@ -96,14 +96,13 @@ export default function MailchimpSubscribeForm() {
 
                   {isError && (
                     <div
+                      role="alert"
                       className="bg-red-950/60 border border-red-400 text-red-200 p-3 text-center font-labrada text-[16px]"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          typeof message === "string" && message
-                            ? message
-                            : "There was an error saving your email. Please try again later.",
-                      }}
-                    />
+                    >
+                      {typeof message === "string" && message
+                        ? message.replace(/<[^>]*>/g, "")
+                        : "There was an error saving your email. Please try again later."}
+                    </div>
                   )}
                 </div>
               );
