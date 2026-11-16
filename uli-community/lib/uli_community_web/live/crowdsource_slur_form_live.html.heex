@@ -78,18 +78,17 @@
           <h1 class="text-lg font-bold">
             {if(@mode == :edit, do: "Edit Slur", else: "Add Slur")}
           </h1>
-          <%= if @mode == :edit do %>
-            <button
-              class="inline-flex h-12 items-center justify-center gap-2 rounded-[5px] border border-[#bf0000] px-6 font-semibold text-[#bf0000] hover:bg-[#bf0000]/5"
-              phx-click="delete"
-              data-confirm="Are you sure?"
-            >
-              <svg aria-hidden="true" class="h-5 w-5" viewBox="0 -960 960 960" fill="currentColor">
-                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
-              </svg>
-              <span>Delete</span>
-            </button>
-          <% end %>
+          <button
+            :if={@mode == :edit}
+            class="inline-flex h-12 items-center justify-center gap-2 rounded-[5px] border border-[#bf0000] px-6 font-semibold text-[#bf0000] hover:bg-[#bf0000]/5"
+            phx-click="delete"
+            data-confirm="Are you sure?"
+          >
+            <svg aria-hidden="true" class="h-5 w-5" viewBox="0 -960 960 960" fill="currentColor">
+              <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+            </svg>
+            <span>Delete</span>
+          </button>
         </div>
 
         <.form id="slur-submission-form" :let={f} for={@form} phx-submit="save" class="space-y-6">
