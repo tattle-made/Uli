@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between gap-3 mb-4">
           <div class="min-w-0">
             <h2 class="text-lg font-semibold">My Contributions</h2>
-            <span class="block text-sm font-medium"><%= @current_user.email %></span>
+            <span class="block text-sm font-medium">{@current_user.email}</span>
           </div>
           <.link
             href={~p"/contribute-slur"}
@@ -65,7 +65,7 @@
               )
             ]}
           >
-            <div class="text-sm"><%= contribution.label %></div>
+            <div class="text-sm">{contribution.label}</div>
           </.link>
         </div>
       </div>
@@ -76,7 +76,7 @@
       <div class="w-full max-w-[800px] rounded-[10px] border border-black/20 bg-white/20 p-6 sm:px-10 sm:pt-5 sm:pb-10">
         <div class="flex items-center justify-between border-b border-[#b7b4b5] pb-5 mb-6">
           <h1 class="text-lg font-bold">
-            <%= if @mode == :edit, do: "Edit Slur", else: "Add Slur" %>
+            {if(@mode == :edit, do: "Edit Slur", else: "Add Slur")}
           </h1>
           <%= if @mode == :edit do %>
             <button
@@ -138,7 +138,7 @@
                 <span class="text-sm font-medium lowercase">High</span>
               </label>
             </div>
-            <.error :for={msg <- field_errors(f[:level_of_severity])}><%= msg %></.error>
+            <.error :for={msg <- field_errors(f[:level_of_severity])}>{msg}</.error>
           </div>
 
           <!-- Is it Casual? -->
@@ -156,7 +156,7 @@
                 <span class="text-sm font-medium">No</span>
               </label>
             </div>
-            <.error :for={msg <- field_errors(f[:casual])}><%= msg %></.error>
+            <.error :for={msg <- field_errors(f[:casual])}>{msg}</.error>
           </div>
 
           <!-- Has it been appropriated? -->
@@ -174,7 +174,7 @@
                 <span class="text-sm font-medium">No</span>
               </label>
             </div>
-            <.error :for={msg <- field_errors(f[:appropriated])}><%= msg %></.error>
+            <.error :for={msg <- field_errors(f[:appropriated])}>{msg}</.error>
           </div>
 
           <!-- Who has it been Appropriated by -->
@@ -235,11 +235,11 @@
                       <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                   </span>
-                  <span class="font-normal"><%= label %></span>
+                  <span class="font-normal">{label}</span>
                 </label>
               <% end %>
             </div>
-            <.error :for={msg <- field_errors(f[:categories])}><%= msg %></.error>
+            <.error :for={msg <- field_errors(f[:categories])}>{msg}</.error>
           </div>
 
           <!-- Language -->
@@ -256,7 +256,7 @@
                       <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                   </span>
-                  <span class="font-normal"><%= name %> / <code class="font-sans text-inherit">&lt;<%= String.upcase(code) %>&gt;</code></span>
+                  <span class="font-normal">{name} / <code class="font-sans text-inherit">&lt;{String.upcase(code)}&gt;</code></span>
                 </label>
               <% end %>
             </div>
