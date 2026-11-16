@@ -59,7 +59,23 @@ export default function NavBarNew() {
           />
         </Box>
 
-        <Box flex direction="row" gap="medium" justify="end" align="end" className="lg:hidden" ><button className="bg-inherit m-0 p-0 border-none transition-transform duration-300" onClick={() => { setOpen(prev => !prev) }}><img src={open ? "/cross-icon.svg" : "/hamburger-icon.svg"} alt="" className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`} /></button></Box>
+        <Box flex direction="row" gap="medium" justify="end" align="end" className="lg:hidden">
+          <button
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav-menu"
+            className="bg-inherit m-0 p-0 border-none cursor-pointer transition-transform duration-300"
+            onClick={() => {
+              setOpen((prev) => !prev);
+            }}
+          >
+            <img
+              src={open ? "/cross-icon.svg" : "/hamburger-icon.svg"}
+              alt=""
+              className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`}
+            />
+          </button>
+        </Box>
 
         <Box flex direction="row" gap="medium" align="center" justify="end" className="hidden lg:flex clear-sketch clear-sketch-tight">
           {/* <NavLinkNew to="#">
@@ -78,7 +94,12 @@ export default function NavBarNew() {
         </Box>
       </Box>
 
-      <Box className={`bg-[#FFE7D9] w-full text-center overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-96 opacity-100 mt-9 mb-4" : "max-h-0 opacity-0"} lg:hidden`}>
+      <Box
+        id="mobile-nav-menu"
+        aria-hidden={!open}
+        inert={!open ? "" : undefined}
+        className={`bg-[#FFE7D9] w-full text-center overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-96 opacity-100 mt-9 mb-4" : "max-h-0 opacity-0 pointer-events-none"} lg:hidden`}
+      >
         <Box className="flex flex-col items-center gap-5 py-6">
           <NavLinkNew to="/about">
             <Text className="text-[16px] font-medium">About</Text>

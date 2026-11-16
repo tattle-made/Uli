@@ -48,7 +48,7 @@ export default function MailchimpSubscribeForm() {
                         subscribe({ EMAIL: email.trim() });
                       }
                     }}
-                    className="box-border bg-[#fff8ed] flex items-center justify-between h-[66px] pl-[16px] sm:pl-[20px] pr-[8px] py-[8px] gap-3 sm:gap-4 w-full shadow-sm"
+                    className="box-border bg-[#fff8ed] flex items-center justify-between h-[66px] pl-[16px] sm:pl-[20px] pr-[8px] py-[8px] gap-3 sm:gap-4 w-full shadow-sm focus-within:ring-2 focus-within:ring-[#F28948] focus-within:ring-offset-2 focus-within:ring-offset-[#2D2D2D] transition-shadow duration-150"
                   >
                     {/* Mail Icon */}
                     <div className="shrink-0 w-[34px] h-[34px] flex items-center justify-center">
@@ -89,7 +89,10 @@ export default function MailchimpSubscribeForm() {
 
                   {/* Status Messages */}
                   {isSuccess && (
-                    <div className="bg-[#fff8ed]/10 border border-[#fff8ed]/30 text-[#fff8ed] p-3 text-center font-labrada text-[16px]">
+                    <div
+                      role="status"
+                      className="bg-[#fff8ed]/10 border border-[#fff8ed]/30 text-[#fff8ed] p-3 text-center font-labrada text-[16px]"
+                    >
                       Thank you! You have been subscribed to our dispatches.
                     </div>
                   )}

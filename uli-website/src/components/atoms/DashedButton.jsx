@@ -11,7 +11,7 @@ export default function DashedButton({ content, onClick, className = "" }) {
   return (
     <button
       style={dashedSvgBorder}
-      className={`font-labrada bg-transparent cursor-pointer border-none outline-none hover:bg-[#FFC8A6] active:bg-[#F28948] transition-colors duration-150 ${className}`}
+      className={`font-labrada bg-transparent cursor-pointer border-none outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F28948] hover:bg-[#FFC8A6] active:bg-[#F28948] transition-colors duration-150 ${className}`}
       onClick={onClick}
     >
       {content}
