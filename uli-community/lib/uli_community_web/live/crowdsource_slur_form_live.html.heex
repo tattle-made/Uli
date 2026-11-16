@@ -12,9 +12,17 @@
             href={~p"/contribute-slur"}
             class="inline-flex h-12 w-[101px] shrink-0 items-center justify-center gap-[10px] rounded-[5px] border border-black/10 bg-black px-[10px] text-xs font-bold text-[#fdf6ed] hover:bg-gray-800"
           >
-            <span aria-hidden="true" class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#fcf5ec]">
+            <span
+              aria-hidden="true"
+              class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#fcf5ec]"
+            >
               <svg class="h-3 w-3 text-black" fill="none" viewBox="0 0 12 12">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 1v10M1 6h10" />
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  d="M6 1v10M1 6h10"
+                />
               </svg>
             </span>
             <span class="whitespace-nowrap">Add Slur</span>
@@ -30,21 +38,43 @@
           />
         </div>
 
-<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-  <div class="inline-flex h-[30px] shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="inline-flex h-[30px] shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
             {length(@my_contributions)} Contributions
           </div>
           <label class="inline-flex h-[34px] items-center gap-[6px] rounded-full border border-black/50 px-[10px] text-xs">
-            <svg aria-hidden="true" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3v3m8-3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm7 7v5m-2-2 2 2 2-2" />
+            <svg
+              aria-hidden="true"
+              class="h-5 w-5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 3v3m8-3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm7 7v5m-2-2 2 2 2-2"
+              />
             </svg>
             <span class="shrink-0 font-bold">Sort:</span>
             <select class="appearance-none border-0 bg-transparent p-0 text-xs focus:ring-0">
               <option class="bg-[#efe2d2] text-black">Newest First</option>
               <option class="bg-[#efe2d2] text-black">Oldest First</option>
             </select>
-            <svg aria-hidden="true" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9 6 6 6-6" />
+            <svg
+              aria-hidden="true"
+              class="h-4 w-4 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m6 9 6 6 6-6"
+              />
             </svg>
           </label>
         </div>
@@ -85,19 +115,19 @@
             data-confirm="Are you sure?"
           >
             <svg aria-hidden="true" class="h-5 w-5" viewBox="0 -960 960 960" fill="currentColor">
-              <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+              <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
             </svg>
             <span>Delete</span>
           </button>
         </div>
 
-        <.form id="slur-submission-form" :let={f} for={@form} phx-submit="save" class="space-y-6">
+        <.form :let={f} id="slur-submission-form" for={@form} phx-submit="save" class="space-y-6">
           <!-- What is the slur? -->
           <div>
-          <label class="block text-lg font-bold mb-1">
-            What is the slur?
-          </label>
-          <p class="text-lg text-gray-600 mb-3">
+            <label class="block text-lg font-bold mb-1">
+              What is the slur?
+            </label>
+            <p class="text-lg text-gray-600 mb-3">
               How is this slur commonly spelled.
             </p>
             <.input
@@ -128,17 +158,35 @@
             </label>
             <div class="flex flex-wrap gap-2">
               <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="low" checked={to_string(f[:level_of_severity].value) == "low"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:level_of_severity].name}
+                  value="low"
+                  checked={to_string(f[:level_of_severity].value) == "low"}
+                />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-yellow-300"></span>
                 <span class="text-sm font-medium lowercase">Low</span>
               </label>
               <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="medium" checked={to_string(f[:level_of_severity].value) == "medium"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:level_of_severity].name}
+                  value="medium"
+                  checked={to_string(f[:level_of_severity].value) == "medium"}
+                />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-amber-500"></span>
                 <span class="text-sm font-medium lowercase">Medium</span>
               </label>
               <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:level_of_severity].name} value="high" checked={to_string(f[:level_of_severity].value) == "high"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:level_of_severity].name}
+                  value="high"
+                  checked={to_string(f[:level_of_severity].value) == "high"}
+                />
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-red-500"></span>
                 <span class="text-sm font-medium lowercase">High</span>
               </label>
@@ -153,11 +201,23 @@
             </label>
             <div class="flex flex-wrap gap-2">
               <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:casual].name} value="true" checked={to_string(f[:casual].value) == "true"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:casual].name}
+                  value="true"
+                  checked={to_string(f[:casual].value) == "true"}
+                />
                 <span class="text-sm font-medium">Yes</span>
               </label>
               <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:casual].name} value="false" checked={to_string(f[:casual].value) == "false"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:casual].name}
+                  value="false"
+                  checked={to_string(f[:casual].value) == "false"}
+                />
                 <span class="text-sm font-medium">No</span>
               </label>
             </div>
@@ -171,11 +231,23 @@
             </label>
             <div class="flex flex-wrap gap-2">
               <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:appropriated].name} value="true" checked={to_string(f[:appropriated].value) == "true"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:appropriated].name}
+                  value="true"
+                  checked={to_string(f[:appropriated].value) == "true"}
+                />
                 <span class="text-sm font-medium">Yes</span>
               </label>
               <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:appropriated].name} value="false" checked={to_string(f[:appropriated].value) == "false"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:appropriated].name}
+                  value="false"
+                  checked={to_string(f[:appropriated].value) == "false"}
+                />
                 <span class="text-sm font-medium">No</span>
               </label>
             </div>
@@ -185,17 +257,32 @@
           <!-- Who has it been Appropriated by -->
           <div class="flex w-full flex-col items-start gap-[10px] rounded-[5px] border border-black/10 bg-[#efe2d2] p-[10px]">
             <div class="flex items-center gap-[5px] text-[17px] font-bold text-black/50">
-              <span aria-hidden="true" class="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#787169] text-[17px] leading-none text-[#787169]">?</span>
+              <span
+                aria-hidden="true"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#787169] text-[17px] leading-none text-[#787169]"
+              >?</span>
               <span>Who has it been Appropriated by</span>
             </div>
             <div class="w-full border-t border-black/10"></div>
             <div class="flex flex-wrap gap-[10px]">
               <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:appropriation_context].name} value="true" checked={to_string(f[:appropriation_context].value) == "true"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:appropriation_context].name}
+                  value="true"
+                  checked={to_string(f[:appropriation_context].value) == "true"}
+                />
                 <span class="text-[13px] font-normal">By the Community</span>
               </label>
               <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                <input type="radio" class="sr-only" name={f[:appropriation_context].name} value="false" checked={to_string(f[:appropriation_context].value) == "false"} />
+                <input
+                  type="radio"
+                  class="sr-only"
+                  name={f[:appropriation_context].name}
+                  value="false"
+                  checked={to_string(f[:appropriation_context].value) == "false"}
+                />
                 <span class="text-[13px] font-normal">Others / People outside the community</span>
               </label>
             </div>
@@ -219,7 +306,8 @@
               Categories?
             </label>
             <div class="flex gap-2 flex-wrap">
-              <% selected_categories = f[:categories].value |> List.wrap() |> Enum.map(&to_string/1) %>
+              <% selected_categories =
+                f[:categories].value |> List.wrap() |> Enum.map(&to_string/1) %>
               <%= for {value, label} <- [
                 {"gendered", "Gender"},
                 {"sexualized", "Sexualized"},
@@ -234,10 +322,25 @@
                 {"other", "Other"}
               ] do %>
                 <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:bg-[#ffcbca] has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                  <input type="checkbox" class="peer sr-only" name={f[:categories].name <> "[]"} value={value} checked={value in selected_categories} />
-                  <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex">
+                  <input
+                    type="checkbox"
+                    class="peer sr-only"
+                    name={f[:categories].name <> "[]"}
+                    value={value}
+                    checked={value in selected_categories}
+                  />
+                  <span
+                    aria-hidden="true"
+                    class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex"
+                  >
                     <svg class="h-2 w-2" viewBox="0 0 10 10" fill="none">
-                      <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M1.5 5.5 3.8 7.8 8.5 2.5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </svg>
                   </span>
                   <span class="font-normal">{label}</span>
@@ -255,13 +358,29 @@
             <div class="flex gap-2 flex-wrap">
               <%= for {name, code} <- @language_options do %>
                 <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
-                  <input type="radio" class="peer sr-only" name={f[:language].name} value={code} checked={to_string(f[:language].value) == code} />
-                  <span aria-hidden="true" class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex">
+                  <input
+                    type="radio"
+                    class="peer sr-only"
+                    name={f[:language].name}
+                    value={code}
+                    checked={to_string(f[:language].value) == code}
+                  />
+                  <span
+                    aria-hidden="true"
+                    class="hidden h-3 w-3 items-center justify-center rounded-full bg-[#bf0000] text-white peer-checked:inline-flex"
+                  >
                     <svg class="h-2 w-2" viewBox="0 0 10 10" fill="none">
-                      <path d="M1.5 5.5 3.8 7.8 8.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M1.5 5.5 3.8 7.8 8.5 2.5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </svg>
                   </span>
-                  <span class="font-normal">{name} / <code class="font-sans text-inherit">&lt;{String.upcase(code)}&gt;</code></span>
+                  <span class="font-normal">{name} /
+                  <code class="font-sans text-inherit">&lt;{String.upcase(code)}&gt;</code></span>
                 </label>
               <% end %>
             </div>
@@ -273,8 +392,13 @@
               type="submit"
               class="flex h-[88px] w-full items-center justify-center gap-2 rounded-[10px] bg-black px-6 text-lg font-semibold text-white hover:bg-gray-800"
             >
-              <svg aria-hidden="true" class="h-6 w-6 shrink-0" viewBox="0 -960 960 960" fill="currentColor">
-                <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
+              <svg
+                aria-hidden="true"
+                class="h-6 w-6 shrink-0"
+                viewBox="0 -960 960 960"
+                fill="currentColor"
+              >
+                <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z" />
               </svg>
               <span>Save &amp; Submit Slur</span>
             </button>
