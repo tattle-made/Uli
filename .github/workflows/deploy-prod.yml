@@ -40,13 +40,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
       - name: Install Packages
         run: |
-          pwd
-          cd uli-website 
-          pwd
-          ls
-          npm install 
+          cd uli-website
+          npm install
           npm run build
           npm run deploy
 
