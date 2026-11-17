@@ -7,7 +7,7 @@
   </p>
 
   <div class="relative w-full bg-[#ffece6] border border-[#4e1818] p-7 sm:p-9">
-    <.form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/confirm"} class="space-y-4">
+    <.form :let={f} for={@conn.params["user"]} as={:user} action={~p"/nolive/users/confirm"} class="space-y-4">
       <div>
         <label for={f[:email].id} class="block text-sm font-normal text-[#4e1818] mb-1.5">
           <%= gettext("Email address") %>
