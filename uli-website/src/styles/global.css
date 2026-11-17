@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
 /* pre {
   overflow-x: auto;
   white-space: pre;
