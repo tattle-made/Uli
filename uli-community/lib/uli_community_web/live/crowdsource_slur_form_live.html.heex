@@ -1,29 +1,22 @@
 <div class="min-h-screen px-4 sm:px-6 lg:px-8">
-  <div class="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6 lg:flex-row lg:gap-[10px]">
+  <div class="mx-auto flex w-full max-w-4xl flex-col items-start gap-6 lg:max-w-7xl lg:flex-row lg:gap-2.5">
     <!-- Left Sidebar: My Contributions -->
-    <div class="w-full lg:w-[390px] lg:shrink-0">
-      <div class="bg-[#efe2d2] border border-black/20 rounded-[10px] px-5 pt-5 pb-10">
-        <div class="flex items-center justify-between gap-3 mb-4">
+    <div class="w-full lg:w-96 lg:shrink-0">
+      <div class="bg-[#efe2d2] border border-black/20 rounded-lg px-5 pt-5 pb-10">
+        <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-4">
           <div class="min-w-0">
             <h2 class="text-lg font-semibold">My Contributions</h2>
-            <span class="block text-sm font-medium">{@current_user.email}</span>
+            <span class="block truncate text-sm font-medium">{@current_user.email}</span>
           </div>
           <.link
             href={~p"/contribute-slur"}
-            class="inline-flex h-12 w-[101px] shrink-0 items-center justify-center gap-[10px] rounded-[5px] border border-black/10 bg-black px-[10px] text-xs font-bold text-[#fdf6ed] hover:bg-gray-800"
+            class="inline-flex h-12 w-25 shrink-0 items-center justify-center gap-2.5 rounded-md border border-black/10 bg-black px-2.5 text-xs font-bold text-[#fdf6ed] transition-all duration-150 hover:bg-gray-800 hover:shadow-md"
           >
             <span
               aria-hidden="true"
-              class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#fcf5ec]"
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#fcf5ec] text-sm font-bold leading-none text-black"
             >
-              <svg class="h-3 w-3 text-black" fill="none" viewBox="0 0 12 12">
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-width="2"
-                  d="M6 1v10M1 6h10"
-                />
-              </svg>
+              +
             </span>
             <span class="whitespace-nowrap">Add Slur</span>
           </.link>
@@ -34,15 +27,15 @@
           <input
             type="text"
             placeholder="Search"
-            class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+            class="w-full px-3 py-2 border border-gray-300 rounded text-sm transition-colors duration-150 hover:border-gray-400 focus:border-transparent focus:ring-2 focus:ring-orange-400"
           />
         </div>
 
         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="inline-flex h-[30px] shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
+          <div class="inline-flex h-7.5 shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
             {length(@my_contributions)} Contributions
           </div>
-          <label class="inline-flex h-[34px] items-center gap-[6px] rounded-full border border-black/50 px-[10px] text-xs">
+          <label class="inline-flex h-8.5 cursor-pointer items-center gap-1.5 rounded-full border border-black/50 px-2.5 text-xs transition-colors duration-150 hover:border-black">
             <svg
               aria-hidden="true"
               class="h-5 w-5 shrink-0"
@@ -58,7 +51,7 @@
               />
             </svg>
             <span class="shrink-0 font-bold">Sort:</span>
-            <select class="appearance-none border-0 bg-transparent p-0 text-xs focus:ring-0">
+            <select class="appearance-none border-0 bg-transparent p-0 text-xs cursor-pointer focus:ring-0">
               <option class="bg-[#efe2d2] text-black">Newest First</option>
               <option class="bg-[#efe2d2] text-black">Oldest First</option>
             </select>
@@ -88,10 +81,10 @@
             :for={contribution <- @my_contributions}
             href={~p"/contribute-slur/#{contribution.id}"}
             class={[
-              "block rounded-[10px] px-5 py-3 text-[17px] font-bold",
+              "block rounded-lg px-5 py-3 text-sm font-semibold transition-all duration-150",
               if(@slur && contribution.id == @slur.id,
-                do: "bg-white border-2 border-[#fa9391]",
-                else: "bg-[#fdf6ed] border border-black/10 opacity-60"
+                do: "bg-white border-2 border-[#fa9391] hover:shadow-md",
+                else: "bg-[#fdf6ed] border border-black/10 opacity-60 hover:opacity-100 hover:shadow-sm"
               )
             ]}
           >
@@ -103,14 +96,14 @@
 
     <!-- Right Content: Form -->
     <div class="flex-1">
-      <div class="w-full max-w-[800px] rounded-[10px] border border-black/20 bg-white/20 p-6 sm:px-10 sm:pt-5 sm:pb-10">
+      <div class="w-full max-w-4xl rounded-lg border border-black/20 bg-white/20 p-6 sm:px-10 sm:pt-5 sm:pb-10">
         <div class="flex items-center justify-between border-b border-[#b7b4b5] pb-5 mb-6">
           <h1 class="text-lg font-bold">
             {if(@mode == :edit, do: "Edit Slur", else: "Add Slur")}
           </h1>
           <button
             :if={@mode == :edit}
-            class="inline-flex h-12 items-center justify-center gap-2 rounded-[5px] border border-[#bf0000] px-6 font-semibold text-[#bf0000] hover:bg-[#bf0000]/5"
+            class="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-[#bf0000] px-6 font-semibold text-[#bf0000] cursor-pointer transition-colors duration-150 hover:bg-[#bf0000]/10"
             phx-click="delete"
             data-confirm="Are you sure?"
           >
@@ -124,10 +117,10 @@
         <.form :let={f} id="slur-submission-form" for={@form} phx-submit="save" class="space-y-6">
           <!-- What is the slur? -->
           <div>
-            <label class="block text-lg font-bold mb-1">
+            <label class="block text-sm font-semibold mb-1">
               What is the slur?
             </label>
-            <p class="text-lg text-gray-600 mb-3">
+            <p class="text-sm text-gray-600 mb-3">
               How is this slur commonly spelled.
             </p>
             <.input
@@ -136,7 +129,7 @@
               placeholder="Enter slur label"
               readonly={@mode == :edit}
               class={[
-                "w-full px-3 py-3 font-semibold text-lg! leading-7! border border-gray-300 rounded-[10px] focus:ring-2 focus:ring-orange-400 focus:border-transparent",
+                "w-full px-3 py-3 font-semibold border border-gray-300 rounded-lg transition-colors duration-150 hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:border-transparent",
                 if(@mode == :edit,
                   do: "bg-gray-100 cursor-not-allowed",
                   else: ""
@@ -153,11 +146,11 @@
 
           <!-- Level of Severity -->
           <div>
-            <label class="block text-lg font-bold mb-2">
+            <label class="block text-sm font-semibold mb-2">
               Level of Severity
             </label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -168,7 +161,7 @@
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-yellow-300"></span>
                 <span class="text-sm font-medium lowercase">Low</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -179,7 +172,7 @@
                 <span class="h-3 w-3 rounded-full border border-black/40 bg-amber-500"></span>
                 <span class="text-sm font-medium lowercase">Medium</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-black/60 bg-[#f2e6d9] px-3 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -196,11 +189,11 @@
 
           <!-- Is it Casual? -->
           <div>
-            <label class="block text-lg font-bold mb-2">
+            <label class="block text-sm font-semibold mb-2">
               Is it Casual?
             </label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -210,7 +203,7 @@
                 />
                 <span class="text-sm font-medium">Yes</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -226,11 +219,11 @@
 
           <!-- Has it been appropriated? -->
           <div>
-            <label class="block text-lg font-bold mb-2">
+            <label class="block text-sm font-semibold mb-2">
               Has it been appropriated?
             </label>
             <div class="flex flex-wrap gap-2">
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -240,7 +233,7 @@
                 />
                 <span class="text-sm font-medium">Yes</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center rounded-xl border border-black/60 bg-[#f2e6d9] px-4 py-2 opacity-60 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:border-black has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -255,17 +248,17 @@
           </div>
 
           <!-- Who has it been Appropriated by -->
-          <div class="flex w-full flex-col items-start gap-[10px] rounded-[5px] border border-black/10 bg-[#efe2d2] p-[10px]">
-            <div class="flex items-center gap-[5px] text-[17px] font-bold text-black/50">
+          <div class="flex w-full flex-col items-start gap-2.5 rounded-md border border-black/10 bg-[#efe2d2] p-2.5">
+            <div class="flex items-center gap-1.5 text-sm font-semibold text-black/50">
               <span
                 aria-hidden="true"
-                class="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#787169] text-[17px] leading-none text-[#787169]"
+                class="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#787169] text-sm leading-none text-[#787169]"
               >?</span>
               <span>Who has it been Appropriated by</span>
             </div>
             <div class="w-full border-t border-black/10"></div>
-            <div class="flex flex-wrap gap-[10px]">
-              <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+            <div class="flex flex-wrap gap-2.5">
+              <label class="inline-flex cursor-pointer items-center rounded-lg border border-black bg-[#efe2d2] px-3.5 py-1 opacity-50 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -273,9 +266,9 @@
                   value="true"
                   checked={to_string(f[:appropriation_context].value) == "true"}
                 />
-                <span class="text-[13px] font-normal">By the Community</span>
+                <span class="text-sm font-normal">By the Community</span>
               </label>
-              <label class="inline-flex cursor-pointer items-center rounded-[10px] border border-black bg-[#efe2d2] px-[15px] py-[5px] opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+              <label class="inline-flex cursor-pointer items-center rounded-lg border border-black bg-[#efe2d2] px-3.5 py-1 opacity-50 transition-opacity duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                 <input
                   type="radio"
                   class="sr-only"
@@ -283,26 +276,26 @@
                   value="false"
                   checked={to_string(f[:appropriation_context].value) == "false"}
                 />
-                <span class="text-[13px] font-normal">Others / People outside the community</span>
+                <span class="text-sm font-normal">Others / People outside the community</span>
               </label>
             </div>
           </div>
 
           <!-- What makes it problematic? -->
           <div>
-            <label class="block text-lg font-bold mb-2">
+            <label class="block text-sm font-semibold mb-2">
               What makes it problematic?
             </label>
             <.input
               field={f[:meaning]}
               type="textarea"
-              class="w-full min-h-[115px] resize-y rounded-[4px] border border-gray-300 px-[10px] py-[10px] text-[18px] focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+              class="w-full min-h-28 resize-y rounded border border-gray-300 px-2.5 py-2.5 transition-colors duration-150 hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:border-transparent"
             />
           </div>
 
           <!-- Categories -->
           <div>
-            <label class="block text-lg font-bold mb-2">
+            <label class="block text-sm font-semibold mb-2">
               Categories?
             </label>
             <div class="flex gap-2 flex-wrap">
@@ -321,7 +314,7 @@
                 {"sexual_identity", "Sexual Identity"},
                 {"other", "Other"}
               ] do %>
-                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:bg-[#ffcbca] has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 transition duration-150 hover:opacity-100 has-[:checked]:bg-[#ffcbca] has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                   <input
                     type="checkbox"
                     class="peer sr-only"
@@ -352,12 +345,12 @@
 
           <!-- Language -->
           <div>
-            <label class="block text-lg font-bold mb-2">
+            <label class="block text-sm font-semibold mb-2">
               Language
             </label>
             <div class="flex gap-2 flex-wrap">
               <%= for {name, code} <- @language_options do %>
-                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
+                <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-black bg-black/20 px-3 py-2 text-sm opacity-50 transition duration-150 hover:opacity-100 has-[:checked]:border-2 has-[:checked]:bg-white has-[:checked]:opacity-100 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black">
                   <input
                     type="radio"
                     class="peer sr-only"
@@ -390,7 +383,7 @@
           <div class="pt-8">
             <button
               type="submit"
-              class="flex h-[88px] w-full items-center justify-center gap-2 rounded-[10px] bg-black px-6 text-lg font-semibold text-white hover:bg-gray-800"
+              class="flex h-22 w-full items-center justify-center gap-2 rounded-lg bg-black px-6 text-base font-semibold text-white cursor-pointer transition-all duration-150 hover:bg-gray-800 hover:shadow-lg"
             >
               <svg
                 aria-hidden="true"
