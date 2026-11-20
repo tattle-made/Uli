@@ -81,6 +81,36 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
     end
   end
 
+  @impl true
+  def handle_event("sort", %{"sort" => sort_value}, socket) do
+    sort_by =
+      case sort_value do
+        "newest" -> :newest
+        "oldest" -> :oldest
+        _ -> :newest
+      end
+
+    {:noreply,
+     socket
+     |> assign(:sort_by, sort_by)
+     |> assign(:sort_menu_open, false)
+     |> assign_visible_contributions()}
+  end
+
+  def handle_event("sort", _params, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("toggle-sort-menu", _params, socket) do
+    {:noreply, update(socket, :sort_menu_open, &(!&1))}
+  end
+
+  @impl true
+  def handle_event("close-sort-menu", _params, socket) do
+    {:noreply, assign(socket, :sort_menu_open, false)}
+  end
+
   defp create_slur(slur_params, socket) do
     case UserContribution.create_crowdsourced_slur(slur_params) do
       {:ok, _slur} ->
@@ -115,7 +145,23 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLive do
 
   defp assign_my_contributions(socket, user) do
     {:ok, slurs} = UserContribution.get_crowdsourced_slur_by_user(user.id)
-    assign(socket, :my_contributions, slurs)
+
+    socket
+    |> assign(:my_contributions, slurs)
+    |> assign(:sort_by, :newest)
+    |> assign(:sort_menu_open, false)
+    |> assign_visible_contributions()
+  end
+
+  defp assign_visible_contributions(socket) do
+    direction =
+      case socket.assigns.sort_by do
+        :newest -> {:desc, DateTime}
+        :oldest -> {:asc, DateTime}
+      end
+
+    sorted = Enum.sort_by(socket.assigns.my_contributions, & &1.inserted_at, direction)
+    assign(socket, :visible_contributions, sorted)
   end
 
   defp assign_form(socket, %CrowdsourcedSlur{} = slur) do
