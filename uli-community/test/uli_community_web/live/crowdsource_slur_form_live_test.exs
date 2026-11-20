@@ -88,6 +88,46 @@ defmodule UliCommunityWeb.CrowdsourceSlurFormLiveTest do
     end
   end
 
+  describe "sorting my contributions" do
+    test "opens a rounded menu styled like the sort pill", %{conn: conn} do
+      conn
+      |> visit(~p"/contribute-slur")
+      |> click_button("button#contribution-sort-button", "Sort: Newest First")
+      |> assert_has("#contribution-sort-menu")
+      |> assert_has("#contribution-sort-menu button.text-xs.font-medium", text: "Oldest First")
+    end
+
+    test "shows the oldest contribution first when oldest first is selected", %{conn: conn, user: user} do
+      older_slur =
+        crowdsourced_slur_fixture(%{
+          contributor_user_id: user.id,
+          label: "Older test contribution"
+        })
+
+      newer_slur =
+        crowdsourced_slur_fixture(%{
+          contributor_user_id: user.id,
+          label: "Newer test contribution"
+        })
+
+      now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+      older_slur
+      |> Ecto.Changeset.change(inserted_at: DateTime.add(now, -60, :second))
+      |> Repo.update!()
+
+      newer_slur
+      |> Ecto.Changeset.change(inserted_at: DateTime.add(now, 60, :second))
+      |> Repo.update!()
+
+      conn
+      |> visit(~p"/contribute-slur")
+      |> click_button("button#contribution-sort-button", "Sort: Newest First")
+      |> click_button("#contribution-sort-menu button", "Oldest First")
+      |> assert_has(".space-y-2 > a:first-child", text: "Older test contribution")
+    end
+  end
+
   defp create_slur(session, slur) do
     within(session, "#slur-submission-form", fn form ->
       form

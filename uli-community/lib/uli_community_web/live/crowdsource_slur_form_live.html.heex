@@ -40,52 +40,98 @@
 
         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div class="inline-flex h-[30px] shrink-0 items-center whitespace-nowrap rounded-full border border-[#d7cbbd] px-5 text-xs font-bold text-[#787169]">
-            {length(@my_contributions)} Contributions
+            {length(@visible_contributions)} Contributions
           </div>
-          <label class="inline-flex h-[34px] items-center gap-[6px] rounded-full border border-black/50 px-[10px] text-xs">
-            <svg
-              aria-hidden="true"
-              class="h-5 w-5 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div class="relative" phx-click-away="close-sort-menu">
+            <button
+              id="contribution-sort-button"
+              type="button"
+              phx-click="toggle-sort-menu"
+              aria-controls="contribution-sort-menu"
+              aria-expanded={to_string(@sort_menu_open)}
+              aria-haspopup="menu"
+              class="inline-flex h-[34px] items-center gap-[6px] rounded-full border border-black/50 px-[10px] text-xs text-[#4e1818] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 3v3m8-3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm7 7v5m-2-2 2 2 2-2"
-              />
-            </svg>
-            <span class="shrink-0 font-bold">Sort:</span>
-            <select class="appearance-none border-0 bg-transparent p-0 text-xs focus:ring-0">
-              <option class="bg-[#efe2d2] text-black">Newest First</option>
-              <option class="bg-[#efe2d2] text-black">Oldest First</option>
-            </select>
-            <svg
-              aria-hidden="true"
-              class="h-4 w-4 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              <svg
+                aria-hidden="true"
+                class="h-5 w-5 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 3v3m8-3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm7 7v5m-2-2 2 2 2-2"
+                />
+              </svg>
+              <span class="shrink-0 font-bold">Sort:</span>
+              <span class="shrink-0 font-medium">
+                {if @sort_by == :newest, do: "Newest First", else: "Oldest First"}
+              </span>
+              <svg
+                aria-hidden="true"
+                class="h-4 w-4 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </button>
+
+            <div
+              :if={@sort_menu_open}
+              id="contribution-sort-menu"
+              role="menu"
+              aria-label="Sort contributions"
+              class="absolute right-0 z-20 mt-2 w-full min-w-max overflow-hidden rounded-[10px] border border-black/20 bg-[#efe2d2] py-1 shadow-sm"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m6 9 6 6 6-6"
-              />
-            </svg>
-          </label>
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked={@sort_by == :newest}
+                phx-click="sort"
+                phx-value-sort="newest"
+                class={[
+                  "flex w-full items-center justify-between px-3 py-2 text-left text-xs text-[#4e1818] hover:bg-white/50 focus-visible:bg-white/50 focus-visible:outline-none",
+                  if(@sort_by == :newest, do: "font-bold", else: "font-medium")
+                ]}
+              >
+                <span>Newest First</span>
+                <.icon :if={@sort_by == :newest} name="hero-check" class="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked={@sort_by == :oldest}
+                phx-click="sort"
+                phx-value-sort="oldest"
+                class={[
+                  "flex w-full items-center justify-between px-3 py-2 text-left text-xs text-[#4e1818] hover:bg-white/50 focus-visible:bg-white/50 focus-visible:outline-none",
+                  if(@sort_by == :oldest, do: "font-bold", else: "font-medium")
+                ]}
+              >
+                <span>Oldest First</span>
+                <.icon :if={@sort_by == :oldest} name="hero-check" class="h-4 w-4" />
+              </button>
+            </div>
+          </div>
         </div>
         <div class="border-t border-[#d7cbbd] mb-4"></div>
 
         <div class="space-y-2 max-h-96 overflow-y-auto pr-1">
-          <p :if={@my_contributions == []} class="text-sm text-gray-500">
+          <p :if={@visible_contributions == []} class="text-sm text-gray-500">
             You haven't added any slurs yet.
           </p>
           <.link
-            :for={contribution <- @my_contributions}
+            :for={contribution <- @visible_contributions}
             href={~p"/contribute-slur/#{contribution.id}"}
             class={[
               "block rounded-[10px] px-5 py-3 text-[17px] font-bold",
